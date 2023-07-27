@@ -1,5 +1,7 @@
 import { Link } from "@chakra-ui/next-js";
-import { Flex } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
+
+import { FaChevronDown, FaTwitter, FaLinkedin } from "react-icons/fa";
 
 const navItems = [
   {
@@ -44,7 +46,19 @@ const NavbarItem: React.FC<{
 }> = ({ name, href, dropdownItems }) => {
   return dropdownItems ? (
     <Link href={href} style={{ textDecoration: "none" }}>
-      {name}
+      <Flex
+        px="10px"
+        py="5px"
+        borderRadius="5px"
+        align="center"
+        transition="0.3s all ease-out"
+        _hover={{
+          bgColor: "#04EFAF",
+        }}
+      >
+        <Text mr="5px">{name}</Text>
+        <FaChevronDown size="15px" />
+      </Flex>
     </Link>
   ) : (
     <Link href={href} style={{ textDecoration: "none" }}>
@@ -59,6 +73,22 @@ const Navbar: React.FC = () => {
       {navItems.map((item, i) => (
         <NavbarItem key={i} {...item} />
       ))}
+
+      {/* Social Icons */}
+      <Flex gap="1rem">
+        {/* TODO: Put actual social links here */}
+        {[
+          { Icon: FaTwitter, href: "#" },
+          {
+            Icon: FaLinkedin,
+            href: "#",
+          },
+        ].map(({ Icon, href }, i) => (
+          <Link key={i} href={href} style={{ textDecoration: "none" }}>
+            <Icon size="22px" />
+          </Link>
+        ))}
+      </Flex>
     </Flex>
   );
 };
