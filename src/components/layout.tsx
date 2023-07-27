@@ -1,6 +1,8 @@
 import Head from "next/head";
 import Navbar from "~/components/navbar";
 
+import { poppins } from "../utils/fonts";
+
 const Layout: React.FC<{
   title?: string;
   children: React.ReactNode;
@@ -16,7 +18,7 @@ const Layout: React.FC<{
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="mx-auto max-w-screen-xl">
+      <div className={`${poppins.variable} mx-auto max-w-screen-xl font-sans`}>
         <Navbar />
         <main className="w-full">{children}</main>
         <footer></footer>
