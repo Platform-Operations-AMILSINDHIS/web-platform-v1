@@ -3,6 +3,45 @@ import Layout from "~/components/layout";
 
 import { eudoxus } from "~/utils/fonts";
 
+const blogPosts = [
+  {
+    title: "Conversations with the Amil Folk",
+    author: "Karan Kishore",
+    date: "13 Feb 2023",
+    excerpt:
+      "Amongst Sindhi Hindus, socially this clan ranks first in the hierarchical ranking among followed by Bhaiband.[2] The Amils held the highest administrative offices under Muslim ...",
+    tags: ["History", "Tradition", "Blog"],
+    image: "/images/blog-post-1.jpg",
+  },
+  {
+    title: "Khadjyun ji mithai",
+    author: "Karan Kishore",
+    date: "01 Jan 2021",
+    excerpt:
+      "The Union began pasteurizing milk in June 1948, for the Bombay Milk Scheme...",
+    tags: ["Tradition", "Food", "Blog"],
+    image: "/images/blog-post-2.jpg",
+  },
+  {
+    title: "The Amil Gandhi Mohan Jhanglani",
+    author: "Snigdha Kapoor",
+    date: "30 Dec 2020",
+    excerpt:
+      "Mohan Jhangiani was the youngest of ten children. The family lived in Lahore... ",
+    tags: ["History", "Blog"],
+    image: "/images/blog-post-3.jpg",
+  },
+  {
+    title: "Hyderabad, Sind.",
+    author: "Snigdha Kapoor",
+    date: "13 Feb 2023",
+    excerpt:
+      "Mohan Jhangiani was the youngest of ten children. The family lived in Lahore... ",
+    tags: ["History", "Blog"],
+    image: "/images/blog-post-4.jpg",
+  },
+];
+
 const Home: NextPage = () => {
   return (
     <Layout title="Home">
@@ -20,6 +59,76 @@ const Home: NextPage = () => {
           Subscribe to our amil blogs, samachar and publications today and stay
           up to date with all amil related news
         </div>
+      </div>
+
+      <div className="my-6">
+        <div
+          className={`${eudoxus.variable} font-heading text-2xl font-bold text-[#1F2937]`}
+        >
+          Recent blog posts
+        </div>
+
+        {blogPosts.length > 0 && blogPosts[0] && (
+          <div className="mt-5 grid grid-cols-1 md:grid-cols-2">
+            <div className="">
+              <div>
+                <img className="rounded" alt="" src={blogPosts[0].image} />
+              </div>
+
+              <div className="mt-8 font-semibold text-[#1F2937] opacity-70">
+                {blogPosts[0].author} &middot; {blogPosts[0].date}
+              </div>
+              <div className="mt-2 text-3xl font-semibold">
+                {blogPosts[0].title}
+              </div>
+              <div className="mt-4">{blogPosts[0].excerpt}</div>
+              <div className="my-4 flex gap-2">
+                {blogPosts[0].tags.map((tag, i) => (
+                  <div
+                    key={i}
+                    className={`rounded-full border border-[#1F2937] px-2 py-1 text-xs`}
+                  >
+                    {tag}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-6">
+              {blogPosts.slice(1).map((post, i) => (
+                <div key={i} className="grid grid-cols-2 gap-4">
+                  <div className="h-full w-full rounded-md">
+                    <img
+                      className="w-full object-cover"
+                      alt=""
+                      src={post.image}
+                    />
+                  </div>
+
+                  <div>
+                    <div className="font-semibold text-[#1F2937] opacity-70">
+                      {post.author} &middot; {post.date}
+                    </div>
+                    <div className="mt-2 text-2xl font-semibold">
+                      {post.title}
+                    </div>
+                    <div className="mt-4 text-sm">{post.excerpt}</div>
+                    <div className="my-4 flex gap-2">
+                      {post.tags.map((tag, i) => (
+                        <div
+                          key={i}
+                          className={`rounded-full border border-[#1F2937] px-2 py-1 text-xs`}
+                        >
+                          {tag}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </Layout>
   );
