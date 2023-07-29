@@ -68,8 +68,8 @@ const Home: NextPage = () => {
           Recent blog posts
         </div>
 
-        {blogPosts.length > 0 && blogPosts[0] && (
-          <div className="mt-5 grid grid-cols-1 md:grid-cols-2">
+        <div className="mt-5 grid grid-cols-1 md:grid-cols-2">
+          {blogPosts.length > 0 && blogPosts[0] && (
             <div className="">
               <div>
                 <img className="rounded" alt="" src={blogPosts[0].image} />
@@ -93,7 +93,9 @@ const Home: NextPage = () => {
                 ))}
               </div>
             </div>
+          )}
 
+          {blogPosts.length > 1 && (
             <div className="flex flex-col gap-6">
               {blogPosts.slice(1).map((post, i) => (
                 <div key={i} className="grid grid-cols-2 gap-4">
@@ -127,8 +129,8 @@ const Home: NextPage = () => {
                 </div>
               ))}
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </Layout>
   );
