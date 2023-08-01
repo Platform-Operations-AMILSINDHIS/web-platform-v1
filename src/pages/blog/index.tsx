@@ -79,6 +79,7 @@ const Home: NextPage = () => {
 
         <div className="mt-5 grid grid-cols-1 md:grid-cols-2">
           {/* Big landing blog post (only for desktop) */}
+          {/* TODO: Hide this on mobile */}
           {blogPosts.length > 0 && blogPosts[0] && (
             <div className="">
               <div>
@@ -112,6 +113,7 @@ const Home: NextPage = () => {
 
           {blogPosts.length > 1 && (
             <div className="flex flex-col gap-6">
+              {/* TODO: Don't slice on mobile, show from 0th index + make post thumbs vertical */}
               {blogPosts.slice(1).map((post: BlogPost, i) => (
                 <BlogPostThumb key={i} orientation="horizontal" post={post} />
               ))}
@@ -120,7 +122,23 @@ const Home: NextPage = () => {
         </div>
 
         {/* All posts section */}
-        <div></div>
+        <div className="my-6">
+          <div
+            className={`${eudoxus.variable} font-heading text-2xl font-bold text-[#1F2937]`}
+          >
+            All our blog posts
+          </div>
+
+          <div className="mt-6">
+            {blogPosts.length > 1 && (
+              <div className="grid grid-cols-3 gap-6">
+                {blogPosts.map((post: BlogPost, i) => (
+                  <BlogPostThumb key={i} orientation="vertical" post={post} />
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </Layout>
   );

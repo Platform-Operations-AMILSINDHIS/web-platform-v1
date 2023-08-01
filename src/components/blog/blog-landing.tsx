@@ -7,7 +7,7 @@ export const BlogPostThumb: React.FC<{
   orientation: "horizontal" | "vertical";
 }> = ({ post: { title, author, date, excerpt, tags, image }, orientation }) => (
   <div
-    className={`grid grid-cols-1 grid-rows-2 gap-4 ${
+    className={`grid cursor-pointer grid-cols-1 grid-rows-2 gap-4 rounded-xl p-5 transition-all hover:-translate-y-1 hover:shadow-lg ${
       orientation === "horizontal"
         ? "md:grid-cols-2 md:grid-rows-1"
         : "md:grid-cols-1 md:grid-rows-2"
