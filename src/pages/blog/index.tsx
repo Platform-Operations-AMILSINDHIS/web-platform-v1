@@ -49,13 +49,13 @@ const blogPosts = [
   },
 ];
 
-const Home: NextPage = () => {
+const BlogPage: NextPage = () => {
   return (
-    <Layout title="Home">
+    <Layout title="Blog">
       <div className="mx-auto max-w-screen-lg text-center text-[#1F2937]">
         {/* Hero */}
         <div
-          className={`${eudoxus.variable} mt-16 font-heading text-7xl font-bold leading-normal`}
+          className={`${eudoxus.variable} mt-16 font-heading text-3xl font-bold leading-normal md:text-7xl`}
         >
           Amil Blogs, <span className="text-[#0079FF]">Samachar &</span>{" "}
           Publications all in{" "}
@@ -131,7 +131,7 @@ const Home: NextPage = () => {
 
           <div className="mt-6">
             {blogPosts.length > 1 && (
-              <div className="grid grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 md:gap-6">
                 {blogPosts.map((post: BlogPost, i) => (
                   <BlogPostThumb key={i} orientation="vertical" post={post} />
                 ))}
@@ -144,4 +144,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default BlogPage;
