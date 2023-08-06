@@ -1,16 +1,15 @@
 import { useRef } from "react";
-import Link from "next/link";
+import { Link } from "@chakra-ui/next-js";
 
 import {
   Drawer,
   DrawerBody,
-  DrawerFooter,
-  DrawerHeader,
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
   useDisclosure,
   Flex,
+  Text,
 } from "@chakra-ui/react";
 
 import { FaChevronDown, FaTwitter, FaLinkedin, FaBars } from "react-icons/fa";
@@ -56,36 +55,42 @@ const NavbarItem: React.FC<{
   href: string;
   dropdownItems?: { name: string; href: string }[];
 }> = ({ name, href, dropdownItems }) => {
-  return dropdownItems ? (
-    <Link href={href}>
-      <div className="flex cursor-pointer items-center rounded-lg px-2 py-1 transition-all hover:bg-[#04EFAF]">
-        <div className="mr-2">{name}</div>
-        <FaChevronDown size="15px" />
-      </div>
-    </Link>
-  ) : (
-    // Implement dropdown
-    <Link href={href} style={{ textDecoration: "none" }}>
-      <div className="flex cursor-pointer items-center rounded-lg px-2 py-1 transition-all hover:bg-[#04EFAF]">
-        <div className="mr-2">{name}</div>
-      </div>
+  return (
+    <Link href={href} _hover={{ textDecor: "none" }}>
+      <Flex
+        align="center"
+        borderRadius="5px"
+        px="8px"
+        py="4px"
+        transition="all 0.3s ease-out"
+        _hover={{ bg: "#04EFAF" }}
+      >
+        <Text mr={dropdownItems ? "8px" : "0px"}>{name}</Text>
+        {/* TODO: Implement Chakra Menu on hover for dropdown items */}
+        {dropdownItems && <FaChevronDown size="15px" />}
+      </Flex>
     </Link>
   );
 };
 
 const Navbar: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const hamburgerRef = useRef();
 
   return (
     <>
-      <nav className="hidden h-[10vh] w-full items-center justify-around md:flex">
+      <Flex
+        display={["none", "flex"]}
+        h="10vh"
+        w="100%"
+        align="center"
+        justify="space-around"
+      >
         {navItems.map((item, i) => (
           <NavbarItem key={i} {...item} />
         ))}
 
         {/* Social Icons */}
-        <div className="flex gap-[1rem]">
+        <Flex gap="1rem">
           {/* TODO: Put actual social links here */}
           {[
             { Icon: FaTwitter, href: "#" },
@@ -98,14 +103,22 @@ const Navbar: React.FC = () => {
               <Icon size="22px" />
             </Link>
           ))}
-        </div>
-      </nav>
+        </Flex>
+      </Flex>
 
-      <nav className="flex items-center justify-between px-4 py-5 md:hidden">
-        <div className="text-xl font-semibold">Amil Sindhis</div>
-        <div className="cursor-pointer" onClick={onOpen}>
+      <Flex
+        display={["flex", "none"]}
+        px="15px"
+        py="18px"
+        align="center"
+        justify="space-between"
+      >
+        <Text fontSize="xl" fontWeight="semibold">
+          Amil Sindhis
+        </Text>
+        <Text cursor="pointer" onClick={onOpen}>
           <FaBars size="22px" />
-        </div>
+        </Text>
 
         <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
           <DrawerOverlay />
@@ -130,7 +143,7 @@ const Navbar: React.FC = () => {
             </DrawerBody>
           </DrawerContent>
         </Drawer>
-      </nav>
+      </Flex>
     </>
   );
 };
