@@ -20,7 +20,7 @@ const Layout: React.FC<{
 
       <div className={`${poppins.variable} mx-auto max-w-screen-xl font-sans`}>
         <Navbar />
-        <main className="mx-auto w-full px-4 md:px-0">{children}</main>
+        <main className="mx-auto w-full px-4 md:px-4">{children}</main>
         <footer></footer>
       </div>
     </div>
