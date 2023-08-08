@@ -1,3 +1,4 @@
+import type { NextPage } from "next";
 import {
   Text,
   Grid,
@@ -6,11 +7,12 @@ import {
   Input,
   Heading,
   Spacer,
+  Flex,
+  Box,
 } from "@chakra-ui/react";
-import type { NextPage } from "next";
-import Layout from "~/components/layout";
+import { FaHandHoldingHeart, FaUserFriends } from "react-icons/fa";
 
-import { eudoxus } from "~/utils/fonts";
+import Layout from "~/components/layout";
 
 const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
   return (
@@ -77,6 +79,92 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
       </Grid>
 
       <Spacer h="3rem" />
+
+      <Flex align="baseline" gap="0.5rem">
+        <Heading>Office Address</Heading>
+        <Text fontSize="xs">(Optional)</Text>
+      </Flex>
+      <Grid mt="2rem" gap="2rem" templateColumns={["1fr", "repeat(2, 1fr)"]}>
+        {[
+          { label: "Office Address Line 1" },
+          { label: "Office Address Line 2" },
+          { label: "Office Address Line 3" },
+          { label: "Pin Code" },
+        ].map(({ label }, i) => (
+          <FormControl key={i}>
+            <FormLabel fontSize="sm" fontWeight="light">
+              {label}
+            </FormLabel>
+            <Input py="30px" borderRadius="5px" type="text" />
+          </FormControl>
+        ))}
+      </Grid>
+
+      <Spacer h="3rem" />
+
+      <Heading>Type of Membership</Heading>
+      <Grid mt="2rem" gap="2rem" templateColumns={["1fr", "repeat(4, 1fr)"]}>
+        {[
+          { label: "Patron", Icon: FaHandHoldingHeart },
+          { label: "Life-Member", Icon: FaUserFriends },
+        ].map(({ Icon, label }, i) => (
+          <Flex
+            key={i}
+            px="20px"
+            py="18px"
+            gap="1rem"
+            align="center"
+            border="1px solid #CBD5E0"
+            borderRadius="5px"
+            cursor="pointer"
+          >
+            <Icon size="40px" />
+            <Text fontSize="lg" fontWeight="normal">
+              {label}
+            </Text>
+          </Flex>
+        ))}
+      </Grid>
+
+      <Spacer h="2rem" />
+
+      <Heading size="lg">Declaration</Heading>
+      <Flex flexDir="column" mt="1rem" gap="0.75rem" maxW="60%">
+        <Text>
+          The Applicant hereby declares that, I am a Khudabadi Amil and request
+          the Committee to admit me as Patron / Life-Member of The Khudabadi
+          Amil Panchayat of Bombay.
+        </Text>
+        <Text>
+          I agree to abide by the Constitution and Rules of the Khudabadi Amil
+          Panchayat of Bombay in force from time to time.
+        </Text>
+        <Text>I hereby agree to pay Rs 5000/- as membership fees.</Text>
+      </Flex>
+
+      <Spacer h="3rem" />
+
+      <Flex align="baseline" gap="0.5rem">
+        <Heading>Other Family Members</Heading>
+        <Text fontSize="xs">(Optional)</Text>
+      </Flex>
+      <Grid mt="2rem" gap="2rem" templateColumns={["1fr", "repeat(2, 1fr)"]}>
+        {[
+          { label: "Office Address Line 1" },
+          { label: "Office Address Line 2" },
+          { label: "Office Address Line 3" },
+          { label: "Pin Code" },
+        ].map(({ label }, i) => (
+          <FormControl key={i}>
+            <FormLabel fontSize="sm" fontWeight="light">
+              {label}
+            </FormLabel>
+            <Input py="30px" borderRadius="5px" type="text" />
+          </FormControl>
+        ))}
+      </Grid>
+
+      <Spacer h="10rem" />
     </Layout>
   );
 };
