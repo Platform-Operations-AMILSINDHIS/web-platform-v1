@@ -21,10 +21,20 @@ import {
   useSteps,
   Button,
 } from "@chakra-ui/react";
+
+import {
+  Formik,
+  FormikHelpers,
+  FormikProps,
+  Form,
+  Field,
+  FieldProps,
+} from "formik";
+
 import { FaHandHoldingHeart, FaUserFriends } from "react-icons/fa";
+import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 
 import Layout from "~/components/layout";
-import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 
 const steps = [
   {
@@ -48,6 +58,54 @@ const steps = [
     description: "Proposer Details",
   },
 ];
+
+interface KhudabadiAmilPanchayatMembershipFormValues {
+  personalInfo: {
+    firstName: string;
+    middleName: string;
+    lastName: string;
+    occupation: string;
+    dateOfBirth: Date;
+    mobile: string;
+    email: string;
+    maidenSurname: string;
+    maidenName: string;
+    fathersName: string;
+    mothersName: string;
+  };
+  addressInfo: {
+    residentialAddress: {
+      addressLine1: string;
+      addressLine2: string;
+      addressLine3: string;
+      pinCode: string;
+    };
+    officeAddress: {
+      addressLine1: string;
+      addressLine2: string;
+      addressLine3: string;
+      pinCode: string;
+    };
+  };
+  membershipInfo: {
+    membershipType: "patron" | "life-member";
+  };
+  familyMembers?: {
+    memberName: string;
+    relationship: string;
+    occupation: string;
+    age: number;
+  }[];
+  proposerInfo: {
+    firstName: string;
+    lastName: string;
+    phone: string;
+    // TODO: get this clarified (ref: end of page at https://amilsindhis.org/membership/khudabadi-amil-panchayat)
+    firstName2: string;
+    lastName2: string;
+    phone2: string;
+  };
+}
 
 const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
   const { activeStep, setActiveStep } = useSteps({
