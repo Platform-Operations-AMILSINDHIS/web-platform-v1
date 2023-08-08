@@ -21,6 +21,8 @@ import { LabelledInput } from "./index";
 
 import type { PersonalInfo, FamilyMember } from "~/types/forms/kap-membership";
 
+import { Formik, FormikHelpers, FormikProps, Form } from "formik";
+
 const KhudabadiAmilPanchayatMembershipForm: React.FC<{
   activeStep: number;
 }> = ({ activeStep }) => {
@@ -33,8 +35,6 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC<{
 };
 
 const PersonalInformationSection = () => {
-  // const [personalInfo, setPersonalInfo] = useState<PersonalInfo>({});
-
   return (
     <>
       <Heading>Personal Information</Heading>
@@ -43,36 +43,69 @@ const PersonalInformationSection = () => {
         to fill all the fields and not miss out on any important details.
       </Text>
 
-      <Grid mt="2rem" gap="2rem" templateColumns={["1fr", "repeat(3, 1fr)"]}>
-        {[
-          { label: "First Name" },
-          { label: "Middle Name" },
-          { label: "Last Name" },
-          { label: "Occupation" },
-          { label: "Date of Birth", inputType: "date" },
-          { label: "Mobile Number" },
-          { label: "Email ID" },
-        ].map(({ label }, i) => (
-          // TODO: Replace with component which handles specialInputs too
-          <LabelledInput key={i} label={label} />
-        ))}
-      </Grid>
+      <Formik
+        // TODO: populate from global form state, in case user has
+        // come back to this section after pressing the "Previous" button
+        initialValues={{
+          firstName: "",
+          middleName: "",
+          lastName: "",
+          occupation: "",
+          dateOfBirth: new Date(),
+          mobile: "",
+          email: "",
+          maidenSurname: "",
+          maidenName: "",
+          fathersName: "",
+          mothersName: "",
+        }}
+        onSubmit={(values, actions) => {
+          console.log({ values, actions });
+          alert(JSON.stringify(values, null, 2));
+          actions.setSubmitting(false);
+        }}
+      >
+        <Form>
+          <Grid
+            mt="2rem"
+            gap="2rem"
+            templateColumns={["1fr", "repeat(3, 1fr)"]}
+          >
+            {[
+              { label: "First Name" },
+              { label: "Middle Name" },
+              { label: "Last Name" },
+              { label: "Occupation" },
+              { label: "Date of Birth", inputType: "date" },
+              { label: "Mobile Number" },
+              { label: "Email ID" },
+            ].map(({ label, inputType }, i) => (
+              // TODO: Replace with component which handles special inputTypes too
+              <LabelledInput key={i} label={label} type={inputType ?? "text"} />
+            ))}
+          </Grid>
 
-      <Grid mt="2rem" gap="2rem" templateColumns={["1fr", "repeat(3, 1fr)"]}>
-        {[
-          { label: "Maiden Surname" },
-          { label: "Maiden Name" },
-          { label: "Father's name" },
-          { label: "Mother's name" },
-        ].map(({ label }, i) => (
-          <FormControl key={i}>
-            <FormLabel fontSize="sm" fontWeight="light">
-              {label}
-            </FormLabel>
-            <Input py="30px" borderRadius="5px" type="text" />
-          </FormControl>
-        ))}
-      </Grid>
+          <Grid
+            mt="2rem"
+            gap="2rem"
+            templateColumns={["1fr", "repeat(3, 1fr)"]}
+          >
+            {[
+              { label: "Maiden Surname" },
+              { label: "Maiden Name" },
+              { label: "Father's name" },
+              { label: "Mother's name" },
+            ].map(({ label }, i) => (
+              <FormControl key={i}>
+                <FormLabel fontSize="sm" fontWeight="light">
+                  {label}
+                </FormLabel>
+                <Input py="30px" borderRadius="5px" type="text" />
+              </FormControl>
+            ))}
+          </Grid>
+        </Form>
+      </Formik>
     </>
   );
 };
