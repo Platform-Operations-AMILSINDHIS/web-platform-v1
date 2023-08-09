@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import {
   Heading,
   Text,
@@ -17,7 +17,12 @@ import {
 import { FaHandHoldingHeart, FaUserFriends } from "react-icons/fa";
 import { ArrowBackIcon, ArrowForwardIcon, CloseIcon } from "@chakra-ui/icons";
 
-import { LabelledInput, FormObserver, FormGlobalStateSetter } from "./index";
+import {
+  LabelledInput,
+  FormObserver,
+  FormGlobalStateSetter,
+  camelCase,
+} from "./index";
 
 import type {
   KAPMembershipFormValues,
@@ -79,7 +84,7 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC<{
   });
 
   useEffect(
-    () => console.log(JSON.stringify(formState.membershipInfo, null, 2)),
+    () => console.log(JSON.stringify(formState.familyMembers, null, 2)),
     [formState]
   );
 
@@ -113,7 +118,14 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC<{
         />
       )}
 
-      {activeStep === 4 && <FamilyMemberDetailsSection />}
+      {activeStep === 4 && (
+        <FamilyMemberDetailsSection
+          initialValues={formState.familyMembers ?? []}
+          stateSetter={(values: FamilyMember[]) =>
+            setFormState({ ...formState, familyMembers: values })
+          }
+        />
+      )}
 
       {activeStep === 5 && <ProposerDetailsSection />}
     </>
@@ -314,10 +326,15 @@ const MembershipDetailsSection: React.FC<{
   );
 };
 
-const FamilyMemberDetailsSection = () => {
+const FamilyMemberDetailsSection: React.FC<{
+  initialValues: FamilyMember[];
+  stateSetter: (values: FamilyMember[]) => void;
+}> = ({ initialValues, stateSetter }) => {
   // TODO: Use Formik FieldArray instead of this
-  const [familyMembers, setFamilyMembers] = useState<FamilyMember[]>([]);
-  useEffect(() => console.log({ familyMembers }), [familyMembers]);
+  const [familyMembers, setFamilyMembers] =
+    useState<FamilyMember[]>(initialValues);
+  // useEffect(() => console.log({ familyMembers }), [familyMembers]);
+  useEffect(() => stateSetter(familyMembers), [familyMembers, stateSetter]);
 
   return (
     <>
@@ -335,17 +352,26 @@ const FamilyMemberDetailsSection = () => {
             {[
               {
                 label: "Member Name",
+                initialValue: fm.memberName,
               },
-              { label: "Relationship" },
-              { label: "Occupation" },
-              { label: "Age" },
-            ].map(({ label }, i) => (
-              <FormControl key={i}>
-                <FormLabel fontSize="sm" fontWeight="light">
-                  {label}
-                </FormLabel>
-                <Input py="30px" borderRadius="5px" type="text" />
-              </FormControl>
+              { label: "Relationship", initialValue: fm.relationship },
+              { label: "Occupation", initialValue: fm.occupation },
+              { label: "Age", initialValue: fm.age },
+            ].map(({ label, initialValue }, j) => (
+              <LabelledInput
+                key={j}
+                label={label}
+                type="chakra-text"
+                defaultValue={initialValue as string}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  const newMembers = [...familyMembers];
+                  newMembers[i] = {
+                    ...newMembers[i],
+                    [camelCase(label)]: e.target.value ? e.target.value : "",
+                  };
+                  setFamilyMembers([...newMembers]);
+                }}
+              />
             ))}
             <IconButton
               my="auto"

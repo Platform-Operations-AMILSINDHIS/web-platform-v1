@@ -1,8 +1,8 @@
 export interface FamilyMember {
-  memberName: string;
-  relationship: string;
-  occupation: string;
-  age: number | null;
+  memberName?: string;
+  relationship?: string;
+  occupation?: string;
+  age?: number | null;
 }
 
 export interface PersonalInfo {

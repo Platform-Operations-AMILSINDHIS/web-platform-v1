@@ -1,10 +1,10 @@
-import { useEffect } from "react";
+import { ChangeEvent, ChangeEventHandler, useEffect } from "react";
 
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { Field, FieldProps, useField, useFormikContext } from "formik";
 import { DatePicker as ChakraDatePicker } from "@orange_digital/chakra-datepicker";
 
-const camelCase = (str: string) =>
+export const camelCase = (str: string) =>
   str
     .toLowerCase()
     .split(" ")
@@ -15,7 +15,9 @@ export const LabelledInput: React.FC<{
   name?: string;
   type?: string;
   validate?: () => string; // validation function returns error string
-}> = ({ label, name, type = "text", validate }) => (
+  onChange?: ChangeEventHandler<HTMLInputElement>;
+  defaultValue?: string;
+}> = ({ label, name, type = "text", validate, onChange, defaultValue }) => (
   <FormControl>
     <FormLabel fontSize="sm" fontWeight="light">
       {label}
@@ -28,6 +30,14 @@ export const LabelledInput: React.FC<{
         validate={validate ?? undefined}
         py="30px"
         borderRadius="5px"
+      />
+    ) : type === "chakra-text" ? (
+      <Input
+        name={name ?? camelCase(label)}
+        py="30px"
+        borderRadius="5px"
+        onChange={onChange ?? undefined}
+        defaultValue={defaultValue ?? undefined}
       />
     ) : type === "date" ? (
       // <DatePickerField label={label} name={name ?? camelCase(label)} />
