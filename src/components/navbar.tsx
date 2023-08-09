@@ -39,7 +39,7 @@ const navItems = [
     href: "/blog",
     dropdownItems: [
       { name: "Blog", href: "/blog" },
-      { name: "Matrimony", href: "/blog/matrimony" },
+      { name: "Matrimony", href: "/connecting/matrimony" },
       { name: "Relief", href: "/blog/relief" },
       { name: "Events", href: "/blog/events" },
       { name: "Global Networking", href: "/blog/global-networking" },
@@ -95,7 +95,6 @@ const NavbarItem: React.FC<{
     </Link>
   ) : (
     <>
-      {/* TODO: Implement Chakra Menu on hover for dropdown items */}
       <Menu isOpen={isOpen} gutter={0}>
         <MenuButton
           as={Flex}

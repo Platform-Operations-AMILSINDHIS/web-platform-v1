@@ -43,10 +43,6 @@ export interface ProposerInfo {
   firstName: string;
   lastName: string;
   mobileNumber: string;
-  // TODO: get this clarified (ref: end of page at https://amilsindhis.org/membership/khudabadi-amil-panchayat)
-  // firstName2: string;
-  // lastName2: string;
-  // phone2: string;
 }
 
 export interface KAPMembershipFormValues {
