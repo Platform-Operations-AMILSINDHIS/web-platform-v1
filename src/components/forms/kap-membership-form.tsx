@@ -84,7 +84,7 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC<{
   });
 
   useEffect(
-    () => console.log(JSON.stringify(formState.familyMembers, null, 2)),
+    () => console.log(JSON.stringify(formState.proposerInfo, null, 2)),
     [formState]
   );
 
@@ -127,7 +127,14 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC<{
         />
       )}
 
-      {activeStep === 5 && <ProposerDetailsSection />}
+      {activeStep === 5 && (
+        <ProposerDetailsSection
+          initialValues={formState.proposerInfo}
+          stateSetter={(values: ProposerInfo) =>
+            setFormState({ ...formState, proposerInfo: values })
+          }
+        />
+      )}
     </>
   );
 };
@@ -409,10 +416,39 @@ const FamilyMemberDetailsSection: React.FC<{
   );
 };
 
-const ProposerDetailsSection = () => {
+const ProposerDetailsSection: React.FC<{
+  initialValues: ProposerInfo;
+  stateSetter: (values: ProposerInfo) => void;
+}> = ({ initialValues, stateSetter }) => {
   return (
     <>
-      <div>proposer details</div>
+      <Heading>Proposer Details</Heading>
+
+      <Formik
+        initialValues={initialValues}
+        onSubmit={(values, actions) => {
+          console.log({ values, actions });
+          alert(JSON.stringify(values, null, 2));
+          actions.setSubmitting(false);
+        }}
+      >
+        <Form>
+          <FormGlobalStateSetter stateSetter={stateSetter} />
+          <Grid
+            mt="2rem"
+            gap="2rem"
+            templateColumns={["1fr", "repeat(3, 1fr)"]}
+          >
+            {[
+              { label: "First Name" },
+              { label: "Last Name" },
+              { label: "Mobile Number" },
+            ].map(({ label }, i) => (
+              <LabelledInput key={i} label={label} />
+            ))}
+          </Grid>
+        </Form>
+      </Formik>
     </>
   );
 };
