@@ -51,7 +51,7 @@ import { FaHandHoldingHeart, FaUserFriends } from "react-icons/fa";
 import { ArrowBackIcon, ArrowForwardIcon, CloseIcon } from "@chakra-ui/icons";
 
 import Layout from "~/components/layout";
-import KhudabadiAmilPanchayatMembershipForm from "~/components/forms/kap-membership-form";
+import MatrimonyForm from "~/components/forms/matrimony-form";
 
 const steps = [
   {
@@ -109,7 +109,7 @@ const MatrimonyFormPage: NextPage = () => {
 
       <Spacer h="2rem" />
 
-      <KhudabadiAmilPanchayatMembershipForm activeStep={activeStep} />
+      <MatrimonyForm activeStep={activeStep} />
 
       <Spacer h="2rem" />
 

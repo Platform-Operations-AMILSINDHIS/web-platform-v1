@@ -37,9 +37,13 @@ import type {
 
 import { Formik, Form } from "formik";
 
+import { api } from "~/utils/api";
+
 const KhudabadiAmilPanchayatMembershipForm: React.FC<{
   activeStep: number;
-}> = ({ activeStep }) => {
+  isSubmitted: boolean;
+}> = ({ activeStep, isSubmitted }) => {
+  const formMut = api.form.kapMembership.useMutation();
   // TODO: Setup global formState for all the Formik forms to mutate onSubmit, maybe use Jotai for this
 
   const [formState, setFormState] = useState<KAPMembershipFormValues>({
@@ -82,10 +86,18 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC<{
     },
   });
 
-  useEffect(
-    () => console.log(JSON.stringify(formState.proposerInfo, null, 2)),
-    [formState]
-  );
+  // Logger
+  // useEffect(
+  //   () => console.log(JSON.stringify(formState.proposerInfo, null, 2)),
+  //   [formState]
+  // );
+
+  useEffect(() => {
+    if (isSubmitted && formMut.status === "idle") {
+      console.log(JSON.stringify(formState.proposerInfo, null, 2));
+      formMut.mutate({ formData: formState });
+    }
+  }, [isSubmitted, formState, formMut]);
 
   return (
     <>

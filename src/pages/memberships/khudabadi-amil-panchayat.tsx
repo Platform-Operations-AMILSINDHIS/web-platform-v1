@@ -64,6 +64,8 @@ const steps = [
 ];
 
 const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   const { activeStep, setActiveStep } = useSteps({
     index: 1,
     count: steps.length,
@@ -96,7 +98,10 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
 
       <Spacer h="2rem" />
 
-      <KhudabadiAmilPanchayatMembershipForm activeStep={activeStep} />
+      <KhudabadiAmilPanchayatMembershipForm
+        activeStep={activeStep}
+        isSubmitted={isSubmitted}
+      />
 
       <Spacer h="2rem" />
 
@@ -120,7 +125,14 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
             activeStep !== steps.length ? <ArrowForwardIcon /> : undefined
           }
           size="lg"
-          onClick={() => setActiveStep(activeStep + 1)}
+          onClick={
+            activeStep === steps.length
+              ? () => {
+                  console.log("submit here");
+                  setIsSubmitted(true);
+                }
+              : () => setActiveStep(activeStep + 1)
+          }
         >
           {/* Next */}
           {activeStep === steps.length ? "Submit" : "Next"}
