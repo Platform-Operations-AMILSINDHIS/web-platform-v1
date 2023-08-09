@@ -1,5 +1,7 @@
+import { useEffect } from "react";
+
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
-import { Field, FieldProps, useField } from "formik";
+import { Field, FieldProps, useField, useFormikContext } from "formik";
 import { DatePicker as ChakraDatePicker } from "@orange_digital/chakra-datepicker";
 
 const camelCase = (str: string) =>
@@ -29,12 +31,39 @@ export const LabelledInput: React.FC<{
       />
     ) : type === "date" ? (
       // <DatePickerField label={label} name={name ?? camelCase(label)} />
+      // TODO: Make/Add date picker component which looks like other Chakra UI + works with Formik
       <div>date picker</div>
     ) : (
       <></>
     )}
   </FormControl>
 );
+
+export const FormObserver: React.FC = () => {
+  const { values } = useFormikContext();
+
+  useEffect(() => {
+    console.log("FormObserver::values", values);
+  }, [values]);
+
+  return null;
+};
+
+// TODO: Turn this into a hook which accepts a type and a stateSetter
+// which takes in that type and sets it to global formState
+export const FormGlobalStateSetter: React.FC<{
+  /* eslint-disable  @typescript-eslint/no-explicit-any */
+  stateSetter: (...args: any[]) => any;
+}> = ({ stateSetter }) => {
+  const { values } = useFormikContext();
+
+  useEffect(() => {
+    // console.log("FormObserver::values", values);
+    stateSetter(values);
+  }, [values]);
+
+  return null;
+};
 
 // const DatePickerField = ({ ...props }) => {
 //   const [field, , { setValue }] = useField(props);

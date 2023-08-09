@@ -11,8 +11,8 @@ export interface PersonalInfo {
   lastName: string;
   occupation: string;
   dateOfBirth: Date;
-  mobile: string;
-  email: string;
+  mobileNumber: string;
+  emailId: string;
   maidenSurname: string;
   maidenName: string;
   fathersName: string;
@@ -36,17 +36,17 @@ export interface AddressInfo {
 }
 
 export interface MembershipInfo {
-  membershipType: "patron" | "life-member";
+  membershipType: "patron" | "life-member" | null;
 }
 
 export interface ProposerInfo {
   firstName: string;
   lastName: string;
-  phone: string;
+  mobileNumber: string;
   // TODO: get this clarified (ref: end of page at https://amilsindhis.org/membership/khudabadi-amil-panchayat)
-  firstName2: string;
-  lastName2: string;
-  phone2: string;
+  // firstName2: string;
+  // lastName2: string;
+  // phone2: string;
 }
 
 export interface KAPMembershipFormValues {

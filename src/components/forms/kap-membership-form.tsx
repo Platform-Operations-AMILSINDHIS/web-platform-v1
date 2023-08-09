@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Heading,
   Text,
@@ -17,24 +17,113 @@ import {
 import { FaHandHoldingHeart, FaUserFriends } from "react-icons/fa";
 import { ArrowBackIcon, ArrowForwardIcon, CloseIcon } from "@chakra-ui/icons";
 
-import { LabelledInput } from "./index";
+import { LabelledInput, FormObserver, FormGlobalStateSetter } from "./index";
 
-import type { PersonalInfo, FamilyMember } from "~/types/forms/kap-membership";
+import type {
+  KAPMembershipFormValues,
+  PersonalInfo,
+  FamilyMember,
+  AddressInfo,
+  MembershipInfo,
+  ProposerInfo,
+} from "~/types/forms/kap-membership";
 
-import { Formik, FormikHelpers, FormikProps, Form } from "formik";
+import { Formik, Form } from "formik";
 
 const KhudabadiAmilPanchayatMembershipForm: React.FC<{
   activeStep: number;
 }> = ({ activeStep }) => {
+  // TODO: Setup global formState for all the Formik forms to mutate onSubmit, maybe use Jotai for this
+
+  const [formState, setFormState] = useState<KAPMembershipFormValues>({
+    personalInfo: {
+      firstName: "",
+      middleName: "",
+      lastName: "",
+      occupation: "",
+      dateOfBirth: new Date(),
+      mobileNumber: "",
+      emailId: "",
+      maidenSurname: "",
+      maidenName: "",
+      fathersName: "",
+      mothersName: "",
+    },
+    addressInfo: {
+      residentialAddress: {
+        addressLine1: "",
+        addressLine2: "",
+        addressLine3: "",
+        pinCode: "",
+      },
+    },
+    membershipInfo: {
+      membershipType: null,
+    },
+    familyMembers: [
+      {
+        memberName: "",
+        relationship: "",
+        occupation: "",
+        age: null,
+      },
+    ],
+    proposerInfo: {
+      firstName: "",
+      lastName: "",
+      mobileNumber: "",
+      // firstName2: "",
+      // lastName2: "",
+      // phone2: "",
+    },
+  });
+
+  useEffect(
+    () => console.log(JSON.stringify(formState.membershipInfo, null, 2)),
+    [formState]
+  );
+
   return (
+    // TODO: setup initialValues attribute for all form sections from global formState
     <>
-      {/* <div>{activeStep}</div> */}
-      <PersonalInformationSection />
+      {activeStep === 1 && (
+        <PersonalInformationSection
+          initialValues={formState.personalInfo}
+          stateSetter={(values: PersonalInfo) =>
+            setFormState({ ...formState, personalInfo: values })
+          }
+        />
+      )}
+
+      {activeStep === 2 && (
+        <AddressDetailsSection
+          initialValues={formState.addressInfo}
+          stateSetter={(values: AddressInfo) =>
+            setFormState({ ...formState, addressInfo: values })
+          }
+        />
+      )}
+
+      {activeStep === 3 && (
+        <MembershipDetailsSection
+          initialValues={formState.membershipInfo}
+          stateSetter={(values: MembershipInfo) =>
+            setFormState({ ...formState, membershipInfo: values })
+          }
+        />
+      )}
+
+      {activeStep === 4 && <FamilyMemberDetailsSection />}
+
+      {activeStep === 5 && <ProposerDetailsSection />}
     </>
   );
 };
 
-const PersonalInformationSection = () => {
+const PersonalInformationSection: React.FC<{
+  initialValues: PersonalInfo;
+  stateSetter: (values: PersonalInfo) => void;
+}> = ({ initialValues, stateSetter }) => {
   return (
     <>
       <Heading>Personal Information</Heading>
@@ -44,21 +133,7 @@ const PersonalInformationSection = () => {
       </Text>
 
       <Formik
-        // TODO: populate from global form state, in case user has
-        // come back to this section after pressing the "Previous" button
-        initialValues={{
-          firstName: "",
-          middleName: "",
-          lastName: "",
-          occupation: "",
-          dateOfBirth: new Date(),
-          mobile: "",
-          email: "",
-          maidenSurname: "",
-          maidenName: "",
-          fathersName: "",
-          mothersName: "",
-        }}
+        initialValues={initialValues}
         onSubmit={(values, actions) => {
           console.log({ values, actions });
           alert(JSON.stringify(values, null, 2));
@@ -66,6 +141,7 @@ const PersonalInformationSection = () => {
         }}
       >
         <Form>
+          <FormGlobalStateSetter stateSetter={stateSetter} />
           <Grid
             mt="2rem"
             gap="2rem"
@@ -80,7 +156,6 @@ const PersonalInformationSection = () => {
               { label: "Mobile Number" },
               { label: "Email ID" },
             ].map(({ label, inputType }, i) => (
-              // TODO: Replace with component which handles special inputTypes too
               <LabelledInput key={i} label={label} type={inputType ?? "text"} />
             ))}
           </Grid>
@@ -93,15 +168,10 @@ const PersonalInformationSection = () => {
             {[
               { label: "Maiden Surname" },
               { label: "Maiden Name" },
-              { label: "Father's name" },
-              { label: "Mother's name" },
-            ].map(({ label }, i) => (
-              <FormControl key={i}>
-                <FormLabel fontSize="sm" fontWeight="light">
-                  {label}
-                </FormLabel>
-                <Input py="30px" borderRadius="5px" type="text" />
-              </FormControl>
+              { label: "Father's name", name: "fathersName" },
+              { label: "Mother's name", name: "mothersName" },
+            ].map(({ label, name }, i) => (
+              <LabelledInput key={i} label={label} name={name ?? label} />
             ))}
           </Grid>
         </Form>
@@ -110,52 +180,86 @@ const PersonalInformationSection = () => {
   );
 };
 
-const AddressDetailsSection = () => {
+const AddressDetailsSection: React.FC<{
+  initialValues: AddressInfo;
+  stateSetter: (values: AddressInfo) => void;
+}> = ({ initialValues, stateSetter }) => {
   return (
     <>
       <Heading>Residential Address</Heading>
-      <Grid mt="2rem" gap="2rem" templateColumns={["1fr", "repeat(2, 1fr)"]}>
-        {[
-          { label: "Address Line 1" },
-          { label: "Address Line 2" },
-          { label: "Address Line 3" },
-          { label: "Pin Code" },
-        ].map(({ label }, i) => (
-          <FormControl key={i}>
-            <FormLabel fontSize="sm" fontWeight="light">
-              {label}
-            </FormLabel>
-            <Input py="30px" borderRadius="5px" type="text" />
-          </FormControl>
-        ))}
-      </Grid>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={(values, actions) => {
+          console.log({ values, actions });
+          alert(JSON.stringify(values, null, 2));
+          actions.setSubmitting(false);
+        }}
+      >
+        <Form>
+          <FormGlobalStateSetter stateSetter={stateSetter} />
+          <Grid
+            mt="2rem"
+            gap="2rem"
+            templateColumns={["1fr", "repeat(2, 1fr)"]}
+          >
+            {[
+              {
+                label: "Address Line 1",
+                name: "residentialAddress.addressLine1",
+              },
+              {
+                label: "Address Line 2",
+                name: "residentialAddress.addressLine2",
+              },
+              {
+                label: "Address Line 3",
+                name: "residentialAddress.addressLine3",
+              },
+              { label: "Pin Code", name: "residentialAddress.pinCode" },
+            ].map(({ label, name }, i) => (
+              <LabelledInput key={i} label={label} name={name ?? label} />
+            ))}
+          </Grid>
 
-      <Spacer h="3rem" />
+          <Spacer h="3rem" />
 
-      <Flex align="baseline" gap="0.5rem">
-        <Heading>Office Address</Heading>
-        <Text fontSize="xs">(Optional)</Text>
-      </Flex>
-      <Grid mt="2rem" gap="2rem" templateColumns={["1fr", "repeat(2, 1fr)"]}>
-        {[
-          { label: "Office Address Line 1" },
-          { label: "Office Address Line 2" },
-          { label: "Office Address Line 3" },
-          { label: "Pin Code" },
-        ].map(({ label }, i) => (
-          <FormControl key={i}>
-            <FormLabel fontSize="sm" fontWeight="light">
-              {label}
-            </FormLabel>
-            <Input py="30px" borderRadius="5px" type="text" />
-          </FormControl>
-        ))}
-      </Grid>
+          <Flex align="baseline" gap="0.5rem">
+            <Heading>Office Address</Heading>
+            <Text fontSize="xs">(Optional)</Text>
+          </Flex>
+          <Grid
+            mt="2rem"
+            gap="2rem"
+            templateColumns={["1fr", "repeat(2, 1fr)"]}
+          >
+            {[
+              {
+                label: "Office Address Line 1",
+                name: "officeAddress.addressLine1",
+              },
+              {
+                label: "Office Address Line 2",
+                name: "officeAddress.addressLine2",
+              },
+              {
+                label: "Office Address Line 3",
+                name: "officeAddress.addressLine3",
+              },
+              { label: "Pin Code", name: "officeAddress.pinCode" },
+            ].map(({ label, name }, i) => (
+              <LabelledInput key={i} label={label} name={name ?? label} />
+            ))}
+          </Grid>
+        </Form>
+      </Formik>
     </>
   );
 };
 
-const MembershipDetailsSection = () => {
+const MembershipDetailsSection: React.FC<{
+  initialValues: MembershipInfo;
+  stateSetter: (values: MembershipInfo) => void;
+}> = ({ initialValues, stateSetter }) => {
   return (
     <>
       <Heading>Type of Membership</Heading>
@@ -170,9 +274,18 @@ const MembershipDetailsSection = () => {
             py="18px"
             gap="1rem"
             align="center"
-            border="1px solid #CBD5E0"
+            border={
+              initialValues.membershipType === label.toLowerCase()
+                ? "1px solid #3182CE"
+                : "1px solid #CBD5E0"
+            }
             borderRadius="5px"
             cursor="pointer"
+            onClick={() =>
+              stateSetter({
+                membershipType: label === "Patron" ? "patron" : "life-member",
+              })
+            }
           >
             <Icon size="40px" />
             <Text fontSize="lg" fontWeight="normal">
@@ -202,6 +315,7 @@ const MembershipDetailsSection = () => {
 };
 
 const FamilyMemberDetailsSection = () => {
+  // TODO: Use Formik FieldArray instead of this
   const [familyMembers, setFamilyMembers] = useState<FamilyMember[]>([]);
   useEffect(() => console.log({ familyMembers }), [familyMembers]);
 
