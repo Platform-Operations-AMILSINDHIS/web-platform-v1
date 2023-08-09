@@ -38,7 +38,7 @@ import { FaHandHoldingHeart, FaUserFriends } from "react-icons/fa";
 import { ArrowBackIcon, ArrowForwardIcon, CloseIcon } from "@chakra-ui/icons";
 
 import Layout from "~/components/layout";
-import KhudabadiAmilPanchayatMembershipForm from "~/components/forms/kap-membership-form";
+import YoungAmilCircleMembershipForm from "~/components/forms/yac-membership-form";
 
 const steps = [
   {
@@ -51,14 +51,10 @@ const steps = [
   },
   {
     title: "Step 3",
-    description: "Membership Details",
-  },
-  {
-    title: "Step 4",
     description: "Family Members",
   },
   {
-    title: "Step 5",
+    title: "Step 4",
     description: "Proposer Details",
   },
 ];
@@ -96,7 +92,7 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
 
       <Spacer h="2rem" />
 
-      <KhudabadiAmilPanchayatMembershipForm activeStep={activeStep} />
+      <YoungAmilCircleMembershipForm activeStep={activeStep} />
 
       <Spacer h="2rem" />
 

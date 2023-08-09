@@ -13,6 +13,8 @@ import {
   Spacer,
   IconButton,
   Box,
+  UnorderedList,
+  ListItem,
 } from "@chakra-ui/react";
 import { FaHandHoldingHeart, FaUserFriends } from "react-icons/fa";
 import { ArrowBackIcon, ArrowForwardIcon, CloseIcon } from "@chakra-ui/icons";
@@ -29,9 +31,9 @@ import type {
   PersonalInfo,
   FamilyMember,
   AddressInfo,
-  MembershipInfo,
+  KAPMembershipInfo,
   ProposerInfo,
-} from "~/types/forms/kap-membership";
+} from "~/types/forms/membership";
 
 import { Formik, Form } from "formik";
 
@@ -77,9 +79,6 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC<{
       firstName: "",
       lastName: "",
       mobileNumber: "",
-      // firstName2: "",
-      // lastName2: "",
-      // phone2: "",
     },
   });
 
@@ -89,7 +88,6 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC<{
   );
 
   return (
-    // TODO: setup initialValues attribute for all form sections from global formState
     <>
       {activeStep === 1 && (
         <PersonalInformationSection
@@ -112,7 +110,7 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC<{
       {activeStep === 3 && (
         <MembershipDetailsSection
           initialValues={formState.membershipInfo}
-          stateSetter={(values: MembershipInfo) =>
+          stateSetter={(values: KAPMembershipInfo) =>
             setFormState({ ...formState, membershipInfo: values })
           }
         />
@@ -139,7 +137,7 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC<{
   );
 };
 
-const PersonalInformationSection: React.FC<{
+export const PersonalInformationSection: React.FC<{
   initialValues: PersonalInfo;
   stateSetter: (values: PersonalInfo) => void;
 }> = ({ initialValues, stateSetter }) => {
@@ -185,8 +183,8 @@ const PersonalInformationSection: React.FC<{
             templateColumns={["1fr", "repeat(3, 1fr)"]}
           >
             {[
-              { label: "Maiden Surname" },
-              { label: "Maiden Name" },
+              { label: "Maiden Surname", name: "maidenSurname" },
+              { label: "Maiden Name", name: "maidenName" },
               { label: "Father's name", name: "fathersName" },
               { label: "Mother's name", name: "mothersName" },
             ].map(({ label, name }, i) => (
@@ -199,7 +197,7 @@ const PersonalInformationSection: React.FC<{
   );
 };
 
-const AddressDetailsSection: React.FC<{
+export const AddressDetailsSection: React.FC<{
   initialValues: AddressInfo;
   stateSetter: (values: AddressInfo) => void;
 }> = ({ initialValues, stateSetter }) => {
@@ -276,8 +274,8 @@ const AddressDetailsSection: React.FC<{
 };
 
 const MembershipDetailsSection: React.FC<{
-  initialValues: MembershipInfo;
-  stateSetter: (values: MembershipInfo) => void;
+  initialValues: KAPMembershipInfo;
+  stateSetter: (values: KAPMembershipInfo) => void;
 }> = ({ initialValues, stateSetter }) => {
   return (
     <>
@@ -333,7 +331,7 @@ const MembershipDetailsSection: React.FC<{
   );
 };
 
-const FamilyMemberDetailsSection: React.FC<{
+export const FamilyMemberDetailsSection: React.FC<{
   initialValues: FamilyMember[];
   stateSetter: (values: FamilyMember[]) => void;
 }> = ({ initialValues, stateSetter }) => {
@@ -416,7 +414,7 @@ const FamilyMemberDetailsSection: React.FC<{
   );
 };
 
-const ProposerDetailsSection: React.FC<{
+export const ProposerDetailsSection: React.FC<{
   initialValues: ProposerInfo;
   stateSetter: (values: ProposerInfo) => void;
 }> = ({ initialValues, stateSetter }) => {
@@ -449,6 +447,33 @@ const ProposerDetailsSection: React.FC<{
           </Grid>
         </Form>
       </Formik>
+
+      <Spacer h="2rem" />
+
+      <Heading size="md">Proposer Certification</Heading>
+      <Flex flexDir="column" mt="1rem" gap="0.75rem" maxW="50%">
+        <Text>
+          By submitting this form, I certify that the applicant is a Khudabadi
+          Amil and is eligible for membership of the Khudabadi Amil Panchayat of
+          Bombay.
+        </Text>
+      </Flex>
+
+      <Spacer h="2rem" />
+
+      <Heading size="lg">Declaration</Heading>
+      <UnorderedList mt="1rem" spacing="0.75rem" maxW="60%">
+        <ListItem>
+          The Applicant hereby declares that: I am a Khudabadi Amil and request
+          the Committee to admit me as Patron / Life-Member of The Khudabadi
+          Amil Panchayat of Bombay.
+        </ListItem>
+        <ListItem>
+          I agree to abide by the Constitution and rules of the Khudabadi Amil
+          Panchayat of Bombay in force from time to time.
+        </ListItem>
+        <ListItem>I agree to pay Rs 1000/- as membership fees.</ListItem>
+      </UnorderedList>
     </>
   );
 };

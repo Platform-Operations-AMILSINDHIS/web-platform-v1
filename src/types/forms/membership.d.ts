@@ -35,7 +35,7 @@ export interface AddressInfo {
   };
 }
 
-export interface MembershipInfo {
+export interface KAPMembershipInfo {
   membershipType: "patron" | "life-member" | null;
 }
 
@@ -52,7 +52,14 @@ export interface ProposerInfo {
 export interface KAPMembershipFormValues {
   personalInfo: PersonalInfo;
   addressInfo: AddressInfo;
-  membershipInfo: MembershipInfo;
+  membershipInfo: KAPMembershipInfo;
+  familyMembers?: FamilyMember[];
+  proposerInfo: ProposerInfo;
+}
+
+export interface YACMembershipFormValues {
+  personalInfo: PersonalInfo;
+  addressInfo: AddressInfo;
   familyMembers?: FamilyMember[];
   proposerInfo: ProposerInfo;
 }
