@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRouter } from "next/router";
 import { Link } from "@chakra-ui/next-js";
 
 import {
@@ -10,9 +10,19 @@ import {
   useDisclosure,
   Flex,
   Text,
+  MenuItem,
+  Menu,
+  MenuButton,
+  MenuList,
 } from "@chakra-ui/react";
 
-import { FaChevronDown, FaTwitter, FaLinkedin, FaBars } from "react-icons/fa";
+import {
+  FaChevronDown,
+  FaTwitter,
+  FaLinkedin,
+  FaBars,
+  FaChevronUp,
+} from "react-icons/fa";
 
 const navItems = [
   {
@@ -28,6 +38,7 @@ const navItems = [
     name: "Connecting Amils",
     href: "/blog",
     dropdownItems: [
+      { name: "Blog", href: "/blog" },
       { name: "Matrimony", href: "/blog/matrimony" },
       { name: "Relief", href: "/blog/relief" },
       { name: "Events", href: "/blog/events" },
@@ -47,6 +58,13 @@ const navItems = [
   {
     name: "Memberships",
     href: "/memberships",
+    dropdownItems: [
+      {
+        name: "Khudabadi Amil Panchayat",
+        href: "/memberships/khudabadi-amil-panchayat",
+      },
+      { name: "Young Amil Circle", href: "/memberships/young-amil-circle" },
+    ],
   },
 ];
 
@@ -54,8 +72,12 @@ const NavbarItem: React.FC<{
   name: string;
   href: string;
   dropdownItems?: { name: string; href: string }[];
-}> = ({ name, href, dropdownItems }) => {
-  return (
+  isActive?: boolean;
+}> = ({ name, href, dropdownItems, isActive }) => {
+  // Only relevant for navItems with dropdownItems
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  return !dropdownItems ? (
     <Link href={href} _hover={{ textDecor: "none" }}>
       <Flex
         align="center"
@@ -63,18 +85,57 @@ const NavbarItem: React.FC<{
         px="8px"
         py="4px"
         transition="all 0.3s ease-out"
+        bgColor={isActive ? "#04EFAF" : "transparent"}
         _hover={{ bg: "#04EFAF" }}
       >
-        <Text mr={dropdownItems ? "8px" : "0px"}>{name}</Text>
-        {/* TODO: Implement Chakra Menu on hover for dropdown items */}
-        {dropdownItems && <FaChevronDown size="15px" />}
+        <Text userSelect="none" mr={dropdownItems ? "8px" : "0px"}>
+          {name}
+        </Text>
       </Flex>
     </Link>
+  ) : (
+    <>
+      {/* TODO: Implement Chakra Menu on hover for dropdown items */}
+      <Menu isOpen={isOpen} gutter={0}>
+        <MenuButton
+          as={Flex}
+          borderRadius="5px"
+          px="8px"
+          py="4px"
+          transition="all 0.3s ease-out"
+          bgColor={isActive ? "#04EFAF" : "transparent"}
+          _hover={{ bg: "#04EFAF" }}
+          cursor="pointer"
+          onMouseEnter={onOpen}
+          onMouseLeave={onClose}
+        >
+          <Flex align="center">
+            <Text userSelect="none" mr={dropdownItems ? "8px" : "0px"}>
+              {name}
+            </Text>
+            {isOpen ? (
+              <FaChevronUp size="15px" />
+            ) : (
+              <FaChevronDown size="15px" />
+            )}
+          </Flex>
+        </MenuButton>
+
+        <MenuList onMouseEnter={onOpen} onMouseLeave={onClose}>
+          {dropdownItems.map(({ name, href }, i) => (
+            <Link key={i} href={href} _hover={{ textDecor: "none" }}>
+              <MenuItem>{name}</MenuItem>
+            </Link>
+          ))}
+        </MenuList>
+      </Menu>
+    </>
   );
 };
 
 const Navbar: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const router = useRouter();
 
   return (
     <>
@@ -86,7 +147,15 @@ const Navbar: React.FC = () => {
         justify="space-around"
       >
         {navItems.map((item, i) => (
-          <NavbarItem key={i} {...item} />
+          <NavbarItem
+            key={i}
+            {...item}
+            isActive={
+              router.pathname === item.href ||
+              (item.dropdownItems &&
+                item.dropdownItems.some((i) => i.href === router.pathname))
+            }
+          />
         ))}
 
         {/* Social Icons */}
