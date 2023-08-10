@@ -1,10 +1,145 @@
+import { Link } from "@chakra-ui/next-js";
+import { Box, Button, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
 import type { NextPage } from "next";
+import { FaArrowCircleRight } from "react-icons/fa";
 import Layout from "~/components/layout";
+
+import { eudoxus } from "~/utils/fonts";
 
 const HomePage: NextPage = () => {
   return (
-    <Layout title="Home">
-      <div>hi, this is the index page</div>
+    <Layout title="Home" maxW={false}>
+      <Box maxW="1280px" mx="auto" px="2rem">
+        {/* TODO: Rewrite in Chakra */}
+        <div className="mx-auto max-w-screen-lg text-center text-[#1F2937]">
+          {/* Hero */}
+          <div
+            className={`${eudoxus.variable} mt-16 font-heading text-3xl font-bold leading-normal md:text-7xl`}
+          >
+            Preserving sindhi culture,
+            <br />
+            <span className="text-[#0079FF]">language</span> & history{" "}
+            <span className="underline decoration-[#FFB84C] decoration-8">
+              since 1952
+            </span>
+          </div>
+          <div className="mx-auto mt-4 max-w-3xl text-lg">
+            The Khudabadi Amil Panchayat of Bombay, is a registered
+            Non&mdash;Profit Charitable Trust that aims to provide assistance to
+            underprivileged Sindhis displaced from Sindh and to bring the Sindhi
+            Amil community together.
+          </div>
+        </div>
+
+        <Spacer h="2.5rem" />
+
+        {/* Call to action buttons */}
+        <Flex w="100%" justify="center">
+          <Flex gap="1rem">
+            <Link href="/memberships/khudabadi-amil-panchayat">
+              <Button
+                px="3rem"
+                py="2rem"
+                colorScheme="blue"
+                bgColor="#0079FF"
+                _hover={{ bgColor: "#0068db" }}
+                border="1px solid #0079FF"
+                boxShadow="0px 4px 0px 0px rgba(0, 0, 0, 0.19);"
+              >
+                Membership
+              </Button>
+            </Link>
+            <Link href="/donations">
+              <Button
+                px="3rem"
+                py="2rem"
+                bgColor="#FFFFFF"
+                border="1px solid rgba(31, 41, 55, 0.45);"
+                boxShadow="0px 4px 0px 0px rgba(0, 0, 0, 0.19);"
+              >
+                Donate now
+              </Button>
+            </Link>
+          </Flex>
+        </Flex>
+
+        <Spacer h="12rem" />
+
+        {/* Sponsors */}
+        <Flex w="100%" justify="space-between">
+          {[
+            {
+              image: "/images/sponsors/amplitude.png",
+              href: "",
+            },
+            {
+              image: "/images/sponsors/bloomberg.png",
+              href: "",
+            },
+            {
+              image: "/images/sponsors/evernote.png",
+              href: "",
+            },
+            {
+              image: "/images/sponsors/dribbble.png",
+              href: "",
+            },
+          ].map(({ image, href }, i) => (
+            <Link key={i} href={href}>
+              <img alt="" src={image} />
+            </Link>
+          ))}
+        </Flex>
+      </Box>
+
+      <Spacer h="5rem" />
+
+      <Flex
+        py="7rem"
+        w="100vw"
+        background="linear-gradient(180deg, #0079FF 47.71%, #FFC01F 100%)"
+        justify="center"
+        align="center"
+      >
+        <Flex>
+          <Flex>
+            <img
+              alt=""
+              src="/images/backgrounds/what-are-we-illustration.png"
+            />
+          </Flex>
+
+          <Flex flexDir="column" maxW="600px">
+            <Heading color="white" fontWeight="bold" fontSize="7xl">
+              What are <span style={{ color: "#FFCF54" }}>we&nbsp;?</span>
+            </Heading>
+            <Text
+              mt="0.5rem"
+              color="white"
+              maxW="100%"
+              fontSize="lg"
+              lineHeight="30px"
+            >
+              We the Khudabadi Amil Panchayat offer a range of services. Joining
+              our community is now easier than ever with our simple and
+              convenient online membership process. As a member, you gain access
+              to various benefits and opportunities to connect with fellow
+              Amils.
+            </Text>
+            <Link href="/blog">
+              <Button
+                rightIcon={<FaArrowCircleRight />}
+                h="3rem"
+                mt="2rem"
+                w="40%"
+                colorScheme="yellow"
+              >
+                Connecting Amils
+              </Button>
+            </Link>
+          </Flex>
+        </Flex>
+      </Flex>
     </Layout>
   );
 };

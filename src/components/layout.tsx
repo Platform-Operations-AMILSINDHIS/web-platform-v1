@@ -6,7 +6,8 @@ import { poppins } from "../utils/fonts";
 const Layout: React.FC<{
   title?: string;
   children: React.ReactNode;
-}> = ({ title, children }) => {
+  maxW?: boolean;
+}> = ({ title, children, maxW = true }) => {
   return (
     <div>
       <Head>
@@ -18,9 +19,15 @@ const Layout: React.FC<{
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className={`${poppins.variable} mx-auto max-w-screen-xl font-sans`}>
+      <div
+        className={`${poppins.variable} ${
+          maxW && "max-w-screen-xl"
+        } mx-auto font-sans`}
+      >
         <Navbar />
-        <main className="mx-auto w-full px-4 md:px-4">{children}</main>
+        <main className={`mx-auto w-full ${maxW && "px-4 md:px-4"}`}>
+          {children}
+        </main>
         <footer></footer>
       </div>
     </div>

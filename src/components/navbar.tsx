@@ -142,6 +142,8 @@ const Navbar: React.FC = () => {
         display={["none", "flex"]}
         h="10vh"
         w="100%"
+        maxW="1280px"
+        mx="auto"
         align="center"
         justify="space-around"
       >
