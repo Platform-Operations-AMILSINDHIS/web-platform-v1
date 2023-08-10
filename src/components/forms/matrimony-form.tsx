@@ -29,14 +29,12 @@ import type {
   PersonalInfo,
 } from "~/types/forms/matrimony";
 
-import { Formik, Form } from "formik";
-
 import {
-  PersonalInformationSection,
-  AddressDetailsSection,
   FamilyMemberDetailsSection,
   ProposerDetailsSection,
 } from "./kap-membership-form";
+
+import { Formik, Form } from "formik";
 
 const MatrimonyForm: React.FC<{
   activeStep: number;
@@ -48,8 +46,7 @@ const MatrimonyForm: React.FC<{
       firstName: "",
       middleName: "",
       lastName: "",
-      dateOfBirth: new Date(),
-      timeOfBirth: new Date(),
+      dateAndTimeOfBirth: new Date(),
       placeOfBirth: "",
       mobileNumber: "",
       emailId: "",
@@ -105,8 +102,8 @@ const MatrimonyForm: React.FC<{
 
   return (
     <>
-      {/* {activeStep === 1 && (
-        <PersonalInformationSection
+      {activeStep === 1 && (
+        <MatrimonyPersonalInformationSection
           initialValues={formState.personalInfo}
           stateSetter={(values: PersonalInfo) =>
             setFormState({ ...formState, personalInfo: values })
@@ -114,25 +111,25 @@ const MatrimonyForm: React.FC<{
         />
       )}
 
-      {activeStep === 2 && (
+      {/* {activeStep === 2 && (
         <AddressDetailsSection
           initialValues={formState.addressInfo}
           stateSetter={(values: AddressInfo) =>
             setFormState({ ...formState, addressInfo: values })
           }
         />
-      )}
+      )} */}
 
-      {activeStep === 3 && (
+      {/* {activeStep === 3 && (
         <FamilyMemberDetailsSection
           initialValues={formState.familyMembers ?? []}
           stateSetter={(values: FamilyMember[]) =>
             setFormState({ ...formState, familyMembers: values })
           }
         />
-      )}
+      )} */}
 
-      {activeStep === 4 && (
+      {/* {activeStep === 4 && (
         <ProposerDetailsSection
           initialValues={formState.proposerInfo}
           stateSetter={(values: ProposerInfo) =>
@@ -144,4 +141,121 @@ const MatrimonyForm: React.FC<{
   );
 };
 
+export const MatrimonyPersonalInformationSection: React.FC<{
+  initialValues: PersonalInfo;
+  stateSetter: (values: PersonalInfo) => void;
+}> = ({ initialValues, stateSetter }) => {
+  return (
+    <>
+      <Heading>Personal Information</Heading>
+      <Text mt="1.5rem" maxW="2xl" color="#1F2937">
+        Fill out the fields below to complete your matrimony profile, make sure
+        to fill all the fields and not miss out on any important details.
+      </Text>
+
+      <Formik
+        initialValues={initialValues}
+        onSubmit={(values, actions) => {
+          console.log({ values, actions });
+          alert(JSON.stringify(values, null, 2));
+          actions.setSubmitting(false);
+        }}
+      >
+        <Form>
+          <FormGlobalStateSetter stateSetter={stateSetter} />
+          <Grid
+            mt="2rem"
+            gap="2rem"
+            templateColumns={["1fr", "repeat(3, 1fr)"]}
+          >
+            {[
+              { label: "First Name" },
+              { label: "Middle Name" },
+              { label: "Last Name" },
+              {
+                label: "Date & Time of Birth",
+                name: "dateAndTimeOfBirth",
+                inputType: "datetime",
+              },
+              { label: "Place of Birth" },
+              { label: "Mobile Number" },
+              { label: "Email ID" },
+              { label: "Occupation" },
+              { label: "Income per Annum", inputType: "number" },
+            ].map(({ label, name, inputType }, i) => (
+              <LabelledInput
+                key={i}
+                label={label}
+                name={name ?? label}
+                type={inputType ?? "text"}
+              />
+            ))}
+          </Grid>
+
+          <Grid
+            mt="2rem"
+            gap="2rem"
+            templateColumns={["1fr", "repeat(3, 1fr)"]}
+          >
+            {[
+              {
+                label: "Gender",
+                inputType: "select",
+                selectOptions: ["Male", "Female"],
+              },
+              {
+                label: "Marital Status",
+                inputType: "select",
+                selectOptions: ["Single", "Divorcee", "Widower", "Widow"],
+              },
+              {
+                label: "Manglik",
+                inputType: "select",
+                selectOptions: ["Yes", "No"],
+              },
+            ].map(({ label, inputType, selectOptions }, i) => (
+              <LabelledInput
+                key={i}
+                type={inputType ?? "text"}
+                label={label}
+                selectOptions={selectOptions}
+              />
+            ))}
+          </Grid>
+
+          <Grid
+            mt="2rem"
+            gap="2rem"
+            templateColumns={["1fr", "repeat(3, 1fr)"]}
+          >
+            {[
+              {
+                label: "Height in Feet",
+                name: "heightFeet",
+                inputType: "number",
+              },
+              {
+                label: "Height in Inches",
+                name: "heightInches",
+                inputType: "number",
+              },
+              {
+                label: "Weight (in Kg)",
+                name: "weight",
+                inputType: "number",
+              },
+            ].map(({ label, name, inputType }, i) => (
+              <LabelledInput
+                key={i}
+                type={inputType ?? "text"}
+                label={label}
+                name={name ?? label}
+              />
+            ))}
+          </Grid>
+        </Form>
+      </Formik>
+    </>
+  );
+};
 export default MatrimonyForm;

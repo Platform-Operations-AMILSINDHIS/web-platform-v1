@@ -1,8 +1,7 @@
 import { ChangeEvent, ChangeEventHandler, useEffect } from "react";
 
-import { FormControl, FormLabel, Input, Flex } from "@chakra-ui/react";
+import { FormControl, FormLabel, Input, Flex, Select } from "@chakra-ui/react";
 import { Field, FieldProps, useField, useFormikContext } from "formik";
-import { DatePicker as ChakraDatePicker } from "@orange_digital/chakra-datepicker";
 
 export const camelCase = (str: string) =>
   str
@@ -17,7 +16,16 @@ export const LabelledInput: React.FC<{
   validate?: () => string; // validation function returns error string
   onChange?: ChangeEventHandler<HTMLInputElement>;
   defaultValue?: string;
-}> = ({ label, name, type = "text", validate, onChange, defaultValue }) => (
+  selectOptions?: string[];
+}> = ({
+  label,
+  name,
+  type = "text",
+  validate,
+  onChange,
+  defaultValue,
+  selectOptions,
+}) => (
   <FormControl>
     <FormLabel fontSize="sm" fontWeight="light">
       {label}
@@ -40,8 +48,7 @@ export const LabelledInput: React.FC<{
         defaultValue={defaultValue ?? undefined}
       />
     ) : type === "date" ? (
-      // <DatePickerField label={label} name={name ?? camelCase(label)} />
-      // TODO: Make/Add date picker component which looks like other Chakra UI + works with Formik
+      // TODO: Hook up date picker component to Formik
       <Flex border="1px solid #E2E8F0" borderRadius="5px" py="10px">
         <Input
           type="date"
@@ -49,8 +56,45 @@ export const LabelledInput: React.FC<{
           name={name ?? camelCase(label)}
           borderRadius="5px"
           onChange={onChange ?? undefined}
-          defaultValue={defaultValue ?? new Date().toISOString().slice(0, 10)}
+          defaultValue={defaultValue ?? undefined}
         />
+      </Flex>
+    ) : type === "datetime" ? (
+      <Flex border="1px solid #E2E8F0" borderRadius="5px" py="10px">
+        <Input
+          type="datetime-local"
+          variant="ghost"
+          name={name ?? camelCase(label)}
+          borderRadius="5px"
+          onChange={onChange ?? undefined}
+          defaultValue={defaultValue ?? undefined}
+        />
+      </Flex>
+    ) : type === "number" ? (
+      <Input
+        type="number"
+        name={name ?? camelCase(label)}
+        py="30px"
+        borderRadius="5px"
+        onChange={onChange ?? undefined}
+        defaultValue={defaultValue ?? undefined}
+      />
+    ) : type === "select" ? (
+      <Flex border="1px solid #E2E8F0" borderRadius="5px" py="10px">
+        <Field
+          as={Select}
+          variant="ghost"
+          name={name ?? camelCase(label)}
+          borderRadius="5px"
+          onChange={onChange ?? undefined}
+          defaultValue={defaultValue ?? undefined}
+        >
+          {selectOptions?.map((option) => (
+            <option key={option} value={option.toLowerCase()}>
+              {option}
+            </option>
+          ))}
+        </Field>
       </Flex>
     ) : (
       <></>

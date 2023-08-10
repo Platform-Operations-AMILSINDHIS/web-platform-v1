@@ -4,8 +4,7 @@ export interface PersonalInfo {
   firstName: string;
   middleName: string;
   lastName: string;
-  dateOfBirth: Date;
-  timeOfBirth: Date;
+  dateAndTimeOfBirth: Date;
   placeOfBirth: string;
   mobileNumber: string;
   emailId: string;
@@ -14,7 +13,7 @@ export interface PersonalInfo {
 
   gender: "male" | "female" | null;
   maritalStatus: "single" | "divorcee" | "windower" | "widow" | null;
-  manglik: boolean | null;
+  manglik: "yes" | "no" | null;
 
   heightFeet: number | null;
   heightInches: number | null;
