@@ -1,6 +1,6 @@
 import { ChangeEvent, ChangeEventHandler, useEffect } from "react";
 
-import { FormControl, FormLabel, Input } from "@chakra-ui/react";
+import { FormControl, FormLabel, Input, Flex } from "@chakra-ui/react";
 import { Field, FieldProps, useField, useFormikContext } from "formik";
 import { DatePicker as ChakraDatePicker } from "@orange_digital/chakra-datepicker";
 
@@ -42,15 +42,16 @@ export const LabelledInput: React.FC<{
     ) : type === "date" ? (
       // <DatePickerField label={label} name={name ?? camelCase(label)} />
       // TODO: Make/Add date picker component which looks like other Chakra UI + works with Formik
-      <Field
-        style={{ padding: "30px 10px" }}
-        as={Input}
-        type="date"
-        name={name ?? camelCase(label)}
-        borderRadius="5px"
-        onChange={onChange ?? undefined}
-        defaultValue={defaultValue ?? new Date().toISOString().slice(0, 10)}
-      />
+      <Flex border="1px solid #E2E8F0" borderRadius="5px" py="10px">
+        <Input
+          type="date"
+          variant="ghost"
+          name={name ?? camelCase(label)}
+          borderRadius="5px"
+          onChange={onChange ?? undefined}
+          defaultValue={defaultValue ?? new Date().toISOString().slice(0, 10)}
+        />
+      </Flex>
     ) : (
       <></>
     )}
