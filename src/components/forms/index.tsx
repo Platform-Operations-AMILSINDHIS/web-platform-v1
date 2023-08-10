@@ -42,7 +42,15 @@ export const LabelledInput: React.FC<{
     ) : type === "date" ? (
       // <DatePickerField label={label} name={name ?? camelCase(label)} />
       // TODO: Make/Add date picker component which looks like other Chakra UI + works with Formik
-      <div>date picker</div>
+      <Field
+        style={{ padding: "30px 10px" }}
+        as={Input}
+        type="date"
+        name={name ?? camelCase(label)}
+        borderRadius="5px"
+        onChange={onChange ?? undefined}
+        defaultValue={defaultValue ?? new Date().toISOString().slice(0, 10)}
+      />
     ) : (
       <></>
     )}

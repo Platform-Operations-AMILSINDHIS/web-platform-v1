@@ -87,10 +87,10 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC<{
   });
 
   // Logger
-  // useEffect(
-  //   () => console.log(JSON.stringify(formState.proposerInfo, null, 2)),
-  //   [formState]
-  // );
+  useEffect(
+    () => console.log(JSON.stringify(formState.personalInfo, null, 2)),
+    [formState]
+  );
 
   useEffect(() => {
     if (isSubmitted && formMut.status === "idle") {
