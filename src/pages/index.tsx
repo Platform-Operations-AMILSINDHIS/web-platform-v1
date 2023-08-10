@@ -1,5 +1,14 @@
+import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { Link } from "@chakra-ui/next-js";
-import { Box, Button, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Spacer,
+  Text,
+  Grid,
+} from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { FaArrowCircleRight } from "react-icons/fa";
 import Layout from "~/components/layout";
@@ -94,6 +103,7 @@ const HomePage: NextPage = () => {
 
       <Spacer h="5rem" />
 
+      {/* What are we Section */}
       <Flex
         py="7rem"
         w="100vw"
@@ -140,6 +150,129 @@ const HomePage: NextPage = () => {
           </Flex>
         </Flex>
       </Flex>
+
+      <Spacer h="5rem" />
+
+      {/* What we offer section */}
+      <Box maxW="1280px" mx="auto" px="2rem">
+        <Grid templateColumns="repeat(4, 1fr)" gap="3rem">
+          <Flex
+            gridColumn="span 2"
+            flexDir="column"
+            align="baseline"
+            gap="0.5rem"
+          >
+            <Text color="#0079FF">Offerings</Text>
+            <Heading fontSize="5xl">
+              What we <span style={{ color: "#0079FF" }}>offer</span>
+            </Heading>
+            <Text>
+              At KAP, we are committed to serving our members and fostering a
+              strong sense of unity. Feel free to explore our website and take
+              advantage of these offerings. Together, let&apos;s make our
+              vibrant community thrive!
+            </Text>
+          </Flex>
+
+          {[
+            {
+              image: "/images/what-we-offer/memberships.jpg",
+              name: "Memberships",
+              href: "#",
+            },
+            {
+              image: "/images/what-we-offer/donations.png",
+              name: "Donations",
+              href: "#",
+            },
+            {
+              image: "/images/what-we-offer/matrimony.png",
+              name: "Matrimony",
+              href: "#",
+            },
+            {
+              image: "/images/what-we-offer/events.png",
+              name: "Events",
+              href: "#",
+            },
+            {
+              image: "/images/what-we-offer/blogs.png",
+              name: "Blogs",
+              href: "#",
+            },
+            {
+              image: "/images/what-we-offer/connect.png",
+              name: "Connect",
+              href: "#",
+            },
+          ].map(({ image, name, href }, i) => (
+            <Link key={i} href={href} _hover={{ textDecor: "none" }}>
+              <Flex
+                h="200px"
+                w="100%"
+                p="20px"
+                flexDir="column-reverse"
+                backgroundImage={image}
+                objectFit="fill"
+                borderRadius="15px"
+                boxShadow="0px 4px 0px 0px rgba(0, 0, 0, 0.19);"
+              >
+                <Text color="white" fontWeight="semibold">
+                  {name} <ArrowForwardIcon />
+                </Text>
+              </Flex>
+            </Link>
+          ))}
+        </Grid>
+
+        <Spacer h="5rem" />
+
+        {/* Curious about our events section */}
+        <Box>
+          <Grid templateColumns="repeat(2, 1fr)" gap="3rem">
+            <Box>
+              <Flex
+                gridColumn="span 2"
+                flexDir="column"
+                align="baseline"
+                gap="0.5rem"
+              >
+                <Text color="#0079FF">Sindhi events & Occasions</Text>
+                <Heading fontSize="6xl">
+                  Curious about <br /> our{" "}
+                  <span style={{ color: "#0079FF" }}>events ?</span>
+                </Heading>
+              </Flex>
+            </Box>
+            <Flex flexDir="column" align="baseline" gap="2rem">
+              <Text lineHeight="30px">
+                At Khudabadi Amil Panchayat, we organise a wide range of events
+                that cater to the well-being and progress of our community.
+                Click the button below to begin exploring our events.
+              </Text>
+              <Link href="/events">
+                <Button
+                  px="2.5rem"
+                  py="1.75rem"
+                  bgColor="#FFFFFF"
+                  border="1px solid rgba(31, 41, 55, 0.45);"
+                  boxShadow="0px 4px 0px 0px rgba(0, 0, 0, 0.19);"
+                >
+                  Explore events
+                </Button>
+              </Link>
+            </Flex>
+          </Grid>
+
+          <Spacer h="2rem" />
+
+          <Grid templateColumns="repeat(3, 1fr)">
+            {/* TODO: Make event component */}
+            <Box></Box>
+            <Box></Box>
+          </Grid>
+        </Box>
+      </Box>
     </Layout>
   );
 };
