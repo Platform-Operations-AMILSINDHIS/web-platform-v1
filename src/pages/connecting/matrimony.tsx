@@ -1,16 +1,3 @@
-// import type { NextPage } from "next";
-// import Layout from "~/components/layout";
-
-// const MatrimonyPage: NextPage = () => {
-//   return (
-//     <Layout title="Matrimony">
-//       <div>hi, this is the matrimony page</div>
-//     </Layout>
-//   );
-// };
-
-// export default MatrimonyPage;
-
 import type { NextPage } from "next";
 import { useState, useEffect } from "react";
 
@@ -83,7 +70,7 @@ const MatrimonyFormPage: NextPage = () => {
   });
 
   return (
-    <Layout title="Home">
+    <Layout title="Matrimony Form">
       <Spacer h="1.5rem" />
 
       <Stepper index={activeStep}>

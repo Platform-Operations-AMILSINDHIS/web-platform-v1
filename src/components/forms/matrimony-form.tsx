@@ -27,7 +27,11 @@ import {
 import type {
   MatrimonyFormValues,
   PersonalInfo,
+  ResidentialAddressDetails,
+  SpousePreferences,
 } from "~/types/forms/matrimony";
+
+import type { FamilyMember, ProposerInfo } from "~/types/forms/membership";
 
 import {
   FamilyMemberDetailsSection,
@@ -111,37 +115,45 @@ const MatrimonyForm: React.FC<{
         />
       )}
 
-      {/* {activeStep === 2 && (
-        <AddressDetailsSection
-          initialValues={formState.addressInfo}
-          stateSetter={(values: AddressInfo) =>
-            setFormState({ ...formState, addressInfo: values })
-          }
-        />
-      )} */}
-
-      {/* {activeStep === 3 && (
+      {activeStep === 2 && (
         <FamilyMemberDetailsSection
           initialValues={formState.familyMembers ?? []}
           stateSetter={(values: FamilyMember[]) =>
             setFormState({ ...formState, familyMembers: values })
           }
         />
-      )} */}
+      )}
 
-      {/* {activeStep === 4 && (
+      {activeStep === 3 && (
+        <MatrimonyAddressDetailsSection
+          initialValues={formState.residentialAddressDetails}
+          stateSetter={(values: ResidentialAddressDetails) =>
+            setFormState({ ...formState, residentialAddressDetails: values })
+          }
+        />
+      )}
+      {activeStep === 4 && (
+        <SpousePreferencesSection
+          initialValues={formState.spousePreferences}
+          stateSetter={(values: SpousePreferences) =>
+            setFormState({ ...formState, spousePreferences: values })
+          }
+        />
+      )}
+
+      {activeStep === 5 && (
         <ProposerDetailsSection
           initialValues={formState.proposerInfo}
           stateSetter={(values: ProposerInfo) =>
             setFormState({ ...formState, proposerInfo: values })
           }
         />
-      )} */}
+      )}
     </>
   );
 };
 
-export const MatrimonyPersonalInformationSection: React.FC<{
+const MatrimonyPersonalInformationSection: React.FC<{
   initialValues: PersonalInfo;
   stateSetter: (values: PersonalInfo) => void;
 }> = ({ initialValues, stateSetter }) => {
@@ -258,4 +270,131 @@ export const MatrimonyPersonalInformationSection: React.FC<{
     </>
   );
 };
+
+const MatrimonyAddressDetailsSection: React.FC<{
+  initialValues: ResidentialAddressDetails;
+  stateSetter: (values: ResidentialAddressDetails) => void;
+}> = ({ initialValues, stateSetter }) => {
+  return (
+    <>
+      <Heading>Residential Address</Heading>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={(values, actions) => {
+          console.log({ values, actions });
+          alert(JSON.stringify(values, null, 2));
+          actions.setSubmitting(false);
+        }}
+      >
+        <Form>
+          <FormGlobalStateSetter stateSetter={stateSetter} />
+          <Grid
+            mt="2rem"
+            gap="2rem"
+            templateColumns={["1fr", "repeat(2, 1fr)"]}
+          >
+            {[
+              {
+                label: "Address Line 1",
+                name: "residentialAddress.addressLine1",
+              },
+              {
+                label: "Address Line 2",
+                name: "residentialAddress.addressLine2",
+              },
+              {
+                label: "Address Line 3",
+                name: "residentialAddress.addressLine3",
+              },
+              { label: "Pin Code", name: "residentialAddress.pinCode" },
+            ].map(({ label, name }, i) => (
+              <LabelledInput key={i} label={label} name={name ?? label} />
+            ))}
+          </Grid>
+        </Form>
+      </Formik>
+    </>
+  );
+};
+
+const SpousePreferencesSection: React.FC<{
+  initialValues: SpousePreferences;
+  stateSetter: (values: SpousePreferences) => void;
+}> = ({ initialValues, stateSetter }) => {
+  return (
+    <>
+      <Heading>Spouse Preferences</Heading>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={(values, actions) => {
+          console.log({ values, actions });
+          alert(JSON.stringify(values, null, 2));
+          actions.setSubmitting(false);
+        }}
+      >
+        <Form>
+          <FormGlobalStateSetter stateSetter={stateSetter} />
+          <Grid
+            mt="2rem"
+            gap="2rem"
+            templateColumns={["1fr", "repeat(3, 1fr)"]}
+          >
+            {[
+              {
+                label: "Working",
+                inputType: "select",
+                selectOptions: ["Yes", "No"],
+              },
+              {
+                label: "Dietary Preference",
+                inputType: "select",
+                selectOptions: ["Veg", "Non-veg"],
+              },
+              { label: "Qualification Requirements" },
+              { label: "Complexion" },
+              {
+                label: "Height in Feet",
+                name: "heightFeet",
+                inputType: "number",
+              },
+              {
+                label: "Height in Inches",
+                name: "heightInches",
+                inputType: "number",
+              },
+              {
+                label: "Weight (in Kg)",
+                name: "weight",
+                inputType: "number",
+              },
+              {
+                label: "Horoscope Matching Required",
+                inputType: "select",
+                selectOptions: ["Yes", "No"],
+              },
+              {
+                label: "Build",
+                inputType: "select",
+                selectOptions: ["Medium", "Slim", "Healthy"],
+              },
+              {
+                label: "Siblings",
+                inputType: "select",
+                selectOptions: ["Yes", "No"],
+              },
+            ].map(({ label, inputType, selectOptions }, i) => (
+              <LabelledInput
+                key={i}
+                type={inputType ?? "text"}
+                label={label}
+                selectOptions={selectOptions}
+              />
+            ))}
+          </Grid>
+        </Form>
+      </Formik>
+    </>
+  );
+};
+
 export default MatrimonyForm;

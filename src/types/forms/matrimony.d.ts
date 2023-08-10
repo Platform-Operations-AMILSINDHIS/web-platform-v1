@@ -1,4 +1,4 @@
-import { FamilyMember, ProposerInfo } from "~/types/forms/membership";
+import type { FamilyMember, ProposerInfo } from "~/types/forms/membership";
 
 export interface PersonalInfo {
   firstName: string;
@@ -42,9 +42,9 @@ export interface SpousePreferences {
   heightInches: number | null;
   weight: number | null;
 
-  horoscopeMatching: boolean | null;
+  horoscopeMatching: "yes" | "no" | null;
   build: "medium" | "slim" | "healthy" | null;
-  siblings: boolean | null;
+  siblings: "yes" | "no" | null;
 }
 
 export interface MatrimonyFormValues {

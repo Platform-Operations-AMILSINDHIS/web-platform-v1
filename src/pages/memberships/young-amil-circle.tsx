@@ -66,7 +66,7 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
   });
 
   return (
-    <Layout title="Home">
+    <Layout title="YAC Membership Form">
       <Spacer h="1.5rem" />
 
       <Stepper index={activeStep}>
