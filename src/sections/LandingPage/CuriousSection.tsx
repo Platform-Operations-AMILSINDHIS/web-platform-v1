@@ -10,7 +10,15 @@ import {
 import Link from "next/link";
 import { EventThumb } from "~/components/events";
 
-const CuriousSection = () => {
+interface sectionProps {
+  EventPics: {
+    image: string;
+    date: Date;
+    title: string;
+  }[];
+}
+
+const CuriousSection = ({ EventPics }: sectionProps) => {
   return (
     <>
       <Spacer h="8rem" />
@@ -46,23 +54,7 @@ const CuriousSection = () => {
         </Grid>
         <Spacer h="3rem" />
         <Grid templateColumns="repeat(3, 1fr)" gap="3rem">
-          {[
-            {
-              image: "/images/curious-about-events/blue-circle.png",
-              date: new Date("2023-02-13"),
-              title: "Vaccination Drive, Blue Circle",
-            },
-            {
-              image: "/images/curious-about-events/powai-lake.png",
-              date: new Date("2023-02-13"),
-              title: "Cheti Chanda, Powai Lake",
-            },
-            {
-              image: "/images/curious-about-events/marine-drive.png",
-              date: new Date("2023-02-13"),
-              title: "Movie Screening, Marine Drive",
-            },
-          ].map((event, i) => (
+          {EventPics.map((event, i) => (
             <EventThumb key={i} {...event} />
           ))}
         </Grid>

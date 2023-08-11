@@ -2,7 +2,11 @@ import { Box, Button, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 
-const DonationsSection = () => {
+interface sectionProps {
+  ImageURL: string;
+}
+
+const DonationsSection = ({ ImageURL }: sectionProps) => {
   return (
     <>
       <Spacer h="8rem" />
@@ -17,12 +21,7 @@ const DonationsSection = () => {
 
         <Flex align="center" justify={"space-between"}>
           <Box>
-            <Image
-              alt="donation pic"
-              width={1500}
-              height={0}
-              src="/images/donations-and-memberships-section.png"
-            />
+            <Image alt="donation pic" width={1500} height={0} src={ImageURL} />
           </Box>
           <Box>
             <Text lineHeight="30px">
