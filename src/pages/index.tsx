@@ -10,12 +10,16 @@ import {
   Grid,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
+import { useRouter } from "next/router";
 import { FaArrowCircleRight } from "react-icons/fa";
+import { EventThumb } from "~/components/events";
 import Layout from "~/components/layout";
 
 import { eudoxus } from "~/utils/fonts";
 
 const HomePage: NextPage = () => {
+  const router = useRouter();
+
   return (
     <Layout title="Home" maxW={false}>
       <Box maxW="1280px" mx="auto" px="2rem">
@@ -136,17 +140,20 @@ const HomePage: NextPage = () => {
               to various benefits and opportunities to connect with fellow
               Amils.
             </Text>
-            <Link href="/blog">
-              <Button
-                rightIcon={<FaArrowCircleRight />}
-                h="3rem"
-                mt="2rem"
-                w="40%"
-                colorScheme="yellow"
-              >
-                Connecting Amils
-              </Button>
-            </Link>
+            {/* <Link href="/blog"> */}
+            <Button
+              onClick={() => {
+                router.push("/blog").catch(console.error);
+              }}
+              rightIcon={<FaArrowCircleRight />}
+              h="3rem"
+              mt="2rem"
+              w="40%"
+              colorScheme="yellow"
+            >
+              Connecting Amils
+            </Button>
+            {/* </Link> */}
           </Flex>
         </Flex>
       </Flex>
@@ -178,32 +185,32 @@ const HomePage: NextPage = () => {
             {
               image: "/images/what-we-offer/memberships.jpg",
               name: "Memberships",
-              href: "#",
+              href: "/memberships/khudabadi-amil-panchayat",
             },
             {
               image: "/images/what-we-offer/donations.png",
               name: "Donations",
-              href: "#",
+              href: "/donations",
             },
             {
               image: "/images/what-we-offer/matrimony.png",
               name: "Matrimony",
-              href: "#",
+              href: "/connecting/matrimony",
             },
             {
               image: "/images/what-we-offer/events.png",
               name: "Events",
-              href: "#",
+              href: "/events",
             },
             {
               image: "/images/what-we-offer/blogs.png",
               name: "Blogs",
-              href: "#",
+              href: "/blog",
             },
             {
               image: "/images/what-we-offer/connect.png",
               name: "Connect",
-              href: "#",
+              href: "/connecting/matrimony",
             },
           ].map(({ image, name, href }, i) => (
             <Link key={i} href={href} _hover={{ textDecor: "none" }}>
@@ -230,20 +237,13 @@ const HomePage: NextPage = () => {
         {/* Curious about our events section */}
         <Box>
           <Grid templateColumns="repeat(2, 1fr)" gap="3rem">
-            <Box>
-              <Flex
-                gridColumn="span 2"
-                flexDir="column"
-                align="baseline"
-                gap="0.5rem"
-              >
-                <Text color="#0079FF">Sindhi events & Occasions</Text>
-                <Heading fontSize="6xl">
-                  Curious about <br /> our{" "}
-                  <span style={{ color: "#0079FF" }}>events ?</span>
-                </Heading>
-              </Flex>
-            </Box>
+            <Flex flexDir="column" align="baseline" gap="0.5rem">
+              <Text color="#0079FF">Sindhi events & Occasions</Text>
+              <Heading fontSize="6xl">
+                Curious about <br /> our{" "}
+                <span style={{ color: "#0079FF" }}>events ?</span>
+              </Heading>
+            </Flex>
             <Flex flexDir="column" align="baseline" gap="2rem">
               <Text lineHeight="30px">
                 At Khudabadi Amil Panchayat, we organise a wide range of events
@@ -263,6 +263,28 @@ const HomePage: NextPage = () => {
               </Link>
             </Flex>
           </Grid>
+          <Spacer h="3rem" />
+          <Grid templateColumns="repeat(3, 1fr)" gap="3rem">
+            {[
+              {
+                image: "/images/curious-about-events/blue-circle.png",
+                date: new Date("2023-02-13"),
+                title: "Vaccination Drive, Blue Circle",
+              },
+              {
+                image: "/images/curious-about-events/powai-lake.png",
+                date: new Date("2023-02-13"),
+                title: "Cheti Chanda, Powai Lake",
+              },
+              {
+                image: "/images/curious-about-events/marine-drive.png",
+                date: new Date("2023-02-13"),
+                title: "Movie Screening, Marine Drive",
+              },
+            ].map((event, i) => (
+              <EventThumb key={i} {...event} />
+            ))}
+          </Grid>
 
           <Spacer h="2rem" />
 
@@ -272,7 +294,15 @@ const HomePage: NextPage = () => {
             <Box></Box>
           </Grid>
         </Box>
+
+        <Spacer h="5rem" />
+
+        {/* Donations & Memberships section */}
       </Box>
+
+      <Spacer h="5rem" />
+
+      {/* Q&A section */}
     </Layout>
   );
 };
