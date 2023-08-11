@@ -1,23 +1,5 @@
-import { ArrowForwardIcon } from "@chakra-ui/icons";
-import { Link } from "@chakra-ui/next-js";
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Spacer,
-  Text,
-  Grid,
-  Input,
-  InputGroup,
-  InputRightAddon,
-  IconButton,
-} from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import type { NextPage } from "next";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import { FaArrowCircleRight, FaShare } from "react-icons/fa";
-import { EventThumb } from "~/components/events";
 import Layout from "~/components/layout";
 import ContactBanner from "~/sections/LandingPage/ContactBanner";
 import CuriousSection from "~/sections/LandingPage/CuriousSection";
