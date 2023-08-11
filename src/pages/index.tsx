@@ -8,10 +8,14 @@ import {
   Spacer,
   Text,
   Grid,
+  Input,
+  InputGroup,
+  InputRightAddon,
+  IconButton,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { FaArrowCircleRight } from "react-icons/fa";
+import { FaArrowCircleRight, FaShare } from "react-icons/fa";
 import { EventThumb } from "~/components/events";
 import Layout from "~/components/layout";
 
@@ -346,6 +350,51 @@ const HomePage: NextPage = () => {
       <Spacer h="5rem" />
 
       {/* Q&A section */}
+      <Box
+        maxW="1480px"
+        mx="auto"
+        py="4rem"
+        px="10rem"
+        background="linear-gradient(90deg, #0079FF 24.48%, #F100F6 99.99%, #FFC01F 100%)"
+        borderRadius="20px"
+        boxShadow="2px 4px 0px 3px rgba(0, 0, 0, 0.74);"
+        position="relative"
+      >
+        <Flex justify="space-between">
+          <Flex flexDir="column" color="white">
+            <Heading fontSize="6xl" fontWeight="extrabold">
+              Have a question&nbsp;?
+              <br />
+              feel free to ask
+            </Heading>
+            <Text mt="1rem" fontSize="lg">
+              Drop us an email & we&apos;ll get back to you with the responses
+              to your queries
+            </Text>
+          </Flex>
+
+          <Box h="100%">
+            <InputGroup>
+              <Input
+                type="email"
+                placeholder="Your email address"
+                background="white"
+              />
+              <InputRightAddon
+                background="#1F2937"
+                cursor="pointer"
+                border="#000"
+              >
+                <FaShare color="white" />
+              </InputRightAddon>
+            </InputGroup>
+
+            <Box position="absolute" bottom="0">
+              <img alt="" src="/images/qna-graphic.png" />
+            </Box>
+          </Box>
+        </Flex>
+      </Box>
 
       <Spacer h="12rem" />
     </Layout>
