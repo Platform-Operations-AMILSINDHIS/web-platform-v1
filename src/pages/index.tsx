@@ -14,6 +14,7 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { FaArrowCircleRight, FaShare } from "react-icons/fa";
 import { EventThumb } from "~/components/events";
@@ -28,19 +29,20 @@ const HomePage: NextPage = () => {
     <Layout title="Home" maxW={false}>
       <Box maxW="1280px" mx="auto" px="2rem">
         {/* TODO: Rewrite in Chakra */}
-        <div className="mx-auto max-w-screen-lg text-center text-[#1F2937]">
+        <div className="mx-auto mt-16 flex max-w-screen-lg flex-col gap-y-10 text-center text-[#1F2937]">
           {/* Hero */}
           <div
-            className={`${eudoxus.variable} mt-16 font-heading text-3xl font-bold leading-normal md:text-7xl`}
+            className={`${eudoxus.variable} flex-col font-heading text-3xl font-bold leading-5 md:text-7xl`}
           >
             Preserving sindhi culture,
-            <br />
-            <span className="text-[#0079FF]">language</span> & history{" "}
-            <span className="underline decoration-[#FFB84C] decoration-8">
-              since 1952
-            </span>
+            <p className="mt-5">
+              <span className="text-[#0079FF]">language</span> & history{" "}
+              <span className="underline decoration-[#FFB84C] decoration-8">
+                since 1952
+              </span>
+            </p>
           </div>
-          <div className="mx-auto mt-4 max-w-3xl text-lg">
+          <div className="mx-auto max-w-3xl text-lg">
             The Khudabadi Amil Panchayat of Bombay, is a registered
             Non&mdash;Profit Charitable Trust that aims to provide assistance to
             underprivileged Sindhis displaced from Sindh and to bring the Sindhi
@@ -80,7 +82,7 @@ const HomePage: NextPage = () => {
           </Flex>
         </Flex>
 
-        <Spacer h="12rem" />
+        <Spacer h="8rem" />
 
         {/* Sponsors */}
         <Flex w="100%" justify="space-between">
@@ -119,13 +121,13 @@ const HomePage: NextPage = () => {
         justify="center"
         align="center"
       >
-        <Flex>
-          <Flex>
-            <img
-              alt=""
-              src="/images/backgrounds/what-are-we-illustration.png"
-            />
-          </Flex>
+        <Flex gap={20} align={"center"}>
+          <Image
+            width={550}
+            height={0}
+            alt=""
+            src="/images/backgrounds/what-are-we-illustration.png"
+          />
 
           <Flex flexDir="column" maxW="600px">
             <Heading color="white" fontWeight="bold" fontSize="7xl">
@@ -162,7 +164,7 @@ const HomePage: NextPage = () => {
         </Flex>
       </Flex>
 
-      <Spacer h="5rem" />
+      <Spacer h="8rem" />
 
       {/* What we offer section */}
       <Box maxW="1280px" mx="auto" px="2rem">
@@ -236,7 +238,7 @@ const HomePage: NextPage = () => {
           ))}
         </Grid>
 
-        <Spacer h="5rem" />
+        <Spacer h="8rem" />
 
         {/* Curious about our events section */}
         <Box>
@@ -291,7 +293,7 @@ const HomePage: NextPage = () => {
           </Grid>
         </Box>
 
-        <Spacer h="5rem" />
+        <Spacer h="8rem" />
 
         {/* Donations & Memberships section */}
         <Flex flexDir="column" gap="2rem">
@@ -301,9 +303,14 @@ const HomePage: NextPage = () => {
             <Heading fontSize="6xl">Donations & Memberships</Heading>
           </Box>
 
-          <Grid templateColumns="repeat(2, 1fr)" gap="3rem">
+          <Flex align="center" justify={"space-between"}>
             <Box>
-              <img src="/images/donations-and-memberships-section.png" />
+              <Image
+                alt="donation pic"
+                width={1500}
+                height={0}
+                src="/images/donations-and-memberships-section.png"
+              />
             </Box>
             <Box>
               <Text lineHeight="30px">
@@ -343,7 +350,7 @@ const HomePage: NextPage = () => {
                 </Link>
               </Flex>
             </Box>
-          </Grid>
+          </Flex>
         </Flex>
       </Box>
 
@@ -360,14 +367,14 @@ const HomePage: NextPage = () => {
         boxShadow="2px 4px 0px 3px rgba(0, 0, 0, 0.74);"
         position="relative"
       >
-        <Flex justify="space-between">
+        <Flex align={"flex-start"} justify="space-between">
           <Flex flexDir="column" color="white">
             <Heading fontSize="6xl" fontWeight="extrabold">
               Have a question&nbsp;?
               <br />
               feel free to ask
             </Heading>
-            <Text mt="1rem" fontSize="lg">
+            <Text maxW={580} mt="1rem" fontSize="lg">
               Drop us an email & we&apos;ll get back to you with the responses
               to your queries
             </Text>
@@ -376,6 +383,7 @@ const HomePage: NextPage = () => {
           <Box h="100%">
             <InputGroup>
               <Input
+                width={400}
                 type="email"
                 placeholder="Your email address"
                 background="white"
