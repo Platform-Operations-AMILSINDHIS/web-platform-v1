@@ -31,23 +31,7 @@
       "href": "/connecting/matrimony"
     }
   ],
-  "eventPicsArray": [
-    {
-      "image": "/images/curious-about-events/blue-circle.png",
-      "date": "2023-02-13",
-      "title": "Vaccination Drive, Blue Circle"
-    },
-    {
-      "image": "/images/curious-about-events/powai-lake.png",
-      "date": "2023-02-13",
-      "title": "Cheti Chanda, Powai Lake"
-    },
-    {
-      "image": "/images/curious-about-events/marine-drive.png",
-      "date": "2023-02-13",
-      "title": "Movie Screening, Marine Drive"
-    }
-  ],
+
   "BannerPicture": "/images/qna-graphic.png",
   "DonationsPicture": "/images/donations-and-memberships-section.png",
   "WhatSectionPicture": "/images/backgrounds/what-are-we-illustration.png"

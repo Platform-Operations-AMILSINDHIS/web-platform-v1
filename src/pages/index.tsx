@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import type { NextPage } from "next";
+import constants from "../constants/LandingConstants.json";
 import Layout from "~/components/layout";
 import ContactBanner from "~/sections/LandingPage/ContactBanner";
 import CuriousSection from "~/sections/LandingPage/CuriousSection";
@@ -10,40 +11,7 @@ import SponsersSection from "~/sections/LandingPage/SponsersSection";
 import WhatSection from "~/sections/LandingPage/WhatSection";
 
 const HomePage: NextPage = () => {
-  const picturesArray = [
-    {
-      image: "/images/what-we-offer/memberships.jpg",
-      name: "Memberships",
-      href: "/memberships/khudabadi-amil-panchayat",
-    },
-    {
-      image: "/images/what-we-offer/donations.png",
-      name: "Donations",
-      href: "/donations",
-    },
-    {
-      image: "/images/what-we-offer/matrimony.png",
-      name: "Matrimony",
-      href: "/connecting/matrimony",
-    },
-    {
-      image: "/images/what-we-offer/events.png",
-      name: "Events",
-      href: "/events",
-    },
-    {
-      image: "/images/what-we-offer/blogs.png",
-      name: "Blogs",
-      href: "/blog",
-    },
-    {
-      image: "/images/what-we-offer/connect.png",
-      name: "Connect",
-      href: "/connecting/matrimony",
-    },
-  ];
-
-  const eventPicsArray = [
+  const eventsPicArray = [
     {
       image: "/images/curious-about-events/blue-circle.png",
       date: new Date("2023-02-13"),
@@ -60,24 +28,19 @@ const HomePage: NextPage = () => {
       title: "Movie Screening, Marine Drive",
     },
   ];
-
-  const BannerPicture = "/images/qna-graphic.png";
-  const DonationsPicture = "/images/donations-and-memberships-section.png";
-  const WhatSectionPicture = "/images/backgrounds/what-are-we-illustration.png";
-
   return (
     <Layout title="Home" maxW={false}>
       <Box maxW="1280px" mx="auto" px="2rem">
         <HeroSection />
         <SponsersSection />
       </Box>
-      <WhatSection ImageURL={WhatSectionPicture} />
+      <WhatSection ImageURL={constants.WhatSectionPicture} />
       <Box maxW="1280px" mx="auto" px="2rem">
-        <OfferingsSection picturesArray={picturesArray} />
-        <CuriousSection EventPics={eventPicsArray} />
-        <DonationsSection ImageURL={DonationsPicture} />
+        <OfferingsSection picturesArray={constants.picturesArray} />
+        <CuriousSection EventPics={eventsPicArray} />
+        <DonationsSection ImageURL={constants.DonationsPicture} />
       </Box>
-      <ContactBanner ImageURL={BannerPicture} />
+      <ContactBanner ImageURL={constants.BannerPicture} />
     </Layout>
   );
 };
