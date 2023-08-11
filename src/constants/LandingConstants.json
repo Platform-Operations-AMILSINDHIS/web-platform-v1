@@ -1,0 +1,54 @@
+{
+  "picturesArray": [
+    {
+      "image": "/images/what-we-offer/memberships.jpg",
+      "name": "Memberships",
+      "href": "/memberships/khudabadi-amil-panchayat"
+    },
+    {
+      "image": "/images/what-we-offer/donations.png",
+      "name": "Donations",
+      "href": "/donations"
+    },
+    {
+      "image": "/images/what-we-offer/matrimony.png",
+      "name": "Matrimony",
+      "href": "/connecting/matrimony"
+    },
+    {
+      "image": "/images/what-we-offer/events.png",
+      "name": "Events",
+      "href": "/events"
+    },
+    {
+      "image": "/images/what-we-offer/blogs.png",
+      "name": "Blogs",
+      "href": "/blog"
+    },
+    {
+      "image": "/images/what-we-offer/connect.png",
+      "name": "Connect",
+      "href": "/connecting/matrimony"
+    }
+  ],
+  "eventPicsArray": [
+    {
+      "image": "/images/curious-about-events/blue-circle.png",
+      "date": "2023-02-13",
+      "title": "Vaccination Drive, Blue Circle"
+    },
+    {
+      "image": "/images/curious-about-events/powai-lake.png",
+      "date": "2023-02-13",
+      "title": "Cheti Chanda, Powai Lake"
+    },
+    {
+      "image": "/images/curious-about-events/marine-drive.png",
+      "date": "2023-02-13",
+      "title": "Movie Screening, Marine Drive"
+    }
+  ],
+  "BannerPicture": "/images/qna-graphic.png",
+  "DonationsPicture": "/images/donations-and-memberships-section.png",
+  "WhatSectionPicture": "/images/backgrounds/what-are-we-illustration.png"
+}
