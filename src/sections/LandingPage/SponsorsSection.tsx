@@ -1,7 +1,7 @@
 import { Flex, Spacer } from "@chakra-ui/react";
 import Link from "next/link";
 
-const SponsersSection = () => {
+const SponsorsSection = () => {
   const sponsorLogos = [
     {
       image: "/images/sponsors/amplitude.png",
@@ -35,4 +35,4 @@ const SponsersSection = () => {
   );
 };
 
-export default SponsersSection;
+export default SponsorsSection;
