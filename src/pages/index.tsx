@@ -34,13 +34,13 @@ const HomePage: NextPage = () => {
         <HeroSection />
         <SponsorsSection />
       </Box>
-      <WhatSection ImageURL={constants.WhatSectionPicture} />
+      <WhatSection imageUrl={constants.WhatSectionPicture} />
       <Box maxW="1280px" mx="auto" px="2rem">
         <OfferingsSection picturesArray={constants.picturesArray} />
-        <CuriousSection EventPics={eventsPicArray} />
-        <DonationsSection ImageURL={constants.DonationsPicture} />
+        <CuriousSection eventPics={eventsPicArray} />
+        <DonationsSection imageUrl={constants.DonationsPicture} />
       </Box>
-      <ContactBanner ImageURL={constants.BannerPicture} />
+      <ContactBanner imageUrl={constants.BannerPicture} />
     </Layout>
   );
 };

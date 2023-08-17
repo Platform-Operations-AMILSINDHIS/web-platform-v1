@@ -11,10 +11,10 @@ import {
 import { FaShare } from "react-icons/fa";
 
 interface sectionProps {
-  ImageURL: string;
+  imageUrl: string;
 }
 
-const ContactBanner = ({ ImageURL }: sectionProps) => {
+const ContactBanner = ({ imageUrl }: sectionProps) => {
   return (
     <>
       <Spacer h="5rem" />
@@ -59,7 +59,7 @@ const ContactBanner = ({ ImageURL }: sectionProps) => {
             </InputGroup>
 
             <Box position="absolute" bottom="0">
-              <img alt="" src={ImageURL} />
+              <img alt="" src={imageUrl} />
             </Box>
           </Box>
         </Flex>
