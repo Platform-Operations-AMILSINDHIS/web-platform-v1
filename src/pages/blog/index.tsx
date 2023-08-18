@@ -1,8 +1,10 @@
-import type { NextPage } from "next";
+import { type NextPage, GetStaticProps, InferGetStaticPropsType } from "next";
 import type { BlogPost } from "~/types/blog";
 
-import { BlogPostThumb } from "~/components/blog/blog-landing";
+import { useContentfulLiveUpdates } from "@contentful/live-preview/react";
+
 import Layout from "~/components/layout";
+import { BlogPostThumb } from "~/components/blog/blog-landing";
 
 import { eudoxus } from "~/utils/fonts";
 
