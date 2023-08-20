@@ -97,6 +97,8 @@ type AssetLinkingCollections {
 enum AssetLinkingCollectionsBlogContentTypeCollectionOrder {
   author_ASC
   author_DESC
+  blogSlug_ASC
+  blogSlug_DESC
   blogTitle_ASC
   blogTitle_DESC
   dateOfBlog_ASC
@@ -141,11 +143,13 @@ type BlogContentType implements Entry {
   author(locale: String): String
   blogContent(locale: String): BlogContentTypeBlogContent
   blogDisplayPicture(locale: String, preview: Boolean): Asset
+  blogSlug(locale: String): String
   blogTags(locale: String): [String]
   blogTitle(locale: String): String
   blogType(locale: String): [String]
   contentfulMetadata: ContentfulMetadata!
   dateOfBlog(locale: String): DateTime
+  excerpt(locale: String): String
   linkedFrom(allowedLocales: [String]): BlogContentTypeLinkingCollections
   sys: Sys!
 }
@@ -197,6 +201,13 @@ input BlogContentTypeFilter {
   blogContent_exists: Boolean
   blogContent_not_contains: String
   blogDisplayPicture_exists: Boolean
+  blogSlug: String
+  blogSlug_contains: String
+  blogSlug_exists: Boolean
+  blogSlug_in: [String]
+  blogSlug_not: String
+  blogSlug_not_contains: String
+  blogSlug_not_in: [String]
   blogTags_contains_all: [String]
   blogTags_contains_none: [String]
   blogTags_contains_some: [String]
@@ -222,6 +233,13 @@ input BlogContentTypeFilter {
   dateOfBlog_lte: DateTime
   dateOfBlog_not: DateTime
   dateOfBlog_not_in: [DateTime]
+  excerpt: String
+  excerpt_contains: String
+  excerpt_exists: Boolean
+  excerpt_in: [String]
+  excerpt_not: String
+  excerpt_not_contains: String
+  excerpt_not_in: [String]
   sys: SysFilter
 }
 
@@ -232,6 +250,8 @@ type BlogContentTypeLinkingCollections {
 enum BlogContentTypeOrder {
   author_ASC
   author_DESC
+  blogSlug_ASC
+  blogSlug_DESC
   blogTitle_ASC
   blogTitle_DESC
   dateOfBlog_ASC

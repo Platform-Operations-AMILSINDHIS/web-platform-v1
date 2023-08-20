@@ -1,0 +1,18 @@
+query pageBlogPostCollection {
+  blogContentTypeCollection {
+    items {
+      blogTitle
+      author
+      dateOfBlog
+      # blogContent {
+      #   json
+      # }
+      excerpt
+      blogSlug
+      blogTags
+      blogDisplayPicture {
+        url
+      }
+    }
+  }
+}

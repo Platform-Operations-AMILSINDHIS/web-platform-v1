@@ -13,9 +13,10 @@ export const BlogPostThumb: React.FC<{
         : "md:grid-cols-1 md:grid-rows-2"
     }`}
   >
-    <div className="h-full w-full rounded-md">
-      <img className="w-full object-cover" alt="" src={image} />
-    </div>
+    <div
+      className="h-full w-full rounded-md bg-cover bg-center"
+      style={{ backgroundImage: `url("${image}")` }}
+    ></div>
 
     <div>
       <div className="font-semibold text-[#1F2937] opacity-70">
@@ -29,7 +30,7 @@ export const BlogPostThumb: React.FC<{
       <div className="mt-2 text-2xl font-semibold">{title}</div>
       <div className="mt-4 text-sm">{excerpt}</div>
       <div className="my-4 flex gap-2">
-        {tags.map((tag, i) => (
+        {tags?.map((tag, i) => (
           <div
             key={i}
             className={`rounded-full border border-[#1F2937] px-2 py-1 text-xs`}

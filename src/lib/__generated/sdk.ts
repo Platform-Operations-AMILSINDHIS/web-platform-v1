@@ -1,5 +1,5 @@
 import { GraphQLClient } from 'graphql-request';
-import * as Dom from 'graphql-request/dist/types.dom';
+import { GraphQLClientRequestHeaders } from 'graphql-request/build/cjs/types';
 import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -196,6 +196,8 @@ export type AssetLinkingCollectionsEntryCollectionArgs = {
 export enum AssetLinkingCollectionsBlogContentTypeCollectionOrder {
   AuthorAsc = 'author_ASC',
   AuthorDesc = 'author_DESC',
+  BlogSlugAsc = 'blogSlug_ASC',
+  BlogSlugDesc = 'blogSlug_DESC',
   BlogTitleAsc = 'blogTitle_ASC',
   BlogTitleDesc = 'blogTitle_DESC',
   DateOfBlogAsc = 'dateOfBlog_ASC',
@@ -239,11 +241,13 @@ export type BlogContentType = Entry & {
   author?: Maybe<Scalars['String']['output']>;
   blogContent?: Maybe<BlogContentTypeBlogContent>;
   blogDisplayPicture?: Maybe<Asset>;
+  blogSlug?: Maybe<Scalars['String']['output']>;
   blogTags?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   blogTitle?: Maybe<Scalars['String']['output']>;
   blogType?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   contentfulMetadata: ContentfulMetadata;
   dateOfBlog?: Maybe<Scalars['DateTime']['output']>;
+  excerpt?: Maybe<Scalars['String']['output']>;
   linkedFrom?: Maybe<BlogContentTypeLinkingCollections>;
   sys: Sys;
 };
@@ -269,6 +273,12 @@ export type BlogContentTypeBlogDisplayPictureArgs = {
 
 
 /** [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
+export type BlogContentTypeBlogSlugArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
 export type BlogContentTypeBlogTagsArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
@@ -288,6 +298,12 @@ export type BlogContentTypeBlogTypeArgs = {
 
 /** [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
 export type BlogContentTypeDateOfBlogArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
+export type BlogContentTypeExcerptArgs = {
   locale?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -350,6 +366,13 @@ export type BlogContentTypeFilter = {
   blogContent_exists?: InputMaybe<Scalars['Boolean']['input']>;
   blogContent_not_contains?: InputMaybe<Scalars['String']['input']>;
   blogDisplayPicture_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  blogSlug?: InputMaybe<Scalars['String']['input']>;
+  blogSlug_contains?: InputMaybe<Scalars['String']['input']>;
+  blogSlug_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  blogSlug_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  blogSlug_not?: InputMaybe<Scalars['String']['input']>;
+  blogSlug_not_contains?: InputMaybe<Scalars['String']['input']>;
+  blogSlug_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   blogTags_contains_all?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   blogTags_contains_none?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   blogTags_contains_some?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
@@ -375,6 +398,13 @@ export type BlogContentTypeFilter = {
   dateOfBlog_lte?: InputMaybe<Scalars['DateTime']['input']>;
   dateOfBlog_not?: InputMaybe<Scalars['DateTime']['input']>;
   dateOfBlog_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  excerpt?: InputMaybe<Scalars['String']['input']>;
+  excerpt_contains?: InputMaybe<Scalars['String']['input']>;
+  excerpt_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  excerpt_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  excerpt_not?: InputMaybe<Scalars['String']['input']>;
+  excerpt_not_contains?: InputMaybe<Scalars['String']['input']>;
+  excerpt_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   sys?: InputMaybe<SysFilter>;
 };
 
@@ -394,6 +424,8 @@ export type BlogContentTypeLinkingCollectionsEntryCollectionArgs = {
 export enum BlogContentTypeOrder {
   AuthorAsc = 'author_ASC',
   AuthorDesc = 'author_DESC',
+  BlogSlugAsc = 'blogSlug_ASC',
+  BlogSlugDesc = 'blogSlug_DESC',
   BlogTitleAsc = 'blogTitle_ASC',
   BlogTitleDesc = 'blogTitle_DESC',
   DateOfBlogAsc = 'dateOfBlog_ASC',
@@ -672,7 +704,29 @@ export type SysFilter = {
   publishedVersion_not_in?: InputMaybe<Array<InputMaybe<Scalars['Float']['input']>>>;
 };
 
+export type PageBlogPostCollectionQueryVariables = Exact<{ [key: string]: never; }>;
 
+
+export type PageBlogPostCollectionQuery = { __typename?: 'Query', blogContentTypeCollection?: { __typename?: 'BlogContentTypeCollection', items: Array<{ __typename?: 'BlogContentType', blogTitle?: string | null, author?: string | null, dateOfBlog?: any | null, excerpt?: string | null, blogSlug?: string | null, blogTags?: Array<string | null> | null, blogDisplayPicture?: { __typename?: 'Asset', url?: string | null } | null } | null> } | null };
+
+
+export const PageBlogPostCollectionDocument = gql`
+    query pageBlogPostCollection {
+  blogContentTypeCollection {
+    items {
+      blogTitle
+      author
+      dateOfBlog
+      excerpt
+      blogSlug
+      blogTags
+      blogDisplayPicture {
+        url
+      }
+    }
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
@@ -681,7 +735,9 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-
+    pageBlogPostCollection(variables?: PageBlogPostCollectionQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<PageBlogPostCollectionQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<PageBlogPostCollectionQuery>(PageBlogPostCollectionDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'pageBlogPostCollection', 'query');
+    }
   };
 }
 export type Sdk = ReturnType<typeof getSdk>;
