@@ -15,6 +15,7 @@ import {
   MenuButton,
   MenuList,
 } from "@chakra-ui/react";
+import { useCopyToClipboard } from "usehooks-ts";
 
 import {
   FaChevronDown,
@@ -22,6 +23,7 @@ import {
   FaLinkedin,
   FaBars,
   FaChevronUp,
+  FaShare,
 } from "react-icons/fa";
 
 const navItems = [
@@ -136,6 +138,9 @@ const Navbar: React.FC<{ blogPostPage?: boolean }> = ({
   blogPostPage = false,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  // const { onCopy, setValue } = useClipboard("");
+  const [value, copy] = useCopyToClipboard();
+
   const router = useRouter();
 
   return (
@@ -195,6 +200,22 @@ const Navbar: React.FC<{ blogPostPage?: boolean }> = ({
               <Icon size="22px" />
             </Link>
           ))}
+
+          {blogPostPage && (
+            <Link
+              href="#"
+              style={{ textDecoration: "none" }}
+              onClick={(e) => {
+                e.preventDefault();
+
+                if (typeof window !== "undefined") {
+                  copy(window.location.href).catch(console.error);
+                }
+              }}
+            >
+              <FaShare size="22px" />
+            </Link>
+          )}
         </Flex>
       </Flex>
 
