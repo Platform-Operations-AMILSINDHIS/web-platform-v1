@@ -17,6 +17,9 @@ dependencies:
   '@contentful/live-preview':
     specifier: ^2.9.0
     version: 2.9.0(react-dom@18.2.0)(react@18.2.0)
+  '@contentful/rich-text-html-renderer':
+    specifier: ^16.1.1
+    version: 16.1.1
   '@emotion/cache':
     specifier: ^11.11.0
     version: 11.11.0
@@ -104,6 +107,9 @@ dependencies:
   superjson:
     specifier: 1.12.2
     version: 1.12.2
+  swiper:
+    specifier: ^10.2.0
+    version: 10.2.0
   zod:
     specifier: ^3.21.4
     version: 3.21.4
@@ -1900,6 +1906,14 @@ packages:
       lodash.isequal: 4.5.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@contentful/rich-text-html-renderer@16.1.1:
+    resolution: {integrity: sha512-WQUn7g57AZs3JGNC8fCeby3UZVCrAsCsP215ndJL4y2TUg50FIiYIebi7SyNJX4Zd7uwL0Dh2JsW5Itq3rg3tw==}
+    engines: {node: '>=6.0.0'}
+    dependencies:
+      '@contentful/rich-text-types': 16.2.1
+      escape-html: 1.0.3
     dev: false
 
   /@contentful/rich-text-types@16.2.1:
@@ -4437,6 +4451,10 @@ packages:
   /escalade@3.1.1:
     resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
     engines: {node: '>=6'}
+
+  /escape-html@1.0.3:
+    resolution: {integrity: sha512-NiSupZ4OeuGwr68lGIeym/ksIZMJodUGOSCZ/FSnTxcrekbvqrgdUxlJOMpijaKZVjAJrWrGs/6Jy8OMuyj9ow==}
+    dev: false
 
   /escape-string-regexp@1.0.5:
     resolution: {integrity: sha512-vbRorB5FUQWvla16U8R/qgaFIya2qGzwDrNmCZuYKrbdSUMG6I1ZCGQRefkRVhuOkIGVne7BQ35DSfo1qvJqFg==}
@@ -7229,6 +7247,11 @@ packages:
     dependencies:
       tslib: 2.6.1
     dev: true
+
+  /swiper@10.2.0:
+    resolution: {integrity: sha512-nktQsOtBInJjr3f5DicxC8eHYGcLXDVIGPSon0QoXRaO6NjKnATCbQ8SZsD3dN1Ph1RH4EhVPwSYCcuDRFWHGQ==}
+    engines: {node: '>= 4.7.0'}
+    dev: false
 
   /synckit@0.8.5:
     resolution: {integrity: sha512-L1dapNV6vu2s/4Sputv8xGsCdAVlb5nRDMFU/E27D44l5U6cw1g0dGd45uLc+OXjNMmF4ntiMdCimzcjFKQI8Q==}

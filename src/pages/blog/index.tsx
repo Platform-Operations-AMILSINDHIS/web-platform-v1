@@ -1,15 +1,24 @@
-import { type NextPage, GetStaticProps, InferGetStaticPropsType } from "next";
+import type {
+  NextPage,
+  GetStaticProps,
+  GetServerSideProps,
+  InferGetServerSidePropsType,
+} from "next";
 import Link from "next/link";
 import { truncate } from "lodash";
-import type { BlogPost } from "~/types/blog";
-
-import { client } from "~/lib/client";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation } from "swiper/modules";
 
 import Layout from "~/components/layout";
 import { BlogPostThumb } from "~/components/blog/blog-landing";
 
+import { client } from "~/lib/client";
+
 import { eudoxus } from "~/utils/fonts";
-import { PageBlogPostCollectionQuery } from "~/lib/__generated/sdk";
+import type { PageBlogPostCollectionQuery } from "~/lib/__generated/sdk";
+
+import "swiper/css";
+import "swiper/css/navigation";
 
 // const blogPosts = [
 //   {
@@ -54,7 +63,7 @@ import { PageBlogPostCollectionQuery } from "~/lib/__generated/sdk";
 //   },
 // ];
 
-export const getStaticProps: GetStaticProps<{
+export const getServerSideProps: GetServerSideProps<{
   posts: PageBlogPostCollectionQuery;
 }> = async () => {
   const posts = await client.pageBlogPostCollection();
@@ -63,7 +72,7 @@ export const getStaticProps: GetStaticProps<{
 
 const BlogPage = ({
   posts: { blogContentTypeCollection },
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   // blogContentTypeCollection?.items[0].
   const blogPosts = blogContentTypeCollection?.items;
 
@@ -112,11 +121,11 @@ const BlogPage = ({
           {/* Big landing blog post (only for desktop) */}
           {/* TODO: Hide this on mobile */}
           {blogPosts?.length && blogPosts?.length > 0 && (
-            <Link href={`/blog/${blogPosts[0]?.blogSlug}`}>
+            <Link href={`/blog/${blogPosts[0]?.sys.id}`}>
               <div className="cursor-pointer rounded-xl p-6 transition-all hover:-translate-y-1 hover:shadow-lg">
                 <div className="mx-auto select-none">
                   <div
-                    className="h-60 w-full rounded-lg bg-cover bg-center"
+                    className="h-[400px] w-full rounded-lg bg-cover bg-center"
                     style={{
                       backgroundImage: `url("${
                         blogPosts[0]?.blogDisplayPicture?.url ?? undefined
@@ -164,12 +173,12 @@ const BlogPage = ({
           )}
 
           {blogPosts?.length && blogPosts?.length > 1 && (
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-1">
               {/* TODO: Don't slice on mobile, show from 0th index + make post thumbs vertical */}
               {blogPosts.length &&
                 blogPosts.length >= 1 &&
                 blogPosts.slice(1).map((post, i) => (
-                  <Link key={i} href={`/blog/${post?.blogSlug}`}>
+                  <Link key={i} href={`/blog/${post?.sys.id}`}>
                     <BlogPostThumb
                       key={i}
                       orientation="horizontal"
@@ -198,27 +207,46 @@ const BlogPage = ({
           </div>
 
           <div className="mt-6">
-            {blogPosts?.length && blogPosts?.length > 1 && (
-              <div className="grid grid-cols-1 md:grid-cols-3 md:gap-6">
-                {blogPosts.map((post, i) => (
-                  <Link key={i} href={`/blog/${post?.blogSlug}`}>
-                    <BlogPostThumb
-                      key={i}
-                      orientation="vertical"
-                      post={{
-                        title: post?.blogTitle ?? "",
-                        author: post?.author ?? "",
-                        date:
-                          new Date(post?.dateOfBlog as string) ?? new Date(),
-                        excerpt: truncate(post?.excerpt ?? "", { length: 100 }),
-                        tags: post?.blogTags,
-                        image: post?.blogDisplayPicture?.url ?? "",
-                      }}
-                    />
-                  </Link>
-                ))}
-              </div>
-            )}
+            <Swiper
+              spaceBetween={20}
+              slidesPerView={3}
+              modules={[Autoplay, Navigation]}
+              loop={true}
+              autoplay={{
+                delay: 1000,
+                disableOnInteraction: true,
+              }}
+              navigation={true}
+            >
+              {blogPosts?.length && blogPosts?.length > 1 && (
+                <>
+                  {/* <div className="grid grid-cols-1 md:grid-cols-3 md:gap-6"> */}
+                  {blogPosts.map((post, i) => (
+                    <Link key={i} href={`/blog/${post?.sys.id}`}>
+                      <SwiperSlide>
+                        <BlogPostThumb
+                          key={i}
+                          orientation="vertical"
+                          post={{
+                            title: post?.blogTitle ?? "",
+                            author: post?.author ?? "",
+                            date:
+                              new Date(post?.dateOfBlog as string) ??
+                              new Date(),
+                            excerpt: truncate(post?.excerpt ?? "", {
+                              length: 100,
+                            }),
+                            tags: post?.blogTags,
+                            image: post?.blogDisplayPicture?.url ?? "",
+                          }}
+                        />
+                      </SwiperSlide>
+                    </Link>
+                  ))}
+                  {/* </div> */}
+                </>
+              )}
+            </Swiper>
           </div>
         </div>
       </div>

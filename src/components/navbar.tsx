@@ -132,7 +132,9 @@ const NavbarItem: React.FC<{
   );
 };
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC<{ blogPostPage?: boolean }> = ({
+  blogPostPage = false,
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
 
@@ -147,17 +149,37 @@ const Navbar: React.FC = () => {
         align="center"
         justify="space-around"
       >
-        {navItems.map((item, i) => (
-          <NavbarItem
-            key={i}
-            {...item}
-            isActive={
-              router.pathname === item.href ||
-              (item.dropdownItems &&
-                item.dropdownItems.some((i) => i.href === router.pathname))
-            }
-          />
-        ))}
+        {!blogPostPage &&
+          navItems.map((item, i) => (
+            <NavbarItem
+              key={i}
+              {...item}
+              isActive={
+                router.pathname === item.href ||
+                (item.dropdownItems &&
+                  item.dropdownItems.some((i) => i.href === router.pathname))
+              }
+            />
+          ))}
+
+        {/* Reduce distractions on blog post page */}
+        {blogPostPage && (
+          <>
+            {[
+              { name: "Home", href: "/" },
+              { name: "Back to Blogs", href: "/blog" },
+            ].map((item, i) => (
+              <NavbarItem key={i} {...item} isActive={false} />
+            ))}
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </>
+        )}
 
         {/* Social Icons */}
         <Flex gap="1rem">

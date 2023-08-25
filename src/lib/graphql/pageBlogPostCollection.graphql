@@ -4,14 +4,14 @@ query pageBlogPostCollection {
       blogTitle
       author
       dateOfBlog
-      # blogContent {
-      #   json
-      # }
       excerpt
       blogSlug
       blogTags
       blogDisplayPicture {
         url
+      }
+      sys {
+        id
       }
     }
   }

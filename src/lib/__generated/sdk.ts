@@ -721,6 +721,26 @@ export type SysFilter = {
   >;
 };
 
+export type PageBlogPostQueryVariables = Exact<{
+  id: Scalars["String"]["input"];
+}>;
+
+export type PageBlogPostQuery = {
+  __typename?: "Query";
+  blogContentType?: {
+    __typename?: "BlogContentType";
+    blogTitle?: string | null;
+    author?: string | null;
+    dateOfBlog?: any | null;
+    blogTags?: Array<string | null> | null;
+    blogDisplayPicture?: { __typename?: "Asset"; url?: string | null } | null;
+    blogContent?: {
+      __typename?: "BlogContentTypeBlogContent";
+      json: any;
+    } | null;
+  } | null;
+};
+
 export type PageBlogPostCollectionQueryVariables = Exact<{
   [key: string]: never;
 }>;
@@ -738,10 +758,27 @@ export type PageBlogPostCollectionQuery = {
       blogSlug?: string | null;
       blogTags?: Array<string | null> | null;
       blogDisplayPicture?: { __typename?: "Asset"; url?: string | null } | null;
+      sys: { __typename?: "Sys"; id: string };
     } | null>;
   } | null;
 };
 
+export const PageBlogPostDocument = gql`
+  query pageBlogPost($id: String!) {
+    blogContentType(id: $id) {
+      blogTitle
+      author
+      dateOfBlog
+      blogTags
+      blogDisplayPicture {
+        url
+      }
+      blogContent {
+        json
+      }
+    }
+  }
+`;
 export const PageBlogPostCollectionDocument = gql`
   query pageBlogPostCollection {
     blogContentTypeCollection {
@@ -754,6 +791,9 @@ export const PageBlogPostCollectionDocument = gql`
         blogTags
         blogDisplayPicture {
           url
+        }
+        sys {
+          id
         }
       }
     }
@@ -777,6 +817,20 @@ export function getSdk(
   withWrapper: SdkFunctionWrapper = defaultWrapper
 ) {
   return {
+    pageBlogPost(
+      variables: PageBlogPostQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<PageBlogPostQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<PageBlogPostQuery>(PageBlogPostDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        "pageBlogPost",
+        "query"
+      );
+    },
     pageBlogPostCollection(
       variables?: PageBlogPostCollectionQueryVariables,
       requestHeaders?: GraphQLClientRequestHeaders
