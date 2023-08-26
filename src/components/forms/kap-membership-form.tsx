@@ -482,8 +482,8 @@ export const FamilyMemberDetailsSection: React.FC<{
               },
               { label: "Relationship", initialValue: fm.relationship },
               { label: "Occupation", initialValue: fm.occupation },
-              { label: "Age", initialValue: fm.age },
-            ].map(({ label, initialValue }, j) => (
+              { label: "Age", initialValue: fm.age, type: "number" },
+            ].map(({ label, initialValue, type }, j) => (
               <LabelledInput
                 key={j}
                 label={label}
@@ -493,7 +493,11 @@ export const FamilyMemberDetailsSection: React.FC<{
                   const newMembers = [...familyMembers];
                   newMembers[i] = {
                     ...newMembers[i],
-                    [camelCase(label)]: e.target.value ? e.target.value : "",
+                    [camelCase(label)]: e.target.value
+                      ? type === "number"
+                        ? parseInt(e.target.value)
+                        : e.target.value
+                      : "",
                   };
                   setFamilyMembers([...newMembers]);
                 }}
