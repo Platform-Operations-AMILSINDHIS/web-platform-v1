@@ -14,6 +14,7 @@ import {
   Menu,
   MenuButton,
   MenuList,
+  Box,
 } from "@chakra-ui/react";
 import { useCopyToClipboard } from "usehooks-ts";
 
@@ -27,10 +28,10 @@ import {
 } from "react-icons/fa";
 
 const navItems = [
-  {
-    name: "Home",
-    href: "/",
-  },
+  // {
+  //   name: "Home",
+  //   href: "/",
+  // },
   {
     name: "About us",
     href: "/about",
@@ -154,6 +155,9 @@ const Navbar: React.FC<{ blogPostPage?: boolean }> = ({
         align="center"
         justify="space-around"
       >
+        <Box as={Link} href="/" h="auto" w="85px">
+          <img alt="" src="/images/amil-sindhis-logo.png" />
+        </Box>
         {!blogPostPage &&
           navItems.map((item, i) => (
             <NavbarItem
@@ -171,7 +175,7 @@ const Navbar: React.FC<{ blogPostPage?: boolean }> = ({
         {blogPostPage && (
           <>
             {[
-              { name: "Home", href: "/" },
+              // { name: "Home", href: "/" },
               { name: "Back to Blogs", href: "/blog" },
             ].map((item, i) => (
               <NavbarItem key={i} {...item} isActive={false} />
