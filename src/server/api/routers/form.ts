@@ -7,7 +7,7 @@ import {
 
 import { kapMembershipFormValuesSchema } from "../../schemas";
 
-import { sendRawJsonData } from "../../mail";
+import { sendFormConfirmationMail, sendRawJsonData } from "../../mail";
 
 export const formRouter = createTRPCRouter({
   kapMembership: publicProcedure
@@ -17,8 +17,15 @@ export const formRouter = createTRPCRouter({
 
       console.log({ formData });
 
+      // Send response
       await sendRawJsonData("somesh.kar@gmail.com", formData);
       await sendRawJsonData("akshat.sabavat@gmail.com", formData);
+
+      // Send confirmation mail
+      await sendFormConfirmationMail(
+        formData.personalInfo.emailId,
+        "Khudabadi Amil Panchayat Membership"
+      );
 
       return {
         greeting: `Hello`,

@@ -40,3 +40,15 @@ export async function sendRawJsonData(to: string, data: any) {
 
   await sendMail(to, subject, html);
 }
+
+export async function sendFormConfirmationMail(to: string, formName: string) {
+  const subject = `Thank you for submitting the ${formName} form!`;
+
+  const html = `
+    <div style="font-size: 16px;">
+      <p>Your response to the ${formName} form has been successfully recorded. We will get back to you shortly.</p>
+    </div>
+  `;
+
+  await sendMail(to, subject, html);
+}
