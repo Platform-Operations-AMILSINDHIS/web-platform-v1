@@ -167,7 +167,7 @@ const BlogPage = ({
                 delay: 1000,
                 disableOnInteraction: true,
               }}
-              navigation={true}
+              navigation={false}
             >
               {blogPosts?.length && blogPosts?.length > 1 && (
                 <>
