@@ -20,49 +20,6 @@ import type { PageBlogPostCollectionQuery } from "~/lib/__generated/sdk";
 import "swiper/css";
 import "swiper/css/navigation";
 
-// const blogPosts = [
-//   {
-//     title: "Conversations with the Amil Folk",
-//     author: "Karan Kishore",
-//     // date: "13 Feb 2023",
-//     date: new Date("02/13/2023"), // this is mm/dd/yyyy, NOT dd/mm/yyyy
-//     excerpt:
-//       "Amongst Sindhi Hindus, socially this clan ranks first in the hierarchical ranking among followed by Bhaiband.[2] The Amils held the highest administrative offices under Muslim ...",
-//     tags: ["History", "Tradition", "Blog"],
-//     image: "/images/blog-post-1.jpg",
-//   },
-//   {
-//     title: "Khadjyun ji mithai",
-//     author: "Karan Kishore",
-//     // date: "01 Jan 2021",
-//     date: new Date("01/01/2021"),
-//     excerpt:
-//       "The Union began pasteurizing milk in June 1948, for the Bombay Milk Scheme...",
-//     tags: ["Tradition", "Food", "Blog"],
-//     image: "/images/blog-post-2.jpg",
-//   },
-//   {
-//     title: "The Amil Gandhi Mohan Jhanglani",
-//     author: "Snigdha Kapoor",
-//     // date: "30 Dec 2020",
-//     date: new Date("12/30/2020"),
-//     excerpt:
-//       "Mohan Jhangiani was the youngest of ten children. The family lived in Lahore... ",
-//     tags: ["History", "Blog"],
-//     image: "/images/blog-post-3.jpg",
-//   },
-//   {
-//     title: "Hyderabad, Sind.",
-//     author: "Snigdha Kapoor",
-//     // date: "13 Feb 2023",
-//     date: new Date("02/13/2023"),
-//     excerpt:
-//       "Mohan Jhangiani was the youngest of ten children. The family lived in Lahore... ",
-//     tags: ["History", "Blog"],
-//     image: "/images/blog-post-4.jpg",
-//   },
-// ];
-
 export const getServerSideProps: GetServerSideProps<{
   posts: PageBlogPostCollectionQuery;
 }> = async () => {
@@ -83,12 +40,6 @@ const BlogPage = ({
       </Layout>
     );
   }
-
-  // return (
-  //   <Layout title="Blog">
-  //     <pre>{JSON.stringify(blogPosts, null, 2)}</pre>
-  //   </Layout>
-  // );
 
   return (
     <Layout title="Blog">
