@@ -19,6 +19,7 @@ import type { PageBlogPostCollectionQuery } from "~/lib/__generated/sdk";
 
 import "swiper/css";
 import "swiper/css/navigation";
+import HeroSection from "~/sections/BlogsPage/HeroSection";
 
 export const getServerSideProps: GetServerSideProps<{
   posts: PageBlogPostCollectionQuery;
@@ -43,24 +44,7 @@ const BlogPage = ({
 
   return (
     <Layout title="Blog">
-      <div className="mx-auto max-w-screen-lg text-center text-[#1F2937]">
-        {/* Hero */}
-        <div
-          className={`${eudoxus.variable} mt-16 font-heading text-3xl font-bold leading-normal md:text-7xl`}
-        >
-          Amil Blogs, <span className="text-[#0079FF]">Samachar &</span>{" "}
-          Publications all in{" "}
-          <span className="underline decoration-[#FFB84C] decoration-8">
-            one place
-          </span>
-        </div>
-        <div className="mx-auto mt-4 max-w-xl text-lg">
-          Subscribe to our amil blogs, samachar and publications today and stay
-          up to date with all amil related news
-        </div>
-      </div>
-
-      {/* Recent blog posts section */}
+      <HeroSection />
       <div className="my-6">
         <div
           className={`${eudoxus.variable} font-heading text-2xl font-bold text-[#1F2937]`}

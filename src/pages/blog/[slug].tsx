@@ -30,16 +30,6 @@ export const getServerSideProps: GetServerSideProps<{
 const BlogPostPage = ({
   post: { blogContentType },
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  // return (
-  //   <Layout
-  //     title={
-  //       blogContentType?.blogTitle ? blogContentType?.blogTitle : "Blog Post"
-  //     }
-  //   >
-  //     <pre>{JSON.stringify(blogContentType, null, 2)}</pre>
-  //   </Layout>
-  // );
-
   return (
     <Layout
       title={
