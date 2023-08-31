@@ -3,10 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface sectionProps {
-  ImageURL: string;
+  imageUrl: string;
 }
 
-const DonationsSection = ({ ImageURL }: sectionProps) => {
+const DonationsSection = ({ imageUrl }: sectionProps) => {
   return (
     <>
       <Spacer h="8rem" />
@@ -21,7 +21,7 @@ const DonationsSection = ({ ImageURL }: sectionProps) => {
 
         <Flex align="center" justify={"space-between"}>
           <Box>
-            <Image alt="donation pic" width={1500} height={0} src={ImageURL} />
+            <Image alt="donation pic" width={1500} height={0} src={imageUrl} />
           </Box>
           <Box>
             <Text lineHeight="30px">

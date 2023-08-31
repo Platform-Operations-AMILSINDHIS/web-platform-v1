@@ -11,14 +11,14 @@ import Link from "next/link";
 import { EventThumb } from "~/components/events";
 
 interface sectionProps {
-  EventPics: {
+  eventPics: {
     image: string;
     date: Date;
     title: string;
   }[];
 }
 
-const CuriousSection = ({ EventPics }: sectionProps) => {
+const CuriousSection = ({ eventPics }: sectionProps) => {
   return (
     <>
       <Spacer h="8rem" />
@@ -54,7 +54,7 @@ const CuriousSection = ({ EventPics }: sectionProps) => {
         </Grid>
         <Spacer h="3rem" />
         <Grid templateColumns="repeat(3, 1fr)" gap="3rem">
-          {EventPics.map((event, i) => (
+          {eventPics.map((event, i) => (
             <EventThumb key={i} {...event} />
           ))}
         </Grid>

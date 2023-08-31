@@ -15,6 +15,17 @@ import {
   Box,
   UnorderedList,
   ListItem,
+  Step,
+  StepDescription,
+  StepIcon,
+  StepIndicator,
+  StepNumber,
+  StepSeparator,
+  StepStatus,
+  StepTitle,
+  Stepper,
+  useSteps,
+  useToast,
 } from "@chakra-ui/react";
 import { FaHandHoldingHeart, FaUserFriends } from "react-icons/fa";
 import { ArrowBackIcon, ArrowForwardIcon, CloseIcon } from "@chakra-ui/icons";
@@ -39,12 +50,32 @@ import { Formik, Form } from "formik";
 
 import { api } from "~/utils/api";
 
-const KhudabadiAmilPanchayatMembershipForm: React.FC<{
-  activeStep: number;
-  isSubmitted: boolean;
-}> = ({ activeStep, isSubmitted }) => {
-  const formMut = api.form.kapMembership.useMutation();
+const steps = [
+  {
+    title: "Step 1",
+    description: "Personal Information",
+  },
+  {
+    title: "Step 2",
+    description: "Address Details",
+  },
+  {
+    title: "Step 3",
+    description: "Membership Details",
+  },
+  {
+    title: "Step 4",
+    description: "Family Members",
+  },
+  {
+    title: "Step 5",
+    description: "Proposer Details",
+  },
+];
+
+const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
   // TODO: Setup global formState for all the Formik forms to mutate onSubmit, maybe use Jotai for this
+  const toast = useToast();
 
   const [formState, setFormState] = useState<KAPMembershipFormValues>({
     personalInfo: {
@@ -86,21 +117,51 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC<{
     },
   });
 
+  const { activeStep, setActiveStep } = useSteps({
+    index: 1,
+    count: steps.length,
+  });
+
+  const formMut = api.form.kapMembership.useMutation();
+
   // Logger
   useEffect(
     () => console.log(JSON.stringify(formState.personalInfo, null, 2)),
     [formState]
   );
 
-  useEffect(() => {
-    if (isSubmitted && formMut.status === "idle") {
-      console.log(JSON.stringify(formState.proposerInfo, null, 2));
-      formMut.mutate({ formData: formState });
-    }
-  }, [isSubmitted, formState, formMut]);
+  // useEffect(() => {
+  //   if (isSubmitted && formMut.status === "idle") {
+  //     console.log(JSON.stringify(formState.proposerInfo, null, 2));
+  //     formMut.mutate({ formData: formState });
+  //   }
+  // }, [isSubmitted, formState, formMut]);
 
   return (
     <>
+      <Stepper index={activeStep}>
+        {steps.map(({ title, description }, index) => (
+          <Step key={index}>
+            <StepIndicator>
+              <StepStatus
+                complete={<StepIcon />}
+                incomplete={<StepNumber />}
+                active={<StepNumber />}
+              />
+            </StepIndicator>
+
+            <Box flexShrink="0">
+              <StepTitle>{title}</StepTitle>
+              <StepDescription>{description}</StepDescription>
+            </Box>
+
+            <StepSeparator />
+          </Step>
+        ))}
+      </Stepper>
+
+      <Spacer h="2rem" />
+
       {activeStep === 1 && (
         <PersonalInformationSection
           initialValues={formState.personalInfo}
@@ -145,6 +206,54 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC<{
           }
         />
       )}
+
+      <Spacer h="2rem" />
+
+      {/* Navigation buttons */}
+      <Flex justify="space-between">
+        {activeStep > 1 ? (
+          <Button
+            leftIcon={<ArrowBackIcon />}
+            size="lg"
+            onClick={() => setActiveStep(activeStep - 1)}
+          >
+            Previous
+          </Button>
+        ) : (
+          <div></div>
+        )}
+
+        <Button
+          colorScheme="blue"
+          rightIcon={
+            activeStep !== steps.length ? <ArrowForwardIcon /> : undefined
+          }
+          size="lg"
+          isLoading={formMut.isLoading}
+          onClick={
+            activeStep === steps.length
+              ? () => {
+                  console.log("submit here");
+                  formMut
+                    .mutateAsync({ formData: formState })
+                    .then(() => {
+                      toast({
+                        title: "Response recorded successfully",
+                        description: "Your form response has been recorded.",
+                        status: "success",
+                        duration: 9000,
+                        isClosable: true,
+                      });
+                    })
+                    .catch(console.error);
+                }
+              : () => setActiveStep(activeStep + 1)
+          }
+        >
+          {/* Next */}
+          {activeStep === steps.length ? "Submit" : "Next"}
+        </Button>
+      </Flex>
     </>
   );
 };
@@ -373,8 +482,8 @@ export const FamilyMemberDetailsSection: React.FC<{
               },
               { label: "Relationship", initialValue: fm.relationship },
               { label: "Occupation", initialValue: fm.occupation },
-              { label: "Age", initialValue: fm.age },
-            ].map(({ label, initialValue }, j) => (
+              { label: "Age", initialValue: fm.age, type: "number" },
+            ].map(({ label, initialValue, type }, j) => (
               <LabelledInput
                 key={j}
                 label={label}
@@ -384,7 +493,11 @@ export const FamilyMemberDetailsSection: React.FC<{
                   const newMembers = [...familyMembers];
                   newMembers[i] = {
                     ...newMembers[i],
-                    [camelCase(label)]: e.target.value ? e.target.value : "",
+                    [camelCase(label)]: e.target.value
+                      ? type === "number"
+                        ? parseInt(e.target.value)
+                        : e.target.value
+                      : "",
                   };
                   setFamilyMembers([...newMembers]);
                 }}

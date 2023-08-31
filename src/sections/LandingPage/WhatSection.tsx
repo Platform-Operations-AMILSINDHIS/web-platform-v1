@@ -4,10 +4,10 @@ import { useRouter } from "next/router";
 import { FaArrowCircleRight } from "react-icons/fa";
 
 interface sectionProps {
-  ImageURL: string;
+  imageUrl: string;
 }
 
-const WhatSection = ({ ImageURL }: sectionProps) => {
+const WhatSection = ({ imageUrl }: sectionProps) => {
   const router = useRouter();
 
   return (
@@ -22,7 +22,7 @@ const WhatSection = ({ ImageURL }: sectionProps) => {
         align="center"
       >
         <Flex gap={20} align={"center"}>
-          <Image width={550} height={0} alt="" src={ImageURL} />
+          <Image width={550} height={0} alt="" src={imageUrl} />
 
           <Flex flexDir="column" maxW="600px">
             <Heading color="white" fontWeight="bold" fontSize="7xl">

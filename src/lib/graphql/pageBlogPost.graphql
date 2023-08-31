@@ -1,0 +1,14 @@
+query pageBlogPost($id: String!) {
+  blogContentType(id: $id) {
+    blogTitle
+    author
+    dateOfBlog
+    blogTags
+    blogDisplayPicture {
+      url
+    }
+    blogContent {
+      json
+    }
+  }
+}

@@ -3,6 +3,6 @@ export interface BlogPost {
   author: string;
   date: Date;
   excerpt: string;
-  tags: string[];
+  tags?: (string | null)[] | null;
   image: string;
 }

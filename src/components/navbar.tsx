@@ -15,6 +15,7 @@ import {
   MenuButton,
   MenuList,
 } from "@chakra-ui/react";
+import { useCopyToClipboard } from "usehooks-ts";
 
 import {
   FaChevronDown,
@@ -22,6 +23,7 @@ import {
   FaLinkedin,
   FaBars,
   FaChevronUp,
+  FaShare,
 } from "react-icons/fa";
 
 const navItems = [
@@ -132,8 +134,13 @@ const NavbarItem: React.FC<{
   );
 };
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC<{ blogPostPage?: boolean }> = ({
+  blogPostPage = false,
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  // const { onCopy, setValue } = useClipboard("");
+  const [value, copy] = useCopyToClipboard();
+
   const router = useRouter();
 
   return (
@@ -147,17 +154,37 @@ const Navbar: React.FC = () => {
         align="center"
         justify="space-around"
       >
-        {navItems.map((item, i) => (
-          <NavbarItem
-            key={i}
-            {...item}
-            isActive={
-              router.pathname === item.href ||
-              (item.dropdownItems &&
-                item.dropdownItems.some((i) => i.href === router.pathname))
-            }
-          />
-        ))}
+        {!blogPostPage &&
+          navItems.map((item, i) => (
+            <NavbarItem
+              key={i}
+              {...item}
+              isActive={
+                router.pathname === item.href ||
+                (item.dropdownItems &&
+                  item.dropdownItems.some((i) => i.href === router.pathname))
+              }
+            />
+          ))}
+
+        {/* Reduce distractions on blog post page */}
+        {blogPostPage && (
+          <>
+            {[
+              { name: "Home", href: "/" },
+              { name: "Back to Blogs", href: "/blog" },
+            ].map((item, i) => (
+              <NavbarItem key={i} {...item} isActive={false} />
+            ))}
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </>
+        )}
 
         {/* Social Icons */}
         <Flex gap="1rem">
@@ -173,6 +200,22 @@ const Navbar: React.FC = () => {
               <Icon size="22px" />
             </Link>
           ))}
+
+          {blogPostPage && (
+            <Link
+              href="#"
+              style={{ textDecoration: "none" }}
+              onClick={(e) => {
+                e.preventDefault();
+
+                if (typeof window !== "undefined") {
+                  copy(window.location.href).catch(console.error);
+                }
+              }}
+            >
+              <FaShare size="22px" />
+            </Link>
+          )}
         </Flex>
       </Flex>
 
