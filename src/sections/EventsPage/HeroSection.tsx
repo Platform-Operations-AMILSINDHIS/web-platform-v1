@@ -1,5 +1,5 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
-import EventHeroCard from "~/components/events/eventsHeroCard";
+import { Box, Flex } from "@chakra-ui/react";
+import EventHeroCard from "~/components/events/EventsHeroCard";
 
 const HeroSection = () => {
   return (
