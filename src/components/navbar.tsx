@@ -25,6 +25,10 @@ import {
   FaBars,
   FaChevronUp,
   FaShare,
+  FaInstagram,
+  FaFacebook,
+  FaYoutube,
+  FaWhatsapp,
 } from "react-icons/fa";
 
 const navItems = [
@@ -194,10 +198,29 @@ const Navbar: React.FC<{ blogPostPage?: boolean }> = ({
         <Flex gap="1rem">
           {/* TODO: Put actual social links here */}
           {[
-            { Icon: FaTwitter, href: "#" },
+            // {
+            //   Icon: FaInstagram,
+            //   href: "https://instagram.com/kapofbombay?igshid=MzNlNGNkZWQ4Mg==",
+            // },
+            {
+              Icon: FaFacebook,
+              href: "https://www.facebook.com/profile.php?id=100064879084375&mibextid=ZbWKwL",
+            },
+            // {
+            //   Icon: FaTwitter,
+            //   href: "https://twitter.com/amilsindhis?t=AqSLK-YMEZevOcieUMwcvw&s=09",
+            // },
             {
               Icon: FaLinkedin,
-              href: "#",
+              href: "https://www.linkedin.com/in/the-khudabadi-amil-panchayat-of-bombay-836830251",
+            },
+            // {
+            //   Icon: FaYoutube,
+            //   href: "https://youtube.com/@thekhudabadiamilpanchayato3151",
+            // },
+            {
+              Icon: FaWhatsapp,
+              href: "https://wa.me/message/QESQXVMVI4RAD1",
             },
           ].map(({ Icon, href }, i) => (
             <Link key={i} href={href} style={{ textDecoration: "none" }}>
