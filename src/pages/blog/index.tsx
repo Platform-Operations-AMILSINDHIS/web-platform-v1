@@ -19,49 +19,7 @@ import type { PageBlogPostCollectionQuery } from "~/lib/__generated/sdk";
 
 import "swiper/css";
 import "swiper/css/navigation";
-
-// const blogPosts = [
-//   {
-//     title: "Conversations with the Amil Folk",
-//     author: "Karan Kishore",
-//     // date: "13 Feb 2023",
-//     date: new Date("02/13/2023"), // this is mm/dd/yyyy, NOT dd/mm/yyyy
-//     excerpt:
-//       "Amongst Sindhi Hindus, socially this clan ranks first in the hierarchical ranking among followed by Bhaiband.[2] The Amils held the highest administrative offices under Muslim ...",
-//     tags: ["History", "Tradition", "Blog"],
-//     image: "/images/blog-post-1.jpg",
-//   },
-//   {
-//     title: "Khadjyun ji mithai",
-//     author: "Karan Kishore",
-//     // date: "01 Jan 2021",
-//     date: new Date("01/01/2021"),
-//     excerpt:
-//       "The Union began pasteurizing milk in June 1948, for the Bombay Milk Scheme...",
-//     tags: ["Tradition", "Food", "Blog"],
-//     image: "/images/blog-post-2.jpg",
-//   },
-//   {
-//     title: "The Amil Gandhi Mohan Jhanglani",
-//     author: "Snigdha Kapoor",
-//     // date: "30 Dec 2020",
-//     date: new Date("12/30/2020"),
-//     excerpt:
-//       "Mohan Jhangiani was the youngest of ten children. The family lived in Lahore... ",
-//     tags: ["History", "Blog"],
-//     image: "/images/blog-post-3.jpg",
-//   },
-//   {
-//     title: "Hyderabad, Sind.",
-//     author: "Snigdha Kapoor",
-//     // date: "13 Feb 2023",
-//     date: new Date("02/13/2023"),
-//     excerpt:
-//       "Mohan Jhangiani was the youngest of ten children. The family lived in Lahore... ",
-//     tags: ["History", "Blog"],
-//     image: "/images/blog-post-4.jpg",
-//   },
-// ];
+import HeroSection from "~/sections/BlogsPage/HeroSection";
 
 export const getServerSideProps: GetServerSideProps<{
   posts: PageBlogPostCollectionQuery;
@@ -84,32 +42,9 @@ const BlogPage = ({
     );
   }
 
-  // return (
-  //   <Layout title="Blog">
-  //     <pre>{JSON.stringify(blogPosts, null, 2)}</pre>
-  //   </Layout>
-  // );
-
   return (
     <Layout title="Blog">
-      <div className="mx-auto max-w-screen-lg text-center text-[#1F2937]">
-        {/* Hero */}
-        <div
-          className={`${eudoxus.variable} mt-16 font-heading text-3xl font-bold leading-normal md:text-7xl`}
-        >
-          Amil Blogs, <span className="text-[#0079FF]">Samachar &</span>{" "}
-          Publications all in{" "}
-          <span className="underline decoration-[#FFB84C] decoration-8">
-            one place
-          </span>
-        </div>
-        <div className="mx-auto mt-4 max-w-xl text-lg">
-          Subscribe to our amil blogs, samachar and publications today and stay
-          up to date with all amil related news
-        </div>
-      </div>
-
-      {/* Recent blog posts section */}
+      <HeroSection />
       <div className="my-6">
         <div
           className={`${eudoxus.variable} font-heading text-2xl font-bold text-[#1F2937]`}
@@ -216,7 +151,7 @@ const BlogPage = ({
                 delay: 1000,
                 disableOnInteraction: true,
               }}
-              navigation={true}
+              navigation={false}
             >
               {blogPosts?.length && blogPosts?.length > 1 && (
                 <>

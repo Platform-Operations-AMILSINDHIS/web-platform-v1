@@ -1,10 +1,11 @@
 import type { NextPage } from "next";
 import Layout from "~/components/layout";
+import HeroSection from "~/sections/EventsPage/HeroSection";
 
 const EventsPage: NextPage = () => {
   return (
-    <Layout title="Home">
-      <div>hi, this is the events page</div>
+    <Layout title="Events">
+      <HeroSection />
     </Layout>
   );
 };
