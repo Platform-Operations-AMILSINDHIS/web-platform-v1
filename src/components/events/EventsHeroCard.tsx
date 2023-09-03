@@ -1,4 +1,5 @@
 import { Box, Button, Flex, Text, color } from "@chakra-ui/react";
+import LinkButton from "../buttons/LinkButton";
 
 const CardBgImage = "/images/backgrounds/julian-myles-3G6Eu4Hh8gE-unsplash.jpg";
 
@@ -38,8 +39,8 @@ const EventHeroCard = () => {
           </Text>
         </Flex>
         <Flex align="center" gap={3}>
-          <Button>Explore</Button>
-          <Button>Gallery</Button>
+          <LinkButton CTATheme={false} CTAlink="./" CTAlabel="Explore" />
+          <LinkButton CTAlink="./" CTAlabel="Gallery" />
         </Flex>
       </Flex>
     </Box>
