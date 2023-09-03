@@ -13,12 +13,13 @@ const EventHeroCard = () => {
       alignItems="flex-start"
       my={10}
       p="65px"
-      bg="red"
       boxShadow={"0px 6px 0px 0px rgba(31, 41, 55, 0.27)"}
     >
       <Flex gap={7} flexDir="column">
         <Flex flexDir="column">
-          <Text fontSize="md">Amil Events & Drives</Text>
+          <Text className="primary-accent-indicators" fontSize="md">
+            Amil Events & Drives
+          </Text>
           <Text fontWeight={600} fontSize={"5xl"}>
             Attend connect & explore
           </Text>
