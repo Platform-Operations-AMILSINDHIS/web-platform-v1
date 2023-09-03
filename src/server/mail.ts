@@ -2,6 +2,11 @@
 import nodemailer from "nodemailer";
 
 import { env } from "~/env.mjs";
+import {
+  ConfirmationMailType,
+  RSVPMailType,
+  sendMailType,
+} from "~/types/mails";
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -13,7 +18,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export async function sendMail(to: string, subject: string, html?: string) {
+export const sendMail = async ({ to, subject, html }: sendMailType) => {
   const info = await transporter.sendMail({
     from: '"Amil Sindhis" <amilsindhis@gmail.com>',
     to,
@@ -22,7 +27,7 @@ export async function sendMail(to: string, subject: string, html?: string) {
   });
 
   console.log("Message sent: %s", info.messageId);
-}
+};
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 export async function sendRawJsonData(to: string, data: any) {
@@ -38,10 +43,13 @@ export async function sendRawJsonData(to: string, data: any) {
     </div>
   `;
 
-  await sendMail(to, subject, html);
+  await sendMail({ to, subject, html });
 }
 
-export async function sendFormConfirmationMail(to: string, formName: string) {
+export const sendFormConfirmationMail = async ({
+  to,
+  formName,
+}: ConfirmationMailType) => {
   const subject = `Thank you for submitting the ${formName} form!`;
 
   const html = `
@@ -50,14 +58,14 @@ export async function sendFormConfirmationMail(to: string, formName: string) {
     </div>
   `;
 
-  await sendMail(to, subject, html);
-}
+  await sendMail({ to, subject, html });
+};
 
-export async function sendRSVPMailForEvent(
-  to: string,
-  eventTitle: string,
-  eventDate: Date
-) {
+export const sendRSVPMailForEvent = async ({
+  to,
+  eventTitle,
+  eventDate,
+}: RSVPMailType) => {
   const subject = `RSVP confirmation for ${eventTitle}, held on ${eventDate}`;
 
   const html = `
@@ -66,5 +74,5 @@ export async function sendRSVPMailForEvent(
   </div>
   `;
 
-  await sendMail(to, subject, html);
-}
+  await sendMail({ to, subject, html });
+};
