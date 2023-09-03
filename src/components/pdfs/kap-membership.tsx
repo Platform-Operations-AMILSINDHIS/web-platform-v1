@@ -215,6 +215,126 @@ const KAPMembershipPDF: React.FC<{
                 </View>
               </View>
             </View>
+
+            <View style={{ ...styles.connectedSectionRow, height: 70 }}>
+              <View
+                style={{
+                  ...styles.centerTextWithBorder,
+                  width: "15%",
+                  gap: 1,
+                }}
+              >
+                <Text style={{ fontSize: 10 }}>Residential</Text>
+                <Text style={{ fontSize: 10 }}>Address</Text>
+              </View>
+
+              <View
+                style={{
+                  flexDirection: "column",
+                  width: "100%",
+                }}
+              >
+                <View style={{ ...styles.rightTextWithBorder, height: "25%" }}>
+                  <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
+                    {kapForm.addressInfo.residentialAddress.addressLine1.toUpperCase()}
+                  </Text>
+                </View>
+                <View style={{ ...styles.rightTextWithBorder, height: "25%" }}>
+                  <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
+                    {kapForm.addressInfo.residentialAddress.addressLine2.toUpperCase()}
+                  </Text>
+                </View>
+                <View style={{ ...styles.rightTextWithBorder, height: "25%" }}>
+                  <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
+                    {kapForm.addressInfo.residentialAddress.addressLine3.toUpperCase()}
+                  </Text>
+                </View>
+                <View style={{ flexDirection: "row", height: "25%" }}>
+                  <View
+                    style={{ ...styles.centerTextWithBorder, width: "15%" }}
+                  >
+                    <Text style={{ fontSize: 10 }}>Pin Code</Text>
+                  </View>
+                  <View style={{ ...styles.rightTextWithBorder, width: "35%" }}>
+                    <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
+                      {kapForm.addressInfo.residentialAddress.pinCode.toUpperCase()}
+                    </Text>
+                  </View>
+                  <View
+                    style={{ ...styles.centerTextWithBorder, width: "15%" }}
+                  >
+                    <Text style={{ fontSize: 10 }}>Tel no.</Text>
+                  </View>
+                  <View style={{ ...styles.rightTextWithBorder, width: "35%" }}>
+                    <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
+                      {kapForm.personalInfo.mobileNumber.toUpperCase()}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+
+            <View style={{ ...styles.connectedSectionRow, height: 70 }}>
+              <View
+                style={{
+                  ...styles.centerTextWithBorder,
+                  width: "15%",
+                  gap: 1,
+                }}
+              >
+                <Text style={{ fontSize: 10 }}>Office</Text>
+                <Text style={{ fontSize: 10 }}>Address</Text>
+              </View>
+
+              <View
+                style={{
+                  flexDirection: "column",
+                  width: "100%",
+                }}
+              >
+                <View style={{ ...styles.rightTextWithBorder, height: "25%" }}>
+                  <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
+                    {kapForm.addressInfo.officeAddress?.addressLine1.toUpperCase() ??
+                      ""}
+                  </Text>
+                </View>
+                <View style={{ ...styles.rightTextWithBorder, height: "25%" }}>
+                  <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
+                    {kapForm.addressInfo.officeAddress?.addressLine2.toUpperCase() ??
+                      ""}
+                  </Text>
+                </View>
+                <View style={{ ...styles.rightTextWithBorder, height: "25%" }}>
+                  <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
+                    {kapForm.addressInfo.officeAddress?.addressLine3.toUpperCase() ??
+                      ""}
+                  </Text>
+                </View>
+                <View style={{ flexDirection: "row", height: "25%" }}>
+                  <View
+                    style={{ ...styles.centerTextWithBorder, width: "15%" }}
+                  >
+                    <Text style={{ fontSize: 10 }}>Pin Code</Text>
+                  </View>
+                  <View style={{ ...styles.rightTextWithBorder, width: "35%" }}>
+                    <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
+                      {kapForm.addressInfo.officeAddress?.pinCode.toUpperCase() ??
+                        ""}
+                    </Text>
+                  </View>
+                  <View
+                    style={{ ...styles.centerTextWithBorder, width: "15%" }}
+                  >
+                    <Text style={{ fontSize: 10 }}>Tel no.</Text>
+                  </View>
+                  <View style={{ ...styles.rightTextWithBorder, width: "35%" }}>
+                    <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
+                      {kapForm.personalInfo.mobileNumber.toUpperCase()}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
           </View>
 
           {/* <View style={styles.section}>
