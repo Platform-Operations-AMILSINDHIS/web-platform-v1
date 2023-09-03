@@ -52,3 +52,19 @@ export async function sendFormConfirmationMail(to: string, formName: string) {
 
   await sendMail(to, subject, html);
 }
+
+export async function sendRSVPMailForEvent(
+  to: string,
+  eventTitle: string,
+  eventDate: Date
+) {
+  const subject = `RSVP confirmation for ${eventTitle}, held on ${eventDate}`;
+
+  const html = `
+  <div style="font-size: 16px;">
+      <p>Hey there thank you for showing intrest in our event, attached below is your uniquely generated RSVP token that is to be shown prior to entering the event</p>
+  </div>
+  `;
+
+  await sendMail(to, subject, html);
+}
