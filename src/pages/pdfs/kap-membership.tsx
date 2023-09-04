@@ -32,6 +32,12 @@ const dummyKapForm: KAPMembershipFormValues = {
       addressLine3: "Rajajinagar",
       pinCode: "560010",
     },
+    officeAddress: {
+      addressLine1: "567, 3rd Floor",
+      addressLine2: "Devika Tower, Elm Street",
+      addressLine3: "Gopalapuram",
+      pinCode: "560020",
+    },
   },
   membershipInfo: {
     membershipType: "life-member",
