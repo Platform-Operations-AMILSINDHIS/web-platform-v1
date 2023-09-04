@@ -22,7 +22,7 @@ const EventHeroCard = () => {
           <Text fontWeight={600} fontSize={"5xl"}>
             Attend connect & explore
           </Text>
-          <Text maxW={700} fontSize="md">
+          <Text maxW={650} fontSize="md">
             Join us in our mission to foster unity, celebrate our rich Sindhi
             heritage, and empower the Amil Sindhi community through a series of
             captivating events. RSVP Today or find out more
