@@ -17,7 +17,7 @@ const HeroSection = () => {
           </span>
         </p>
       </div>
-      <div className="mx-auto max-w-3xl text-lg">
+      <div className="mx-auto max-w-4xl text-xl font-medium">
         The Khudabadi Amil Panchayat of Bombay, is a registered Non&mdash;Profit
         Charitable Trust that aims to provide assistance to underprivileged
         Sindhis displaced from Sindh and to bring the Sindhi Amil community
