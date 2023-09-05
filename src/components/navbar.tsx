@@ -158,6 +158,7 @@ const Navbar: React.FC<{ blogPostPage?: boolean }> = ({
         mx="auto"
         align="center"
         justify="space-around"
+        fontWeight={400}
       >
         <Box as={Link} href="/" h="auto" w="85px">
           <img alt="" src="/images/amil-sindhis-logo.png" />

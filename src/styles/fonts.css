@@ -48,3 +48,43 @@
   font-style: normal;
   font-display: block;
 }
+
+@font-face {
+  font-family: satoshi sans;
+  src: url("../assets/fonts/Satoshi-Light.ttf");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: satoshi sans;
+  src: url("../assets/fonts/Satoshi-Regular.ttf");
+  font-weight: 500;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: satoshi sans;
+  src: url("../assets/fonts/Satoshi-Medium.ttf");
+  font-weight: 600;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: satoshi sans;
+  src: url("../assets/fonts/Satoshi-Bold.ttf");
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: satoshi sans;
+  src: url("../assets/fonts/Satoshi-Black.ttf");
+  font-weight: 800;
+  font-style: normal;
+  font-display: block;
+}
