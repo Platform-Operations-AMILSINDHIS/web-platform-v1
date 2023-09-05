@@ -1,14 +1,14 @@
 import { Button, Flex, Spacer } from "@chakra-ui/react";
 import Link from "next/link";
-import { eudoxus } from "~/utils/fonts";
+import { satoshi } from "~/utils/fonts";
 
 const HeroSection = () => {
   return (
-    <div className="mx-auto mt-16 flex max-w-screen-lg flex-col gap-y-10 text-center text-[#1F2937]">
+    <div
+      className={`${satoshi.variable} mx-auto mt-16 flex max-w-screen-lg flex-col gap-y-10 text-center text-[#1F2937]`}
+    >
       {/* Hero */}
-      <div
-        className={`${eudoxus.variable} flex-col font-heading text-3xl font-bold leading-5 md:text-7xl`}
-      >
+      <div className="flex-col font-heading text-3xl font-semibold leading-5 md:text-7xl">
         Preserving sindhi culture,
         <p className="mt-5">
           <span className="text-[#0079FF]">language</span> & history{" "}
@@ -17,7 +17,7 @@ const HeroSection = () => {
           </span>
         </p>
       </div>
-      <div className="mx-auto max-w-4xl text-xl font-medium">
+      <div className="mx-auto max-w-4xl text-xl">
         The Khudabadi Amil Panchayat of Bombay, is a registered Non&mdash;Profit
         Charitable Trust that aims to provide assistance to underprivileged
         Sindhis displaced from Sindh and to bring the Sindhi Amil community

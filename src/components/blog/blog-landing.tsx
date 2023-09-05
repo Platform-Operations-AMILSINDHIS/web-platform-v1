@@ -1,8 +1,6 @@
 import { truncate } from "lodash";
 import type { BlogPost } from "~/types/blog";
 
-import { eudoxus } from "~/utils/fonts";
-
 export const BlogPostThumb: React.FC<{
   post: BlogPost;
   orientation: "horizontal" | "vertical";

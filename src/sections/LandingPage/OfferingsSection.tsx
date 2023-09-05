@@ -20,7 +20,7 @@ const OfferingsSection = ({ picturesArray }: sectionProps) => {
         <Heading fontSize="5xl">
           What we <span style={{ color: "#0079FF" }}>offer</span>
         </Heading>
-        <Text fontSize={18} fontWeight={500}>
+        <Text fontSize={18} fontWeight={400}>
           At KAP, we are committed to serving our members and fostering a strong
           sense of unity. Feel free to explore our website and take advantage of
           these offerings. Together, let&apos;s make our vibrant community

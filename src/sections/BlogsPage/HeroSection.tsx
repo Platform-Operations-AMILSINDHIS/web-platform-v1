@@ -1,4 +1,4 @@
-import { eudoxus } from "~/utils/fonts";
+import { satoshi } from "~/utils/fonts";
 
 const HeroSection = () => {
   return (
@@ -6,7 +6,7 @@ const HeroSection = () => {
       <div className="mx-auto max-w-screen-lg text-center text-[#1F2937]">
         {/* Hero */}
         <div
-          className={`${eudoxus.variable} mt-16 font-heading text-3xl font-bold leading-normal md:text-7xl`}
+          className={`${satoshi.variable} mt-16 font-heading text-3xl font-bold leading-normal md:text-7xl`}
         >
           Amil Blogs, <span className="text-[#0079FF]">Samachar &</span>{" "}
           Publications all in{" "}

@@ -5,8 +5,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-poppins)"],
-        heading: ["var(--font-eudoxus)"],
+        sans: ["var(--font-satoshi)"],
+        heading: ["var(--font-satoshi)"],
       },
     },
   },
