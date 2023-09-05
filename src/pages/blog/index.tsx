@@ -47,7 +47,7 @@ const BlogPage = ({
       <HeroSection />
       <div className="my-6">
         <div
-          className={`${satoshi.variable} font-heading text-2xl font-bold text-[#1F2937]`}
+          className={`${satoshi.variable} font-heading text-2xl font-semibold text-[#1F2937]`}
         >
           Recent blog posts
         </div>
@@ -136,7 +136,7 @@ const BlogPage = ({
         {/* All posts section */}
         <div className="my-6">
           <div
-            className={`${satoshi.variable} font-heading text-2xl font-bold text-[#1F2937]`}
+            className={`${satoshi.variable} font-heading text-2xl font-semibold text-[#1F2937]`}
           >
             All our blog posts
           </div>

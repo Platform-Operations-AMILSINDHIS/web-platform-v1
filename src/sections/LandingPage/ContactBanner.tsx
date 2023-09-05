@@ -30,12 +30,12 @@ const ContactBanner = ({ imageUrl }: sectionProps) => {
       >
         <Flex align={"flex-start"} justify="space-between">
           <Flex flexDir="column" color="white">
-            <Heading fontSize="6xl" fontWeight="extrabold">
+            <Heading fontSize="6xl" fontWeight={600}>
               Have a question&nbsp;?
               <br />
               feel free to ask
             </Heading>
-            <Text maxW={580} mt="1rem" fontSize="lg">
+            <Text maxW={580} mt="1rem" fontSize="lg" fontWeight={500}>
               Drop us an email & we&apos;ll get back to you with the responses
               to your queries
             </Text>

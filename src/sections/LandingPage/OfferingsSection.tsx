@@ -14,7 +14,7 @@ const OfferingsSection = ({ picturesArray }: sectionProps) => {
   return (
     <Grid templateColumns="repeat(4, 1fr)" gap="3rem">
       <Flex gridColumn="span 2" flexDir="column" align="baseline" gap="0.5rem">
-        <Text fontWeight={700} color="#0079FF">
+        <Text fontWeight={500} color="#0079FF">
           Offerings
         </Text>
         <Heading fontSize="5xl">
