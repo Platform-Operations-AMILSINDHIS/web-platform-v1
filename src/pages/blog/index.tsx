@@ -112,7 +112,7 @@ const BlogPage = ({
               {/* TODO: Don't slice on mobile, show from 0th index + make post thumbs vertical */}
               {blogPosts.length &&
                 blogPosts.length >= 1 &&
-                blogPosts.slice(1).map((post, i) => (
+                blogPosts.slice(1, 4).map((post, i) => (
                   <Link key={i} href={`/blog/${post?.sys.id}`}>
                     <BlogPostThumb
                       key={i}
