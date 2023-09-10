@@ -1,5 +1,5 @@
-import { Box } from "@chakra-ui/react";
-import { EventCollectionQueryQuery } from "~/lib/__generated/sdk";
+import { Box, Flex } from "@chakra-ui/react";
+import type { EventCollectionQueryQuery } from "~/lib/__generated/sdk";
 
 interface EventData {
   events: EventCollectionQueryQuery;
@@ -8,7 +8,7 @@ interface EventData {
 const EventSlider: React.FC<EventData> = ({ events }) => {
   const eventData = events.eventContentTypeCollection?.items;
   console.log(eventData);
-  return <Box>hi</Box>;
+  return <Flex gap={3} align="center"></Flex>;
 };
 
 export default EventSlider;

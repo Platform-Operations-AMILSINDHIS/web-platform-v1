@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text, color } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import LinkButton from "../buttons/LinkButton";
 
 const CardBgImage = "/images/backgrounds/julian-myles-3G6Eu4Hh8gE-unsplash.jpg";

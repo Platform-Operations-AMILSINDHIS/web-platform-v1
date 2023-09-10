@@ -1,7 +1,7 @@
 import { truncate } from "lodash";
 import type { BlogPost } from "~/types/blog";
 
-export const BlogPostThumb: React.FC<{
+const BlogPostThumb: React.FC<{
   post: BlogPost;
   orientation: "horizontal" | "vertical";
 }> = ({ post: { title, author, date, excerpt, tags, image }, orientation }) => (
@@ -48,3 +48,5 @@ export const BlogPostThumb: React.FC<{
     </div>
   </div>
 );
+
+export default BlogPostThumb;
