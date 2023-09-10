@@ -1,0 +1,15 @@
+query eventContentTypeCollection {
+  eventContentTypeCollection {
+    items {
+      eventTitle
+      eventSlug
+      eventDisplayImage {
+        url
+      }
+      eventSearchTags
+      eventLocation
+      eventDates
+      eventType
+    }
+  }
+}
