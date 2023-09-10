@@ -14,13 +14,13 @@ const OfferingsSection = ({ picturesArray }: sectionProps) => {
   return (
     <Grid templateColumns="repeat(4, 1fr)" gap="3rem">
       <Flex gridColumn="span 2" flexDir="column" align="baseline" gap="0.5rem">
-        <Text fontWeight={700} color="#0079FF">
+        <Text fontWeight={500} color="#0079FF">
           Offerings
         </Text>
         <Heading fontSize="5xl">
           What we <span style={{ color: "#0079FF" }}>offer</span>
         </Heading>
-        <Text fontSize={18} fontWeight={500}>
+        <Text fontSize={18} fontWeight={400}>
           At KAP, we are committed to serving our members and fostering a strong
           sense of unity. Feel free to explore our website and take advantage of
           these offerings. Together, let&apos;s make our vibrant community

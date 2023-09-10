@@ -14,7 +14,7 @@ import { BlogPostThumb } from "~/components/blog/blog-landing";
 
 import { client } from "~/lib/client";
 
-import { eudoxus } from "~/utils/fonts";
+import { satoshi } from "~/utils/fonts";
 import type { PageBlogPostCollectionQuery } from "~/lib/__generated/sdk";
 
 import "swiper/css";
@@ -47,7 +47,7 @@ const BlogPage = ({
       <HeroSection />
       <div className="my-6">
         <div
-          className={`${eudoxus.variable} font-heading text-2xl font-bold text-[#1F2937]`}
+          className={`${satoshi.variable} font-heading text-2xl font-semibold text-[#1F2937]`}
         >
           Recent blog posts
         </div>
@@ -112,7 +112,7 @@ const BlogPage = ({
               {/* TODO: Don't slice on mobile, show from 0th index + make post thumbs vertical */}
               {blogPosts.length &&
                 blogPosts.length >= 1 &&
-                blogPosts.slice(1).map((post, i) => (
+                blogPosts.slice(1, 4).map((post, i) => (
                   <Link key={i} href={`/blog/${post?.sys.id}`}>
                     <BlogPostThumb
                       key={i}
@@ -136,7 +136,7 @@ const BlogPage = ({
         {/* All posts section */}
         <div className="my-6">
           <div
-            className={`${eudoxus.variable} font-heading text-2xl font-bold text-[#1F2937]`}
+            className={`${satoshi.variable} font-heading text-2xl font-semibold text-[#1F2937]`}
           >
             All our blog posts
           </div>

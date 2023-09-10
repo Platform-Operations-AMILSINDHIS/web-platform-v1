@@ -66,7 +66,14 @@ export const sendRSVPMailForEvent = async ({
   eventTitle,
   eventDate,
 }: RSVPMailType) => {
-  const subject = `RSVP confirmation for ${eventTitle}, held on ${eventDate}`;
+  const subject = `RSVP confirmation for ${eventTitle}, held on ${eventDate.toLocaleDateString(
+    "en-GB",
+    {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    }
+  )}`;
 
   const html = `
   <div style="font-size: 16px;">

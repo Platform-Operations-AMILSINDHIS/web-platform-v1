@@ -11,8 +11,8 @@ import "~/styles/fonts.css";
 
 const theme = extendTheme({
   fonts: {
-    heading: "satoshi sans",
-    body: "satoshi sans",
+    heading: "'satoshi sans', sans-serif",
+    body: "'satoshi sans', sans-serif",
   },
 });
 

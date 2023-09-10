@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Navbar from "~/components/navbar";
 
-import { poppins } from "../utils/fonts";
+import { satoshi } from "../utils/fonts";
 
 const Layout: React.FC<{
   title?: string;
@@ -21,7 +21,7 @@ const Layout: React.FC<{
       </Head>
 
       <div
-        className={`${poppins.variable} ${
+        className={`${satoshi.variable} ${
           maxW && "max-w-screen-xl"
         } mx-auto font-sans`}
       >
