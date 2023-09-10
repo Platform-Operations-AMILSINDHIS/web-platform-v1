@@ -335,6 +335,408 @@ const KAPMembershipPDF: React.FC<{
                 </View>
               </View>
             </View>
+
+            <View style={{ ...styles.connectedSectionRow, height: 30 }}>
+              <View
+                style={{
+                  ...styles.centerTextWithBorder,
+                  width: "15%",
+                  gap: 1,
+                }}
+              >
+                <Text style={{ fontSize: 10 }}>Occupation</Text>
+              </View>
+              <View style={{ ...styles.rightTextWithBorder, width: "35%" }}>
+                <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
+                  {kapForm.personalInfo.occupation.toUpperCase()}
+                </Text>
+              </View>
+              <View
+                style={{
+                  ...styles.centerTextWithBorder,
+                  width: "10%",
+                  gap: 1,
+                }}
+              >
+                <Text style={{ fontSize: 10 }}>Date of</Text>
+                <Text style={{ fontSize: 10 }}>Birth</Text>
+              </View>
+              <View style={{ ...styles.rightTextWithBorder, width: "15%" }}>
+                <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
+                  {kapForm.personalInfo.dateOfBirth.toLocaleDateString("en-IN")}
+                </Text>
+              </View>
+              <View
+                style={{
+                  ...styles.centerTextWithBorder,
+                  width: "10%",
+                  gap: 1,
+                }}
+              >
+                <Text style={{ fontSize: 10 }}>Age</Text>
+                <Text style={{ fontSize: 10 }}>in Years</Text>
+              </View>
+              <View style={{ ...styles.rightTextWithBorder, width: "15%" }}>
+                <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
+                  {Math.floor(
+                    (new Date().getTime() -
+                      kapForm.personalInfo.dateOfBirth.getTime()) /
+                      (1000 * 60 * 60 * 24 * 365)
+                  )}
+                </Text>
+              </View>
+            </View>
+
+            <View style={{ ...styles.connectedSectionRow, height: 100 }}>
+              <View
+                style={{
+                  ...styles.rightTextWithBorder,
+                  paddingTop: "20px",
+                  flexDirection: "column",
+                  alignItems: "baseline",
+                  width: "15%",
+                  gap: 1,
+                }}
+              >
+                <Text style={{ fontSize: 10 }}>List of</Text>
+                <Text style={{ fontSize: 10 }}>other</Text>
+                <Text style={{ fontSize: 10 }}>members</Text>
+                <Text style={{ fontSize: 10 }}>in the</Text>
+                <Text style={{ fontSize: 10 }}>family</Text>
+              </View>
+
+              <View
+                style={{
+                  flexDirection: "column",
+                  width: "100%",
+                }}
+              >
+                <View style={{ flexDirection: "row", height: "16.66%" }}>
+                  <View
+                    style={{ ...styles.centerTextWithBorder, width: "25%" }}
+                  >
+                    <Text style={{ fontSize: 10 }}>Name</Text>
+                  </View>
+                  <View
+                    style={{ ...styles.centerTextWithBorder, width: "25%" }}
+                  >
+                    <Text style={{ fontSize: 10 }}>Relationship</Text>
+                  </View>
+                  <View
+                    style={{ ...styles.centerTextWithBorder, width: "25%" }}
+                  >
+                    <Text style={{ fontSize: 10 }}>Occuption</Text>
+                  </View>
+                  <View
+                    style={{ ...styles.centerTextWithBorder, width: "25%" }}
+                  >
+                    <Text style={{ fontSize: 10 }}>Age</Text>
+                  </View>
+                </View>
+                {kapForm.familyMembers?.[0] ? (
+                  <View style={{ flexDirection: "row", height: "16.66%" }}>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    >
+                      <Text style={{ fontSize: 10 }}>
+                        {kapForm.familyMembers[0].memberName?.toUpperCase()}
+                      </Text>
+                    </View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    >
+                      <Text style={{ fontSize: 10 }}>
+                        {kapForm.familyMembers[0].relationship?.toUpperCase()}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        ...styles.rightTextWithBorder,
+                        width: "25%",
+                      }}
+                    >
+                      <Text style={{ fontSize: 6 }}>
+                        {kapForm.familyMembers[0].occupation?.toUpperCase()}
+                      </Text>
+                    </View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    >
+                      <Text style={{ fontSize: 10 }}>
+                        {kapForm.familyMembers[0].age?.toString()}
+                      </Text>
+                    </View>
+                  </View>
+                ) : (
+                  <View style={{ flexDirection: "row", height: "16.66%" }}>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    ></View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    ></View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    ></View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    ></View>
+                  </View>
+                )}
+
+                {kapForm.familyMembers?.[1] ? (
+                  <View style={{ flexDirection: "row", height: "16.66%" }}>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    >
+                      <Text style={{ fontSize: 10 }}>
+                        {kapForm.familyMembers[1].memberName?.toUpperCase()}
+                      </Text>
+                    </View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    >
+                      <Text style={{ fontSize: 10 }}>
+                        {kapForm.familyMembers[1].relationship?.toUpperCase()}
+                      </Text>
+                    </View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    >
+                      <Text style={{ fontSize: 6 }}>
+                        {kapForm.familyMembers[1].occupation?.toUpperCase()}
+                      </Text>
+                    </View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    >
+                      <Text style={{ fontSize: 10 }}>
+                        {kapForm.familyMembers[1].age?.toString()}
+                      </Text>
+                    </View>
+                  </View>
+                ) : (
+                  <View style={{ flexDirection: "row", height: "16.66%" }}>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    ></View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    ></View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    ></View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    ></View>
+                  </View>
+                )}
+
+                {kapForm.familyMembers?.[2] ? (
+                  <View style={{ flexDirection: "row", height: "16.66%" }}>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    >
+                      <Text style={{ fontSize: 10 }}>
+                        {kapForm.familyMembers[2].memberName?.toUpperCase()}
+                      </Text>
+                    </View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    >
+                      <Text style={{ fontSize: 10 }}>
+                        {kapForm.familyMembers[2].relationship?.toUpperCase()}
+                      </Text>
+                    </View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    >
+                      <Text style={{ fontSize: 6 }}>
+                        {kapForm.familyMembers[2].occupation?.toUpperCase()}
+                      </Text>
+                    </View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    >
+                      <Text style={{ fontSize: 10 }}>
+                        {kapForm.familyMembers[2].age?.toString()}
+                      </Text>
+                    </View>
+                  </View>
+                ) : (
+                  <View style={{ flexDirection: "row", height: "16.66%" }}>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    ></View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    ></View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    ></View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    ></View>
+                  </View>
+                )}
+
+                {kapForm.familyMembers?.[3] ? (
+                  <View style={{ flexDirection: "row", height: "16.66%" }}>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    >
+                      <Text style={{ fontSize: 10 }}>
+                        {kapForm.familyMembers[3].memberName?.toUpperCase()}
+                      </Text>
+                    </View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    >
+                      <Text style={{ fontSize: 10 }}>
+                        {kapForm.familyMembers[3].relationship?.toUpperCase()}
+                      </Text>
+                    </View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    >
+                      <Text style={{ fontSize: 6 }}>
+                        {kapForm.familyMembers[3].occupation?.toUpperCase()}
+                      </Text>
+                    </View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    >
+                      <Text style={{ fontSize: 10 }}>
+                        {kapForm.familyMembers[3].age?.toString()}
+                      </Text>
+                    </View>
+                  </View>
+                ) : (
+                  <View style={{ flexDirection: "row", height: "16.66%" }}>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    ></View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    ></View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    ></View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    ></View>
+                  </View>
+                )}
+
+                {kapForm.familyMembers?.[4] ? (
+                  <View style={{ flexDirection: "row", height: "16.66%" }}>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    >
+                      <Text style={{ fontSize: 10 }}>
+                        {kapForm.familyMembers[4].memberName?.toUpperCase()}
+                      </Text>
+                    </View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    >
+                      <Text style={{ fontSize: 10 }}>
+                        {kapForm.familyMembers[4].relationship?.toUpperCase()}
+                      </Text>
+                    </View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    >
+                      <Text style={{ fontSize: 6 }}>
+                        {kapForm.familyMembers[4].occupation?.toUpperCase()}
+                      </Text>
+                    </View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    >
+                      <Text style={{ fontSize: 10 }}>
+                        {kapForm.familyMembers[4].age?.toString()}
+                      </Text>
+                    </View>
+                  </View>
+                ) : (
+                  <View style={{ flexDirection: "row", height: "16.66%" }}>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    ></View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    ></View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    ></View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, width: "25%" }}
+                    ></View>
+                  </View>
+                )}
+              </View>
+            </View>
+
+            <View style={{ ...styles.connectedSectionRow, height: 80 }}>
+              <View
+                style={{
+                  ...styles.centerTextWithBorder,
+                  width: "15%",
+                  gap: 1,
+                }}
+              >
+                <Text style={{ fontSize: 10 }}>Declaration</Text>
+              </View>
+
+              <View
+                style={{
+                  flexDirection: "column",
+                  width: "100%",
+                }}
+              >
+                <View
+                  style={{
+                    ...styles.rightTextWithBorder,
+                    flexDirection: "column",
+                    alignItems: "baseline",
+                    paddingHorizontal: 4,
+                    paddingTop: 4,
+                    height: "100%",
+                  }}
+                >
+                  <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
+                    The applicant hereby declares that: I am a Khudabadi Amil
+                    and request the Committee to
+                  </Text>
+                  <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
+                    {/* TODO: Strike out whichever is not applicable */}
+                    admit me as Patron / Life-Member of The Khudabadi Amil
+                    Panchayat of Bombay.
+                  </Text>
+                  <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
+                    I agree to abide by the Constitution and Rules of the
+                    Khudabadi Amil Panchayat of Bombay in
+                  </Text>
+                  <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
+                    force from time to time.
+                  </Text>
+                  <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
+                    I hereby enclose cheque / cash for Rs. 5000/- as membership
+                    fees.
+                  </Text>
+                  <Text
+                    style={{
+                      ...styles.fieldValue,
+                      paddingTop: 6,
+                      fontSize: 10,
+                    }}
+                  >
+                    Date: {new Date().toLocaleDateString("en-IN")}
+                  </Text>
+                </View>
+              </View>
+            </View>
           </View>
 
           {/* <View style={styles.section}>

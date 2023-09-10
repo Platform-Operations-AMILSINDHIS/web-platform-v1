@@ -17,7 +17,7 @@ const dummyKapForm: KAPMembershipFormValues = {
     middleName: "Kumar",
     lastName: "Sharma",
     occupation: "Backend Developer",
-    dateOfBirth: new Date(),
+    dateOfBirth: new Date("1999-01-01"),
     mobileNumber: "+919999999999",
     emailId: "rahulkumargupta@gmail.com",
     maidenSurname: "Sharma",
