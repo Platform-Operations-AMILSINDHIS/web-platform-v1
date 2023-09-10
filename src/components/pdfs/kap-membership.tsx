@@ -117,7 +117,9 @@ const KAPMembershipPDF: React.FC<{
           </View>
 
           {/* Membership/application form section */}
-          <View style={{ ...styles.connectedSection, margin: 10, gap: 5 }}>
+          <View
+            style={{ ...styles.connectedSection, marginHorizontal: 10, gap: 5 }}
+          >
             <View
               style={{
                 ...styles.centerTextWithBorder,
@@ -737,11 +739,97 @@ const KAPMembershipPDF: React.FC<{
                 </View>
               </View>
             </View>
-          </View>
 
-          {/* <View style={styles.section}>
-            <Text>Hello World!</Text>
-          </View> */}
+            <View style={{ ...styles.connectedSectionRow, height: 83 }}>
+              <View
+                style={{
+                  ...styles.centerTextWithBorder,
+                  width: "15%",
+                  gap: 1,
+                }}
+              >
+                <Text style={{ fontSize: 10 }}>Name and</Text>
+                <Text style={{ fontSize: 10 }}>Signature</Text>
+                <Text style={{ fontSize: 10 }}>of the</Text>
+                <Text style={{ fontSize: 10 }}>Proposer</Text>
+              </View>
+
+              <View
+                style={{
+                  flexDirection: "column",
+                  width: "100%",
+                }}
+              >
+                <View style={{ flexDirection: "row", height: "50%" }}>
+                  <View
+                    style={{
+                      ...styles.centerTextWithBorder,
+                      width: "15%",
+                    }}
+                  >
+                    <Text style={{ fontSize: 8 }}>Surname</Text>
+                    <Text style={{ fontSize: 8 }}>First Name</Text>
+                    <Text style={{ fontSize: 8 }}>Middle Name</Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      width: "100%",
+                    }}
+                  >
+                    <View
+                      style={{ ...styles.rightTextWithBorder, height: "33%" }}
+                    >
+                      <Text style={{ ...styles.fieldValue, fontSize: 8 }}>
+                        {kapForm.personalInfo.lastName.toUpperCase()}
+                      </Text>
+                    </View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, height: "33%" }}
+                    >
+                      <Text style={{ ...styles.fieldValue, fontSize: 8 }}>
+                        {kapForm.personalInfo.firstName.toUpperCase()}
+                      </Text>
+                    </View>
+                    <View
+                      style={{ ...styles.rightTextWithBorder, height: "33%" }}
+                    >
+                      <Text style={{ ...styles.fieldValue, fontSize: 8 }}>
+                        {kapForm.personalInfo.middleName.toUpperCase()}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    ...styles.rightTextWithBorder,
+                    flexDirection: "column",
+                    alignItems: "baseline",
+                    paddingHorizontal: 4,
+                    paddingTop: 3,
+                    height: "50%",
+                  }}
+                >
+                  <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
+                    I certify that the applicant is a Khudabadi Amil and is
+                    eligible for
+                  </Text>
+                  <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
+                    membership of the Khudabadi Amil Panchayat of Bombay.
+                  </Text>
+                  <Text
+                    style={{
+                      ...styles.fieldValue,
+                      paddingTop: 2,
+                      fontSize: 10,
+                    }}
+                  >
+                    Date: {new Date().toLocaleDateString("en-IN")}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
         </Page>
       </Document>
     </PDFViewer>
