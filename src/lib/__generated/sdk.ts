@@ -1,4 +1,4 @@
-/* eslint-disable */
+/*eslint-disable */
 import { GraphQLClient } from "graphql-request";
 import { GraphQLClientRequestHeaders } from "graphql-request/build/cjs/types";
 import gql from "graphql-tag";
@@ -183,6 +183,8 @@ export type AssetLinkingCollections = {
   __typename?: "AssetLinkingCollections";
   blogContentTypeCollection?: Maybe<BlogContentTypeCollection>;
   entryCollection?: Maybe<EntryCollection>;
+  eventContentTypeCollection?: Maybe<EventContentTypeCollection>;
+  eventImageSliderCollection?: Maybe<EventImageSliderCollection>;
 };
 
 export type AssetLinkingCollectionsBlogContentTypeCollectionArgs = {
@@ -202,6 +204,26 @@ export type AssetLinkingCollectionsEntryCollectionArgs = {
   skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
+export type AssetLinkingCollectionsEventContentTypeCollectionArgs = {
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+  order?: InputMaybe<
+    Array<InputMaybe<AssetLinkingCollectionsEventContentTypeCollectionOrder>>
+  >;
+  preview?: InputMaybe<Scalars["Boolean"]["input"]>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+export type AssetLinkingCollectionsEventImageSliderCollectionArgs = {
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+  order?: InputMaybe<
+    Array<InputMaybe<AssetLinkingCollectionsEventImageSliderCollectionOrder>>
+  >;
+  preview?: InputMaybe<Scalars["Boolean"]["input"]>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
 export enum AssetLinkingCollectionsBlogContentTypeCollectionOrder {
   AuthorAsc = "author_ASC",
   AuthorDesc = "author_DESC",
@@ -211,6 +233,36 @@ export enum AssetLinkingCollectionsBlogContentTypeCollectionOrder {
   BlogTitleDesc = "blogTitle_DESC",
   DateOfBlogAsc = "dateOfBlog_ASC",
   DateOfBlogDesc = "dateOfBlog_DESC",
+  SysFirstPublishedAtAsc = "sys_firstPublishedAt_ASC",
+  SysFirstPublishedAtDesc = "sys_firstPublishedAt_DESC",
+  SysIdAsc = "sys_id_ASC",
+  SysIdDesc = "sys_id_DESC",
+  SysPublishedAtAsc = "sys_publishedAt_ASC",
+  SysPublishedAtDesc = "sys_publishedAt_DESC",
+  SysPublishedVersionAsc = "sys_publishedVersion_ASC",
+  SysPublishedVersionDesc = "sys_publishedVersion_DESC",
+}
+
+export enum AssetLinkingCollectionsEventContentTypeCollectionOrder {
+  EventDatesAsc = "eventDates_ASC",
+  EventDatesDesc = "eventDates_DESC",
+  EventLocationAsc = "eventLocation_ASC",
+  EventLocationDesc = "eventLocation_DESC",
+  EventSlugAsc = "eventSlug_ASC",
+  EventSlugDesc = "eventSlug_DESC",
+  EventTitleAsc = "eventTitle_ASC",
+  EventTitleDesc = "eventTitle_DESC",
+  SysFirstPublishedAtAsc = "sys_firstPublishedAt_ASC",
+  SysFirstPublishedAtDesc = "sys_firstPublishedAt_DESC",
+  SysIdAsc = "sys_id_ASC",
+  SysIdDesc = "sys_id_DESC",
+  SysPublishedAtAsc = "sys_publishedAt_ASC",
+  SysPublishedAtDesc = "sys_publishedAt_DESC",
+  SysPublishedVersionAsc = "sys_publishedVersion_ASC",
+  SysPublishedVersionDesc = "sys_publishedVersion_DESC",
+}
+
+export enum AssetLinkingCollectionsEventImageSliderCollectionOrder {
   SysFirstPublishedAtAsc = "sys_firstPublishedAt_ASC",
   SysFirstPublishedAtDesc = "sys_firstPublishedAt_DESC",
   SysIdAsc = "sys_id_ASC",
@@ -244,7 +296,7 @@ export enum AssetOrder {
   WidthDesc = "width_DESC",
 }
 
-/** [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
+/** This content type represents the content that will go on your blog page, select the type weather if it's samachar, publication or a regular blog [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
 export type BlogContentType = Entry & {
   __typename?: "BlogContentType";
   author?: Maybe<Scalars["String"]["output"]>;
@@ -261,53 +313,53 @@ export type BlogContentType = Entry & {
   sys: Sys;
 };
 
-/** [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
+/** This content type represents the content that will go on your blog page, select the type weather if it's samachar, publication or a regular blog [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
 export type BlogContentTypeAuthorArgs = {
   locale?: InputMaybe<Scalars["String"]["input"]>;
 };
 
-/** [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
+/** This content type represents the content that will go on your blog page, select the type weather if it's samachar, publication or a regular blog [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
 export type BlogContentTypeBlogContentArgs = {
   locale?: InputMaybe<Scalars["String"]["input"]>;
 };
 
-/** [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
+/** This content type represents the content that will go on your blog page, select the type weather if it's samachar, publication or a regular blog [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
 export type BlogContentTypeBlogDisplayPictureArgs = {
   locale?: InputMaybe<Scalars["String"]["input"]>;
   preview?: InputMaybe<Scalars["Boolean"]["input"]>;
 };
 
-/** [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
+/** This content type represents the content that will go on your blog page, select the type weather if it's samachar, publication or a regular blog [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
 export type BlogContentTypeBlogSlugArgs = {
   locale?: InputMaybe<Scalars["String"]["input"]>;
 };
 
-/** [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
+/** This content type represents the content that will go on your blog page, select the type weather if it's samachar, publication or a regular blog [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
 export type BlogContentTypeBlogTagsArgs = {
   locale?: InputMaybe<Scalars["String"]["input"]>;
 };
 
-/** [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
+/** This content type represents the content that will go on your blog page, select the type weather if it's samachar, publication or a regular blog [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
 export type BlogContentTypeBlogTitleArgs = {
   locale?: InputMaybe<Scalars["String"]["input"]>;
 };
 
-/** [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
+/** This content type represents the content that will go on your blog page, select the type weather if it's samachar, publication or a regular blog [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
 export type BlogContentTypeBlogTypeArgs = {
   locale?: InputMaybe<Scalars["String"]["input"]>;
 };
 
-/** [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
+/** This content type represents the content that will go on your blog page, select the type weather if it's samachar, publication or a regular blog [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
 export type BlogContentTypeDateOfBlogArgs = {
   locale?: InputMaybe<Scalars["String"]["input"]>;
 };
 
-/** [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
+/** This content type represents the content that will go on your blog page, select the type weather if it's samachar, publication or a regular blog [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
 export type BlogContentTypeExcerptArgs = {
   locale?: InputMaybe<Scalars["String"]["input"]>;
 };
 
-/** [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
+/** This content type represents the content that will go on your blog page, select the type weather if it's samachar, publication or a regular blog [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
 export type BlogContentTypeLinkedFromArgs = {
   allowedLocales?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
 };
@@ -509,6 +561,264 @@ export enum EntryOrder {
   SysPublishedVersionDesc = "sys_publishedVersion_DESC",
 }
 
+/** A content type for you to add your events, and the respective event data such as : Event location, event name, event venue and so on [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/eventContentType) */
+export type EventContentType = Entry & {
+  __typename?: "EventContentType";
+  contentfulMetadata: ContentfulMetadata;
+  eventDates?: Maybe<Scalars["DateTime"]["output"]>;
+  eventDescription?: Maybe<EventContentTypeEventDescription>;
+  eventDisplayImage?: Maybe<Asset>;
+  eventLocation?: Maybe<Scalars["String"]["output"]>;
+  eventSearchTags?: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
+  eventSlug?: Maybe<Scalars["String"]["output"]>;
+  eventTitle?: Maybe<Scalars["String"]["output"]>;
+  eventType?: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
+  linkedFrom?: Maybe<EventContentTypeLinkingCollections>;
+  sys: Sys;
+};
+
+/** A content type for you to add your events, and the respective event data such as : Event location, event name, event venue and so on [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/eventContentType) */
+export type EventContentTypeEventDatesArgs = {
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+/** A content type for you to add your events, and the respective event data such as : Event location, event name, event venue and so on [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/eventContentType) */
+export type EventContentTypeEventDescriptionArgs = {
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+/** A content type for you to add your events, and the respective event data such as : Event location, event name, event venue and so on [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/eventContentType) */
+export type EventContentTypeEventDisplayImageArgs = {
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+  preview?: InputMaybe<Scalars["Boolean"]["input"]>;
+};
+
+/** A content type for you to add your events, and the respective event data such as : Event location, event name, event venue and so on [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/eventContentType) */
+export type EventContentTypeEventLocationArgs = {
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+/** A content type for you to add your events, and the respective event data such as : Event location, event name, event venue and so on [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/eventContentType) */
+export type EventContentTypeEventSearchTagsArgs = {
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+/** A content type for you to add your events, and the respective event data such as : Event location, event name, event venue and so on [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/eventContentType) */
+export type EventContentTypeEventSlugArgs = {
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+/** A content type for you to add your events, and the respective event data such as : Event location, event name, event venue and so on [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/eventContentType) */
+export type EventContentTypeEventTitleArgs = {
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+/** A content type for you to add your events, and the respective event data such as : Event location, event name, event venue and so on [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/eventContentType) */
+export type EventContentTypeEventTypeArgs = {
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+/** A content type for you to add your events, and the respective event data such as : Event location, event name, event venue and so on [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/eventContentType) */
+export type EventContentTypeLinkedFromArgs = {
+  allowedLocales?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+};
+
+export type EventContentTypeCollection = {
+  __typename?: "EventContentTypeCollection";
+  items: Array<Maybe<EventContentType>>;
+  limit: Scalars["Int"]["output"];
+  skip: Scalars["Int"]["output"];
+  total: Scalars["Int"]["output"];
+};
+
+export type EventContentTypeEventDescription = {
+  __typename?: "EventContentTypeEventDescription";
+  json: Scalars["JSON"]["output"];
+  links: EventContentTypeEventDescriptionLinks;
+};
+
+export type EventContentTypeEventDescriptionAssets = {
+  __typename?: "EventContentTypeEventDescriptionAssets";
+  block: Array<Maybe<Asset>>;
+  hyperlink: Array<Maybe<Asset>>;
+};
+
+export type EventContentTypeEventDescriptionEntries = {
+  __typename?: "EventContentTypeEventDescriptionEntries";
+  block: Array<Maybe<Entry>>;
+  hyperlink: Array<Maybe<Entry>>;
+  inline: Array<Maybe<Entry>>;
+};
+
+export type EventContentTypeEventDescriptionLinks = {
+  __typename?: "EventContentTypeEventDescriptionLinks";
+  assets: EventContentTypeEventDescriptionAssets;
+  entries: EventContentTypeEventDescriptionEntries;
+  resources: EventContentTypeEventDescriptionResources;
+};
+
+export type EventContentTypeEventDescriptionResources = {
+  __typename?: "EventContentTypeEventDescriptionResources";
+  block: Array<ResourceLink>;
+};
+
+export type EventContentTypeFilter = {
+  AND?: InputMaybe<Array<InputMaybe<EventContentTypeFilter>>>;
+  OR?: InputMaybe<Array<InputMaybe<EventContentTypeFilter>>>;
+  contentfulMetadata?: InputMaybe<ContentfulMetadataFilter>;
+  eventDates?: InputMaybe<Scalars["DateTime"]["input"]>;
+  eventDates_exists?: InputMaybe<Scalars["Boolean"]["input"]>;
+  eventDates_gt?: InputMaybe<Scalars["DateTime"]["input"]>;
+  eventDates_gte?: InputMaybe<Scalars["DateTime"]["input"]>;
+  eventDates_in?: InputMaybe<Array<InputMaybe<Scalars["DateTime"]["input"]>>>;
+  eventDates_lt?: InputMaybe<Scalars["DateTime"]["input"]>;
+  eventDates_lte?: InputMaybe<Scalars["DateTime"]["input"]>;
+  eventDates_not?: InputMaybe<Scalars["DateTime"]["input"]>;
+  eventDates_not_in?: InputMaybe<
+    Array<InputMaybe<Scalars["DateTime"]["input"]>>
+  >;
+  eventDescription_contains?: InputMaybe<Scalars["String"]["input"]>;
+  eventDescription_exists?: InputMaybe<Scalars["Boolean"]["input"]>;
+  eventDescription_not_contains?: InputMaybe<Scalars["String"]["input"]>;
+  eventDisplayImage_exists?: InputMaybe<Scalars["Boolean"]["input"]>;
+  eventLocation?: InputMaybe<Scalars["String"]["input"]>;
+  eventLocation_contains?: InputMaybe<Scalars["String"]["input"]>;
+  eventLocation_exists?: InputMaybe<Scalars["Boolean"]["input"]>;
+  eventLocation_in?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  eventLocation_not?: InputMaybe<Scalars["String"]["input"]>;
+  eventLocation_not_contains?: InputMaybe<Scalars["String"]["input"]>;
+  eventLocation_not_in?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]["input"]>>
+  >;
+  eventSearchTags_contains_all?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]["input"]>>
+  >;
+  eventSearchTags_contains_none?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]["input"]>>
+  >;
+  eventSearchTags_contains_some?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]["input"]>>
+  >;
+  eventSearchTags_exists?: InputMaybe<Scalars["Boolean"]["input"]>;
+  eventSlug?: InputMaybe<Scalars["String"]["input"]>;
+  eventSlug_contains?: InputMaybe<Scalars["String"]["input"]>;
+  eventSlug_exists?: InputMaybe<Scalars["Boolean"]["input"]>;
+  eventSlug_in?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  eventSlug_not?: InputMaybe<Scalars["String"]["input"]>;
+  eventSlug_not_contains?: InputMaybe<Scalars["String"]["input"]>;
+  eventSlug_not_in?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  eventTitle?: InputMaybe<Scalars["String"]["input"]>;
+  eventTitle_contains?: InputMaybe<Scalars["String"]["input"]>;
+  eventTitle_exists?: InputMaybe<Scalars["Boolean"]["input"]>;
+  eventTitle_in?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  eventTitle_not?: InputMaybe<Scalars["String"]["input"]>;
+  eventTitle_not_contains?: InputMaybe<Scalars["String"]["input"]>;
+  eventTitle_not_in?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  eventType_contains_all?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]["input"]>>
+  >;
+  eventType_contains_none?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]["input"]>>
+  >;
+  eventType_contains_some?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]["input"]>>
+  >;
+  eventType_exists?: InputMaybe<Scalars["Boolean"]["input"]>;
+  sys?: InputMaybe<SysFilter>;
+};
+
+export type EventContentTypeLinkingCollections = {
+  __typename?: "EventContentTypeLinkingCollections";
+  entryCollection?: Maybe<EntryCollection>;
+};
+
+export type EventContentTypeLinkingCollectionsEntryCollectionArgs = {
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+  preview?: InputMaybe<Scalars["Boolean"]["input"]>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+export enum EventContentTypeOrder {
+  EventDatesAsc = "eventDates_ASC",
+  EventDatesDesc = "eventDates_DESC",
+  EventLocationAsc = "eventLocation_ASC",
+  EventLocationDesc = "eventLocation_DESC",
+  EventSlugAsc = "eventSlug_ASC",
+  EventSlugDesc = "eventSlug_DESC",
+  EventTitleAsc = "eventTitle_ASC",
+  EventTitleDesc = "eventTitle_DESC",
+  SysFirstPublishedAtAsc = "sys_firstPublishedAt_ASC",
+  SysFirstPublishedAtDesc = "sys_firstPublishedAt_DESC",
+  SysIdAsc = "sys_id_ASC",
+  SysIdDesc = "sys_id_DESC",
+  SysPublishedAtAsc = "sys_publishedAt_ASC",
+  SysPublishedAtDesc = "sys_publishedAt_DESC",
+  SysPublishedVersionAsc = "sys_publishedVersion_ASC",
+  SysPublishedVersionDesc = "sys_publishedVersion_DESC",
+}
+
+/** bunch of images you can add for changing of backdrop images [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/eventImageSlider) */
+export type EventImageSlider = Entry & {
+  __typename?: "EventImageSlider";
+  contentfulMetadata: ContentfulMetadata;
+  imagesCollection?: Maybe<AssetCollection>;
+  linkedFrom?: Maybe<EventImageSliderLinkingCollections>;
+  sys: Sys;
+};
+
+/** bunch of images you can add for changing of backdrop images [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/eventImageSlider) */
+export type EventImageSliderImagesCollectionArgs = {
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+  preview?: InputMaybe<Scalars["Boolean"]["input"]>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+/** bunch of images you can add for changing of backdrop images [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/eventImageSlider) */
+export type EventImageSliderLinkedFromArgs = {
+  allowedLocales?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+};
+
+export type EventImageSliderCollection = {
+  __typename?: "EventImageSliderCollection";
+  items: Array<Maybe<EventImageSlider>>;
+  limit: Scalars["Int"]["output"];
+  skip: Scalars["Int"]["output"];
+  total: Scalars["Int"]["output"];
+};
+
+export type EventImageSliderFilter = {
+  AND?: InputMaybe<Array<InputMaybe<EventImageSliderFilter>>>;
+  OR?: InputMaybe<Array<InputMaybe<EventImageSliderFilter>>>;
+  contentfulMetadata?: InputMaybe<ContentfulMetadataFilter>;
+  imagesCollection_exists?: InputMaybe<Scalars["Boolean"]["input"]>;
+  sys?: InputMaybe<SysFilter>;
+};
+
+export type EventImageSliderLinkingCollections = {
+  __typename?: "EventImageSliderLinkingCollections";
+  entryCollection?: Maybe<EntryCollection>;
+};
+
+export type EventImageSliderLinkingCollectionsEntryCollectionArgs = {
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+  preview?: InputMaybe<Scalars["Boolean"]["input"]>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+export enum EventImageSliderOrder {
+  SysFirstPublishedAtAsc = "sys_firstPublishedAt_ASC",
+  SysFirstPublishedAtDesc = "sys_firstPublishedAt_DESC",
+  SysIdAsc = "sys_id_ASC",
+  SysIdDesc = "sys_id_DESC",
+  SysPublishedAtAsc = "sys_publishedAt_ASC",
+  SysPublishedAtDesc = "sys_publishedAt_DESC",
+  SysPublishedVersionAsc = "sys_publishedVersion_ASC",
+  SysPublishedVersionDesc = "sys_publishedVersion_DESC",
+}
+
 export enum ImageFormat {
   Avif = "AVIF",
   /** JPG image format. */
@@ -611,6 +921,10 @@ export type Query = {
   blogContentType?: Maybe<BlogContentType>;
   blogContentTypeCollection?: Maybe<BlogContentTypeCollection>;
   entryCollection?: Maybe<EntryCollection>;
+  eventContentType?: Maybe<EventContentType>;
+  eventContentTypeCollection?: Maybe<EventContentTypeCollection>;
+  eventImageSlider?: Maybe<EventImageSlider>;
+  eventImageSliderCollection?: Maybe<EventImageSliderCollection>;
 };
 
 export type QueryAssetArgs = {
@@ -650,6 +964,36 @@ export type QueryEntryCollectionArgs = {
   preview?: InputMaybe<Scalars["Boolean"]["input"]>;
   skip?: InputMaybe<Scalars["Int"]["input"]>;
   where?: InputMaybe<EntryFilter>;
+};
+
+export type QueryEventContentTypeArgs = {
+  id: Scalars["String"]["input"];
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+  preview?: InputMaybe<Scalars["Boolean"]["input"]>;
+};
+
+export type QueryEventContentTypeCollectionArgs = {
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+  order?: InputMaybe<Array<InputMaybe<EventContentTypeOrder>>>;
+  preview?: InputMaybe<Scalars["Boolean"]["input"]>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  where?: InputMaybe<EventContentTypeFilter>;
+};
+
+export type QueryEventImageSliderArgs = {
+  id: Scalars["String"]["input"];
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+  preview?: InputMaybe<Scalars["Boolean"]["input"]>;
+};
+
+export type QueryEventImageSliderCollectionArgs = {
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+  order?: InputMaybe<Array<InputMaybe<EventImageSliderOrder>>>;
+  preview?: InputMaybe<Scalars["Boolean"]["input"]>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  where?: InputMaybe<EventImageSliderFilter>;
 };
 
 export type ResourceLink = {
@@ -721,6 +1065,28 @@ export type SysFilter = {
   >;
 };
 
+export type EventCollectionQueryQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type EventCollectionQueryQuery = {
+  __typename?: "Query";
+  eventContentTypeCollection?: {
+    __typename?: "EventContentTypeCollection";
+    items: Array<{
+      __typename?: "EventContentType";
+      eventTitle?: string | null;
+      eventSlug?: string | null;
+      eventSearchTags?: Array<string | null> | null;
+      eventLocation?: string | null;
+      eventDates?: any | null;
+      eventType?: Array<string | null> | null;
+      eventDisplayImage?: { __typename?: "Asset"; url?: string | null } | null;
+      sys: { __typename?: "Sys"; id: string };
+    } | null>;
+  } | null;
+};
+
 export type PageBlogPostQueryVariables = Exact<{
   id: Scalars["String"]["input"];
 }>;
@@ -763,6 +1129,26 @@ export type PageBlogPostCollectionQuery = {
   } | null;
 };
 
+export const EventCollectionQueryDocument = gql`
+  query eventCollectionQuery {
+    eventContentTypeCollection {
+      items {
+        eventTitle
+        eventSlug
+        eventDisplayImage {
+          url
+        }
+        eventSearchTags
+        eventLocation
+        eventDates
+        eventType
+        sys {
+          id
+        }
+      }
+    }
+  }
+`;
 export const PageBlogPostDocument = gql`
   query pageBlogPost($id: String!) {
     blogContentType(id: $id) {
@@ -817,6 +1203,21 @@ export function getSdk(
   withWrapper: SdkFunctionWrapper = defaultWrapper
 ) {
   return {
+    eventCollectionQuery(
+      variables?: EventCollectionQueryQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<EventCollectionQueryQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<EventCollectionQueryQuery>(
+            EventCollectionQueryDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        "eventCollectionQuery",
+        "query"
+      );
+    },
     pageBlogPost(
       variables: PageBlogPostQueryVariables,
       requestHeaders?: GraphQLClientRequestHeaders
