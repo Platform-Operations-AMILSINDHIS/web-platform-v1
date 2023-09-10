@@ -1,4 +1,4 @@
-query eventContentTypeCollection {
+query eventCollectionQuery {
   eventContentTypeCollection {
     items {
       eventTitle

@@ -15,7 +15,7 @@ const LinkButton: React.FC<LinkButtonProps> = ({
   return (
     <Button
       style={CTATheme ? btnThemeLight : btnThemeDark}
-      fontWeight={700}
+      fontWeight={600}
       py={6}
       px={10}
       as="a"

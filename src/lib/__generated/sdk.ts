@@ -1,4 +1,4 @@
-/* eslint-disable */
+/*eslint-disable */
 import { GraphQLClient } from "graphql-request";
 import { GraphQLClientRequestHeaders } from "graphql-request/build/cjs/types";
 import gql from "graphql-tag";
@@ -1065,6 +1065,28 @@ export type SysFilter = {
   >;
 };
 
+export type EventCollectionQueryQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type EventCollectionQueryQuery = {
+  __typename?: "Query";
+  eventContentTypeCollection?: {
+    __typename?: "EventContentTypeCollection";
+    items: Array<{
+      __typename?: "EventContentType";
+      eventTitle?: string | null;
+      eventSlug?: string | null;
+      eventSearchTags?: Array<string | null> | null;
+      eventLocation?: string | null;
+      eventDates?: any | null;
+      eventType?: Array<string | null> | null;
+      eventDisplayImage?: { __typename?: "Asset"; url?: string | null } | null;
+      sys: { __typename?: "Sys"; id: string };
+    } | null>;
+  } | null;
+};
+
 export type PageBlogPostQueryVariables = Exact<{
   id: Scalars["String"]["input"];
 }>;
@@ -1107,6 +1129,26 @@ export type PageBlogPostCollectionQuery = {
   } | null;
 };
 
+export const EventCollectionQueryDocument = gql`
+  query eventCollectionQuery {
+    eventContentTypeCollection {
+      items {
+        eventTitle
+        eventSlug
+        eventDisplayImage {
+          url
+        }
+        eventSearchTags
+        eventLocation
+        eventDates
+        eventType
+        sys {
+          id
+        }
+      }
+    }
+  }
+`;
 export const PageBlogPostDocument = gql`
   query pageBlogPost($id: String!) {
     blogContentType(id: $id) {
@@ -1161,6 +1203,21 @@ export function getSdk(
   withWrapper: SdkFunctionWrapper = defaultWrapper
 ) {
   return {
+    eventCollectionQuery(
+      variables?: EventCollectionQueryQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<EventCollectionQueryQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<EventCollectionQueryQuery>(
+            EventCollectionQueryDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        "eventCollectionQuery",
+        "query"
+      );
+    },
     pageBlogPost(
       variables: PageBlogPostQueryVariables,
       requestHeaders?: GraphQLClientRequestHeaders

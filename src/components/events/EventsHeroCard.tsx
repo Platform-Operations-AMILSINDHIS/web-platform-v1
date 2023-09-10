@@ -18,7 +18,7 @@ const EventHeroCard = () => {
     >
       <Flex gap={7} flexDir="column">
         <Flex flexDir="column">
-          <Text fontWeight={700} color={"#FF4D00"} fontSize="md">
+          <Text fontWeight={600} color={"#FF4D00"} fontSize="md">
             Amil Events & Drives
           </Text>
           <Text color={"white"} fontWeight={700} fontSize={"5xl"}>
@@ -31,7 +31,7 @@ const EventHeroCard = () => {
               & explore
             </span>
           </Text>
-          <Text fontWeight={500} color={"white"} maxW={650} fontSize="lg">
+          <Text fontWeight={400} color={"white"} maxW={650} fontSize="lg">
             Join us in our mission to foster unity, celebrate our rich Sindhi
             heritage, and empower the Amil Sindhi community through a series of
             captivating events. RSVP Today or find out more
