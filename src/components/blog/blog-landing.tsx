@@ -1,8 +1,6 @@
 import { truncate } from "lodash";
 import type { BlogPost } from "~/types/blog";
 
-import { eudoxus } from "~/utils/fonts";
-
 export const BlogPostThumb: React.FC<{
   post: BlogPost;
   orientation: "horizontal" | "vertical";
@@ -31,8 +29,11 @@ export const BlogPostThumb: React.FC<{
       <div className="mt-2 text-xl font-semibold">
         {truncate(title, { length: orientation === "horizontal" ? 25 : 30 })}
       </div>
-      <div className="mt-4 text-sm">
-        {truncate(excerpt, { length: orientation === "horizontal" ? 70 : 100 })}
+      <div className="mt-2 text-sm">
+        {truncate(excerpt, {
+          // length: orientation === "horizontal" ? 70 : 100,
+          length: 100,
+        })}
       </div>
       <div className="my-4 flex gap-2">
         {tags?.map((tag, i) => (

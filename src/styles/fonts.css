@@ -51,7 +51,7 @@
 
 @font-face {
   font-family: satoshi sans;
-  src: url("../assets/fonts/Satoshi-Light.ttf");
+  src: url("/fonts/Satoshi-Light.ttf");
   font-weight: 400;
   font-style: normal;
   font-display: block;
@@ -59,7 +59,7 @@
 
 @font-face {
   font-family: satoshi sans;
-  src: url("../assets/fonts/Satoshi-Regular.ttf");
+  src: url("/fonts/Satoshi-Regular.ttf");
   font-weight: 500;
   font-style: normal;
   font-display: block;
@@ -67,7 +67,7 @@
 
 @font-face {
   font-family: satoshi sans;
-  src: url("../assets/fonts/Satoshi-Medium.ttf");
+  src: url("/fonts/Satoshi-Medium.ttf");
   font-weight: 600;
   font-style: normal;
   font-display: block;
@@ -75,7 +75,7 @@
 
 @font-face {
   font-family: satoshi sans;
-  src: url("../assets/fonts/Satoshi-Bold.ttf");
+  src: url("/fonts/Satoshi-Bold.ttf");
   font-weight: 700;
   font-style: normal;
   font-display: block;
@@ -83,7 +83,7 @@
 
 @font-face {
   font-family: satoshi sans;
-  src: url("../assets/fonts/Satoshi-Black.ttf");
+  src: url("/fonts/Satoshi-Black.ttf");
   font-weight: 800;
   font-style: normal;
   font-display: block;

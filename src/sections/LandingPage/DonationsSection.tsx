@@ -14,7 +14,9 @@ const DonationsSection = ({ imageUrl }: sectionProps) => {
       {/* Donations & Memberships section */}
       <Flex flexDir="column" gap="2rem">
         <Box textAlign="center">
-          <Text color="#0079FF">Donations & Memberships</Text>
+          <Text color="#0079FF" fontWeight={500}>
+            Donations & Memberships
+          </Text>
           <Spacer h="0.5rem" />
           <Heading fontSize="6xl">Donations & Memberships</Heading>
         </Box>

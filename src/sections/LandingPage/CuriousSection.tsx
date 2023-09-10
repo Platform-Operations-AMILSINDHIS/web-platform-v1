@@ -27,7 +27,9 @@ const CuriousSection = ({ eventPics }: sectionProps) => {
       <Box>
         <Grid templateColumns="repeat(2, 1fr)" gap="3rem">
           <Flex flexDir="column" align="baseline" gap="0.5rem">
-            <Text color="#0079FF">Sindhi events & Occasions</Text>
+            <Text color="#0079FF" fontWeight={500}>
+              Sindhi events & Occasions
+            </Text>
             <Heading fontSize="6xl">
               Curious about <br /> our{" "}
               <span style={{ color: "#0079FF" }}>events ?</span>

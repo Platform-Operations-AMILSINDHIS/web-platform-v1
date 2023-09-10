@@ -22,10 +22,10 @@ export const formRouter = createTRPCRouter({
       await sendRawJsonData("akshat.sabavat@gmail.com", formData);
 
       // Send confirmation mail
-      await sendFormConfirmationMail(
-        formData.personalInfo.emailId,
-        "Khudabadi Amil Panchayat Membership"
-      );
+      await sendFormConfirmationMail({
+        to: formData.personalInfo.emailId,
+        formName: "Khudabadi Amil Panchayat Membership",
+      });
 
       return {
         greeting: `Hello`,
