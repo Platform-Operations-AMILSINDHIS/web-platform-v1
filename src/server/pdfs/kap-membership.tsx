@@ -790,13 +790,3 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
 export const generateKAPMembershipPDF = async (
   props: KAPMembershipFormPDFProps
 ) => await renderToBuffer(<KAPMembershipPDF {...props} />);
-
-// const KAPMembershipPDFView: React.FC<KAPMembershipFormPDFProps> = (props) => {
-//   return (
-//     <PDFViewer style={{ width: "100%", height: "80vh" }}>
-//       <KAPMembershipPDF {...props} />
-//     </PDFViewer>
-//   );
-// };
-
-// export default KAPMembershipPDFView;

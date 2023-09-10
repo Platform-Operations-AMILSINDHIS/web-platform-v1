@@ -1,12 +1,16 @@
 "use strict";
 import nodemailer from "nodemailer";
-
 import { env } from "~/env.mjs";
-import {
+
+import type {
   ConfirmationMailType,
   RSVPMailType,
-  sendMailType,
+  SendMailType,
 } from "~/types/mails";
+
+import { generateKAPMembershipPDF } from "./pdfs/kap-membership";
+
+import type { KAPMembershipFormValues } from "~/types/forms/membership";
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -18,19 +22,35 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export const sendMail = async ({ to, subject, html }: sendMailType) => {
-  const info = await transporter.sendMail({
-    from: '"Amil Sindhis" <amilsindhis@gmail.com>',
-    to,
-    subject,
-    html: html ?? "",
-  });
+export const sendMail = async ({
+  to,
+  subject,
+  html,
+  attachments,
+}: SendMailType) => {
+  let info;
+  if (attachments?.length !== 0) {
+    info = await transporter.sendMail({
+      from: '"Amil Sindhis" <amilsindhis@gmail.com>',
+      to,
+      subject,
+      html,
+      attachments,
+    });
+  } else {
+    info = await transporter.sendMail({
+      from: '"Amil Sindhis" <amilsindhis@gmail.com>',
+      to,
+      subject,
+      html,
+    });
+  }
 
-  console.log("Message sent: %s", info.messageId);
+  console.log("Message sent: %s", info?.messageId);
 };
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
-export async function sendRawJsonData(to: string, data: any) {
+export async function sendRawJsonDataOnly(to: string, data: any) {
   const subject = "Form Response";
 
   const html = `
@@ -44,6 +64,41 @@ export async function sendRawJsonData(to: string, data: any) {
   `;
 
   await sendMail({ to, subject, html });
+}
+
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+export async function sendRawJsonDataWithPDF(
+  to: string,
+  data: any,
+  formType: "kap-membership" | "yac-membership"
+) {
+  const subject = "Form Response";
+
+  const html = `
+    <div style="font-size: 16px;">
+      <p>Here is the form response:</p>
+
+      <pre>
+        ${JSON.stringify(data, null, 2)}
+      </pre>
+    </div>
+  `;
+
+  let pdf;
+  if (formType === "kap-membership") {
+    pdf = await generateKAPMembershipPDF({
+      // TODO: Dynamically generate membership number
+      membershipNumber: "123456",
+      kapForm: data as KAPMembershipFormValues,
+    });
+  }
+
+  await sendMail({
+    to,
+    subject,
+    html,
+    attachments: [{ filename: "response-doc.pdf", content: pdf }],
+  });
 }
 
 export const sendFormConfirmationMail = async ({
@@ -73,7 +128,7 @@ export const sendRSVPMailForEvent = async ({
       month: "short",
       year: "numeric",
     }
-  )}`;
+  )} `;
 
   const html = `
   <div style="font-size: 16px;">

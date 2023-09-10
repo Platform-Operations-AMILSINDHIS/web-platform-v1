@@ -6,10 +6,10 @@ import Layout from "~/components/layout";
 
 import type { KAPMembershipFormValues } from "~/types/forms/membership";
 
-const KAPMembershipPDF = dynamic(
-  () => import("~/components/pdfs/kap-membership"),
-  { ssr: false }
-);
+// const KAPMembershipPDF = dynamic(
+//   () => import("~/components/pdfs/kap-membership"),
+//   { ssr: false }
+// );
 
 const dummyKapForm: KAPMembershipFormValues = {
   personalInfo: {
@@ -66,7 +66,7 @@ const dummyKapForm: KAPMembershipFormValues = {
 const MembershipsHomePage: NextPage = () => {
   return (
     <Layout title="Home">
-      <KAPMembershipPDF membershipNumber="#12345" kapForm={dummyKapForm} />
+      {/* <KAPMembershipPDF membershipNumber="#12345" kapForm={dummyKapForm} /> */}
     </Layout>
   );
 };
