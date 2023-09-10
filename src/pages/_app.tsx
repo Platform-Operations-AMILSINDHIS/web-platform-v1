@@ -11,8 +11,8 @@ import "~/styles/fonts.css";
 
 const theme = extendTheme({
   fonts: {
-    heading: "eudoxus sans",
-    body: "Poppins",
+    heading: "satoshi sans",
+    body: "satoshi sans",
   },
 });
 

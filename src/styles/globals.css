@@ -11,3 +11,8 @@ body {
   color: inherit;
   text-decoration: inherit;
 }
+
+.primary-accent-indicators {
+  color: #ff4d00;
+  font-weight: 700;
+}
