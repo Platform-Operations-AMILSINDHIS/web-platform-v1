@@ -9,7 +9,6 @@ const EventHeroCard = () => {
       background={`linear-gradient(90deg, rgba(0, 0, 0, 0.50) 63.72%, rgba(169, 162, 162, 0.00) 99.86%), url(${CardBgImage}), lightgray 50% / cover no-repeat;`}
       backgroundPosition="center"
       backgroundSize="cover"
-      fontFamily={"satoshi sans"}
       backgroundRepeat="no-repeat"
       borderRadius={20}
       alignItems="flex-start"
