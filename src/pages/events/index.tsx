@@ -1,4 +1,4 @@
-import type { InferGetServerSidePropsType, NextPage } from "next";
+import type { InferGetServerSidePropsType } from "next";
 import Layout from "~/components/layout";
 import HeroSection from "~/sections/EventsPage/HeroSection";
 import EventSlider from "~/components/events/EventSlider";
