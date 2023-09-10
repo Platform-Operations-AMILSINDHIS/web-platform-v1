@@ -1081,8 +1081,14 @@ export type EventCollectionQueryQuery = {
       eventLocation?: string | null;
       eventDates?: any | null;
       eventType?: Array<string | null> | null;
+      contentfulMetadata: {
+        __typename?: "ContentfulMetadata";
+        tags: Array<{
+          __typename?: "ContentfulTag";
+          name?: string | null;
+        } | null>;
+      };
       eventDisplayImage?: { __typename?: "Asset"; url?: string | null } | null;
-      sys: { __typename?: "Sys"; id: string };
     } | null>;
   } | null;
 };
@@ -1133,6 +1139,11 @@ export const EventCollectionQueryDocument = gql`
   query eventCollectionQuery {
     eventContentTypeCollection {
       items {
+        contentfulMetadata {
+          tags {
+            name
+          }
+        }
         eventTitle
         eventSlug
         eventDisplayImage {
@@ -1142,9 +1153,6 @@ export const EventCollectionQueryDocument = gql`
         eventLocation
         eventDates
         eventType
-        sys {
-          id
-        }
       }
     }
   }
