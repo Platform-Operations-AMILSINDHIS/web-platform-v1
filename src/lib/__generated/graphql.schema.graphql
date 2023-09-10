@@ -92,6 +92,8 @@ input AssetFilter {
 type AssetLinkingCollections {
   blogContentTypeCollection(limit: Int = 100, locale: String, order: [AssetLinkingCollectionsBlogContentTypeCollectionOrder], preview: Boolean, skip: Int = 0): BlogContentTypeCollection
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+  eventContentTypeCollection(limit: Int = 100, locale: String, order: [AssetLinkingCollectionsEventContentTypeCollectionOrder], preview: Boolean, skip: Int = 0): EventContentTypeCollection
+  eventImageSliderCollection(limit: Int = 100, locale: String, order: [AssetLinkingCollectionsEventImageSliderCollectionOrder], preview: Boolean, skip: Int = 0): EventImageSliderCollection
 }
 
 enum AssetLinkingCollectionsBlogContentTypeCollectionOrder {
@@ -103,6 +105,36 @@ enum AssetLinkingCollectionsBlogContentTypeCollectionOrder {
   blogTitle_DESC
   dateOfBlog_ASC
   dateOfBlog_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+enum AssetLinkingCollectionsEventContentTypeCollectionOrder {
+  eventDates_ASC
+  eventDates_DESC
+  eventLocation_ASC
+  eventLocation_DESC
+  eventSlug_ASC
+  eventSlug_DESC
+  eventTitle_ASC
+  eventTitle_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+enum AssetLinkingCollectionsEventImageSliderCollectionOrder {
   sys_firstPublishedAt_ASC
   sys_firstPublishedAt_DESC
   sys_id_ASC
@@ -137,7 +169,7 @@ enum AssetOrder {
 }
 
 """
-[See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType)
+This content type represents the content that will go on your blog page, select the type weather if it's samachar, publication or a regular blog [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType)
 """
 type BlogContentType implements Entry {
   author(locale: String): String
@@ -333,6 +365,168 @@ enum EntryOrder {
   sys_publishedVersion_DESC
 }
 
+"""
+A content type for you to add your events, and the respective event data such as : Event location, event name, event venue and so on [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/eventContentType)
+"""
+type EventContentType implements Entry {
+  contentfulMetadata: ContentfulMetadata!
+  eventDates(locale: String): DateTime
+  eventDescription(locale: String): EventContentTypeEventDescription
+  eventDisplayImage(locale: String, preview: Boolean): Asset
+  eventLocation(locale: String): String
+  eventSearchTags(locale: String): [String]
+  eventSlug(locale: String): String
+  eventTitle(locale: String): String
+  eventType(locale: String): [String]
+  linkedFrom(allowedLocales: [String]): EventContentTypeLinkingCollections
+  sys: Sys!
+}
+
+type EventContentTypeCollection {
+  items: [EventContentType]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+type EventContentTypeEventDescription {
+  json: JSON!
+  links: EventContentTypeEventDescriptionLinks!
+}
+
+type EventContentTypeEventDescriptionAssets {
+  block: [Asset]!
+  hyperlink: [Asset]!
+}
+
+type EventContentTypeEventDescriptionEntries {
+  block: [Entry]!
+  hyperlink: [Entry]!
+  inline: [Entry]!
+}
+
+type EventContentTypeEventDescriptionLinks {
+  assets: EventContentTypeEventDescriptionAssets!
+  entries: EventContentTypeEventDescriptionEntries!
+  resources: EventContentTypeEventDescriptionResources!
+}
+
+type EventContentTypeEventDescriptionResources {
+  block: [ResourceLink!]!
+}
+
+input EventContentTypeFilter {
+  AND: [EventContentTypeFilter]
+  OR: [EventContentTypeFilter]
+  contentfulMetadata: ContentfulMetadataFilter
+  eventDates: DateTime
+  eventDates_exists: Boolean
+  eventDates_gt: DateTime
+  eventDates_gte: DateTime
+  eventDates_in: [DateTime]
+  eventDates_lt: DateTime
+  eventDates_lte: DateTime
+  eventDates_not: DateTime
+  eventDates_not_in: [DateTime]
+  eventDescription_contains: String
+  eventDescription_exists: Boolean
+  eventDescription_not_contains: String
+  eventDisplayImage_exists: Boolean
+  eventLocation: String
+  eventLocation_contains: String
+  eventLocation_exists: Boolean
+  eventLocation_in: [String]
+  eventLocation_not: String
+  eventLocation_not_contains: String
+  eventLocation_not_in: [String]
+  eventSearchTags_contains_all: [String]
+  eventSearchTags_contains_none: [String]
+  eventSearchTags_contains_some: [String]
+  eventSearchTags_exists: Boolean
+  eventSlug: String
+  eventSlug_contains: String
+  eventSlug_exists: Boolean
+  eventSlug_in: [String]
+  eventSlug_not: String
+  eventSlug_not_contains: String
+  eventSlug_not_in: [String]
+  eventTitle: String
+  eventTitle_contains: String
+  eventTitle_exists: Boolean
+  eventTitle_in: [String]
+  eventTitle_not: String
+  eventTitle_not_contains: String
+  eventTitle_not_in: [String]
+  eventType_contains_all: [String]
+  eventType_contains_none: [String]
+  eventType_contains_some: [String]
+  eventType_exists: Boolean
+  sys: SysFilter
+}
+
+type EventContentTypeLinkingCollections {
+  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+}
+
+enum EventContentTypeOrder {
+  eventDates_ASC
+  eventDates_DESC
+  eventLocation_ASC
+  eventLocation_DESC
+  eventSlug_ASC
+  eventSlug_DESC
+  eventTitle_ASC
+  eventTitle_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+"""
+bunch of images you can add for changing of backdrop images [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/eventImageSlider)
+"""
+type EventImageSlider implements Entry {
+  contentfulMetadata: ContentfulMetadata!
+  imagesCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): AssetCollection
+  linkedFrom(allowedLocales: [String]): EventImageSliderLinkingCollections
+  sys: Sys!
+}
+
+type EventImageSliderCollection {
+  items: [EventImageSlider]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+input EventImageSliderFilter {
+  AND: [EventImageSliderFilter]
+  OR: [EventImageSliderFilter]
+  contentfulMetadata: ContentfulMetadataFilter
+  imagesCollection_exists: Boolean
+  sys: SysFilter
+}
+
+type EventImageSliderLinkingCollections {
+  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+}
+
+enum EventImageSliderOrder {
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
 """The 'HexColor' type represents color in `rgb:ffffff` string format."""
 scalar HexColor
 
@@ -480,6 +674,10 @@ type Query {
   blogContentType(id: String!, locale: String, preview: Boolean): BlogContentType
   blogContentTypeCollection(limit: Int = 100, locale: String, order: [BlogContentTypeOrder], preview: Boolean, skip: Int = 0, where: BlogContentTypeFilter): BlogContentTypeCollection
   entryCollection(limit: Int = 100, locale: String, order: [EntryOrder], preview: Boolean, skip: Int = 0, where: EntryFilter): EntryCollection
+  eventContentType(id: String!, locale: String, preview: Boolean): EventContentType
+  eventContentTypeCollection(limit: Int = 100, locale: String, order: [EventContentTypeOrder], preview: Boolean, skip: Int = 0, where: EventContentTypeFilter): EventContentTypeCollection
+  eventImageSlider(id: String!, locale: String, preview: Boolean): EventImageSlider
+  eventImageSliderCollection(limit: Int = 100, locale: String, order: [EventImageSliderOrder], preview: Boolean, skip: Int = 0, where: EventImageSliderFilter): EventImageSliderCollection
 }
 
 type ResourceLink {
