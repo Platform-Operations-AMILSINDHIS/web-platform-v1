@@ -20,6 +20,7 @@ export const getServerSideProps: GetServerSideProps<{
   posts: PageBlogPostCollectionQuery;
 }> = async () => {
   const posts = await client.pageBlogPostCollection();
+  // const posts = await client.pageBlogPost({  });
   return { props: { posts } };
 };
 
