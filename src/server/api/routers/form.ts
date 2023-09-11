@@ -7,7 +7,11 @@ import {
 
 import { kapMembershipFormValuesSchema } from "../../schemas";
 
-import { sendFormConfirmationMail, sendRawJsonDataWithPDF } from "../../mail";
+import {
+  sendFormConfirmationMail,
+  sendRawJsonDataWithPDF,
+  sendRawJsonDataOnly,
+} from "../../mail";
 import { generateKAPMembershipPDF } from "../../pdfs/kap-membership";
 import type { KAPMembershipFormValues } from "~/types/forms/membership";
 
@@ -19,13 +23,13 @@ export const formRouter = createTRPCRouter({
 
       console.log({ formData });
 
-      const pdf = await generateKAPMembershipPDF({
-        // TODO: Dynamically generate membership number
-        membershipNumber: "123456",
-        kapForm: formData as KAPMembershipFormValues,
-      });
+      // const pdf = await generateKAPMembershipPDF({
+      //   // TODO: Dynamically generate membership number
+      //   membershipNumber: "123456",
+      //   kapForm: formData as KAPMembershipFormValues,
+      // });
 
-      console.log({ pdf });
+      // console.log({ pdf });
 
       // Send response
       await sendRawJsonDataWithPDF(
@@ -33,11 +37,9 @@ export const formRouter = createTRPCRouter({
         formData,
         "kap-membership"
       );
-      // await sendRawJsonDataWithPDF(
-      //   "akshat.sabavat@gmail.com",
-      //   formData,
-      //   "kap-membership"
-      // );
+
+      // await sendRawJsonDataOnly("somesh.kar@gmail.com", formData);
+      // await sendRawJsonDataOnly("akshat.sabavat@gmail.com", formData);
 
       // // Send confirmation mail
       // await sendFormConfirmationMail({

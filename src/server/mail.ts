@@ -28,23 +28,30 @@ export const sendMail = async ({
   html,
   attachments,
 }: SendMailType) => {
-  let info;
-  if (attachments?.length !== 0) {
-    info = await transporter.sendMail({
-      from: '"Amil Sindhis" <amilsindhis@gmail.com>',
-      to,
-      subject,
-      html,
-      attachments,
-    });
-  } else {
-    info = await transporter.sendMail({
-      from: '"Amil Sindhis" <amilsindhis@gmail.com>',
-      to,
-      subject,
-      html,
-    });
-  }
+  const info = await transporter.sendMail({
+    from: '"Amil Sindhis" <amilsindhis@gmail.com>',
+    to,
+    subject,
+    html,
+    attachments,
+  });
+  // let info;
+  // if (attachments?.length !== 0) {
+  //   info = await transporter.sendMail({
+  //     from: '"Amil Sindhis" <amilsindhis@gmail.com>',
+  //     to,
+  //     subject,
+  //     html,
+  //     attachments,
+  //   });
+  // } else {
+  //   info = await transporter.sendMail({
+  //     from: '"Amil Sindhis" <amilsindhis@gmail.com>',
+  //     to,
+  //     subject,
+  //     html,
+  //   });
+  // }
 
   console.log("Message sent: %s", info?.messageId);
 };
