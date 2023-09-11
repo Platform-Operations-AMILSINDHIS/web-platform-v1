@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Layout from "~/components/layout";
@@ -26,7 +26,17 @@ const EventDetailPage = ({
           : "Event Details"
       }
     >
-      <Box>{eventContentType?.eventTitle}</Box>
+      <Flex mt={"45px"} flexDir="column">
+        <Box
+          width="full"
+          height={350}
+          background={`url(${eventContentType?.eventDisplayImage?.url ?? ""})`}
+          backgroundPosition="center"
+          backgroundSize="cover"
+          filter=""
+          borderRadius={7}
+        />
+      </Flex>
     </Layout>
   );
 };

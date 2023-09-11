@@ -5,6 +5,9 @@ query eventDetail($id: String!) {
     eventDisplayImage {
       url
     }
+    eventDescription {
+      json
+    }
     eventSearchTags
     eventLocation
     eventDates

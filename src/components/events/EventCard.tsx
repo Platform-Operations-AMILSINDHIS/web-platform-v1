@@ -30,10 +30,11 @@ const EventCard: React.FC<eventData> = ({ event }) => {
       flexDir="column"
     >
       <Box
-        boxShadow="4px 4px 4px 0px rgba(0, 0, 0, 0.36);           "
+        boxShadow="4px 4px 4px 0px rgba(0, 0, 0, 0.36);"
         width={370}
         height={250}
-        background={`url(${event?.eventDisplayImage?.url ?? ""})`}
+        background={`url(${event?.eventDisplayImage?.url ?? ""}) 
+              linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%)`}
         backgroundPosition="center"
         backgroundSize="cover"
         borderRadius={7}
