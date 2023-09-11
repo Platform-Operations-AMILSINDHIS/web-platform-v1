@@ -42,7 +42,17 @@ const EventCard: React.FC<eventData> = ({ event }) => {
         <Text mb={-1} color="#FF4D00" fontWeight={600} fontSize="md">
           {convertDATE(event?.eventDates as Date)}
         </Text>
-        <Text fontWeight={600} fontSize="2xl">
+        <Text
+          as="a"
+          href={`/events/${event?.sys.id}`}
+          transition="all .3s"
+          _hover={{
+            color: "purple.500",
+            textDecoration: "underline",
+          }}
+          fontWeight={600}
+          fontSize="2xl"
+        >
           {event?.eventTitle}
         </Text>
         <Flex mt={2} gap={3}>
