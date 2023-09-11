@@ -7,7 +7,13 @@ import {
 
 import { kapMembershipFormValuesSchema } from "../../schemas";
 
-import { sendFormConfirmationMail, sendRawJsonData } from "../../mail";
+import {
+  sendFormConfirmationMail,
+  sendRawJsonDataWithPDF,
+  sendRawJsonDataOnly,
+} from "../../mail";
+import { generateKAPMembershipPDF } from "../../pdfs/kap-membership";
+import type { KAPMembershipFormValues } from "~/types/forms/membership";
 
 export const formRouter = createTRPCRouter({
   kapMembership: publicProcedure
@@ -17,18 +23,30 @@ export const formRouter = createTRPCRouter({
 
       console.log({ formData });
 
+      // const pdf = await generateKAPMembershipPDF({
+      //   // TODO: Dynamically generate membership number
+      //   membershipNumber: "123456",
+      //   kapForm: formData as KAPMembershipFormValues,
+      // });
+
+      // console.log({ pdf });
+
       // Send response
-      await sendRawJsonData("somesh.kar@gmail.com", formData);
-      await sendRawJsonData("akshat.sabavat@gmail.com", formData);
+      await sendRawJsonDataWithPDF(
+        "somesh.kar@gmail.com",
+        formData,
+        "kap-membership"
+      );
 
-      // Send confirmation mail
-      await sendFormConfirmationMail({
-        to: formData.personalInfo.emailId,
-        formName: "Khudabadi Amil Panchayat Membership",
-      });
+      // await sendRawJsonDataOnly("somesh.kar@gmail.com", formData);
+      // await sendRawJsonDataOnly("akshat.sabavat@gmail.com", formData);
 
-      return {
-        greeting: `Hello`,
-      };
+      // // Send confirmation mail
+      // await sendFormConfirmationMail({
+      //   to: formData.personalInfo.emailId,
+      //   formName: "Khudabadi Amil Panchayat Membership",
+      // });
+
+      return { success: true };
     }),
 });

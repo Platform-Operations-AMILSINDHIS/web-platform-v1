@@ -1,7 +1,10 @@
-export interface sendMailType {
+import type { Attachment } from "nodemailer/lib/mailer";
+
+export interface SendMailType {
   to: string;
   subject: string;
-  html?: string;
+  html: string;
+  attachments?: Attachment[];
 }
 
 export interface ConfirmationMailType {

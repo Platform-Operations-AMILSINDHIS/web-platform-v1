@@ -1,16 +1,11 @@
-import type {
-  NextPage,
-  GetStaticProps,
-  GetServerSideProps,
-  InferGetServerSidePropsType,
-} from "next";
+import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Link from "next/link";
 import { truncate } from "lodash";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
 
 import Layout from "~/components/layout";
-import { BlogPostThumb } from "~/components/blog/blog-landing";
+import BlogPostThumb from "~/components/blog/blogPostThumb";
 
 import { client } from "~/lib/client";
 
@@ -25,6 +20,7 @@ export const getServerSideProps: GetServerSideProps<{
   posts: PageBlogPostCollectionQuery;
 }> = async () => {
   const posts = await client.pageBlogPostCollection();
+  // const posts = await client.pageBlogPost({  });
   return { props: { posts } };
 };
 
