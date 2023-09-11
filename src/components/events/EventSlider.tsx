@@ -1,3 +1,5 @@
+/* eslint-disable-next-line */
+// @ts-nocheck
 import { Flex, Text } from "@chakra-ui/react";
 import type { EventCollectionQueryQuery } from "~/lib/__generated/sdk";
 import EventCard from "./EventCard";

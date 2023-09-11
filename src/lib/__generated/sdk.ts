@@ -1,4 +1,4 @@
-/*eslint-disable */
+/* eslint-disable */
 import { GraphQLClient } from "graphql-request";
 import { GraphQLClientRequestHeaders } from "graphql-request/build/cjs/types";
 import gql from "graphql-tag";
@@ -1089,6 +1089,7 @@ export type EventCollectionQueryQuery = {
         } | null>;
       };
       eventDisplayImage?: { __typename?: "Asset"; url?: string | null } | null;
+      sys: { __typename?: "Sys"; id: string };
     } | null>;
   } | null;
 };
@@ -1172,6 +1173,9 @@ export const EventCollectionQueryDocument = gql`
         eventLocation
         eventDates
         eventType
+        sys {
+          id
+        }
       }
     }
   }

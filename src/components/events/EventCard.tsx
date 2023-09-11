@@ -1,7 +1,7 @@
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import type { EventContentType } from "~/lib/__generated/sdk";
 
-const convertDATE = (date: any) => {
+const convertDATE = (date: Date) => {
   const inputDate = new Date(date);
 
   const formattedDate = inputDate.toLocaleString("en-US", {
@@ -40,7 +40,7 @@ const EventCard: React.FC<eventData> = ({ event }) => {
       />
       <Flex flexDir="column" mt={3}>
         <Text mb={-1} color="#FF4D00" fontWeight={600} fontSize="md">
-          {convertDATE(event?.eventDates)}
+          {convertDATE(event?.eventDates as Date)}
         </Text>
         <Text fontWeight={600} fontSize="2xl">
           {event?.eventTitle}
