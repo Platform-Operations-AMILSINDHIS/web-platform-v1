@@ -21,7 +21,7 @@ const EventHeroCard = () => {
           <Text fontWeight={600} color={"#FF4D00"} fontSize="md">
             Amil Events & Drives
           </Text>
-          <Text color={"white"} fontWeight={700} fontSize={"5xl"}>
+          <Text color={"white"} fontWeight={600} fontSize={"5xl"}>
             Attend, connect{" "}
             <span
               style={{

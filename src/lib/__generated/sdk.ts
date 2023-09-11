@@ -1081,9 +1081,34 @@ export type EventCollectionQueryQuery = {
       eventLocation?: string | null;
       eventDates?: any | null;
       eventType?: Array<string | null> | null;
+      contentfulMetadata: {
+        __typename?: "ContentfulMetadata";
+        tags: Array<{
+          __typename?: "ContentfulTag";
+          name?: string | null;
+        } | null>;
+      };
       eventDisplayImage?: { __typename?: "Asset"; url?: string | null } | null;
-      sys: { __typename?: "Sys"; id: string };
     } | null>;
+  } | null;
+};
+
+export type EventDetailQueryVariables = Exact<{
+  id: Scalars["String"]["input"];
+}>;
+
+export type EventDetailQuery = {
+  __typename?: "Query";
+  eventContentType?: {
+    __typename?: "EventContentType";
+    eventTitle?: string | null;
+    eventSlug?: string | null;
+    eventSearchTags?: Array<string | null> | null;
+    eventLocation?: string | null;
+    eventDates?: any | null;
+    eventType?: Array<string | null> | null;
+    eventDisplayImage?: { __typename?: "Asset"; url?: string | null } | null;
+    sys: { __typename?: "Sys"; id: string };
   } | null;
 };
 
@@ -1133,6 +1158,11 @@ export const EventCollectionQueryDocument = gql`
   query eventCollectionQuery {
     eventContentTypeCollection {
       items {
+        contentfulMetadata {
+          tags {
+            name
+          }
+        }
         eventTitle
         eventSlug
         eventDisplayImage {
@@ -1142,9 +1172,24 @@ export const EventCollectionQueryDocument = gql`
         eventLocation
         eventDates
         eventType
-        sys {
-          id
-        }
+      }
+    }
+  }
+`;
+export const EventDetailDocument = gql`
+  query eventDetail($id: String!) {
+    eventContentType(id: $id) {
+      eventTitle
+      eventSlug
+      eventDisplayImage {
+        url
+      }
+      eventSearchTags
+      eventLocation
+      eventDates
+      eventType
+      sys {
+        id
       }
     }
   }
@@ -1215,6 +1260,20 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         "eventCollectionQuery",
+        "query"
+      );
+    },
+    eventDetail(
+      variables: EventDetailQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<EventDetailQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<EventDetailQuery>(EventDetailDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        "eventDetail",
         "query"
       );
     },

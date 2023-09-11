@@ -16,6 +16,7 @@ export const getServerSideProps: GetServerSideProps<{
 const EventsPage = ({
   events,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  console.log(events);
   return (
     <Layout title="Events">
       <HeroSection />
