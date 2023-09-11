@@ -1,0 +1,16 @@
+query eventDetail($id: String!) {
+  eventContentType(id: $id) {
+    eventTitle
+    eventSlug
+    eventDisplayImage {
+      url
+    }
+    eventSearchTags
+    eventLocation
+    eventDates
+    eventType
+    sys {
+      id
+    }
+  }
+}
