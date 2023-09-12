@@ -1,5 +1,6 @@
 import { Divider, Flex, Text } from "@chakra-ui/react";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import LinkButton from "~/components/buttons/LinkButton";
 import EventDetailModule from "~/components/events/EventDetailModule";
 import Layout from "~/components/layout";
 import {
@@ -50,11 +51,18 @@ const EventDetailPage = ({
           borderRadius={20}
           boxShadow="4px 4px 4px 0px rgba(0, 0, 0, 0.36)"
         >
-          <Text
-            fontSize={"3xl"}
-            color="white"
-            fontWeight={600}
-          >{`${eventContentType?.eventTitle}`}</Text>
+          <Flex width="full" justify="space-between">
+            <Text
+              fontSize={"3xl"}
+              color="white"
+              fontWeight={600}
+            >{`${eventContentType?.eventTitle}`}</Text>
+            <LinkButton
+              CTATheme={false}
+              CTAlabel="View Gallery"
+              CTAlink="/gallery"
+            />
+          </Flex>
         </Flex>
         <Flex gap={20} mt={10}>
           <Flex flexDir="column">

@@ -19,8 +19,8 @@ const EventCard: React.FC<eventData> = ({ event }) => {
     >
       <Box
         boxShadow="4px 4px 4px 0px rgba(0, 0, 0, 0.36);"
-        width={370}
-        height={250}
+        width={380}
+        height={210}
         background={`url(${event?.eventDisplayImage?.url ?? ""})`}
         backgroundPosition="center"
         backgroundSize="cover"
