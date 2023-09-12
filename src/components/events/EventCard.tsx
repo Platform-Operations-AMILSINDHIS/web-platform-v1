@@ -1,18 +1,6 @@
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import type { EventContentType } from "~/lib/__generated/sdk";
-
-const convertDATE = (date: Date) => {
-  const inputDate = new Date(date);
-
-  const formattedDate = inputDate.toLocaleString("en-US", {
-    day: "numeric",
-    month: "short",
-    hour: "numeric",
-    minute: "numeric",
-    hour12: true,
-  });
-  return formattedDate;
-};
+import { convertDATE } from "~/utils/helper";
 
 interface eventData {
   event: EventContentType | undefined | null;

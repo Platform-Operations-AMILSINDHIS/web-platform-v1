@@ -1,8 +1,11 @@
-import { Box, Divider, Flex, Text } from "@chakra-ui/react";
-import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import { Divider, Flex, Text } from "@chakra-ui/react";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import EventDetailModule from "~/components/events/EventDetailModule";
 import Layout from "~/components/layout";
-import { EventDetailQuery } from "~/lib/__generated/sdk";
+import {
+  EventDetailDocument,
+  type EventDetailQuery,
+} from "~/lib/__generated/sdk";
 import { client } from "~/lib/client";
 
 export const getServerSideProps: GetServerSideProps<{
@@ -27,7 +30,7 @@ const EventDetailPage = ({
           : "Event Details"
       }
     >
-      <Flex mt={"45px"} flexDir="column">
+      <Flex mb={10} mt={"45px"} flexDir="column">
         <Flex
           align="flex-end"
           p={6}
@@ -53,18 +56,23 @@ const EventDetailPage = ({
             fontWeight={600}
           >{`${eventContentType?.eventTitle}`}</Text>
         </Flex>
-        <Flex mt={10}>
+        <Flex gap={20} mt={10}>
           <Flex flexDir="column">
             <Text fontSize={"4xl"} fontWeight={600}>
               Event Details
             </Text>
             <Divider mt={1} mb={3} border="solid 1px" borderColor="gray.300" />
-            <Text
-              fontSize="lg"
-              width="full"
-              lineHeight="174.5%"
-            >{`${eventContentType?.eventDescription?.json.content[0]?.content[0].value}`}</Text>
+            <Text maxW="2700px" fontSize="lg" lineHeight="174.5%">{`${
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+              (eventContentType?.eventDescription?.json?.content[0]?.content[0]
+                ?.value as string) || ""
+            }`}</Text>
           </Flex>
+          <EventDetailModule
+            title={eventContentType?.eventTitle}
+            location={eventContentType?.eventLocation}
+            date={eventContentType?.eventDates as Date}
+          />
         </Flex>
       </Flex>
     </Layout>
