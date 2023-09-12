@@ -6,6 +6,8 @@ import {
 } from "~/utils/helper";
 import LinkButton from "../buttons/LinkButton";
 
+import { api } from "~/utils/api";
+
 interface DetailModuleProps {
   title: string | null | undefined;
   date: Date;
@@ -17,6 +19,8 @@ const EventDetailModule: React.FC<DetailModuleProps> = ({
   date,
   location,
 }) => {
+  const rvspMut = api.event.rsvp.useMutation();
+
   return (
     <Flex
       gap={4}
@@ -54,6 +58,7 @@ const EventDetailModule: React.FC<DetailModuleProps> = ({
       />
       <Flex gap={3} align="center">
         <Button
+          as="a"
           style={{
             cursor: "pointer",
             color: "white",
@@ -64,7 +69,15 @@ const EventDetailModule: React.FC<DetailModuleProps> = ({
           py={5}
           px={8}
           fontSize="sm"
-          as="a"
+          onClick={() => {
+            // TODO: Implement modal to take in user's name and email
+
+            rvspMut.mutate({
+              eventName: title ?? "",
+              name: "Test Name",
+              email: "test@email.com",
+            });
+          }}
         >
           RSVP
         </Button>
