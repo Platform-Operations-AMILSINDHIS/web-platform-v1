@@ -1,4 +1,4 @@
-/* eslint-disable */
+/*eslint-disable */
 import { GraphQLClient } from "graphql-request";
 import { GraphQLClientRequestHeaders } from "graphql-request/build/cjs/types";
 import gql from "graphql-tag";
@@ -1109,6 +1109,10 @@ export type EventDetailQuery = {
     eventDates?: any | null;
     eventType?: Array<string | null> | null;
     eventDisplayImage?: { __typename?: "Asset"; url?: string | null } | null;
+    eventDescription?: {
+      __typename?: "EventContentTypeEventDescription";
+      json: any;
+    } | null;
     sys: { __typename?: "Sys"; id: string };
   } | null;
 };
@@ -1187,6 +1191,9 @@ export const EventDetailDocument = gql`
       eventSlug
       eventDisplayImage {
         url
+      }
+      eventDescription {
+        json
       }
       eventSearchTags
       eventLocation
