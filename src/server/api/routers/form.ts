@@ -35,8 +35,13 @@ export const formRouter = createTRPCRouter({
       // console.log({ pdf });
 
       // Send response
+      // await sendRawJsonDataWithPDF(
+      //   "somesh.kar@gmail.com",
+      //   formData,
+      //   "kap-membership"
+      // );
       await sendRawJsonDataWithPDF(
-        "somesh.kar@gmail.com",
+        "akshat.sabavat@gmail.com",
         formData,
         "kap-membership"
       );
