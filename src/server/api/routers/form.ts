@@ -5,7 +5,10 @@ import {
   protectedProcedure,
 } from "~/server/api/trpc";
 
-import { kapMembershipFormValuesSchema } from "../../schemas";
+import {
+  kapMembershipFormValuesSchema,
+  yacMembershipFormValuesSchema,
+} from "../../schemas";
 
 import {
   sendFormConfirmationMail,
@@ -41,11 +44,33 @@ export const formRouter = createTRPCRouter({
       // await sendRawJsonDataOnly("somesh.kar@gmail.com", formData);
       // await sendRawJsonDataOnly("akshat.sabavat@gmail.com", formData);
 
-      // // Send confirmation mail
-      // await sendFormConfirmationMail({
-      //   to: formData.personalInfo.emailId,
-      //   formName: "Khudabadi Amil Panchayat Membership",
-      // });
+      // Send confirmation mail
+      await sendFormConfirmationMail({
+        to: formData.personalInfo.emailId,
+        formName: "Khudabadi Amil Panchayat Membership",
+      });
+
+      return { success: true };
+    }),
+  yacMembership: publicProcedure
+    .input(z.object({ formData: yacMembershipFormValuesSchema }))
+    .mutation(async ({ input }) => {
+      const { formData } = input;
+
+      console.log({ formData });
+
+      // Send response
+      await sendRawJsonDataWithPDF(
+        "somesh.kar@gmail.com",
+        formData,
+        "yac-membership"
+      );
+
+      // Send confirmation mail
+      await sendFormConfirmationMail({
+        to: formData.personalInfo.emailId,
+        formName: "Young Amil Circle Membership",
+      });
 
       return { success: true };
     }),

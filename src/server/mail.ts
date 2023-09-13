@@ -98,6 +98,7 @@ export async function sendRawJsonDataWithPDF(
       membershipNumber: "123456",
       kapForm: data as KAPMembershipFormValues,
     });
+  } else if (formType === "yac-membership") {
   }
 
   await sendMail({
