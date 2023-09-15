@@ -6,19 +6,26 @@ import {
 } from "~/server/api/trpc";
 
 import { rsvpForEvent } from "../../sheets";
+import { sendRsvpMailForEvent } from "../../mail";
 
 export const eventRouter = createTRPCRouter({
   rsvp: publicProcedure
     .input(
-      z.object({ eventName: z.string(), name: z.string(), email: z.string() })
+      z.object({
+        eventTitle: z.string(),
+        eventDate: z.date(),
+        name: z.string(),
+        email: z.string(),
+      })
     )
     .mutation(async ({ input }) => {
-      const { eventName, email, name } = input;
+      const { eventTitle, eventDate, email, name } = input;
 
-      // TODO: Send mail here
+      // Add to Google sheet here
+      await rsvpForEvent({ eventTitle, name, email });
 
-      // TODO: Add to Google sheet here
-      await rsvpForEvent({ eventName, name, email });
+      // Send mail here
+      await sendRsvpMailForEvent({ eventTitle, eventDate, to: email });
 
       return {
         success: true,

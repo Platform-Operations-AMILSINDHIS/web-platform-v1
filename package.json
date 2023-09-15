@@ -33,6 +33,7 @@
     "@types/lodash": "^4.14.197",
     "@types/nodemailer": "^6.4.9",
     "@types/react-datepicker": "^4.15.0",
+    "cuid": "^3.0.0",
     "formik": "^2.4.3",
     "framer-motion": "^10.13.2",
     "google-auth-library": "^9.0.0",

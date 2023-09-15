@@ -1,5 +1,5 @@
 interface RSVPSheetType {
-  eventName: string;
+  eventTitle: string;
   name: string;
   email: string;
 

@@ -43,12 +43,10 @@ const EventDetailModule: React.FC<DetailModuleProps> = ({
   const rvspMut = api.event.rsvp.useMutation();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [rsvpingEvent, setRsvpingEvent] = useState<{
-    eventName: string;
+  const [rsvpDetails, setRsvpDetails] = useState<{
     name: string;
     email: string;
   }>({
-    eventName: "",
     name: "",
     email: "",
   });
@@ -102,20 +100,7 @@ const EventDetailModule: React.FC<DetailModuleProps> = ({
             py={5}
             px={8}
             fontSize="sm"
-            onClick={() => {
-              // TODO: Implement modal to take in user's name and email
-              setRsvpingEvent({
-                ...rsvpingEvent,
-                eventName: title ?? "",
-              });
-              onOpen();
-
-              // rvspMut.mutate({
-              //   eventName: title ?? "",
-              //   name: "Test Name",
-              //   email: "test@email.com",
-              // });
-            }}
+            onClick={onOpen}
           >
             RSVP
           </Button>
@@ -142,7 +127,7 @@ const EventDetailModule: React.FC<DetailModuleProps> = ({
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>RSVP for {rsvpingEvent.eventName}</ModalHeader>
+          <ModalHeader>RSVP for {title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <FormControl>
@@ -151,7 +136,7 @@ const EventDetailModule: React.FC<DetailModuleProps> = ({
                 type="text"
                 placeholder="Rakul Singh"
                 onChange={(e) =>
-                  setRsvpingEvent({ ...rsvpingEvent, name: e.target.value })
+                  setRsvpDetails({ ...rsvpDetails, name: e.target.value })
                 }
               />
             </FormControl>
@@ -164,7 +149,7 @@ const EventDetailModule: React.FC<DetailModuleProps> = ({
                 type="text"
                 placeholder="rakul.singh@example.com"
                 onChange={(e) =>
-                  setRsvpingEvent({ ...rsvpingEvent, email: e.target.value })
+                  setRsvpDetails({ ...rsvpDetails, email: e.target.value })
                 }
               />
             </FormControl>
@@ -177,9 +162,10 @@ const EventDetailModule: React.FC<DetailModuleProps> = ({
               onClick={() => {
                 rvspMut
                   .mutateAsync({
-                    eventName: title ?? "",
-                    name: rsvpingEvent.name,
-                    email: rsvpingEvent.email,
+                    eventTitle: title ?? "",
+                    eventDate: date,
+                    name: rsvpDetails.name,
+                    email: rsvpDetails.email,
                   })
                   .then((data) => {
                     onClose();

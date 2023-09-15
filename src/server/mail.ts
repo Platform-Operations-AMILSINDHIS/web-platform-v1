@@ -12,10 +12,20 @@ import { generateKAPMembershipPDF } from "./pdfs/kap-membership";
 
 import type { KAPMembershipFormValues } from "~/types/forms/membership";
 
+// const transporter = nodemailer.createTransport({
+//   host: "smtp.gmail.com",
+//   port: 465,
+//   secure: true,
+//   auth: {
+//     user: env.EMAIL_USER,
+//     pass: env.EMAIL_PASS,
+//   },
+// });
+
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
+  port: 587,
+  secure: false, // For STARTTLS
   auth: {
     user: env.EMAIL_USER,
     pass: env.EMAIL_PASS,
@@ -28,32 +38,19 @@ export const sendMail = async ({
   html,
   attachments,
 }: SendMailType) => {
-  const info = await transporter.sendMail({
-    from: '"Amil Sindhis" <amilsindhis@gmail.com>',
-    to,
-    subject,
-    html,
-    attachments,
-  });
-  // let info;
-  // if (attachments?.length !== 0) {
-  //   info = await transporter.sendMail({
-  //     from: '"Amil Sindhis" <amilsindhis@gmail.com>',
-  //     to,
-  //     subject,
-  //     html,
-  //     attachments,
-  //   });
-  // } else {
-  //   info = await transporter.sendMail({
-  //     from: '"Amil Sindhis" <amilsindhis@gmail.com>',
-  //     to,
-  //     subject,
-  //     html,
-  //   });
-  // }
+  try {
+    const info = await transporter.sendMail({
+      from: '"Amil Sindhis" <amilsindhis@gmail.com>',
+      to,
+      subject,
+      html,
+      attachments: attachments ?? [],
+    });
 
-  console.log("Message sent: %s", info?.messageId);
+    console.log("Message sent: %s", info?.messageId);
+  } catch (e) {
+    console.error("Error sending mail: ", e);
+  }
 };
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
@@ -124,25 +121,29 @@ export const sendFormConfirmationMail = async ({
   await sendMail({ to, subject, html });
 };
 
-export const sendRSVPMailForEvent = async ({
+export const sendRsvpMailForEvent = async ({
   to,
   eventTitle,
   eventDate,
 }: RSVPMailType) => {
-  const subject = `RSVP confirmation for ${eventTitle}, held on ${eventDate.toLocaleDateString(
-    "en-GB",
-    {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    }
-  )} `;
+  try {
+    const subject = `RSVP confirmation for ${eventTitle}, held on ${eventDate.toLocaleDateString(
+      "en-GB",
+      {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      }
+    )} `;
 
-  const html = `
+    const html = `
   <div style="font-size: 16px;">
       <p>Hey there thank you for showing intrest in our event, attached below is your uniquely generated RSVP token that is to be shown prior to entering the event</p>
   </div>
   `;
 
-  await sendMail({ to, subject, html });
+    await sendMail({ to, subject, html });
+  } catch (e) {
+    console.error(e);
+  }
 };

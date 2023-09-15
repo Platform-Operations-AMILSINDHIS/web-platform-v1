@@ -79,7 +79,7 @@ const EventDetailPage = ({
           <EventDetailModule
             title={eventContentType?.eventTitle}
             location={eventContentType?.eventLocation}
-            date={eventContentType?.eventDates as Date}
+            date={new Date(eventContentType?.eventDates as string)}
           />
         </Flex>
       </Flex>
