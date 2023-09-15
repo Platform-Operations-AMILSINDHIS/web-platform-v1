@@ -13,6 +13,19 @@ import {
   Spacer,
   IconButton,
   Box,
+  UnorderedList,
+  ListItem,
+  Step,
+  StepDescription,
+  StepIcon,
+  StepIndicator,
+  StepNumber,
+  StepSeparator,
+  StepStatus,
+  StepTitle,
+  Stepper,
+  useSteps,
+  useToast,
 } from "@chakra-ui/react";
 import { FaHandHoldingHeart, FaUserFriends } from "react-icons/fa";
 import { ArrowBackIcon, ArrowForwardIcon, CloseIcon } from "@chakra-ui/icons";
@@ -31,9 +44,6 @@ import type {
   AddressInfo,
   ProposerInfo,
 } from "~/types/forms/membership";
-
-import { Formik, Form } from "formik";
-
 import {
   PersonalInformationSection,
   AddressDetailsSection,
@@ -41,10 +51,29 @@ import {
   ProposerDetailsSection,
 } from "./kap-membership-form";
 
-const YoungAmilCircleMembershipForm: React.FC<{
-  activeStep: number;
-}> = ({ activeStep }) => {
-  // TODO: Setup global formState for all the Formik forms to mutate onSubmit, maybe use Jotai for this
+import { api } from "~/utils/api";
+
+const steps = [
+  {
+    title: "Step 1",
+    description: "Personal Information",
+  },
+  {
+    title: "Step 2",
+    description: "Address Details",
+  },
+  {
+    title: "Step 3",
+    description: "Family Members",
+  },
+  {
+    title: "Step 4",
+    description: "Proposer Details",
+  },
+];
+
+const YoungAmilCircleMembershipForm: React.FC = () => {
+  const toast = useToast();
 
   const [formState, setFormState] = useState<YACMembershipFormValues>({
     personalInfo: {
@@ -83,10 +112,44 @@ const YoungAmilCircleMembershipForm: React.FC<{
     },
   });
 
-  useEffect(() => console.log(JSON.stringify(formState, null, 2)), [formState]);
+  const { activeStep, setActiveStep } = useSteps({
+    index: 1,
+    count: steps.length,
+  });
+
+  const formMut = api.form.yacMembership.useMutation();
+
+  // Logger
+  useEffect(
+    () => console.log(JSON.stringify(formState.personalInfo, null, 2)),
+    [formState]
+  );
 
   return (
     <>
+      <Stepper index={activeStep}>
+        {steps.map(({ title, description }, index) => (
+          <Step key={index}>
+            <StepIndicator>
+              <StepStatus
+                complete={<StepIcon />}
+                incomplete={<StepNumber />}
+                active={<StepNumber />}
+              />
+            </StepIndicator>
+
+            <Box flexShrink="0">
+              <StepTitle>{title}</StepTitle>
+              <StepDescription>{description}</StepDescription>
+            </Box>
+
+            <StepSeparator />
+          </Step>
+        ))}
+      </Stepper>
+
+      <Spacer h="2rem" />
+
       {activeStep === 1 && (
         <PersonalInformationSection
           initialValues={formState.personalInfo}
@@ -122,6 +185,54 @@ const YoungAmilCircleMembershipForm: React.FC<{
           }
         />
       )}
+
+      <Spacer h="2rem" />
+
+      {/* Navigation buttons */}
+      <Flex justify="space-between">
+        {activeStep > 1 ? (
+          <Button
+            leftIcon={<ArrowBackIcon />}
+            size="lg"
+            onClick={() => setActiveStep(activeStep - 1)}
+          >
+            Previous
+          </Button>
+        ) : (
+          <div></div>
+        )}
+
+        <Button
+          colorScheme="blue"
+          rightIcon={
+            activeStep !== steps.length ? <ArrowForwardIcon /> : undefined
+          }
+          size="lg"
+          isLoading={formMut.isLoading}
+          onClick={
+            activeStep === steps.length
+              ? () => {
+                  console.log("submit here");
+                  formMut
+                    .mutateAsync({ formData: formState })
+                    .then(() => {
+                      toast({
+                        title: "Response recorded successfully",
+                        description: "Your form response has been recorded.",
+                        status: "success",
+                        duration: 9000,
+                        isClosable: true,
+                      });
+                    })
+                    .catch(console.error);
+                }
+              : () => setActiveStep(activeStep + 1)
+          }
+        >
+          {/* Next */}
+          {activeStep === steps.length ? "Submit" : "Next"}
+        </Button>
+      </Flex>
     </>
   );
 };
