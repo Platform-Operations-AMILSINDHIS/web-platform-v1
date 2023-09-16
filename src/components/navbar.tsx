@@ -154,6 +154,7 @@ const Navbar: React.FC<{ blogPostPage?: boolean }> = ({
         display={["none", "flex"]}
         h="10vh"
         w="100%"
+        mt={3}
         maxW="1280px"
         mx="auto"
         align="center"

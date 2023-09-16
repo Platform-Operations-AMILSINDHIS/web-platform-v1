@@ -5,6 +5,7 @@ import EventSlider from "~/components/events/EventSlider";
 import type { EventCollectionQueryQuery } from "~/lib/__generated/sdk";
 import type { GetServerSideProps } from "next";
 import { client } from "~/lib/client";
+import { Box } from "@chakra-ui/react";
 
 export const getServerSideProps: GetServerSideProps<{
   events: EventCollectionQueryQuery;
@@ -19,8 +20,10 @@ const EventsPage = ({
   console.log(events);
   return (
     <Layout title="Events">
-      <HeroSection />
-      <EventSlider events={events} />
+      <Box mb={10}>
+        <HeroSection />
+        <EventSlider events={events} />
+      </Box>
     </Layout>
   );
 };
