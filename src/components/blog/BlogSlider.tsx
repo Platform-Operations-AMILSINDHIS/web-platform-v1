@@ -1,9 +1,27 @@
 import Link from "next/link";
-import Swiper from "swiper";
-import { SwiperSlide } from "swiper/react";
+import { SwiperSlide, Swiper } from "swiper/react";
 import BlogPostThumb from "./blogPostThumb";
+import { truncate } from "lodash";
+import { Autoplay, Navigation } from "swiper/modules";
 
-const BlogSlider = ({ blogPosts }) => {
+interface BlogPostSliderProps {
+  blogPosts:
+    | {
+        sys: {
+          id: string;
+        };
+        blogTitle: string;
+        author: string;
+        dateOfBlog: string;
+        excerpt: string;
+        blogTags: string[];
+        blogDisplayPicture: {
+          url: string | undefined;
+        };
+      }[]
+    | null;
+}
+const BlogSlider: React.FC<BlogPostSliderProps> = ({ blogPosts }) => {
   return (
     <Swiper
       spaceBetween={20}
@@ -28,7 +46,7 @@ const BlogSlider = ({ blogPosts }) => {
                   post={{
                     title: post?.blogTitle ?? "",
                     author: post?.author ?? "",
-                    date: new Date(post?.dateOfBlog as string) ?? new Date(),
+                    date: new Date(post?.dateOfBlog) ?? new Date(),
                     excerpt: truncate(post?.excerpt ?? "", {
                       length: 100,
                     }),
