@@ -10,7 +10,10 @@ import BlogPostThumb from "~/components/blog/blogPostThumb";
 import { client } from "~/lib/client";
 
 import { satoshi } from "~/utils/fonts";
-import type { PageBlogPostCollectionQuery } from "~/lib/__generated/sdk";
+import {
+  AssetLinkingCollectionsEventImageSliderCollectionOrder,
+  type PageBlogPostCollectionQuery,
+} from "~/lib/__generated/sdk";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -29,6 +32,7 @@ const BlogPage = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   // blogContentTypeCollection?.items[0].
   const blogPosts = blogContentTypeCollection?.items;
+  console.log(blogPosts[0]?.blogType);
 
   if (blogPosts?.length === 0) {
     return (

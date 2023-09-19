@@ -1,4 +1,4 @@
-/* eslint-disable */
+/*eslint-disable */
 import { GraphQLClient } from "graphql-request";
 import { GraphQLClientRequestHeaders } from "graphql-request/build/cjs/types";
 import gql from "graphql-tag";
@@ -1129,6 +1129,7 @@ export type PageBlogPostQuery = {
     author?: string | null;
     dateOfBlog?: any | null;
     blogTags?: Array<string | null> | null;
+    blogType?: Array<string | null> | null;
     blogDisplayPicture?: { __typename?: "Asset"; url?: string | null } | null;
     blogContent?: {
       __typename?: "BlogContentTypeBlogContent";
@@ -1152,6 +1153,7 @@ export type PageBlogPostCollectionQuery = {
       dateOfBlog?: any | null;
       excerpt?: string | null;
       blogSlug?: string | null;
+      blogType?: Array<string | null> | null;
       blogTags?: Array<string | null> | null;
       blogDisplayPicture?: { __typename?: "Asset"; url?: string | null } | null;
       sys: { __typename?: "Sys"; id: string };
@@ -1212,6 +1214,7 @@ export const PageBlogPostDocument = gql`
       author
       dateOfBlog
       blogTags
+      blogType
       blogDisplayPicture {
         url
       }
@@ -1230,6 +1233,7 @@ export const PageBlogPostCollectionDocument = gql`
         dateOfBlog
         excerpt
         blogSlug
+        blogType
         blogTags
         blogDisplayPicture {
           url
