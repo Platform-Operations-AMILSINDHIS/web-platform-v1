@@ -9,7 +9,7 @@ const AboutPage: NextPage = () => {
   return (
     <Layout title="About">
       <div>hi, this is the about page</div>
-      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+      {/*eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <Button onClick={() => handlePayment(100)}>Pay now</Button>
     </Layout>
   );
