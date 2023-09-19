@@ -49,13 +49,13 @@ const usePayment = () => {
       }
 
       const options: RazorpayOptions = {
-        key: key,
+        key: key as string,
         amount: order.amount,
         currency: "INR",
         name: "Khudabadi Amil Panchayat",
         description: "Payment for membership",
         image: "https://example.com/your_logo",
-        order_id: order.id,
+        order_id: order.id as string,
         callback_url: "http://localhost:5000/paymentVerify",
         prefill: {
           name: "Akshat Sabavat",
