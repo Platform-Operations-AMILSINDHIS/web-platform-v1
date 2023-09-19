@@ -1,8 +1,6 @@
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Link from "next/link";
 import { truncate } from "lodash";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Navigation } from "swiper/modules";
 
 import Layout from "~/components/layout";
 import BlogPostThumb from "~/components/blog/blogPostThumb";
