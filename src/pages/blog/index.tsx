@@ -14,6 +14,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import HeroSection from "~/sections/BlogsPage/HeroSection";
 import BlogSlider from "~/components/blog/BlogSlider";
+import { Box } from "@chakra-ui/react";
 
 export const getServerSideProps: GetServerSideProps<{
   posts: PageBlogPostCollectionQuery;
@@ -89,13 +90,20 @@ const BlogPage = ({
                   {/* <div className="mt-4">Excerpt goes here</div> */}
                   <div className="my-4 flex select-none gap-2">
                     {blogPosts[0]?.blogTags?.map((tag, i) => (
-                      <div
+                      <Box
+                        fontWeight={500}
                         key={i}
-                        className={`rounded-full border border-[#1F2937] px-2 py-1 text-xs`}
+                        className={`rounded-full border border-[#1F2937] px-3 py-1 text-xs`}
                       >
                         {tag}
-                      </div>
+                      </Box>
                     ))}
+                    <Box
+                      fontWeight={500}
+                      className={`rounded-full border border-[#1F2937] px-3 py-1 text-xs`}
+                    >
+                      {blogPosts[0]?.blogType[0]}
+                    </Box>
                   </div>
                 </div>
               </div>
@@ -120,6 +128,7 @@ const BlogPage = ({
                         excerpt: truncate(post?.excerpt ?? "", { length: 100 }),
                         tags: post?.blogTags,
                         image: post?.blogDisplayPicture?.url ?? "",
+                        type: post?.blogType[0] ?? null,
                       }}
                     />
                   </Link>

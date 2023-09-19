@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { SwiperSlide, Swiper } from "swiper/react";
 import BlogPostThumb from "./blogPostThumb";
-import { toLength, toLower, truncate } from "lodash";
+import { toLower, truncate } from "lodash";
 import { Autoplay, Navigation } from "swiper/modules";
 import { Box, Text } from "@chakra-ui/react";
 import { satoshi } from "~/utils/fonts";
@@ -74,6 +74,7 @@ const BlogSlider: React.FC<BlogPostSliderProps> = ({ blogPosts, blogType }) => {
                         }),
                         tags: post?.blogTags,
                         image: post?.blogDisplayPicture?.url ?? "",
+                        type: post?.blogType[0] ?? null,
                       }}
                     />
                   </Box>

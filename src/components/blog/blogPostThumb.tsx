@@ -1,10 +1,22 @@
+import { Box } from "@chakra-ui/react";
 import { truncate } from "lodash";
 import type { BlogPost } from "~/types/blog";
+
+type TypeColorMapping = Record<string, string>;
+
+const colorMapping: TypeColorMapping = {
+  Blog: "#FFA882",
+  Puiblication: "#D0FF82",
+  NewsLetter: "rgba(255, 31, 152, 0.27)",
+};
 
 const BlogPostThumb: React.FC<{
   post: BlogPost;
   orientation: "horizontal" | "vertical";
-}> = ({ post: { title, author, date, excerpt, tags, image }, orientation }) => (
+}> = ({
+  post: { title, author, date, excerpt, tags, image, type },
+  orientation,
+}) => (
   <div
     className={`grid cursor-pointer grid-cols-1 grid-rows-2 gap-4 rounded-xl transition-all hover:-translate-y-1 hover:shadow-lg md:mt-0 md:p-5 ${
       orientation === "horizontal"
@@ -26,7 +38,7 @@ const BlogPostThumb: React.FC<{
           year: "numeric",
         })}
       </div>
-      <div className="mt-2 text-xl font-semibold">
+      <div className="mt-2 text-2xl font-semibold">
         {truncate(title, { length: orientation === "horizontal" ? 25 : 30 })}
       </div>
       <div className="mt-2 text-sm">
@@ -36,14 +48,22 @@ const BlogPostThumb: React.FC<{
         })}
       </div>
       <div className="my-4 flex gap-2">
-        {tags?.map((tag, i) => (
-          <div
-            key={i}
-            className={`rounded-full border border-[#1F2937] px-2 py-1 text-xs`}
+        {tags?.map((tag, index) => (
+          <Box
+            fontWeight={500}
+            key={index}
+            className={`rounded-full border border-[#1F2937] px-3 py-1 text-xs`}
           >
             {tag}
-          </div>
+          </Box>
         ))}
+        <Box
+          bg={colorMapping[type] || "white"}
+          fontWeight={500}
+          className={`rounded-full border border-[#1F2937] px-3 py-1 text-xs`}
+        >
+          {type}
+        </Box>
       </div>
     </div>
   </div>

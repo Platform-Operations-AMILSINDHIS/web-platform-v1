@@ -4,5 +4,6 @@ export interface BlogPost {
   date: Date;
   excerpt: string;
   tags?: (string | null)[] | null;
+  type: string | null;
   image: string;
 }
