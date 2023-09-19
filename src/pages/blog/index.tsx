@@ -10,14 +10,12 @@ import BlogPostThumb from "~/components/blog/blogPostThumb";
 import { client } from "~/lib/client";
 
 import { satoshi } from "~/utils/fonts";
-import {
-  AssetLinkingCollectionsEventImageSliderCollectionOrder,
-  type PageBlogPostCollectionQuery,
-} from "~/lib/__generated/sdk";
+import { type PageBlogPostCollectionQuery } from "~/lib/__generated/sdk";
 
 import "swiper/css";
 import "swiper/css/navigation";
 import HeroSection from "~/sections/BlogsPage/HeroSection";
+import BlogSlider from "~/components/blog/BlogSlider";
 
 export const getServerSideProps: GetServerSideProps<{
   posts: PageBlogPostCollectionQuery;
@@ -142,46 +140,7 @@ const BlogPage = ({
           </div>
 
           <div className="mt-6">
-            <Swiper
-              spaceBetween={20}
-              slidesPerView={3}
-              modules={[Autoplay, Navigation]}
-              loop={true}
-              autoplay={{
-                delay: 1000,
-                disableOnInteraction: true,
-              }}
-              // navigation={true}
-            >
-              {blogPosts?.length && blogPosts?.length > 1 && (
-                <>
-                  {/* <div className="grid grid-cols-1 md:grid-cols-3 md:gap-6"> */}
-                  {blogPosts.map((post, i) => (
-                    <Link key={i} href={`/blog/${post?.sys.id}`}>
-                      <SwiperSlide>
-                        <BlogPostThumb
-                          key={i}
-                          orientation="vertical"
-                          post={{
-                            title: post?.blogTitle ?? "",
-                            author: post?.author ?? "",
-                            date:
-                              new Date(post?.dateOfBlog as string) ??
-                              new Date(),
-                            excerpt: truncate(post?.excerpt ?? "", {
-                              length: 100,
-                            }),
-                            tags: post?.blogTags,
-                            image: post?.blogDisplayPicture?.url ?? "",
-                          }}
-                        />
-                      </SwiperSlide>
-                    </Link>
-                  ))}
-                  {/* </div> */}
-                </>
-              )}
-            </Swiper>
+            <BlogSlider blogPosts={blogPosts} blogType="Blog" />
           </div>
         </div>
       </div>

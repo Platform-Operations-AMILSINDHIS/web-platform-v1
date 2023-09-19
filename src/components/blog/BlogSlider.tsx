@@ -3,6 +3,7 @@ import { SwiperSlide, Swiper } from "swiper/react";
 import BlogPostThumb from "./blogPostThumb";
 import { truncate } from "lodash";
 import { Autoplay, Navigation } from "swiper/modules";
+import { Box } from "@chakra-ui/react";
 
 interface BlogPostSliderProps {
   blogPosts:
@@ -15,13 +16,16 @@ interface BlogPostSliderProps {
         dateOfBlog: string;
         excerpt: string;
         blogTags: string[];
+        blogType: string[];
         blogDisplayPicture: {
           url: string | undefined;
         };
       }[]
-    | null;
+    | null
+    | undefined;
+  blogType: string;
 }
-const BlogSlider: React.FC<BlogPostSliderProps> = ({ blogPosts }) => {
+const BlogSlider: React.FC<BlogPostSliderProps> = ({ blogPosts, blogType }) => {
   return (
     <Swiper
       spaceBetween={20}
@@ -40,20 +44,22 @@ const BlogSlider: React.FC<BlogPostSliderProps> = ({ blogPosts }) => {
           {blogPosts.map((post, i) => (
             <Link key={i} href={`/blog/${post?.sys.id}`}>
               <SwiperSlide>
-                <BlogPostThumb
-                  key={i}
-                  orientation="vertical"
-                  post={{
-                    title: post?.blogTitle ?? "",
-                    author: post?.author ?? "",
-                    date: new Date(post?.dateOfBlog) ?? new Date(),
-                    excerpt: truncate(post?.excerpt ?? "", {
-                      length: 100,
-                    }),
-                    tags: post?.blogTags,
-                    image: post?.blogDisplayPicture?.url ?? "",
-                  }}
-                />
+                <Box display={post.blogType[0] === blogType ? "" : "none"}>
+                  <BlogPostThumb
+                    key={i}
+                    orientation="vertical"
+                    post={{
+                      title: post?.blogTitle ?? "",
+                      author: post?.author ?? "",
+                      date: new Date(post?.dateOfBlog) ?? new Date(),
+                      excerpt: truncate(post?.excerpt ?? "", {
+                        length: 100,
+                      }),
+                      tags: post?.blogTags,
+                      image: post?.blogDisplayPicture?.url ?? "",
+                    }}
+                  />
+                </Box>
               </SwiperSlide>
             </Link>
           ))}
