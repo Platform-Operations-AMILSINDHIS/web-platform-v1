@@ -28,7 +28,6 @@ const BlogPage = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   // blogContentTypeCollection?.items[0].
   const blogPosts = blogContentTypeCollection?.items;
-  console.log(blogPosts[0]?.blogType);
 
   if (blogPosts?.length === 0) {
     return (
@@ -131,11 +130,11 @@ const BlogPage = ({
 
         {/* All posts section */}
         <div className="my-6">
-          <div
+          {/* <div
             className={`${satoshi.variable} font-heading text-2xl font-semibold text-[#1F2937]`}
           >
             All our blog posts
-          </div>
+          </div> */}
 
           <div className="mt-6">
             <BlogSlider blogPosts={blogPosts} blogType="Blog" />
