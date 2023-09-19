@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import useRazorpay, { RazorpayOptions } from "react-razorpay";
+import AmilLogo from "../../public/images/amil-sindhis-logo.png";
 import axios from "axios";
 import error from "next/error";
 
@@ -54,7 +55,7 @@ const usePayment = () => {
         currency: "INR",
         name: "Khudabadi Amil Panchayat",
         description: "Payment for membership",
-        image: "https://example.com/your_logo",
+        image: AmilLogo,
         order_id: order.id as string,
         callback_url: "http://localhost:5000/paymentVerify",
         prefill: {
@@ -66,7 +67,7 @@ const usePayment = () => {
           address: "Razorpay Corporate Office",
         },
         theme: {
-          color: "#3399cc",
+          color: "#FF4D00",
         },
       };
 
