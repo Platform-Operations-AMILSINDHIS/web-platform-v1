@@ -49,8 +49,10 @@ const CatalogPage = ({
               ever-growing collection of samachar, newsletters, and blogs. Stay
               tuned for more
             </Text>
-            <BlogCatalogDisplay blogPosts={blogPosts} />
-            <BlogTopics blogTags={createUnquieTags(blogPosts)} />
+            <Flex justify="space-between" align="flex-start">
+              <BlogCatalogDisplay blogPosts={blogPosts} />
+              <BlogTopics blogTags={createUnquieTags(blogPosts)} />
+            </Flex>
           </Flex>
         </Flex>
       </Box>
