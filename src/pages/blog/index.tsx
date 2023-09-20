@@ -141,7 +141,7 @@ const BlogPage = ({
           <Flex flexDir="column" gap={8}>
             <BlogSlider blogPosts={blogPosts} blogType="blog" />
             <BlogSlider blogPosts={blogPosts} blogType="newsletter" />
-            <BlogSlider blogPosts={blogPosts} blogType="publications" />
+            <BlogSlider blogPosts={blogPosts} blogType="publication" />
           </Flex>
         </div>
       </div>

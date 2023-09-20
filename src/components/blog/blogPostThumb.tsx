@@ -6,7 +6,7 @@ type TypeColorMapping = Record<string, string>;
 
 const colorMapping: TypeColorMapping = {
   Blog: "#FFA882",
-  Puiblication: "#D0FF82",
+  Publication: "#D0FF82",
   NewsLetter: "rgba(255, 31, 152, 0.27)",
 };
 
