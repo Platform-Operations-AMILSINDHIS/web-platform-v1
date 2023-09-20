@@ -42,13 +42,7 @@ const BlogPage = ({
     <Layout title="Blog">
       <HeroSection />
       <div className="my-6">
-        <div
-          className={`${satoshi.variable} font-heading text-2xl font-semibold text-[#1F2937]`}
-        >
-          Recent blog posts
-        </div>
-
-        <div className="mt-5 grid grid-cols-1 md:grid-cols-2">
+        <div className="mt-10 grid grid-cols-1 md:grid-cols-2">
           {/* Big landing blog post (only for desktop) */}
           {/* TODO: Hide this on mobile */}
           {blogPosts?.length && blogPosts?.length > 0 && (

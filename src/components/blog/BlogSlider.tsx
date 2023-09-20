@@ -26,7 +26,13 @@ interface BlogPostSliderProps {
     | undefined;
   blogType: string;
 }
+
 const BlogSlider: React.FC<BlogPostSliderProps> = ({ blogPosts, blogType }) => {
+  // Filter blogPosts based on the blogType
+  const filteredBlogPosts = blogPosts?.filter((post) =>
+    post.blogType.includes(blogType)
+  );
+
   return (
     <Box>
       <Text
@@ -56,32 +62,32 @@ const BlogSlider: React.FC<BlogPostSliderProps> = ({ blogPosts, blogType }) => {
         }}
         // navigation={true}
       >
-        {blogPosts?.length && blogPosts?.length > 1 && (
-          <>
-            {blogPosts.map((post, i) => (
-              <Link key={i} href={`/blog/${post?.sys.id}`}>
-                <SwiperSlide>
-                  <Box display={post.blogType[0] === blogType ? "" : "none"}>
-                    <BlogPostThumb
-                      key={i}
-                      orientation="vertical"
-                      post={{
-                        title: post?.blogTitle ?? "",
-                        author: post?.author ?? "",
-                        date: new Date(post?.dateOfBlog) ?? new Date(),
-                        excerpt: truncate(post?.excerpt ?? "", {
-                          length: 100,
-                        }),
-                        tags: post?.blogTags,
-                        image: post?.blogDisplayPicture?.url ?? "",
-                        type: post?.blogType[0] ?? null,
-                      }}
-                    />
-                  </Box>
-                </SwiperSlide>
-              </Link>
-            ))}
-          </>
+        {filteredBlogPosts?.length && filteredBlogPosts?.length > 1 ? (
+          filteredBlogPosts.map((post, i) => (
+            <Link key={i} href={`/blog/${post?.sys.id}`}>
+              <SwiperSlide>
+                <Box>
+                  <BlogPostThumb
+                    key={i}
+                    orientation="vertical"
+                    post={{
+                      title: post?.blogTitle ?? "",
+                      author: post?.author ?? "",
+                      date: new Date(post?.dateOfBlog) ?? new Date(),
+                      excerpt: truncate(post?.excerpt ?? "", {
+                        length: 100,
+                      }),
+                      tags: post?.blogTags,
+                      image: post?.blogDisplayPicture?.url ?? "",
+                      type: post?.blogType[0] ?? null,
+                    }}
+                  />
+                </Box>
+              </SwiperSlide>
+            </Link>
+          ))
+        ) : (
+          <></>
         )}
       </Swiper>
     </Box>
