@@ -29,9 +29,11 @@ interface BlogPostSliderProps {
 
 const BlogSlider: React.FC<BlogPostSliderProps> = ({ blogPosts, blogType }) => {
   // Filter blogPosts based on the blogType
-  const filteredBlogPosts = blogPosts?.filter((post) =>
-    post.blogType.includes(blogType)
+  const filteredBlogPosts = blogPosts?.filter(
+    (post) => post.blogType[0]?.toLowerCase() === blogType
   );
+
+  console.log(filteredBlogPosts);
 
   return (
     <Box>
@@ -44,7 +46,7 @@ const BlogSlider: React.FC<BlogPostSliderProps> = ({ blogPosts, blogType }) => {
         The latest&nbsp;
         <span
           style={{
-            color: "red",
+            color: "#FF4D00",
             textDecoration: "underline",
           }}
         >
@@ -62,7 +64,7 @@ const BlogSlider: React.FC<BlogPostSliderProps> = ({ blogPosts, blogType }) => {
         }}
         // navigation={true}
       >
-        {filteredBlogPosts?.length && filteredBlogPosts?.length > 1 ? (
+        {filteredBlogPosts?.length && filteredBlogPosts?.length >= 1 ? (
           filteredBlogPosts.map((post, i) => (
             <Link key={i} href={`/blog/${post?.sys.id}`}>
               <SwiperSlide>
@@ -87,7 +89,7 @@ const BlogSlider: React.FC<BlogPostSliderProps> = ({ blogPosts, blogType }) => {
             </Link>
           ))
         ) : (
-          <></>
+          <Box>Nothing here bro</Box>
         )}
       </Swiper>
     </Box>

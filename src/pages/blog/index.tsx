@@ -14,7 +14,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import HeroSection from "~/sections/BlogsPage/HeroSection";
 import BlogSlider from "~/components/blog/BlogSlider";
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 
 export const getServerSideProps: GetServerSideProps<{
   posts: PageBlogPostCollectionQuery;
@@ -138,10 +138,11 @@ const BlogPage = ({
           >
             All our blog posts
           </div> */}
-
-          <div className="mt-6">
-            <BlogSlider blogPosts={blogPosts} blogType="Blog" />
-          </div>
+          <Flex flexDir="column" gap={8}>
+            <BlogSlider blogPosts={blogPosts} blogType="blog" />
+            <BlogSlider blogPosts={blogPosts} blogType="newsletter" />
+            <BlogSlider blogPosts={blogPosts} blogType="publications" />
+          </Flex>
         </div>
       </div>
     </Layout>
