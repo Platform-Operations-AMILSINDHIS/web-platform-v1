@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 
 interface BlogCatalogProps {
   blogPosts:
@@ -25,7 +25,18 @@ const BlogCatalogDisplay: React.FC<BlogCatalogProps> = ({
   blogPosts,
   blogType,
 }) => {
-  return <Box></Box>;
+  console.log(blogPosts);
+  return (
+    <Flex gap={5} flexDir="column">
+      {blogPosts?.map((blog, index) => {
+        return (
+          <Flex key={index}>
+            <Text>{blog?.blogTitle}</Text>
+          </Flex>
+        );
+      })}
+    </Flex>
+  );
 };
 
 export default BlogCatalogDisplay;
