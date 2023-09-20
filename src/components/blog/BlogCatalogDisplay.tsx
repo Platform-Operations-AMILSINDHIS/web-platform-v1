@@ -1,5 +1,6 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { truncate } from "lodash";
+import Link from "next/link";
 
 interface BlogCatalogProps {
   blogPosts:
@@ -45,9 +46,15 @@ const BlogCatalogDisplay: React.FC<BlogCatalogProps> = ({
                 })}
               </Text>
             </Flex>
-            <Text fontWeight={600} fontSize="xl">
-              {blog?.blogTitle}
-            </Text>
+            <Link href={`/blog/${blog?.sys.id}`}>
+              <Text
+                _hover={{ textDecoration: "underline" }}
+                fontWeight={600}
+                fontSize="xl"
+              >
+                {blog?.blogTitle}
+              </Text>
+            </Link>
             <Text fontSize="sm" maxW={600}>
               {truncate(blog?.excerpt ?? "", { length: 200 })}
             </Text>
