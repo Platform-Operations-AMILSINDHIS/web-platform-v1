@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import { Box } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import constants from "../constants/LandingConstants.json";
@@ -28,6 +29,7 @@ const HomePage: NextPage = () => {
       title: "Movie Screening, Marine Drive",
     },
   ];
+
   return (
     <Layout title="Home" maxW={false}>
       <Box maxW="1280px" mx="auto" px="2rem">

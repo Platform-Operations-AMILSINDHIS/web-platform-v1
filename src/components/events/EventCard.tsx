@@ -43,8 +43,8 @@ const EventCard: React.FC<eventData> = ({ event }) => {
         >
           {event?.eventTitle}
         </Text>
-        <Flex mt={2} gap={3}>
-          <Flex gap={3}>
+        <Flex mt={2} gap={2}>
+          <Flex gap={2}>
             {event?.eventSearchTags?.map((item, index) => {
               return (
                 <Text

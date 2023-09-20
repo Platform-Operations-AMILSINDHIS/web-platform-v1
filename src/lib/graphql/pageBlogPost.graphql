@@ -4,6 +4,7 @@ query pageBlogPost($id: String!) {
     author
     dateOfBlog
     blogTags
+    blogType
     blogDisplayPicture {
       url
     }

@@ -1,8 +1,6 @@
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Link from "next/link";
 import { truncate } from "lodash";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Navigation } from "swiper/modules";
 
 import Layout from "~/components/layout";
 import BlogPostThumb from "~/components/blog/blogPostThumb";
@@ -10,11 +8,13 @@ import BlogPostThumb from "~/components/blog/blogPostThumb";
 import { client } from "~/lib/client";
 
 import { satoshi } from "~/utils/fonts";
-import type { PageBlogPostCollectionQuery } from "~/lib/__generated/sdk";
+import { type PageBlogPostCollectionQuery } from "~/lib/__generated/sdk";
 
 import "swiper/css";
 import "swiper/css/navigation";
 import HeroSection from "~/sections/BlogsPage/HeroSection";
+import BlogSlider from "~/components/blog/BlogSlider";
+import { Box, Flex } from "@chakra-ui/react";
 
 export const getServerSideProps: GetServerSideProps<{
   posts: PageBlogPostCollectionQuery;
@@ -42,13 +42,7 @@ const BlogPage = ({
     <Layout title="Blog">
       <HeroSection />
       <div className="my-6">
-        <div
-          className={`${satoshi.variable} font-heading text-2xl font-semibold text-[#1F2937]`}
-        >
-          Recent blog posts
-        </div>
-
-        <div className="mt-5 grid grid-cols-1 md:grid-cols-2">
+        <div className="mt-10 grid grid-cols-1 md:grid-cols-2">
           {/* Big landing blog post (only for desktop) */}
           {/* TODO: Hide this on mobile */}
           {blogPosts?.length && blogPosts?.length > 0 && (
@@ -90,13 +84,20 @@ const BlogPage = ({
                   {/* <div className="mt-4">Excerpt goes here</div> */}
                   <div className="my-4 flex select-none gap-2">
                     {blogPosts[0]?.blogTags?.map((tag, i) => (
-                      <div
+                      <Box
+                        fontWeight={500}
                         key={i}
-                        className={`rounded-full border border-[#1F2937] px-2 py-1 text-xs`}
+                        className={`rounded-full border border-[#1F2937] px-3 py-1 text-xs`}
                       >
                         {tag}
-                      </div>
+                      </Box>
                     ))}
+                    <Box
+                      fontWeight={500}
+                      className={`rounded-full border border-[#1F2937] px-3 py-1 text-xs`}
+                    >
+                      {blogPosts[0]?.blogType[0]}
+                    </Box>
                   </div>
                 </div>
               </div>
@@ -121,6 +122,7 @@ const BlogPage = ({
                         excerpt: truncate(post?.excerpt ?? "", { length: 100 }),
                         tags: post?.blogTags,
                         image: post?.blogDisplayPicture?.url ?? "",
+                        type: post?.blogType[0] ?? null,
                       }}
                     />
                   </Link>
@@ -131,54 +133,16 @@ const BlogPage = ({
 
         {/* All posts section */}
         <div className="my-6">
-          <div
+          {/* <div
             className={`${satoshi.variable} font-heading text-2xl font-semibold text-[#1F2937]`}
           >
             All our blog posts
-          </div>
-
-          <div className="mt-6">
-            <Swiper
-              spaceBetween={20}
-              slidesPerView={3}
-              modules={[Autoplay, Navigation]}
-              loop={true}
-              autoplay={{
-                delay: 1000,
-                disableOnInteraction: true,
-              }}
-              // navigation={true}
-            >
-              {blogPosts?.length && blogPosts?.length > 1 && (
-                <>
-                  {/* <div className="grid grid-cols-1 md:grid-cols-3 md:gap-6"> */}
-                  {blogPosts.map((post, i) => (
-                    <Link key={i} href={`/blog/${post?.sys.id}`}>
-                      <SwiperSlide>
-                        <BlogPostThumb
-                          key={i}
-                          orientation="vertical"
-                          post={{
-                            title: post?.blogTitle ?? "",
-                            author: post?.author ?? "",
-                            date:
-                              new Date(post?.dateOfBlog as string) ??
-                              new Date(),
-                            excerpt: truncate(post?.excerpt ?? "", {
-                              length: 100,
-                            }),
-                            tags: post?.blogTags,
-                            image: post?.blogDisplayPicture?.url ?? "",
-                          }}
-                        />
-                      </SwiperSlide>
-                    </Link>
-                  ))}
-                  {/* </div> */}
-                </>
-              )}
-            </Swiper>
-          </div>
+          </div> */}
+          <Flex flexDir="column" gap={8}>
+            <BlogSlider blogPosts={blogPosts} blogType="blog" />
+            <BlogSlider blogPosts={blogPosts} blogType="newsletter" />
+            <BlogSlider blogPosts={blogPosts} blogType="publication" />
+          </Flex>
         </div>
       </div>
     </Layout>
