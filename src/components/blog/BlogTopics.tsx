@@ -4,8 +4,9 @@ interface BlogTopicProps {
   blogTags: string[];
 }
 
-const BlogTopic: React.FC<BlogTopicProps> = () => {
+const BlogTopics: React.FC<BlogTopicProps> = ({ blogTags }) => {
+  console.log(blogTags);
   return <Box>hi</Box>;
 };
 
-export default BlogTopic;
+export default BlogTopics;
