@@ -1,4 +1,5 @@
-import { z } from "zod";
+// import { z } from "zod";
+import * as Yup from "yup";
 import {
   createTRPCRouter,
   publicProcedure,
@@ -11,11 +12,11 @@ import { sendRsvpMailForEvent } from "../../mail";
 export const eventRouter = createTRPCRouter({
   rsvp: publicProcedure
     .input(
-      z.object({
-        eventTitle: z.string(),
-        eventDate: z.date(),
-        name: z.string(),
-        email: z.string(),
+      Yup.object().shape({
+        eventTitle: Yup.string().required(),
+        eventDate: Yup.date().required(),
+        name: Yup.string().required(),
+        email: Yup.string().required(),
       })
     )
     .mutation(async ({ input }) => {

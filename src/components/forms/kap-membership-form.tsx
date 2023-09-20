@@ -3,11 +3,6 @@ import {
   Heading,
   Text,
   Grid,
-  FormControl,
-  FormLabel,
-  Input,
-  FormErrorMessage,
-  FormHelperText,
   Button,
   Flex,
   Spacer,
@@ -27,6 +22,8 @@ import {
   useSteps,
   useToast,
 } from "@chakra-ui/react";
+import { Formik, Form } from "formik";
+
 import { FaHandHoldingHeart, FaUserFriends } from "react-icons/fa";
 import { ArrowBackIcon, ArrowForwardIcon, CloseIcon } from "@chakra-ui/icons";
 
@@ -46,7 +43,13 @@ import type {
   ProposerInfo,
 } from "~/types/forms/membership";
 
-import { Formik, Form } from "formik";
+import {
+  personalInfoSchema,
+  familyMemberSchema,
+  addressInfoSchema,
+  kapMembershipInfoSchema,
+  proposerInfoSchema,
+} from "~/utils/schemas";
 
 import { api } from "~/utils/api";
 
@@ -272,6 +275,7 @@ export const PersonalInformationSection: React.FC<{
 
       <Formik
         initialValues={initialValues}
+        validationSchema={personalInfoSchema}
         onSubmit={(values, actions) => {
           console.log({ values, actions });
           alert(JSON.stringify(values, null, 2));

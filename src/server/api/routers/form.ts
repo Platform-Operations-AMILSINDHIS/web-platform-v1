@@ -1,4 +1,4 @@
-import { z } from "zod";
+import * as Yup from "yup";
 import {
   createTRPCRouter,
   publicProcedure,
@@ -15,12 +15,10 @@ import {
   sendRawJsonDataWithPDF,
   sendRawJsonDataOnly,
 } from "../../mail";
-import { generateKAPMembershipPDF } from "../../pdfs/kap-membership";
-import type { KAPMembershipFormValues } from "~/types/forms/membership";
 
 export const formRouter = createTRPCRouter({
   kapMembership: publicProcedure
-    .input(z.object({ formData: kapMembershipFormValuesSchema }))
+    .input(Yup.object({ formData: kapMembershipFormValuesSchema }))
     .mutation(async ({ input }) => {
       const { formData } = input;
 
@@ -58,7 +56,7 @@ export const formRouter = createTRPCRouter({
       return { success: true };
     }),
   yacMembership: publicProcedure
-    .input(z.object({ formData: yacMembershipFormValuesSchema }))
+    .input(Yup.object({ formData: yacMembershipFormValuesSchema }))
     .mutation(async ({ input }) => {
       const { formData } = input;
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Heading,
   Text,
@@ -43,8 +43,6 @@ import { Formik, Form } from "formik";
 const MatrimonyForm: React.FC<{
   activeStep: number;
 }> = ({ activeStep }) => {
-  // TODO: Setup global formState for all the Formik forms to mutate onSubmit, maybe use Jotai for this
-
   const [formState, setFormState] = useState<MatrimonyFormValues>({
     personalInfo: {
       firstName: "",
@@ -102,6 +100,7 @@ const MatrimonyForm: React.FC<{
     },
   });
 
+  // Logger
   useEffect(() => console.log(JSON.stringify(formState, null, 2)), [formState]);
 
   return (
@@ -198,7 +197,7 @@ const MatrimonyPersonalInformationSection: React.FC<{
               <LabelledInput
                 key={i}
                 label={label}
-                name={name ?? label}
+                name={name ?? undefined}
                 type={inputType ?? "text"}
               />
             ))}
@@ -257,12 +256,7 @@ const MatrimonyPersonalInformationSection: React.FC<{
                 inputType: "number",
               },
             ].map(({ label, name, inputType }, i) => (
-              <LabelledInput
-                key={i}
-                type={inputType ?? "text"}
-                label={label}
-                name={name ?? label}
-              />
+              <LabelledInput key={i} type={inputType ?? "text"} label={label} />
             ))}
           </Grid>
         </Form>
@@ -308,7 +302,7 @@ const MatrimonyAddressDetailsSection: React.FC<{
               },
               { label: "Pin Code", name: "residentialAddress.pinCode" },
             ].map(({ label, name }, i) => (
-              <LabelledInput key={i} label={label} name={name ?? label} />
+              <LabelledInput key={i} label={label} />
             ))}
           </Grid>
         </Form>

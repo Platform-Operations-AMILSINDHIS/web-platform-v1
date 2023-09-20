@@ -1,7 +1,7 @@
 import { ChangeEvent, ChangeEventHandler, useEffect } from "react";
 
 import { FormControl, FormLabel, Input, Flex, Select } from "@chakra-ui/react";
-import { Field, FieldProps, useField, useFormikContext } from "formik";
+import { Field, ErrorMessage, useFormikContext } from "formik";
 
 export const camelCase = (str: string) =>
   str
@@ -31,34 +31,45 @@ export const LabelledInput: React.FC<{
       {label}
     </FormLabel>
     {type === "text" ? (
-      <Field
-        as={Input}
-        id={camelCase(label)}
-        name={name ?? camelCase(label)}
-        validate={validate ?? undefined}
-        py="30px"
-        borderRadius="5px"
-      />
-    ) : type === "chakra-text" ? (
-      <Input
-        name={name ?? camelCase(label)}
-        py="30px"
-        borderRadius="5px"
-        onChange={onChange ?? undefined}
-        defaultValue={defaultValue ?? undefined}
-      />
-    ) : type === "date" ? (
-      // TODO: Hook up date picker component to Formik
-      <Flex border="1px solid #E2E8F0" borderRadius="5px" py="10px">
-        <Input
-          type="date"
-          variant="ghost"
+      <>
+        <Field
+          as={Input}
+          id={camelCase(label)}
           name={name ?? camelCase(label)}
+          validate={validate ?? undefined}
+          py="30px"
+          borderRadius="5px"
+        />
+        <ErrorMessage name={name ?? camelCase(label)} />
+      </>
+    ) : type === "chakra-text" ? (
+      <>
+        <Input
+          name={name ?? camelCase(label)}
+          py="30px"
           borderRadius="5px"
           onChange={onChange ?? undefined}
           defaultValue={defaultValue ?? undefined}
         />
-      </Flex>
+        <ErrorMessage name={name ?? camelCase(label)} />
+      </>
+    ) : type === "date" ? (
+      // TODO: Hook up date picker component to Formik
+      <>
+        <Flex>
+          <Input
+            type="date"
+            variant="ghost"
+            name={name ?? camelCase(label)}
+            border="1px solid #E2E8F0"
+            py="10px"
+            borderRadius="5px"
+            onChange={onChange ?? undefined}
+            defaultValue={defaultValue ?? undefined}
+          />
+          <ErrorMessage name={name ?? camelCase(label)} />
+        </Flex>
+      </>
     ) : type === "datetime" ? (
       <Flex border="1px solid #E2E8F0" borderRadius="5px" py="10px">
         <Input
@@ -71,32 +82,33 @@ export const LabelledInput: React.FC<{
         />
       </Flex>
     ) : type === "number" ? (
-      <Input
+      <Field
+        as={Input}
         type="number"
+        id={camelCase(label)}
         name={name ?? camelCase(label)}
+        validate={validate ?? undefined}
         py="30px"
+        borderRadius="5px"
+      />
+    ) : type === "select" ? (
+      // <Flex border="1px solid #E2E8F0" borderRadius="5px" py="10px">
+      <Field
+        as={Select}
+        variant="ghost"
+        name={name ?? camelCase(label)}
         borderRadius="5px"
         onChange={onChange ?? undefined}
         defaultValue={defaultValue ?? undefined}
-      />
-    ) : type === "select" ? (
-      <Flex border="1px solid #E2E8F0" borderRadius="5px" py="10px">
-        <Field
-          as={Select}
-          variant="ghost"
-          name={name ?? camelCase(label)}
-          borderRadius="5px"
-          onChange={onChange ?? undefined}
-          defaultValue={defaultValue ?? undefined}
-        >
-          {selectOptions?.map((option) => (
-            <option key={option} value={option.toLowerCase()}>
-              {option}
-            </option>
-          ))}
-        </Field>
-      </Flex>
+      >
+        {selectOptions?.map((option) => (
+          <option key={option} value={option.toLowerCase()}>
+            {option}
+          </option>
+        ))}
+      </Field>
     ) : (
+      // </Flex>
       <></>
     )}
   </FormControl>
