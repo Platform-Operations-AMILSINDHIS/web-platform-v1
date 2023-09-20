@@ -1,9 +1,11 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { string } from "zod";
 import BlogCatalogDisplay from "~/components/blog/BlogCatalogDisplay";
 import Layout from "~/components/layout";
 import { type PageBlogPostCollectionQuery } from "~/lib/__generated/sdk";
 import { client } from "~/lib/client";
+import { BlogPost } from "~/types/blog";
 import { satoshi } from "~/utils/fonts";
 
 export const getServerSideProps: GetServerSideProps<{
@@ -13,12 +15,25 @@ export const getServerSideProps: GetServerSideProps<{
   return { props: { posts } };
 };
 
+const createUnquieTags = (blogPosts: BlogPost[]) => {
+  const uniqueTags: string[] = [];
+
+  blogPosts?.forEach((blog) => {
+    blog?.tags?.forEach((tag) => {
+      if (!uniqueTags.includes(tag ?? "")) {
+        uniqueTags.push(tag ?? "");
+      }
+    });
+  });
+
+  console.log(uniqueTags);
+};
+
 const CatalogPage = ({
   posts: { blogContentTypeCollection },
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   // blogContentTypeCollection?.items[0].
   const blogPosts = blogContentTypeCollection?.items;
-  console.log(blogPosts);
 
   return (
     <Layout title="Catalog">
