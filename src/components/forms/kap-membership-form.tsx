@@ -51,6 +51,8 @@ import {
   proposerInfoSchema,
 } from "~/utils/schemas";
 
+import usePayment from "~/hooks/usePayment";
+
 import { api } from "~/utils/api";
 
 const steps = [
@@ -133,6 +135,8 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
     [formState]
   );
 
+  const { handlePayment } = usePayment();
+
   // useEffect(() => {
   //   if (isSubmitted && formMut.status === "idle") {
   //     console.log(JSON.stringify(formState.proposerInfo, null, 2));
@@ -192,7 +196,7 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
         />
       )}
 
-      {activeStep === 4 && (
+      {/* {activeStep === 4 && (
         <FamilyMemberDetailsSection
           initialValues={formState.familyMembers ?? []}
           stateSetter={(values: FamilyMember[]) =>
@@ -208,7 +212,7 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
             setFormState({ ...formState, proposerInfo: values })
           }
         />
-      )}
+      )} */}
 
       <Spacer h="2rem" />
 
@@ -234,7 +238,11 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
           size="lg"
           isLoading={formMut.isLoading}
           onClick={
-            activeStep === steps.length
+            activeStep === 3
+              ? async () => {
+                  await handlePayment(100);
+                }
+              : activeStep === steps.length
               ? () => {
                   console.log("submit here");
                   formMut
@@ -254,7 +262,8 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
           }
         >
           {/* Next */}
-          {activeStep === steps.length ? "Submit" : "Next"}
+          {/* {activeStep === steps.length ? "Submit" : "Next"} */}
+          {activeStep === 3 ? "Pay now" : "Next"}
         </Button>
       </Flex>
     </>
