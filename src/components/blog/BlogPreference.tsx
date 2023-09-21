@@ -1,5 +1,6 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
+import { btnThemeDark, btnThemeLight } from "../buttons/BtnThemes";
 
 interface BlogPreferenceProps {
   blogType: string[];
@@ -13,9 +14,17 @@ interface TypeCTAProps {
 
 const TypeCTA: React.FC<TypeCTAProps> = ({ type, active, onClick }) => {
   return (
-    <Box color={active ? "red" : ""} onClick={onClick}>
+    <Button
+      py={1}
+      px={3}
+      borderRadius={5}
+      border={active ? "" : "2px solid"}
+      borderColor="gray.200"
+      style={active ? btnThemeDark : btnThemeLight}
+      onClick={onClick}
+    >
       {type}
-    </Box>
+    </Button>
   );
 };
 
@@ -30,17 +39,18 @@ const BlogPreference: React.FC<BlogPreferenceProps> = ({ blogType }) => {
 
   return (
     <Flex flexDir="column">
-      <Text mb={3} fontWeight={600} fontSize="xl">
+      <Text mb={3} fontWeight={600} fontSize="2xl">
         Choose your{" "}
         <span
           style={{
             color: "#FF4D00",
+            textDecoration: "underline",
           }}
         >
           reading
         </span>
       </Text>
-      <Flex>
+      <Flex gap={5}>
         {blogType.map((type, index) => {
           const state = index === activeType ? true : false;
           return (

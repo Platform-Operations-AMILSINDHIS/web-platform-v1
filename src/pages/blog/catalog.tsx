@@ -64,7 +64,7 @@ const CatalogPage = ({
             </Text>
             <Flex mt={8} w="full" justify="space-between" align="flex-start">
               <BlogCatalogDisplay blogPosts={blogPosts} />
-              <Flex flexDir="column">
+              <Flex gap={8} flexDir="column">
                 <BlogPreference blogType={createTypeOptions(blogPosts)} />
                 <BlogTopics blogTags={createUnquieTags(blogPosts)} />
               </Flex>
