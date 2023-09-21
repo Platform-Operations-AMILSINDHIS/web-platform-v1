@@ -15,11 +15,16 @@ interface TypeCTAProps {
 const TypeCTA: React.FC<TypeCTAProps> = ({ type, active, onClick }) => {
   return (
     <Button
+      size="md"
       py={1}
       px={3}
+      opacity={active ? "" : "60%"}
+      _hover={{
+        opacity: "100%",
+      }}
       borderRadius={5}
       border={active ? "" : "2px solid"}
-      borderColor="gray.200"
+      borderColor="gray.100"
       style={active ? btnThemeDark : btnThemeLight}
       onClick={onClick}
     >
@@ -40,7 +45,7 @@ const BlogPreference: React.FC<BlogPreferenceProps> = ({ blogType }) => {
   return (
     <Flex flexDir="column">
       <Text mb={3} fontWeight={600} fontSize="xl">
-        Choose your{" "}
+        Define your{" "}
         <span
           style={{
             color: "#FF4D00",

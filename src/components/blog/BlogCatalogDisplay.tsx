@@ -20,13 +20,9 @@ interface BlogCatalogProps {
       }[]
     | null
     | undefined;
-  blogType: string;
 }
 
-const BlogCatalogDisplay: React.FC<BlogCatalogProps> = ({
-  blogPosts,
-  blogType,
-}) => {
+const BlogCatalogDisplay: React.FC<BlogCatalogProps> = ({ blogPosts }) => {
   console.log(blogPosts);
   return (
     <Flex mb={8} gap={8} flexDir="column">
