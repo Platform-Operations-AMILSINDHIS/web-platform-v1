@@ -1,13 +1,11 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { string } from "zod";
 import BlogCatalogDisplay from "~/components/blog/BlogCatalogDisplay";
 import BlogPreference from "~/components/blog/BlogPreference";
 import BlogTopics from "~/components/blog/BlogTopics";
 import Layout from "~/components/layout";
 import { type PageBlogPostCollectionQuery } from "~/lib/__generated/sdk";
 import { client } from "~/lib/client";
-import { BlogPost } from "~/types/blog";
 import { satoshi } from "~/utils/fonts";
 
 export const getServerSideProps: GetServerSideProps<{
