@@ -8,7 +8,7 @@ const BlogTopics: React.FC<BlogTopicProps> = ({ blogTags }) => {
   console.log(blogTags);
   return (
     <Flex gap={4} flexDir="column">
-      <Text fontWeight={600} fontSize="2xl">
+      <Text fontWeight={600} fontSize="xl">
         Recommended{" "}
         <span
           style={{

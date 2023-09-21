@@ -3,6 +3,7 @@ import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import BlogCatalogDisplay from "~/components/blog/BlogCatalogDisplay";
 import BlogPreference from "~/components/blog/BlogPreference";
 import BlogTopics from "~/components/blog/BlogTopics";
+import TopPicks from "~/components/blog/TopPicks";
 import Layout from "~/components/layout";
 import { type PageBlogPostCollectionQuery } from "~/lib/__generated/sdk";
 import { client } from "~/lib/client";
@@ -65,6 +66,7 @@ const CatalogPage = ({
             <Flex mt={8} w="full" justify="space-between" align="flex-start">
               <BlogCatalogDisplay blogPosts={blogPosts} />
               <Flex gap={8} flexDir="column">
+                <TopPicks />
                 <BlogPreference blogType={createTypeOptions(blogPosts)} />
                 <BlogTopics blogTags={createUnquieTags(blogPosts)} />
               </Flex>

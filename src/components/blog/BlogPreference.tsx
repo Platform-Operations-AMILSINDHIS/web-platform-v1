@@ -39,7 +39,7 @@ const BlogPreference: React.FC<BlogPreferenceProps> = ({ blogType }) => {
 
   return (
     <Flex flexDir="column">
-      <Text mb={3} fontWeight={600} fontSize="2xl">
+      <Text mb={3} fontWeight={600} fontSize="xl">
         Choose your{" "}
         <span
           style={{
