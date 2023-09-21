@@ -29,7 +29,7 @@ const BlogCatalogDisplay: React.FC<BlogCatalogProps> = ({
 }) => {
   console.log(blogPosts);
   return (
-    <Flex my={8} gap={8} flexDir="column">
+    <Flex mb={8} gap={8} flexDir="column">
       {blogPosts?.map((blog, index) => {
         return (
           <Flex gap={1} flexDir="column" key={index}>

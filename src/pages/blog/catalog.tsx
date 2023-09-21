@@ -29,6 +29,20 @@ const createUnquieTags = (blogPosts: PageBlogPostCollectionQuery[]) => {
   return uniqueTags;
 };
 
+const createTypeOptions = (blogPosts: PageBlogPostCollectionQuery[]) => {
+  const Types: string[] = [];
+
+  blogPosts?.forEach((blog) => {
+    blog?.blogType?.forEach((type) => {
+      if (!Types.includes(type)) {
+        Types.push(type);
+      }
+    });
+  });
+
+  return Types.reverse();
+};
+
 const CatalogPage = ({
   posts: { blogContentTypeCollection },
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
@@ -48,10 +62,10 @@ const CatalogPage = ({
               ever-growing collection of samachar, newsletters, and blogs. Stay
               tuned for more
             </Text>
-            <Flex w="full" justify="space-between" align="flex-start">
+            <Flex mt={8} w="full" justify="space-between" align="flex-start">
               <BlogCatalogDisplay blogPosts={blogPosts} />
               <Flex flexDir="column">
-                <BlogPreference />
+                <BlogPreference blogType={createTypeOptions(blogPosts)} />
                 <BlogTopics blogTags={createUnquieTags(blogPosts)} />
               </Flex>
             </Flex>
