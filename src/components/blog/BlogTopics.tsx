@@ -7,7 +7,7 @@ interface BlogTopicProps {
 const BlogTopics: React.FC<BlogTopicProps> = ({ blogTags }) => {
   console.log(blogTags);
   return (
-    <Flex pl={10} pt={5} gap={2} flexDir="column">
+    <Flex gap={2} flexDir="column">
       <Flex my={3} flexDir="column">
         <Text fontWeight={600} fontSize="xl">
           Recommended{" "}

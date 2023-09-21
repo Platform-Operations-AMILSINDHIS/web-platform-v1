@@ -2,6 +2,7 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { string } from "zod";
 import BlogCatalogDisplay from "~/components/blog/BlogCatalogDisplay";
+import BlogPreference from "~/components/blog/BlogPreference";
 import BlogTopics from "~/components/blog/BlogTopics";
 import Layout from "~/components/layout";
 import { type PageBlogPostCollectionQuery } from "~/lib/__generated/sdk";
@@ -40,7 +41,7 @@ const CatalogPage = ({
     <Layout title="Catalog">
       <Box fontFamily={satoshi} px={10}>
         <Flex my={10}>
-          <Flex gap={1} flexDir="column">
+          <Flex w="full" gap={1} flexDir="column">
             <Text fontWeight={600} fontSize={35}>
               Reading Catalog
             </Text>
@@ -49,9 +50,12 @@ const CatalogPage = ({
               ever-growing collection of samachar, newsletters, and blogs. Stay
               tuned for more
             </Text>
-            <Flex justify="space-between" align="flex-start">
+            <Flex w="full" justify="space-between" align="flex-start">
               <BlogCatalogDisplay blogPosts={blogPosts} />
-              <BlogTopics blogTags={createUnquieTags(blogPosts)} />
+              <Flex flexDir="column">
+                <BlogPreference />
+                <BlogTopics blogTags={createUnquieTags(blogPosts)} />
+              </Flex>
             </Flex>
           </Flex>
         </Flex>
