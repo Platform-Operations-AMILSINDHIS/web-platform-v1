@@ -44,6 +44,21 @@ const createTypeOptions = (blogPosts: PageBlogPostCollectionQuery[]) => {
   return Types.reverse();
 };
 
+const generateRandomPicks = (
+  blogPosts: PageBlogPostCollectionQuery[],
+  numPicks: number
+) => {
+  const randomArray = [];
+  const duplicate = [...blogPosts]; // Create a copy of the original array
+
+  for (let i = 0; i < numPicks; i++) {
+    const randomIndex = Math.floor(Math.random() * duplicate.length);
+    randomArray.push(duplicate.splice(randomIndex, 1)[0]);
+  }
+
+  return randomArray;
+};
+
 const CatalogPage = ({
   posts: { blogContentTypeCollection },
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
