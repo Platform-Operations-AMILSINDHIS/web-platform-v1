@@ -64,6 +64,8 @@ const CatalogPage = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   // blogContentTypeCollection?.items[0].
   const blogPosts = blogContentTypeCollection?.items;
+  const random = generateRandomPicks(blogPosts, 3);
+  console.log({ random });
 
   return (
     <Layout title="Catalog">
