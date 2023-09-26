@@ -7,22 +7,18 @@ interface BlogTopicProps {
 const BlogTopics: React.FC<BlogTopicProps> = ({ blogTags }) => {
   console.log(blogTags);
   return (
-    <Flex pl={10} pt={5} gap={2} flexDir="column">
-      <Flex my={3} flexDir="column">
-        <Text fontWeight={600} fontSize="xl">
-          Recommended{" "}
-          <span
-            style={{
-              color: "#FF4D00",
-            }}
-          >
-            Topics
-          </span>
-        </Text>
-        <Text fontSize="sm">
-          Choose from the topics you prefer to read from
-        </Text>
-      </Flex>
+    <Flex gap={4} flexDir="column">
+      <Text fontWeight={600} fontSize="xl">
+        Recommended{" "}
+        <span
+          style={{
+            color: "#FF4D00",
+            textDecoration: "underline",
+          }}
+        >
+          topics
+        </span>
+      </Text>
       <Grid gap={3} templateColumns="repeat(4,1fr)">
         {blogTags?.map((tag, index) => {
           return (
