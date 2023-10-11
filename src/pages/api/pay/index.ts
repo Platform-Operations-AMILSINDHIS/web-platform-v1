@@ -4,8 +4,15 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import Razorpay from "razorpay";
 
+interface RazorpayPaymentHandlerRequest extends NextApiRequest {
+  body: {
+    amount: number;
+    receipt: string;
+  };
+}
+
 const RazorpayPaymentHandler = async (
-  req: NextApiRequest,
+  req: RazorpayPaymentHandlerRequest,
   res: NextApiResponse
 ) => {
   try {
@@ -15,9 +22,9 @@ const RazorpayPaymentHandler = async (
     });
 
     const options = {
-      amount: 5000, // amount in smallest currency unit
+      amount: req.body.amount, // amount in smallest currency unit
+      receipt: req.body.receipt,
       currency: "INR",
-      receipt: "receipt_order_74394",
     };
 
     const order = await instance.orders.create(options);
@@ -29,7 +36,7 @@ const RazorpayPaymentHandler = async (
         order: "",
       });
 
-    res.status(200).json({ status: "success", order, message: "Worked :)" });
+    res.status(200).json({ status: "success", message: "Worked :)", order });
   } catch (e) {
     res.status(500).json({ status: "error", message: e, order: "" });
   }

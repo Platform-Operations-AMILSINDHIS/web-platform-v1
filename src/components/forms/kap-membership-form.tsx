@@ -135,7 +135,17 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
     [formState]
   );
 
-  const { handlePayment } = usePayment();
+  const { handlePayment } = usePayment({
+    prefillDetails: {
+      name: `${formState.personalInfo.firstName}${
+        formState.personalInfo.middleName
+          ? ` ${formState.personalInfo.middleName}`
+          : ""
+      } ${formState.personalInfo.lastName}`,
+      email: formState.personalInfo.emailId,
+      contact: formState.personalInfo.mobileNumber,
+    },
+  });
 
   // useEffect(() => {
   //   if (isSubmitted && formMut.status === "idle") {
@@ -240,7 +250,7 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
           onClick={
             activeStep === 3
               ? async () => {
-                  await handlePayment(100);
+                  await handlePayment(500000, "kap_membership");
                 }
               : activeStep === steps.length
               ? () => {

@@ -23,8 +23,7 @@ const RazorpayPaymentSuccessHandler = (
 ) => {
   try {
     // getting the details back from frontend
-    const reqBody = req.body;
-    console.log({ rpSuccessReqBody: reqBody });
+    console.log({ rpSuccessReqBody: req.body });
 
     const {
       orderCreationId,
@@ -32,7 +31,7 @@ const RazorpayPaymentSuccessHandler = (
       razorpayOrderId,
       razorpaySignature,
       userEmail,
-    } = reqBody;
+    } = req.body;
 
     // Creating our own digest
     // The format should be like this:
