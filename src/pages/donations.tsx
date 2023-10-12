@@ -1,10 +1,12 @@
 import type { NextPage } from "next";
 import Layout from "~/components/layout";
 
+import HeroSection from "~/sections/DonationsPage/HeroSection";
+
 const DonationsPage: NextPage = () => {
   return (
     <Layout title="Home">
-      <div>hi, this is the donations page</div>
+      <HeroSection />
     </Layout>
   );
 };
