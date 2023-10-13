@@ -1,4 +1,4 @@
-import { Box, Flex, Icon, Text } from "@chakra-ui/react";
+import { Flex, Icon, Text } from "@chakra-ui/react";
 import { BsLinkedin, BsTwitter } from "react-icons/bs";
 
 interface NavigationProps {
@@ -32,7 +32,9 @@ const Navigation: React.FC<NavigationProps> = ({ navigationItems }) => {
         {navigationItems.map((navItem, index) => {
           return (
             <Flex key={index}>
-              <Text>{navItem.linkTitle}</Text>
+              <Text as="a" href={navItem.linkURL}>
+                {navItem.linkTitle}
+              </Text>
             </Flex>
           );
         })}

@@ -3,11 +3,13 @@
     {
       "linkTitle": "Home",
       "linkURL": "/",
+      "identifierURLS": ["/"],
       "subURLs": []
     },
     {
       "linkTitle": "Connecting Amils",
       "linkURL": "#",
+      "identifierURLS": ["/about", "/blog", "/matrimony"],
       "subURLs": [
         {
           "linkTitle": "About Us",
@@ -26,6 +28,7 @@
     {
       "linkTitle": "Upcoming Events",
       "linkURL": "#",
+      "identifierURLS": ["/events", "/events/catalog"],
       "subURLs": [
         {
           "linkTitle": "About Events",
@@ -34,21 +37,19 @@
         {
           "linkTitle": "Browse Events",
           "linkURL": "/events/catalog"
-        },
-        {
-          "linkTitle": "Matrimony",
-          "linkURL": "/matrimony"
         }
       ]
     },
     {
       "linkTitle": "Donations",
       "linkURL": "/donations",
+      "identifierURLS": ["/donations"],
       "subURLs": []
     },
     {
       "linkTitle": "Memberships",
       "linkURL": "/memberships",
+      "identifierURLS": ["/memberships"],
       "subURLs": []
     }
   ],

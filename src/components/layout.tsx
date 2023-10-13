@@ -34,8 +34,11 @@ const Layout: React.FC<{
         } mx-auto font-sans`}
       >
         <Box w={1000} my={6}>
-          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
-          <Navigation navigationItems={navigation} />
+          <Navigation
+            userLocation={currentEndpoint}
+            /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */
+            navigationItems={navigation}
+          />
         </Box>
         <main className={`mx-auto w-full ${maxW && "px-4 md:px-4"}`}>
           {children}
