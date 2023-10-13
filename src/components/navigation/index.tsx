@@ -8,7 +8,8 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { BsLinkedin, BsTwitter } from "react-icons/bs";
-import { IoIosArrowDown } from "react-icons/io";
+import NavigationDropDown from "./NavigationDropDown";
+import NavigationRegular from "./NavigationRegular";
 
 interface NavigationProps {
   navigationItems: {
@@ -64,14 +65,17 @@ const Navigation: React.FC<NavigationProps> = ({
               align="center"
               key={index}
             >
-              <Text as="a" href={navItem.linkURL}>
-                {navItem.linkTitle}
-              </Text>
               {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */}
               {navItem.subURLs.length > 0 ? (
-                <Icon as={IoIosArrowDown} />
+                <NavigationDropDown
+                  linkTitle={navItem.linkTitle}
+                  subURLs={navItem.subURLs}
+                />
               ) : (
-                <></>
+                <NavigationRegular
+                  linkTitle={navItem.linkTitle}
+                  linkURL={navItem.linkURL}
+                />
               )}
             </Flex>
           );
