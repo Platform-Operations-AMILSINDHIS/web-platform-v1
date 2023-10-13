@@ -10,21 +10,6 @@ import {
 import { BsLinkedin, BsTwitter } from "react-icons/bs";
 import { IoIosArrowDown } from "react-icons/io";
 
-const NavItemDropDown = () => {
-  return (
-    <Menu>
-      <MenuButton rightIcon={<IoIosArrowDown />}>Actions</MenuButton>
-      <MenuList>
-        <MenuItem>Download</MenuItem>
-        <MenuItem>Create a Copy</MenuItem>
-        <MenuItem>Mark as Draft</MenuItem>
-        <MenuItem>Delete</MenuItem>
-        <MenuItem>Attend a Workshop</MenuItem>
-      </MenuList>
-    </Menu>
-  );
-};
-
 interface NavigationProps {
   navigationItems: {
     linkTitle: string;
