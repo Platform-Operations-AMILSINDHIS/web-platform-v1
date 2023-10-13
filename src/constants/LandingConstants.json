@@ -9,7 +9,7 @@
     {
       "linkTitle": "Connecting Amils",
       "linkURL": "#",
-      "identifierURLS": ["/about", "/blog", "/matrimony"],
+      "identifierURLS": ["/about", "/blog", "/blog/catalog", "/matrimony"],
       "subURLs": [
         {
           "linkTitle": "About Us",

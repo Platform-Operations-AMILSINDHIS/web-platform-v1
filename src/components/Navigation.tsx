@@ -1,11 +1,36 @@
-import { Flex, Icon, Text } from "@chakra-ui/react";
+import {
+  Flex,
+  Icon,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Text,
+} from "@chakra-ui/react";
 import { BsLinkedin, BsTwitter } from "react-icons/bs";
+import { IoIosArrowDown } from "react-icons/io";
+
+const NavItemDropDown = () => {
+  return (
+    <Menu>
+      <MenuButton rightIcon={<IoIosArrowDown />}>Actions</MenuButton>
+      <MenuList>
+        <MenuItem>Download</MenuItem>
+        <MenuItem>Create a Copy</MenuItem>
+        <MenuItem>Mark as Draft</MenuItem>
+        <MenuItem>Delete</MenuItem>
+        <MenuItem>Attend a Workshop</MenuItem>
+      </MenuList>
+    </Menu>
+  );
+};
 
 interface NavigationProps {
   navigationItems: {
     linkTitle: string;
     linkURL: string;
-    subURL?: {
+    identifierURLS: string[];
+    subURLs: {
       linkTitle: string;
       linkURL: string;
     }[];
@@ -13,7 +38,10 @@ interface NavigationProps {
   userLocation: string;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ navigationItems }) => {
+const Navigation: React.FC<NavigationProps> = ({
+  navigationItems,
+  userLocation,
+}) => {
   return (
     <Flex
       justify="space-between"
@@ -28,13 +56,38 @@ const Navigation: React.FC<NavigationProps> = ({ navigationItems }) => {
       fontWeight="medium"
       color="rgba(0, 0, 0, 0.60)"
     >
-      <Flex transition="all 0.3s ease-out" gap="60px">
+      <Flex gap="20px">
         {navigationItems.map((navItem, index) => {
           return (
-            <Flex key={index}>
+            <Flex
+              transition="all 0.2s ease-out"
+              _hover={{
+                color: "black",
+              }}
+              borderRadius={5}
+              bg={
+                navItem?.identifierURLS?.includes(userLocation)
+                  ? "rgba(4, 239, 175, 0.20)"
+                  : ""
+              }
+              color={
+                navItem?.identifierURLS?.includes(userLocation) ? "black" : ""
+              }
+              gap={2}
+              px={4}
+              py={1}
+              align="center"
+              key={index}
+            >
               <Text as="a" href={navItem.linkURL}>
                 {navItem.linkTitle}
               </Text>
+              {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */}
+              {navItem.subURLs.length > 0 ? (
+                <Icon as={IoIosArrowDown} />
+              ) : (
+                <></>
+              )}
             </Flex>
           );
         })}
