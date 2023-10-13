@@ -8,7 +8,7 @@ const Layout: React.FC<{
   children: React.ReactNode;
   maxW?: boolean;
   blogPostPage?: boolean;
-}> = ({ title, children, maxW = true, blogPostPage = false }) => {
+}> = ({ title, children, maxW = true }) => {
   return (
     <div>
       <Head>
@@ -25,7 +25,7 @@ const Layout: React.FC<{
           maxW && "max-w-screen-xl"
         } mx-auto font-sans`}
       >
-        <Navbar blogPostPage={blogPostPage} />
+        <Navbar />
         <main className={`mx-auto w-full ${maxW && "px-4 md:px-4"}`}>
           {children}
         </main>
