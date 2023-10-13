@@ -2,7 +2,9 @@ import Head from "next/head";
 import Navigation from "./Navigation";
 
 import { satoshi } from "../utils/fonts";
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
+import { navigation } from "../constants/LandingConstants.json";
+import { useRouter } from "next/router";
 
 const Layout: React.FC<{
   title?: string;
@@ -10,6 +12,9 @@ const Layout: React.FC<{
   maxW?: boolean;
   blogPostPage?: boolean;
 }> = ({ title, children, maxW = true }) => {
+  const router = useRouter();
+  const currentEndpoint = router.pathname;
+  console.log(currentEndpoint);
   return (
     <div>
       <Head>
@@ -21,20 +26,23 @@ const Layout: React.FC<{
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Box
+      <Flex
+        flexDir="column"
+        align="center"
         className={`${satoshi.variable} ${
           maxW && "max-w-screen-xl"
         } mx-auto font-sans`}
       >
-        <Box mx="90px" my={6}>
-          <Navigation />
+        <Box w={1000} my={6}>
+          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+          <Navigation navigationItems={navigation} />
         </Box>
         <main className={`mx-auto w-full ${maxW && "px-4 md:px-4"}`}>
           {children}
         </main>
         xxxx
         <footer></footer>
-      </Box>
+      </Flex>
     </div>
   );
 };

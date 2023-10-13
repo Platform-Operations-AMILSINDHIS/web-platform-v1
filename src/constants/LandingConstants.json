@@ -43,11 +43,13 @@
     },
     {
       "linkTitle": "Donations",
-      "linkURL": "/donations"
+      "linkURL": "/donations",
+      "subURLs": []
     },
     {
       "linkTitle": "Memberships",
-      "linkURL": "/memberships"
+      "linkURL": "/memberships",
+      "subURLs": []
     }
   ],
   "picturesArray": [
