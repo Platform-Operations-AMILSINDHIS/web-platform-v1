@@ -1,4 +1,55 @@
 {
+  "navigation": [
+    {
+      "linkTitle": "Home",
+      "linkURL": "/",
+      "subURLs": []
+    },
+    {
+      "linkTitle": "Connecting Amils",
+      "linkURL": "#",
+      "subURLs": [
+        {
+          "linkTitle": "About Us",
+          "linkURL": "/about"
+        },
+        {
+          "linkTitle": "Read Blogs",
+          "linkURL": "/blogs"
+        },
+        {
+          "linkTitle": "Matrimony",
+          "linkURL": "/matrimony"
+        }
+      ]
+    },
+    {
+      "linkTitle": "Upcoming Events",
+      "linkURL": "#",
+      "subURLs": [
+        {
+          "linkTitle": "About Events",
+          "linkURL": "/events"
+        },
+        {
+          "linkTitle": "Browse Events",
+          "linkURL": "/events/catalog"
+        },
+        {
+          "linkTitle": "Matrimony",
+          "linkURL": "/matrimony"
+        }
+      ]
+    },
+    {
+      "linkTitle": "Donations",
+      "linkURL": "/donations"
+    },
+    {
+      "linkTitle": "Memberships",
+      "linkURL": "/memberships"
+    }
+  ],
   "picturesArray": [
     {
       "image": "/images/what-we-offer/memberships.jpg",
