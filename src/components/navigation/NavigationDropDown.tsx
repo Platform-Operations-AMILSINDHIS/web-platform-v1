@@ -1,4 +1,13 @@
-import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import {
+  Flex,
+  Icon,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Text,
+} from "@chakra-ui/react";
+import { IoIosArrowDown } from "react-icons/io";
 
 interface NavigationDropDownProps {
   linkTitle: string;
@@ -14,7 +23,12 @@ const NavigationDropDown: React.FC<NavigationDropDownProps> = ({
 }) => {
   return (
     <Menu>
-      <MenuButton>{linkTitle}</MenuButton>
+      <MenuButton>
+        <Flex align="center" gap={2}>
+          <Text>{linkTitle}</Text>
+          <Icon as={IoIosArrowDown} />
+        </Flex>
+      </MenuButton>
       <MenuList>
         {subURLs.map((item, index) => {
           return (

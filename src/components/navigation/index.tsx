@@ -42,7 +42,7 @@ const Navigation: React.FC<NavigationProps> = ({
       fontWeight="medium"
       color="rgba(0, 0, 0, 0.60)"
     >
-      <Flex gap="20px">
+      <Flex gap="25px">
         {navigationItems.map((navItem, index) => {
           return (
             <Flex
@@ -59,8 +59,7 @@ const Navigation: React.FC<NavigationProps> = ({
               color={
                 navItem?.identifierURLS?.includes(userLocation) ? "black" : ""
               }
-              gap={2}
-              px={4}
+              px={3}
               py={1}
               align="center"
               key={index}
