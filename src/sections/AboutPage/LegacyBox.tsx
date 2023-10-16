@@ -1,6 +1,6 @@
 import { Grid, GridItem, Heading, Text } from "@chakra-ui/react";
 
-const LegacyFoundersSection = () => {
+const LegacyBox = () => {
   return (
     <Grid
       p="5rem"
@@ -28,4 +28,4 @@ const LegacyFoundersSection = () => {
   );
 };
 
-export default LegacyFoundersSection;
+export default LegacyBox;
