@@ -6,6 +6,7 @@ import Layout from "~/components/layout";
 import HeroSection from "~/sections/AboutPage/HeroSection";
 import LegacyBox from "~/sections/AboutPage/LegacyBox";
 import FoundingMembers from "~/sections/AboutPage/FoundingMembers";
+import PresidentsSection from "~/sections/AboutPage/PresidentsSection";
 
 const AboutPage: NextPage = () => {
   return (
@@ -19,6 +20,10 @@ const AboutPage: NextPage = () => {
       <Spacer h="2rem" />
 
       <FoundingMembers />
+
+      <Spacer h="8rem" />
+
+      <PresidentsSection />
     </Layout>
   );
 };
