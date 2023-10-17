@@ -7,6 +7,7 @@ import HeroSection from "~/sections/AboutPage/HeroSection";
 import LegacyBox from "~/sections/AboutPage/LegacyBox";
 import FoundingMembers from "~/sections/AboutPage/FoundingMembers";
 import PresidentsSection from "~/sections/AboutPage/PresidentsSection";
+import ComitteesSection from "~/sections/AboutPage/ComitteesSection";
 
 const AboutPage: NextPage = () => {
   return (
@@ -24,6 +25,12 @@ const AboutPage: NextPage = () => {
       <Spacer h="8rem" />
 
       <PresidentsSection />
+
+      <Spacer h="8rem" />
+
+      <ComitteesSection />
+
+      <Spacer h="8rem" />
     </Layout>
   );
 };

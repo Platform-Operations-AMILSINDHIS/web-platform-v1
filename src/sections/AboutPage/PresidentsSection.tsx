@@ -28,7 +28,7 @@ const PresidentsSection = () => {
         </Flex>
       </Flex>
 
-      <Spacer h="6rem" />
+      <Spacer h="5rem" />
 
       <Flex mx="auto" w="80%" gap="4rem" direction="column" alignItems="center">
         {[
