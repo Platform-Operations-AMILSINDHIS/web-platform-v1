@@ -37,7 +37,9 @@ const Navigation: React.FC<NavigationProps> = ({
       fontWeight="medium"
       color="rgba(0, 0, 0, 0.60)"
     >
-      <Image src={AmilSindhiLogo} width={55} height={55} alt="NGO_Logo" />
+      <Box as="a" href="/">
+        <Image src={AmilSindhiLogo} width={55} height={55} alt="NGO_Logo" />
+      </Box>
       <Flex gap="20px">
         {navigationItems.map((navItem, index) => {
           return (
