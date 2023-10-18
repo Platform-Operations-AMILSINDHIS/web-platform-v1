@@ -1,19 +1,10 @@
-import {
-  Box,
-  Flex,
-  Icon,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Flex, Icon } from "@chakra-ui/react";
 import { BsLinkedin, BsTwitter, BsWhatsapp } from "react-icons/bs";
 import NavigationDropDown from "./NavigationDropDown";
 import NavigationRegular from "./NavigationRegular";
 import Image from "next/image";
 
-import AmilSindhiLogo from "../../../public/images/amil-sindhis-logo.png"
+import AmilSindhiLogo from "../../../public/images/amil-sindhis-logo.png";
 
 interface NavigationProps {
   navigationItems: {
@@ -46,7 +37,7 @@ const Navigation: React.FC<NavigationProps> = ({
       fontWeight="medium"
       color="rgba(0, 0, 0, 0.60)"
     >
-      <Image src={AmilSindhiLogo}  width={55} height={55} alt="NGO_Logo"/>
+      <Image src={AmilSindhiLogo} width={55} height={55} alt="NGO_Logo" />
       <Flex gap="20px">
         {navigationItems.map((navItem, index) => {
           return (
@@ -86,9 +77,21 @@ const Navigation: React.FC<NavigationProps> = ({
         })}
       </Flex>
       <Flex gap={4} color="gray.700">
-        <Box as='a' href="https://twitter.com/i/flow/login?redirect_after_login=%2Familsindhis"><Icon boxSize={5} as={BsTwitter} /></Box>
-        <Box as="a" href="https://www.linkedin.com/in/the-khudabadi-amil-panchayat-of-bombay-836830251/?originalSubdomain=in" ><Icon boxSize={5} as={BsLinkedin} /></Box>
-        <Box as="a" href="https://wa.me/message/QESQXVMVI4RAD1"><Icon boxSize={5} as={BsWhatsapp}/></Box>
+        <Box
+          as="a"
+          href="https://twitter.com/i/flow/login?redirect_after_login=%2Familsindhis"
+        >
+          <Icon boxSize={5} as={BsTwitter} />
+        </Box>
+        <Box
+          as="a"
+          href="https://www.linkedin.com/in/the-khudabadi-amil-panchayat-of-bombay-836830251/?originalSubdomain=in"
+        >
+          <Icon boxSize={5} as={BsLinkedin} />
+        </Box>
+        <Box as="a" href="https://wa.me/message/QESQXVMVI4RAD1">
+          <Icon boxSize={5} as={BsWhatsapp} />
+        </Box>
       </Flex>
     </Flex>
   );
