@@ -13,14 +13,16 @@ interface sectionProps {
 const OfferingsSection = ({ picturesArray }: sectionProps) => {
   return (
     <Grid templateColumns="repeat(4, 1fr)" gap="3rem">
-      <Flex gridColumn="span 2" flexDir="column" align="baseline" gap="0.5rem">
-        <Text fontWeight={500} color="#0079FF">
-          Offerings
-        </Text>
-        <Heading fontSize="5xl">
-          What we <span style={{ color: "#0079FF" }}>offer</span>
-        </Heading>
-        <Text fontSize={18} fontWeight={400}>
+      <Flex gridColumn="span 2" flexDir="column" align="baseline" gap="0.7rem">
+        <Flex flexDir="column" gap="0.3rem">
+          <Text fontWeight={500} color="#FF4D00">
+            Offerings
+          </Text>
+          <Heading fontSize="5xl">
+            What we <span style={{ color: "#FF4D00" }}>offer</span>
+          </Heading>
+        </Flex>
+        <Text fontSize={18} lineHeight="167.5%" fontWeight={400}>
           At KAP, we are committed to serving our members and fostering a strong
           sense of unity. Feel free to explore our website and take advantage of
           these offerings. Together, let&apos;s make our vibrant community
