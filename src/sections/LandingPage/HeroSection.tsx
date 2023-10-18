@@ -1,5 +1,7 @@
 import { Button, Flex, Spacer } from "@chakra-ui/react";
 import Link from "next/link";
+import { btnThemeDark, btnThemeLight } from "~/components/buttons/BtnThemes";
+import LinkButton from "~/components/buttons/LinkButton";
 import { satoshi } from "~/utils/fonts";
 
 const HeroSection = () => {
@@ -11,8 +13,8 @@ const HeroSection = () => {
       <div className="flex-col font-heading text-3xl font-semibold leading-5 md:text-7xl">
         Preserving sindhi culture,
         <p className="mt-5">
-          <span className="text-[#0079FF]">language</span> & history{" "}
-          <span className="underline decoration-[#FFB84C] decoration-8">
+          <span className="text-[#FF4D00]">language</span> & history{" "}
+          <span className="underline decoration-[#FF4D00] decoration-8">
             since 1952
           </span>
         </p>
@@ -23,33 +25,14 @@ const HeroSection = () => {
         Sindhis displaced from Sindh and to bring the Sindhi Amil community
         together.
       </div>
-      <Spacer h="2.5rem" />
       <Flex w="100%" justify="center">
-        <Flex gap="1rem">
-          <Link href="/memberships/khudabadi-amil-panchayat">
-            <Button
-              px="3rem"
-              py="2rem"
-              colorScheme="blue"
-              bgColor="#0079FF"
-              _hover={{ bgColor: "#0068db" }}
-              border="1px solid #0079FF"
-              boxShadow="0px 4px 0px 0px rgba(0, 0, 0, 0.19);"
-            >
-              Membership
-            </Button>
-          </Link>
-          <Link href="/donations">
-            <Button
-              px="3rem"
-              py="2rem"
-              bgColor="#FFFFFF"
-              border="1px solid rgba(31, 41, 55, 0.45);"
-              boxShadow="0px 4px 0px 0px rgba(0, 0, 0, 0.19);"
-            >
-              Donate now
-            </Button>
-          </Link>
+        <Flex gap="2.5rem">
+          <LinkButton
+            CTAlink="/memberships"
+            CTAlabel="Membership"
+            CTATheme={false}
+          />
+          <LinkButton CTAlabel="Donate now" CTAlink="/donations" />
         </Flex>
       </Flex>
 

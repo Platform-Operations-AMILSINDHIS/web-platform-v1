@@ -10,6 +10,11 @@ import {
 import Link from "next/link";
 import { EventThumb } from "~/components/events";
 
+import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { client } from "~/lib/client";
+import { EventCollectionQueryQuery } from "~/lib/__generated/sdk";
+import EventSlider from "~/components/events/EventSlider";
+
 interface sectionProps {
   eventPics: {
     image: string;
@@ -18,11 +23,20 @@ interface sectionProps {
   }[];
 }
 
-const CuriousSection = ({ eventPics }: sectionProps) => {
+export const getServerSideProps: GetServerSideProps<{
+  events: EventCollectionQueryQuery;
+}> = async () => {
+  const events = await client.eventCollectionQuery();
+  return { props: { events } };
+};
+
+const CuriousSection = ({
+  events,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  console.log(events);
   return (
     <>
       <Spacer h="8rem" />
-
       {/* Curious about our events section */}
       <Box>
         <Grid templateColumns="repeat(2, 1fr)" gap="3rem">
@@ -53,12 +67,6 @@ const CuriousSection = ({ eventPics }: sectionProps) => {
               </Button>
             </Link>
           </Flex>
-        </Grid>
-        <Spacer h="3rem" />
-        <Grid templateColumns="repeat(3, 1fr)" gap="3rem">
-          {eventPics.map((event, i) => (
-            <EventThumb key={i} {...event} />
-          ))}
         </Grid>
       </Box>
     </>
