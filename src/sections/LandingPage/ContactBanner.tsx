@@ -19,11 +19,11 @@ const ContactBanner = ({ imageUrl }: sectionProps) => {
     <>
       <Spacer h="5rem" />
       <Box
-        maxW="1480px"
+        maxW="1350px"
         mx="auto"
-        py="4rem"
-        px="10rem"
-        background="linear-gradient(90deg, #0079FF 24.48%, #F100F6 99.99%, #FFC01F 100%)"
+        py="5rem"
+        px="9rem"
+        background="linear-gradient(90deg, #FFBE1E 0%, #FF4D00 68.8%)"
         borderRadius="20px"
         boxShadow="2px 4px 0px 3px rgba(0, 0, 0, 0.74);"
         position="relative"
@@ -35,18 +35,24 @@ const ContactBanner = ({ imageUrl }: sectionProps) => {
               <br />
               feel free to ask
             </Heading>
-            <Text maxW={580} mt="1rem" fontSize="lg" fontWeight={600}>
-              Drop us an email & we&apos;ll get back to you with the responses
-              to your queries
-            </Text>
           </Flex>
 
-          <Box h="100%">
+          <Flex gap={5} flexDir="column" h="100%">
+            <Text
+              color="white"
+              maxW={580}
+              mt="1rem"
+              fontSize="lg"
+              fontWeight={400}
+            >
+              Drop us an email & we&apos;ll get back to you with the <br />{" "}
+              responses to your queries
+            </Text>
             <InputGroup>
               <Input
-                width={400}
+                width={380}
                 type="email"
-                placeholder="Your email address"
+                placeholder="Send a message..."
                 background="white"
               />
               <InputRightAddon
@@ -57,11 +63,7 @@ const ContactBanner = ({ imageUrl }: sectionProps) => {
                 <FaShare color="white" />
               </InputRightAddon>
             </InputGroup>
-
-            <Box position="absolute" bottom="0">
-              <img alt="" src={imageUrl} />
-            </Box>
-          </Box>
+          </Flex>
         </Flex>
       </Box>
       <Spacer h="5rem" />
