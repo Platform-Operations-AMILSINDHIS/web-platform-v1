@@ -34,7 +34,6 @@ const HomePage: NextPage = () => {
     <Layout title="Home" maxW={false}>
       <Box maxW="1280px" mx="auto" px="2rem">
         <HeroSection />
-        <SponsorsSection />
       </Box>
       <WhatSection imageUrl={constants.WhatSectionPicture} />
       <Box maxW="1280px" mx="auto" px="2rem">
