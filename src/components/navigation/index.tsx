@@ -1,4 +1,5 @@
 import {
+  Box,
   Flex,
   Icon,
   Menu,
@@ -7,9 +8,12 @@ import {
   MenuList,
   Text,
 } from "@chakra-ui/react";
-import { BsLinkedin, BsTwitter } from "react-icons/bs";
+import { BsLinkedin, BsTwitter, BsWhatsapp } from "react-icons/bs";
 import NavigationDropDown from "./NavigationDropDown";
 import NavigationRegular from "./NavigationRegular";
+import Image from "next/image";
+
+import AmilSindhiLogo from "../../../public/images/amil-sindhis-logo.png"
 
 interface NavigationProps {
   navigationItems: {
@@ -33,8 +37,8 @@ const Navigation: React.FC<NavigationProps> = ({
       justify="space-between"
       align="center"
       borderRadius="5px"
-      px={"60px"}
-      py={3}
+      px={"40px"}
+      py={1}
       transition="all 0.3s ease-out"
       className="shadow-xl"
       border="2px solid"
@@ -42,7 +46,8 @@ const Navigation: React.FC<NavigationProps> = ({
       fontWeight="medium"
       color="rgba(0, 0, 0, 0.60)"
     >
-      <Flex gap="25px">
+      <Image src={AmilSindhiLogo}  width={55} height={55} alt="NGO_Logo"/>
+      <Flex gap="20px">
         {navigationItems.map((navItem, index) => {
           return (
             <Flex
@@ -59,7 +64,7 @@ const Navigation: React.FC<NavigationProps> = ({
               color={
                 navItem?.identifierURLS?.includes(userLocation) ? "black" : ""
               }
-              px={3}
+              px={2}
               py={1}
               align="center"
               key={index}
@@ -81,8 +86,9 @@ const Navigation: React.FC<NavigationProps> = ({
         })}
       </Flex>
       <Flex gap={4} color="gray.700">
-        <Icon boxSize={5} as={BsTwitter} />
-        <Icon boxSize={5} as={BsLinkedin} />
+        <Box as='a' href="https://twitter.com/i/flow/login?redirect_after_login=%2Familsindhis"><Icon boxSize={5} as={BsTwitter} /></Box>
+        <Box as="a" href="https://www.linkedin.com/in/the-khudabadi-amil-panchayat-of-bombay-836830251/?originalSubdomain=in" ><Icon boxSize={5} as={BsLinkedin} /></Box>
+        <Box as="a" href="https://wa.me/message/QESQXVMVI4RAD1"><Icon boxSize={5} as={BsWhatsapp}/></Box>
       </Flex>
     </Flex>
   );
