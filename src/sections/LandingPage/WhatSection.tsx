@@ -32,7 +32,7 @@ const WhatSection = ({ imageUrl }: sectionProps) => {
             width: "100%",
             height: "100%",
             background:
-              "linear-gradient(270deg, rgba(255, 77, 0, 0.8) 26.52%, rgba(255, 192, 31, 0.8) 100%)",
+              "linear-gradient(270deg, rgba(255, 77, 0, 0.9) 26.52%, rgba(255, 192, 31, 0.5) 100%)",
             zIndex: -1,
           }}
         />
