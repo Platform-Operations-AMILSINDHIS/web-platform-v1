@@ -15,9 +15,12 @@ const ConstitutionBox = () => {
       borderRadius="20px"
       bgColor="rgba(255, 192, 31, 0.20)"
       templateColumns="1fr 1fr"
+      gap="2rem"
     >
       <GridItem>
-        <Text color="#FF4D00">Our Constitution</Text>
+        <Text color="#FF4D00" fontWeight="semibold">
+          Our Constitution
+        </Text>
         <Heading fontWeight={600} fontSize="5xl">
           Transparency and Governance
         </Heading>

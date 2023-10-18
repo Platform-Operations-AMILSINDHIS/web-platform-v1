@@ -9,6 +9,8 @@ import FoundingMembers from "~/sections/AboutPage/FoundingMembers";
 import PresidentsSection from "~/sections/AboutPage/PresidentsSection";
 import CommitteesSection from "~/sections/AboutPage/CommitteesSection";
 import ConstitutionBox from "~/sections/AboutPage/ConstitutionBox";
+import ConnectingAndYACSection from "~/sections/AboutPage/ConnectingAndYACSection";
+import CommunityBox from "~/sections/AboutPage/CommunityBox";
 
 const AboutPage: NextPage = () => {
   return (
@@ -34,6 +36,14 @@ const AboutPage: NextPage = () => {
       <Spacer h="8rem" />
 
       <ConstitutionBox />
+
+      <Spacer h="8rem" />
+
+      <ConnectingAndYACSection />
+
+      <Spacer h="8rem" />
+
+      <CommunityBox />
 
       <Spacer h="8rem" />
     </Layout>
