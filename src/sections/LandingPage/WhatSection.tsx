@@ -13,14 +13,29 @@ const WhatSection = ({ imageUrl }: sectionProps) => {
   return (
     <Box>
       <Spacer h="5rem" />
-
       <Flex
         py="7rem"
         w="100vw"
-        background="linear-gradient(180deg, #0079FF 47.71%, #FFC01F 100%)"
         justify="center"
         align="center"
+        style={{
+          backgroundImage: "url('/images/backgrounds/ajrak_bg_legacy.jpg')",
+          position: "relative",
+          zIndex: 1,
+        }}
       >
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            background:
+              "linear-gradient(270deg, rgba(255, 77, 0, 0.8) 26.52%, rgba(255, 192, 31, 0.8) 100%)",
+            zIndex: -1,
+          }}
+        />
         <Flex gap={20} align={"center"}>
           <Image width={550} height={0} alt="" src={imageUrl} />
 
