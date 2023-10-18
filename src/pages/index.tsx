@@ -8,7 +8,6 @@ import CuriousSection from "~/sections/LandingPage/CuriousSection";
 import DonationsSection from "~/sections/LandingPage/DonationsSection";
 import HeroSection from "~/sections/LandingPage/HeroSection";
 import OfferingsSection from "~/sections/LandingPage/OfferingsSection";
-import SponsorsSection from "~/sections/LandingPage/SponsorsSection";
 import WhatSection from "~/sections/LandingPage/WhatSection";
 
 const HomePage: NextPage = () => {

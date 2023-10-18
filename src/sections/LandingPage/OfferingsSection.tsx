@@ -1,6 +1,9 @@
-import { ArrowForwardIcon } from "@chakra-ui/icons";
-import { Box, Flex, Grid, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Grid, Heading, Icon, Text } from "@chakra-ui/react";
+import { HiMiniArrowSmallRight } from "react-icons/hi2";
 import Link from "next/link";
+import Image from "next/image";
+
+import ArrowImage from "../../../public/images/what-we-offer/arrow.png";
 
 interface sectionProps {
   picturesArray: {
@@ -12,9 +15,12 @@ interface sectionProps {
 
 const OfferingsSection = ({ picturesArray }: sectionProps) => {
   return (
-    <Grid templateColumns="repeat(4, 1fr)" gap="3rem">
+    <Grid position="relative" templateColumns="repeat(4, 1fr)" gap="3rem">
+      <Box transform="rotate(3deg)" left={"25%"} top={-12} position="absolute">
+        <Image src={ArrowImage} alt="arrow" width={240} height={240} />
+      </Box>
       <Flex gridColumn="span 2" flexDir="column" align="baseline" gap="0.7rem">
-        <Flex flexDir="column" gap="0.3rem">
+        <Flex flexDir="column" gap="0.4rem">
           <Text fontWeight={500} color="#FF4D00">
             Offerings
           </Text>
@@ -43,9 +49,19 @@ const OfferingsSection = ({ picturesArray }: sectionProps) => {
               borderRadius="15px"
               boxShadow="0px 4px 0px 0px rgba(0, 0, 0, 0.19);"
             >
-              <Text color="white" fontWeight="semibold">
-                {name} <ArrowForwardIcon />
-              </Text>
+              <Flex align="center" justify="space-between">
+                <Text color="white" fontWeight="semibold">
+                  {name}
+                </Text>
+                <Box transform="rotate(-45deg)" borderRadius="50%" bg="white">
+                  <Icon
+                    rotate={45}
+                    color="#FF4D00"
+                    boxSize={7}
+                    as={HiMiniArrowSmallRight}
+                  />
+                </Box>
+              </Flex>
             </Flex>
           </Box>
         </Link>
