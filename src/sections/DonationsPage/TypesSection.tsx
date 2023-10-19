@@ -46,6 +46,15 @@ const TypesSection = () => {
           </Text>
         </GridItem>
       </Grid>
+
+      <Text mt="2rem">
+        Kindly note that an appropriate receipt shall be provided for your
+        donation.
+      </Text>
+      <Text>
+        We look forward to your generous contribution in helping us make a
+        difference.
+      </Text>
     </Flex>
   );
 };

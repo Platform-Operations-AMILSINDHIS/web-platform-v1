@@ -5,6 +5,7 @@ import Layout from "~/components/layout";
 
 import HeroSection from "~/sections/DonationsPage/HeroSection";
 import TypesSection from "~/sections/DonationsPage/TypesSection";
+import RequirementsSection from "~/sections/DonationsPage/RequirementsSection";
 
 const DonationsPage: NextPage = () => {
   return (
@@ -16,6 +17,10 @@ const DonationsPage: NextPage = () => {
       <Spacer h="2rem" />
 
       <TypesSection />
+
+      <Spacer h="8rem" />
+
+      <RequirementsSection />
 
       <Spacer h="8rem" />
     </Layout>
