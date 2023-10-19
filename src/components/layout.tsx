@@ -44,8 +44,8 @@ const Layout: React.FC<{
         <main className={`mx-auto w-full ${maxW && "px-4 md:px-4"}`}>
           {children}
         </main>
-        <Footer />
       </Flex>
+      <Footer />
     </div>
   );
 };

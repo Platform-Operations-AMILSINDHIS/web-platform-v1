@@ -61,7 +61,7 @@ const Footer = () => {
       as="footer"
     >
       <Flex w="full" flexDir="column" align="center" justify="center">
-        <Flex mb={10} w="1500px" justify="space-between">
+        <Flex mb={10} w="full" justify="space-between">
           <Flex gap={3} flexDir="column">
             <Text fontSize="3xl">Logo</Text>
             <Text w={300} fontSize="md" color="gray.400">
