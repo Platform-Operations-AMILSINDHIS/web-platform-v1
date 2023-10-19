@@ -89,7 +89,7 @@
   "BannerPicture": "/images/qna-graphic.png",
   "DonationsPicture": "/images/donations-and-memberships-section.png",
   "WhatSectionPicture": "/images/backgrounds/what-are-we-illustration.png",
-  "Footer": [
+  "FooterConstants": [
     {
       "FooterColumnTitle": "Resources",
       "FooterColumnItems": [
