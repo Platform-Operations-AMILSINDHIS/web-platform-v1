@@ -16,35 +16,20 @@ const AboutPage: NextPage = () => {
   return (
     <Layout title="Home">
       <HeroSection />
-
       <Spacer h="2rem" />
-
       <LegacyBox />
-
       <Spacer h="2rem" />
-
       <FoundingMembers />
-
       <Spacer h="8rem" />
-
       <PresidentsSection />
-
       <Spacer h="8rem" />
-
       <CommitteesSection />
-
       <Spacer h="8rem" />
-
       <ConstitutionBox />
-
       <Spacer h="8rem" />
-
       <ConnectingAndYACSection />
-
       <Spacer h="8rem" />
-
       <CommunityBox />
-
       <Spacer h="8rem" />
     </Layout>
   );

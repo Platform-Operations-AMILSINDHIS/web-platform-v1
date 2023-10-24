@@ -8,9 +8,9 @@ const HeroSection = () => {
         <div
           className={`${satoshi.variable} mt-16 font-heading text-3xl font-semibold leading-normal md:text-7xl`}
         >
-          Amil Blogs, <span className="text-[#0079FF]">Samachar &</span>{" "}
+          Amil Blogs, <span className="text-[#FF4D00]">Samachar &</span>{" "}
           Publications all in{" "}
-          <span className="underline decoration-[#FFB84C] decoration-8">
+          <span className="underline decoration-[#FF4D00] decoration-8">
             one place
           </span>
         </div>

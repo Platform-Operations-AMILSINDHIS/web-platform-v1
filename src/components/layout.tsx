@@ -5,6 +5,7 @@ import { satoshi } from "../utils/fonts";
 import { Box, Flex } from "@chakra-ui/react";
 import { navigation } from "../constants/LandingConstants.json";
 import { useRouter } from "next/router";
+import Footer from "./Footer";
 
 const Layout: React.FC<{
   title?: string;
@@ -43,9 +44,8 @@ const Layout: React.FC<{
         <main className={`mx-auto w-full ${maxW && "px-4 md:px-4"}`}>
           {children}
         </main>
-        xxxx
-        <footer></footer>
       </Flex>
+      <Footer />
     </div>
   );
 };
