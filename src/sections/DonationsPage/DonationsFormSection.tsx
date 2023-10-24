@@ -9,7 +9,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-import { LabelledInput } from "~/components/forms";
+import { LabelledInput, UploadFile } from "~/components/forms";
 
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 
@@ -30,6 +30,16 @@ const DonationsForm: React.FC = () => {
 
       <Grid templateColumns="1fr 1fr" gap="2rem">
         <GridItem>
+          <Text>Copy of PAN Card (Upload)</Text>
+          <Spacer h="1rem" />
+          <UploadFile />
+        </GridItem>
+        <GridItem>
+          <Text>Copy of Address Proof (Upload)</Text>
+          <Spacer h="1rem" />
+          <UploadFile />
+        </GridItem>
+        {/* <GridItem>
           <Text>Copy of PAN Card (Upload)</Text>
           <Spacer h="1rem" />
           <Flex
@@ -58,7 +68,7 @@ const DonationsForm: React.FC = () => {
           >
             <Text>Drag & drop your files here or choose files</Text>
           </Flex>
-        </GridItem>
+        </GridItem> */}
       </Grid>
 
       <Button
