@@ -1,4 +1,4 @@
-import { Box, Flex, Icon } from "@chakra-ui/react";
+import { Box, Button, Flex, Icon } from "@chakra-ui/react";
 import { BsLinkedin, BsTwitter, BsWhatsapp } from "react-icons/bs";
 import NavigationDropDown from "./NavigationDropDown";
 import NavigationRegular from "./NavigationRegular";
@@ -40,7 +40,7 @@ const Navigation: React.FC<NavigationProps> = ({
       <Box as="a" href="/">
         <Image src={AmilSindhiLogo} width={55} height={55} alt="NGO_Logo" />
       </Box>
-      <Flex gap="20px">
+      <Flex gap="15px">
         {navigationItems.map((navItem, index) => {
           return (
             <Flex
@@ -78,22 +78,9 @@ const Navigation: React.FC<NavigationProps> = ({
           );
         })}
       </Flex>
-      <Flex gap={4} color="gray.700">
-        <Box
-          as="a"
-          href="https://twitter.com/i/flow/login?redirect_after_login=%2Familsindhis"
-        >
-          <Icon boxSize={5} as={BsTwitter} />
-        </Box>
-        <Box
-          as="a"
-          href="https://www.linkedin.com/in/the-khudabadi-amil-panchayat-of-bombay-836830251/?originalSubdomain=in"
-        >
-          <Icon boxSize={5} as={BsLinkedin} />
-        </Box>
-        <Box as="a" href="https://wa.me/message/QESQXVMVI4RAD1">
-          <Icon boxSize={5} as={BsWhatsapp} />
-        </Box>
+      <Flex gap={2} color="gray.700">
+        <Button size="sm">Sign In</Button>
+        <Button size="sm">Sign In</Button>
       </Flex>
     </Flex>
   );

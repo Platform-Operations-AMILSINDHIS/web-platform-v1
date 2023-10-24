@@ -58,11 +58,6 @@ const BlogPage = ({
                     }}
                   >
                     <div></div>
-                    {/* <img
-                  className="rounded"
-                  alt=""
-                  src={blogPosts[0]?.blogDisplayPicture?.url ?? undefined}
-                /> */}
                   </div>
 
                   <div className="mt-8 font-semibold text-[#1F2937] opacity-70">
