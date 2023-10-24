@@ -41,12 +41,12 @@ const CuriousSection = ({
       <Box>
         <Grid templateColumns="repeat(2, 1fr)" gap="3rem">
           <Flex flexDir="column" align="baseline" gap="0.5rem">
-            <Text color="#0079FF" fontWeight={500}>
+            <Text color="#FF4D00" fontWeight={500}>
               Sindhi events & Occasions
             </Text>
             <Heading fontSize="6xl">
               Curious about <br /> our{" "}
-              <span style={{ color: "#0079FF" }}>events ?</span>
+              <span style={{ color: "#FF4D00" }}>events ?</span>
             </Heading>
           </Flex>
           <Flex flexDir="column" align="baseline" gap="2rem">
