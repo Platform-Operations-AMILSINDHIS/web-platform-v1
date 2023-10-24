@@ -6,15 +6,18 @@ import {
   Text,
   Heading,
   Spacer,
+  Divider,
 } from "@chakra-ui/react";
 
 import LinkButton from "~/components/buttons/LinkButton";
 
 import { ArrowForwardIcon } from "@chakra-ui/icons";
+import { HiClock } from "react-icons/hi";
+import { IoIosPin } from "react-icons/io";
 
 const PerksSection: React.FC = () => {
   return (
-    <Grid templateColumns="1fr 1fr" gap="3rem">
+    <Grid templateColumns="1fr 1fr" gap="3rem" position="relative">
       <GridItem>
         <Text color="#FF4D00" fontSize="lg" fontWeight="semibold">
           Your perks
@@ -143,7 +146,79 @@ const PerksSection: React.FC = () => {
         <Spacer h="4rem" />
       </GridItem>
 
-      <GridItem></GridItem>
+      <GridItem position="absolute" bottom="-40px" right="0">
+        <Box
+          px="2.5rem"
+          h="570px"
+          w="449px"
+          backgroundImage="/images/backgrounds/orange_phone.png"
+          backgroundRepeat="no-repeat"
+        >
+          <Box transform="translateY(-80px)">
+            <Box
+              p="2rem"
+              bgColor="#FFFFFF"
+              border="1px solid rgba(31, 41, 55, 0.18)"
+              borderRadius="10px"
+              boxShadow="0px 5px 0px 0px rgba(31, 41, 55, 0.25)"
+            >
+              <Text fontSize="xl" fontWeight="semibold">
+                Movie screening happening @ Marine Drive, Rd #04
+              </Text>
+
+              <Spacer h="1rem" />
+
+              <Flex gap="0.5rem">
+                <Box mt="0.25rem">
+                  <HiClock color="#FF4D00" />
+                </Box>
+                <Box fontSize="lg">
+                  <Text fontWeight="semibold" color="#1F2937AB">
+                    Saturday, 13 Feb 2023
+                  </Text>
+                  <Text fontWeight="semibold" color="#00162B">
+                    7:00 pm
+                  </Text>
+                </Box>
+              </Flex>
+
+              <Spacer h="1rem" />
+
+              <Flex gap="0.5rem">
+                <Box mt="0.25rem">
+                  <IoIosPin color="#FF4D00" />
+                </Box>
+                <Box>
+                  <Text
+                    fontWeight="semibold"
+                    fontSize="lg"
+                    color="#E003E5"
+                    lineHeight="132.5%"
+                    textDecor="underline"
+                  >
+                    Marine Drive, Rd #04
+                  </Text>
+                </Box>
+              </Flex>
+            </Box>
+
+            <Spacer h="2rem" />
+
+            <Heading textColor="white">Event Details</Heading>
+
+            <Spacer h="0.80rem" />
+            <Divider colorScheme="whiteAlpha" />
+            <Spacer h="0.80rem" />
+
+            <Text color="white" fontSize="lg">
+              Join us for a cinematic extravaganza under the stars! Movie Night
+              @ Marine Drive on February 13th, 2023, starting at 7 PM promises
+              an unforgettable evening of film magic. Nestled by the serene
+              waterfronts of Mumbai.
+            </Text>
+          </Box>
+        </Box>
+      </GridItem>
     </Grid>
   );
 };
