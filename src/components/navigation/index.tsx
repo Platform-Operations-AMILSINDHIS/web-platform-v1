@@ -26,7 +26,12 @@ const Navigation: React.FC<NavigationProps> = ({
   userLocation,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [modalState, setModalState] = useState(false);
+  const [displayState, setDisplayState] = useState(false);
+
+  const handleModal = (state: boolean) => {
+    setDisplayState(state);
+    onOpen();
+  };
 
   return (
     <>
@@ -89,12 +94,20 @@ const Navigation: React.FC<NavigationProps> = ({
             CTASize="sm"
             CTAlabel="Log in"
             CTATheme={true}
-            CTAaction={onOpen}
+            CTAaction={() => handleModal(true)}
           />
-          <ModalButton CTASize="sm" CTAlabel="Sign in" CTAaction={onOpen} />
+          <ModalButton
+            CTASize="sm"
+            CTAlabel="Sign in"
+            CTAaction={() => handleModal(false)}
+          />
         </Flex>
       </Flex>
-      <AuthModal modalState={isOpen} handleModal={onClose} />
+      <AuthModal
+        displayState={displayState}
+        modalState={isOpen}
+        handleModal={onClose}
+      />
     </>
   );
 };

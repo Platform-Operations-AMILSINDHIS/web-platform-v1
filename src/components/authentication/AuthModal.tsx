@@ -1,23 +1,24 @@
-import {
-  Box,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalOverlay,
-} from "@chakra-ui/react";
+import { Modal, ModalBody, ModalContent, ModalOverlay } from "@chakra-ui/react";
 import React from "react";
+import Login from "./Login";
+import Signup from "./Signup";
 
-interface LoginModalProps {
+interface AuthModalProps {
   modalState: boolean;
+  displayState: boolean;
   handleModal: () => void;
 }
 
-const AuthModal: React.FC<LoginModalProps> = ({ modalState, handleModal }) => {
+const AuthModal: React.FC<AuthModalProps> = ({
+  modalState,
+  handleModal,
+  displayState,
+}) => {
   return (
     <Modal onClose={handleModal} isOpen={modalState}>
       <ModalOverlay />
       <ModalContent>
-        <ModalBody>hi</ModalBody>
+        <ModalBody>{displayState ? <Login /> : <Signup />}</ModalBody>
       </ModalContent>
     </Modal>
   );
