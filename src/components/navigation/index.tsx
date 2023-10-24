@@ -5,6 +5,7 @@ import NavigationRegular from "./NavigationRegular";
 import Image from "next/image";
 
 import AmilSindhiLogo from "../../../public/images/amil-sindhis-logo.png";
+import ModalButton from "../buttons/ModalButtons";
 
 interface NavigationProps {
   navigationItems: {
@@ -79,8 +80,21 @@ const Navigation: React.FC<NavigationProps> = ({
         })}
       </Flex>
       <Flex gap={2} color="gray.700">
-        <Button size="sm">Sign In</Button>
-        <Button size="sm">Sign In</Button>
+        <ModalButton
+          CTASize="sm"
+          CTAlabel="Log in"
+          CTATheme={true}
+          CTAaction={() => {
+            console.log("hi");
+          }}
+        />
+        <ModalButton
+          CTASize="sm"
+          CTAlabel="Sign in"
+          CTAaction={() => {
+            console.log("hi");
+          }}
+        />
       </Flex>
     </Flex>
   );
