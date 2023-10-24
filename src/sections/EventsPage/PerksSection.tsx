@@ -7,6 +7,7 @@ import {
   Heading,
   Spacer,
   Divider,
+  Button,
 } from "@chakra-ui/react";
 
 import LinkButton from "~/components/buttons/LinkButton";
@@ -14,6 +15,7 @@ import LinkButton from "~/components/buttons/LinkButton";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { HiClock } from "react-icons/hi";
 import { IoIosPin } from "react-icons/io";
+import { BiSolidShareAlt } from "react-icons/bi";
 
 const PerksSection: React.FC = () => {
   return (
@@ -124,7 +126,7 @@ const PerksSection: React.FC = () => {
         <Spacer h="2rem" />
         <Flex gap="1.5rem">
           <LinkButton
-            CTAlink="/#"
+            CTAlink="#"
             CTAlabel="Learn about connecting"
             px="1.5rem"
             py="1rem"
@@ -136,7 +138,7 @@ const PerksSection: React.FC = () => {
                 <ArrowForwardIcon />
               </Flex>
             }
-            CTAlink="/#"
+            CTAlink="#"
             CTATheme={false}
             px="1.5rem"
             py="1rem"
@@ -199,6 +201,31 @@ const PerksSection: React.FC = () => {
                     Marine Drive, Rd #04
                   </Text>
                 </Box>
+              </Flex>
+
+              <Spacer h="1rem" />
+
+              {/* Dashed line */}
+              <hr
+                style={{
+                  border: "2px dashed #C0C0C0",
+                  color: "#FFFFFF",
+                }}
+              />
+
+              <Spacer h="1rem" />
+
+              <Flex gap="0.5rem">
+                <LinkButton
+                  CTAlink="#"
+                  CTAlabel="RSVP"
+                  CTATheme={false}
+                  px="1.5rem"
+                  py="1rem"
+                />
+                <Button variant="ghost" leftIcon={<BiSolidShareAlt />}>
+                  Share
+                </Button>
               </Flex>
             </Box>
 
