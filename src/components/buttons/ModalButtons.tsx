@@ -1,4 +1,5 @@
 import { Button } from "@chakra-ui/react";
+import { btnThemeDark, btnThemeLight } from "./BtnThemes";
 
 interface ModalButtonProps {
   CTAaction: () => void;
@@ -6,8 +7,22 @@ interface ModalButtonProps {
   CTATheme?: boolean;
 }
 
-const ModalButton = () => {
-  return <Button></Button>;
+const ModalButton: React.FC<ModalButtonProps> = ({
+  CTAaction,
+  CTAlabel,
+  CTATheme,
+}) => {
+  return (
+    <Button
+      onClick={CTAaction}
+      style={CTATheme ? btnThemeLight : btnThemeDark}
+      fontWeight={600}
+      py={7}
+      px={9}
+    >
+      {CTAlabel}
+    </Button>
+  );
 };
 
 export default ModalButton;
