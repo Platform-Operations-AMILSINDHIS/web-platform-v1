@@ -1,11 +1,11 @@
 import { Box, Button, Flex, Icon } from "@chakra-ui/react";
-import { BsLinkedin, BsTwitter, BsWhatsapp } from "react-icons/bs";
 import NavigationDropDown from "./NavigationDropDown";
 import NavigationRegular from "./NavigationRegular";
 import Image from "next/image";
 
 import AmilSindhiLogo from "../../../public/images/amil-sindhis-logo.png";
 import ModalButton from "../buttons/ModalButtons";
+import { useState } from "react";
 
 interface NavigationProps {
   navigationItems: {
@@ -24,6 +24,7 @@ const Navigation: React.FC<NavigationProps> = ({
   navigationItems,
   userLocation,
 }) => {
+  const [modalState, setModalState] = useState(false);
   return (
     <Flex
       justify="space-between"
