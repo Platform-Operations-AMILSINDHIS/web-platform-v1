@@ -39,7 +39,7 @@ const Navigation: React.FC<NavigationProps> = ({
         justify="space-between"
         align="center"
         borderRadius="5px"
-        px={"40px"}
+        px={"30px"}
         py={1}
         transition="all 0.3s ease-out"
         className="shadow-xl"
@@ -51,7 +51,7 @@ const Navigation: React.FC<NavigationProps> = ({
         <Box as="a" href="/">
           <Image src={AmilSindhiLogo} width={55} height={55} alt="NGO_Logo" />
         </Box>
-        <Flex gap="15px">
+        <Flex gap="12px">
           {navigationItems.map((navItem, index) => {
             return (
               <Flex
