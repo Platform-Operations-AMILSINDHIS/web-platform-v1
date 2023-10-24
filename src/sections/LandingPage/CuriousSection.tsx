@@ -10,30 +10,11 @@ import {
 import Link from "next/link";
 import { EventThumb } from "~/components/events";
 
-import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { client } from "~/lib/client";
 import { EventCollectionQueryQuery } from "~/lib/__generated/sdk";
 import EventSlider from "~/components/events/EventSlider";
 
-interface sectionProps {
-  eventPics: {
-    image: string;
-    date: Date;
-    title: string;
-  }[];
-}
-
-export const getServerSideProps: GetServerSideProps<{
-  events: EventCollectionQueryQuery;
-}> = async () => {
-  const events = await client.eventCollectionQuery();
-  return { props: { events } };
-};
-
-const CuriousSection = ({
-  events,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  console.log(events);
+const CuriousSection = ({ events }: { events: EventCollectionQueryQuery }) => {
+  // console.log(events);
   return (
     <>
       <Spacer h="8rem" />
@@ -68,6 +49,10 @@ const CuriousSection = ({
             </Link>
           </Flex>
         </Grid>
+
+        <Spacer h="5rem" />
+
+        <EventSlider events={events} />
       </Box>
     </>
   );
