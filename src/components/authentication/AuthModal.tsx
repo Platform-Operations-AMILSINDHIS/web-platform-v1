@@ -9,21 +9,18 @@ import React from "react";
 
 interface LoginModalProps {
   modalState: boolean;
-  children: React.ReactNode;
   handleModal: () => void;
 }
 
-const AuthModalLayout: React.FC<LoginModalProps> = ({
-  modalState,
-  children,
-  handleModal,
-}) => {
+const AuthModal: React.FC<LoginModalProps> = ({ modalState, handleModal }) => {
   return (
     <Modal onClose={handleModal} isOpen={modalState}>
       <ModalOverlay />
       <ModalContent>
-        <ModalBody>{children}</ModalBody>
+        <ModalBody>hi</ModalBody>
       </ModalContent>
     </Modal>
   );
 };
+
+export default AuthModal;
