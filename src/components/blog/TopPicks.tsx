@@ -11,7 +11,7 @@ const TopPicks = () => {
             textDecoration: "underline",
           }}
         >
-          pick's
+          pick&apos;s
         </span>
       </Text>
     </Flex>
