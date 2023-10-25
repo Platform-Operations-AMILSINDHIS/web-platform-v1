@@ -27,6 +27,8 @@ export const env = createEnv({
     GOOGLE_PRIVATE_KEY: z.string(),
     RAZORPAY_KEY_ID: z.string(),
     RAZORPAY_SECRET: z.string(),
+    SUPABASE_URL: z.string(),
+    SUPABASE_API_KEY: z.string(),
     // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
     // DISCORD_CLIENT_ID: z.string(),
     // DISCORD_CLIENT_SECRET: z.string(),
@@ -57,6 +59,8 @@ export const env = createEnv({
     GOOGLE_SHEET_ID: process.env.GOOGLE_SHEET_ID,
     RAZORPAY_KEY_ID: process.env.RAZORPAY_KEY_ID,
     RAZORPAY_SECRET: process.env.RAZORPAY_SECRET,
+    SUPABASE_URL: process.env.SUPABASE_URL,
+    SUPABASE_API_KEY: process.env.SUPABASE_API_KEY,
     // DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
     // DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
   },
