@@ -9,7 +9,7 @@ const supabase = createClient(supabase_URL, supabase_API_KEY);
 
 interface SupabaseLoginHandlerRequest extends NextApiRequest {
   body: {
-    email: string | null;
+    email: string;
     username: string;
   };
 }
@@ -19,12 +19,16 @@ const SupabaseLoginHandler = async (
   res: NextApiResponse
 ) => {
   try {
+    const query = req.query;
+    const { col, value } = query;
     const { data: existingUser, error } = await supabase
       .from("general_accounts")
       .select("email_id")
-      .eq("email_id", req.body.email);
-    if (existingUser?.length > 0) {
-      res.status(200).json({ data });
+      .eq(`${col}`, value);
+
+    if (existingUser && existingUser?.length > 0) {
+      let loginStatus = true;
+      res.status(200).json({ loginStatus, user: existingUser });
     }
     if (error) throw error;
   } catch (error) {
