@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Box, Flex, Text } from "@chakra-ui/react";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import BlogCatalogDisplay from "~/components/blog/BlogCatalogDisplay";
@@ -20,7 +23,7 @@ const createUnquieTags = (blogPosts: PageBlogPostCollectionQuery[]) => {
   const uniqueTags: string[] = [];
 
   blogPosts?.forEach((blog) => {
-    blog?.blogTags?.forEach((tag) => {
+    blog?.blogTags?.forEach((tag: string) => {
       if (!uniqueTags.includes(tag)) {
         uniqueTags.push(tag);
       }
@@ -34,7 +37,7 @@ const createTypeOptions = (blogPosts: PageBlogPostCollectionQuery[]) => {
   const Types: string[] = [];
 
   blogPosts?.forEach((blog) => {
-    blog?.blogType?.forEach((type) => {
+    blog?.blogType?.forEach((type: string) => {
       if (!Types.includes(type)) {
         Types.push(type);
       }
