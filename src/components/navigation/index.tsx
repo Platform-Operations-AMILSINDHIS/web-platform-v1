@@ -51,7 +51,7 @@ const Navigation: React.FC<NavigationProps> = ({
         <Box as="a" href="/">
           <Image src={AmilSindhiLogo} width={55} height={55} alt="NGO_Logo" />
         </Box>
-        <Flex gap="12px">
+        <Flex gap="15px">
           {navigationItems.map((navItem, index) => {
             return (
               <Flex
@@ -89,7 +89,7 @@ const Navigation: React.FC<NavigationProps> = ({
             );
           })}
         </Flex>
-        <Flex gap={2} color="gray.700">
+        <Flex gap={3} color="gray.700">
           <ModalButton
             CTASize="sm"
             CTAlabel="Log in"
@@ -98,7 +98,7 @@ const Navigation: React.FC<NavigationProps> = ({
           />
           <ModalButton
             CTASize="sm"
-            CTAlabel="Sign in"
+            CTAlabel="Sign up"
             CTAaction={() => handleModal(false)}
           />
         </Flex>
