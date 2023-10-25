@@ -3,6 +3,7 @@ import { Spacer } from "@chakra-ui/react";
 import Layout from "~/components/layout";
 
 import MatrimonyHero from "~/components/matrimony/HeroSection";
+import WhyChooseSection from "~/components/matrimony/WhyChooseSection";
 
 const MatrimonyPage = () => {
   return (
@@ -10,6 +11,10 @@ const MatrimonyPage = () => {
       <Spacer h="6rem" />
 
       <MatrimonyHero />
+
+      <Spacer h="6rem" />
+
+      <WhyChooseSection />
 
       <Spacer h="6rem" />
     </Layout>
