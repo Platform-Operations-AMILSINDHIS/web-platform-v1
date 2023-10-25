@@ -8,7 +8,7 @@ import {
 import {
   kapMembershipFormValuesSchema,
   yacMembershipFormValuesSchema,
-} from "../../schemas";
+} from "~/utils/schemas";
 
 import {
   sendFormConfirmationMail,
