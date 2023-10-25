@@ -23,11 +23,29 @@ const ContactBanner = ({ imageUrl }: sectionProps) => {
         mx="auto"
         py="5rem"
         px="9rem"
-        background="linear-gradient(90deg, #FFBE1E 0%, #FF4D00 68.8%)"
+        // background="linear-gradient(90deg, #FFBE1E 0%, #FF4D00 68.8%)"
         borderRadius="20px"
         boxShadow="2px 4px 0px 3px rgba(0, 0, 0, 0.74);"
-        position="relative"
+        style={{
+          backgroundImage: "url('/images/backgrounds/ajrak_bg_legacy.jpg')",
+          position: "relative",
+          zIndex: 1,
+        }}
+        // position="relative"
       >
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            background:
+              "linear-gradient(270deg, rgba(255, 77, 0, 0.9) 26.52%, rgba(255, 192, 31, 0.5) 100%)",
+            zIndex: -1,
+            borderRadius: "20px",
+          }}
+        />
         <Flex align={"flex-start"} justify="space-between">
           <Flex flexDir="column" color="white">
             <Heading fontSize="6xl" fontWeight={800}>

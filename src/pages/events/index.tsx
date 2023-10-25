@@ -1,9 +1,14 @@
-import type { InferGetServerSidePropsType } from "next";
+import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
+import type { EventCollectionQueryQuery } from "~/lib/__generated/sdk";
+
+import { Spacer } from "@chakra-ui/react";
+
 import Layout from "~/components/layout";
+
 import HeroSection from "~/sections/EventsPage/HeroSection";
 import EventSlider from "~/components/events/EventSlider";
-import type { EventCollectionQueryQuery } from "~/lib/__generated/sdk";
-import type { GetServerSideProps } from "next";
+import PerksSection from "~/sections/EventsPage/PerksSection";
+
 import { client } from "~/lib/client";
 import { Box } from "@chakra-ui/react";
 
@@ -23,6 +28,10 @@ const EventsPage = ({
       <Box mb={10}>
         <HeroSection />
         <EventSlider events={events} />
+
+        <Spacer h="4rem" />
+
+        <PerksSection />
       </Box>
     </Layout>
   );
