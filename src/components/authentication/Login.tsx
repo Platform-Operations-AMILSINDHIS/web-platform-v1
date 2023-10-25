@@ -1,28 +1,62 @@
-import { Box, Flex, Input, InputGroup, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Checkbox,
+  Flex,
+  Input,
+  InputGroup,
+  Text,
+} from "@chakra-ui/react";
+import InputFeild from "./InputFeild";
 
 const Login = () => {
   return (
-    <Flex gap={5} align="center" flexDir="column">
-      <Text fontSize="XL" fontWeight={800}>
-        Login
-      </Text>
+    <Flex py={5} px={2} gap={6} align="center" flexDir="column">
+      <Flex gap={3} align="center" flexDir="column">
+        <Text fontSize="25px" fontWeight={800}>
+          Login
+        </Text>
+        <Text fontWeight={500} maxW={400} textAlign="center">
+          Great to have you back! Enter your registered credentials to log into
+          your account
+        </Text>
+      </Flex>
       <Flex gap={3} w="full" flexDir="column">
-        <InputGroup>
-          <Flex gap={2} w="full" flexDir="column">
-            <Text fontWeight={600}>Email</Text>
-            <Input
-              borderColor="gray.700"
-              _hover={{
-                borderColor: "#FF4D00",
-              }}
-              focusBorderColor="#FF4D00"
-              placeholder="Enter your email"
-            />
+        <InputFeild label="Email ID" placeholder="Enter your email" />
+        <InputFeild
+          label="Account Name"
+          placeholder="Enter your account name"
+        />
+        <Flex fontWeight={500} w="full" justify="space-between" align="center">
+          <Flex gap={2}>
+            <Checkbox />
+            <Text>Remember me</Text>
           </Flex>
-        </InputGroup>
-        <InputGroup>
-          <Input placeholder="Enter your account name" />
-        </InputGroup>
+          <Text>Forgot password ?</Text>
+        </Flex>
+      </Flex>
+      <Flex gap={3}>
+        <Button
+          _hover={{
+            bg: "gray.700",
+          }}
+          color="white"
+          bg="#0E0E11"
+        >
+          Login
+        </Button>
+        <Button
+          color="#FF4D00"
+          bg="none"
+          border="2px solid"
+          borderColor="#FF4D00"
+          _hover={{
+            color: "white",
+            bg: "#FF4D00",
+          }}
+        >
+          Create Account
+        </Button>
       </Flex>
     </Flex>
   );

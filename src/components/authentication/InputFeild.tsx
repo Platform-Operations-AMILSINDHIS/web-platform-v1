@@ -8,10 +8,12 @@ interface InputFeildProps {
 const InputFeild: React.FC<InputFeildProps> = ({ label, placeholder }) => {
   return (
     <InputGroup>
-      <Flex gap={2} w="full" flexDir="column">
-        <Text fontWeight={600}>{label}</Text>
+      <Flex gap={1} w="full" flexDir="column">
+        <Text color="gray.700" fontWeight={600}>
+          {label}
+        </Text>
         <Input
-          borderColor="gray.700"
+          borderColor="gray.400"
           _hover={{
             borderColor: "#FF4D00",
           }}
