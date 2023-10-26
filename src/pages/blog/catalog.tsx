@@ -1,5 +1,6 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { useState } from "react";
 import Layout from "~/components/layout";
 import { type PageBlogPostCollectionQuery } from "~/lib/__generated/sdk";
 import { client } from "~/lib/client";
@@ -20,6 +21,11 @@ const CatalogPage = ({
   const blogPosts = blogContentTypeCollection?.items;
   const uniqueTags: string[] = [];
   const uniqueTypes: string[] = [];
+
+  const [typeState, setTypeState] = useState("Blog");
+  const handleState = (type: string) => {
+    setTypeState(type);
+  };
 
   blogPosts?.forEach((blog) => {
     blog?.blogTags?.forEach((tag) => {
@@ -42,7 +48,12 @@ const CatalogPage = ({
       <Flex gap={5} flexDir="column">
         <HeroSection />
       </Flex>
-      <FiltersSection uniqueTypes={uniqueTypes} uniqueTags={uniqueTags} />
+      <FiltersSection
+        typeState={typeState}
+        stateHandler={handleState}
+        uniqueTypes={uniqueTypes}
+        uniqueTags={uniqueTags}
+      />
     </Layout>
   );
 };

@@ -15,9 +15,9 @@ const HeroSection = () => {
           display: "block",
           width: "100%",
           height: "0.5rem",
-          background: "yellow.400",
+          background: "#FFB84C",
           borderRadius: "20px",
-          mt: "-0.5rem",
+          mt: "-1.3rem",
         }}
       >
         Reading Catalog
