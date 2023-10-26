@@ -1,7 +1,6 @@
 import {
   Button,
   Flex,
-  Input,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -20,12 +19,35 @@ import axios from "axios";
 const Signup = () => {
   const [submitting, setSubmitting] = useState(false);
   const [userData, setUserData] = useState({});
+  const [authenticated, setAuthenticated] = useState(false);
   const { formik } = useForm("signup");
 
   // useEffect to observe changes in userData
   useEffect(() => {
     console.log("userData updated:", userData);
-  }, [userData]); // useEffect will run whenever userData changes
+  }, [userData]);
+
+  const dbUpdation = async (auth_id: string) => {
+    try {
+      const response = await axios.post("/api/auth/db", {
+        email_id: formik.values.email,
+        account_name: formik.values.accountName,
+        KAP_member: false,
+        YAC_member: false,
+        age: formik.values.age,
+        membership_id: "",
+        gender: formik.values.gender,
+        first_name: formik.values.firstName,
+        last_name: formik.values.lastName,
+        authID: auth_id,
+      });
+      const data = await response.data;
+      await setAuthenticated(data.authenticated);
+      console.log({ message: data.message, authenticated });
+    } catch (error) {
+      alert(`Error occured during submission : ${error}`);
+    }
+  };
 
   const handleSubmit = async () => {
     try {
@@ -36,15 +58,14 @@ const Signup = () => {
         phonenumber: formik.values.phonenumber,
       });
       const data = await response.data;
-      setUserData(data);
+      await setUserData(data);
+      await dbUpdation(data.auth_id);
       setSubmitting(false);
       formik.resetForm();
     } catch (err) {
       alert(`Error occured during submission : ${err}`);
     }
   };
-
-  console.log(userData.user.user.role);
 
   return (
     <Formik initialValues={formik.initialValues} onSubmit={handleSubmit}>

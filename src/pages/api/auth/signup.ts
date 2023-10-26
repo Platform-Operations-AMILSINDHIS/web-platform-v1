@@ -24,7 +24,9 @@ const SignUpHandler = async (req: SignUpRequest, res: NextApiResponse) => {
       throw error;
     }
 
-    res.status(200).json({ user, message: "success" });
+    const auth_id = user?.user?.id;
+
+    res.status(200).json({ user, message: "success", auth_id });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });

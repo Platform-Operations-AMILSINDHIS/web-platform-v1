@@ -5,6 +5,7 @@ import supabase from "./supabase";
 interface DBHandlerRequest extends NextApiRequest {
   body: {
     email: string;
+    authID: string;
     account_name: string;
     KAP_member: boolean;
     YAC_member: boolean;
@@ -19,6 +20,7 @@ interface DBHandlerRequest extends NextApiRequest {
 const DBHandler = async (req: DBHandlerRequest, res: NextApiResponse) => {
   const {
     email,
+    authID,
     account_name,
     gender,
     first_name,
@@ -28,9 +30,10 @@ const DBHandler = async (req: DBHandlerRequest, res: NextApiResponse) => {
     age,
   } = req.body;
   try {
-    const { data, error } = await supabase.from("general_accounts").upsert([
+    const { data, error } = await supabase.from("general_accounts").insert([
       {
         email_id: email,
+        auth_id: authID,
         account_name,
         KAP_member,
         YAC_member,
@@ -44,10 +47,14 @@ const DBHandler = async (req: DBHandlerRequest, res: NextApiResponse) => {
 
     if (error) {
       console.log(error.message);
-      res.status(500).send({ message: error.message });
+      throw error;
     }
 
-    res.status(200).send({ message: "User added to database", data });
+    res.status(200).send({
+      message: "User added to database",
+      data,
+      authenticated: true,
+    });
   } catch (error) {
     console.log(error);
   }

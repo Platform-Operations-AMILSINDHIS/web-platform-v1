@@ -32,7 +32,7 @@ const InputFeild: React.FC<InputFieldProps> = ({
   formik,
 }) => {
   return (
-    <InputGroup>
+    <InputGroup fontWeight={500}>
       <Flex gap={1} w="full" flexDir="column">
         <Text color="gray.700" fontWeight={600}>
           {label}
