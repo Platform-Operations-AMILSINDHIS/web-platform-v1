@@ -1,4 +1,5 @@
 import { Flex, Box, Text, Spacer } from "@chakra-ui/react";
+import BlogCatalogSearchBar from "~/components/blog/BlogCatalogSearchBar";
 
 const HeroSection = () => {
   return (
@@ -27,6 +28,7 @@ const HeroSection = () => {
         ever-growing collection of samachar, newsletter and blogs. Stay tuned
         for more
       </Text>
+      <BlogCatalogSearchBar />
     </Flex>
   );
 };
