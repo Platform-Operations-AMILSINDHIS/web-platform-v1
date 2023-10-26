@@ -1,6 +1,9 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Grid, Text } from "@chakra-ui/react";
+import { truncate } from "lodash";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import Link from "next/link";
 import { useState } from "react";
+import BlogPostThumb from "~/components/blog/blogPostThumb";
 import Layout from "~/components/layout";
 import { type PageBlogPostCollectionQuery } from "~/lib/__generated/sdk";
 import { client } from "~/lib/client";
@@ -43,6 +46,9 @@ const CatalogPage = ({
     });
   });
 
+  const filteredBlogPosts =
+    blogPosts?.filter((post) => post?.blogType?.[0] === typeState) || [];
+
   return (
     <Layout title="blog catalog">
       <Flex gap={5} flexDir="column">
@@ -54,6 +60,29 @@ const CatalogPage = ({
         uniqueTypes={uniqueTypes}
         uniqueTags={uniqueTags}
       />
+      {filteredBlogPosts?.length && filteredBlogPosts?.length > 1 && (
+        <Grid templateColumns="repeat(3, 1fr)" gap={2}>
+          {filteredBlogPosts.length &&
+            filteredBlogPosts.length >= 1 &&
+            filteredBlogPosts.map((post, i) => (
+              <Link key={i} href={`/blog/${post?.sys.id}`}>
+                <BlogPostThumb
+                  key={i}
+                  orientation="vertical"
+                  post={{
+                    title: post?.blogTitle ?? "",
+                    author: post?.author ?? "",
+                    date: new Date(post?.dateOfBlog as string) ?? new Date(),
+                    excerpt: truncate(post?.excerpt ?? "", { length: 100 }),
+                    tags: post?.blogTags,
+                    image: post?.blogDisplayPicture?.url ?? "",
+                    type: post?.blogType?.[0] ?? null,
+                  }}
+                />
+              </Link>
+            ))}
+        </Grid>
+      )}
     </Layout>
   );
 };
