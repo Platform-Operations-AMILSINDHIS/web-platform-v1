@@ -15,10 +15,18 @@ import { useState } from "react";
 
 interface SectionProps {
   uniqueTags: string[];
+  uniqueTypes: string[];
 }
 
-const FiltersSection: React.FC<SectionProps> = ({ uniqueTags }) => {
-  const [typeState, setTypeState] = useState("blogs");
+const FiltersSection: React.FC<SectionProps> = ({
+  uniqueTags,
+  uniqueTypes,
+}) => {
+  const [typeState, setTypeState] = useState(uniqueTypes[2]);
+  const handleType = (type: string) => {
+    setTypeState(type);
+  };
+
   return (
     <Flex justify="space-between" w="full">
       <Box maxW={900} position="relative">
@@ -68,11 +76,11 @@ const FiltersSection: React.FC<SectionProps> = ({ uniqueTags }) => {
           {typeState}
         </MenuButton>
         <MenuList>
-          <MenuItem>Download</MenuItem>
-          <MenuItem>Create a Copy</MenuItem>
-          <MenuItem>Mark as Draft</MenuItem>
-          <MenuItem>Delete</MenuItem>
-          <MenuItem>Attend a Workshop</MenuItem>
+          {uniqueTypes?.map((type, index) => (
+            <MenuItem onClick={() => handleType(type)} key={index}>
+              {type}
+            </MenuItem>
+          ))}
         </MenuList>
       </Menu>
     </Flex>

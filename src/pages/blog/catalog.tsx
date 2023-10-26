@@ -42,7 +42,7 @@ const CatalogPage = ({
       <Flex gap={5} flexDir="column">
         <HeroSection />
       </Flex>
-      <FiltersSection uniqueTags={uniqueTags} />
+      <FiltersSection uniqueTypes={uniqueTypes} uniqueTags={uniqueTags} />
     </Layout>
   );
 };
