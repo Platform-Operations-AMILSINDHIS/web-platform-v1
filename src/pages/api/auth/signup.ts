@@ -5,16 +5,18 @@ interface SignUpRequest extends NextApiRequest {
   body: {
     email: string;
     password: string;
+    phonenumber: string;
   };
 }
 
 const SignUpHandler = async (req: SignUpRequest, res: NextApiResponse) => {
-  const { email, password } = req.body;
+  const { email, password, phonenumber } = req.body;
 
   try {
     const { data: user, error } = await supabase.auth.signUp({
       email,
       password,
+      phone: phonenumber,
     });
 
     if (error) {

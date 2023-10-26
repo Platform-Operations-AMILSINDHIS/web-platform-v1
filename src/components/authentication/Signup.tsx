@@ -27,6 +27,7 @@ const Signup = () => {
       const response = await axios.post("/api/auth/signup", {
         email: formik.values.email,
         password: formik.values.password,
+        phonenumber: formik.values.phonenumber,
       });
       const data = await response.data;
       console.log(data);
@@ -56,6 +57,12 @@ const Signup = () => {
               formikEntry="email" // Pass the correct form field key here
               label="Enter your email ID"
               placeholder="xyz@gmail.com"
+            />
+            <InputFeild
+              formik={formik}
+              formikEntry="phone" // Pass the correct form field key here
+              label="Phone number"
+              placeholder="+91 xxxx"
             />
             <InputFeild
               formik={formik}

@@ -3,6 +3,7 @@ import { Flex, Input, InputGroup, Text } from "@chakra-ui/react";
 
 interface Values {
   email: string;
+  phone: number;
   password: string;
   accountName: string;
   isKAPMember: boolean;
