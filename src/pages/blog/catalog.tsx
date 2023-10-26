@@ -1,10 +1,13 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import Layout from "~/components/layout";
+import HeroSection from "~/sections/ReadingCatalogPage/HeroSection";
 
 const CatalogPage = () => {
   return (
     <Layout title="blog catalog">
-      <Box>Hi</Box>
+      <Flex flexDir="column">
+        <HeroSection />
+      </Flex>
     </Layout>
   );
 };
