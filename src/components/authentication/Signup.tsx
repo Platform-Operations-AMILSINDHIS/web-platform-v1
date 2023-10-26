@@ -11,7 +11,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import InputFeild from "./InputFeild";
 import useForm from "~/hooks/useForm";
@@ -19,7 +19,13 @@ import axios from "axios";
 
 const Signup = () => {
   const [submitting, setSubmitting] = useState(false);
+  const [userData, setUserData] = useState({});
   const { formik } = useForm("signup");
+
+  // useEffect to observe changes in userData
+  useEffect(() => {
+    console.log("userData updated:", userData);
+  }, [userData]); // useEffect will run whenever userData changes
 
   const handleSubmit = async () => {
     try {
@@ -30,13 +36,15 @@ const Signup = () => {
         phonenumber: formik.values.phonenumber,
       });
       const data = await response.data;
-      console.log(data);
+      setUserData(data);
       setSubmitting(false);
       formik.resetForm();
     } catch (err) {
       alert(`Error occured during submission : ${err}`);
     }
   };
+
+  console.log(userData.user.user.role);
 
   return (
     <Formik initialValues={formik.initialValues} onSubmit={handleSubmit}>
