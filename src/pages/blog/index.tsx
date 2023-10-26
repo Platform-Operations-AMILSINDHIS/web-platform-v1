@@ -9,7 +9,6 @@ import BlogPostThumb from "~/components/blog/blogPostThumb";
 
 import { client } from "~/lib/client";
 
-import { satoshi } from "~/utils/fonts";
 import { type PageBlogPostCollectionQuery } from "~/lib/__generated/sdk";
 
 import "swiper/css";
