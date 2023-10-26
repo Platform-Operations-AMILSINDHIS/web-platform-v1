@@ -41,11 +41,14 @@ const SignUpHandler = async (req: SignUpRequest, res: NextApiResponse) => {
       throw error;
     }
 
+    const auth_id = user?.user?.id;
+
     // Insert user data into the general_accounts table
     const { data, error: insertError } = await supabase
       .from("general_accounts")
       .upsert([
         {
+          auth_id,
           email_id: email,
           account_name,
           KAP_member,

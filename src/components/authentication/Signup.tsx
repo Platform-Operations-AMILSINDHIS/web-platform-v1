@@ -91,32 +91,31 @@ const Signup = () => {
                 <option value="female">female</option>
               </Select>
             </Flex>
-          </Flex>
-
-          <Flex gap={1} w="full" flexDir="column">
-            <Text fontWeight={600}>Enter your age</Text>
-            <NumberInput
-              _hover={{
-                borderColor: "#FF4D00",
-              }}
-              focusBorderColor="#FF4D00"
-              borderColor="gray.400"
-              name="age"
-              id="age"
-              value={formik.values.age}
-              onChange={(value) => {
-                const age = parseInt(value, 10);
-                formik.setFieldValue("age", age); // Set the Formik value for age
-              }}
-              onBlur={formik.handleBlur}
-              defaultValue={15}
-            >
-              <NumberInputField />
-              <NumberInputStepper>
-                <NumberIncrementStepper />
-                <NumberDecrementStepper />
-              </NumberInputStepper>
-            </NumberInput>
+            <Flex gap={1} w="full" flexDir="column">
+              <Text fontWeight={600}>Enter your age</Text>
+              <NumberInput
+                _hover={{
+                  borderColor: "#FF4D00",
+                }}
+                focusBorderColor="#FF4D00"
+                borderColor="gray.400"
+                name="age"
+                id="age"
+                value={formik.values.age}
+                onChange={(value) => {
+                  const age = parseInt(value, 10);
+                  formik.setFieldValue("age", age); // Set the Formik value for age
+                }}
+                onBlur={formik.handleBlur}
+                defaultValue={15}
+              >
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            </Flex>
           </Flex>
           <Flex gap={3}>
             <Button
