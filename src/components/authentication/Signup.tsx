@@ -15,14 +15,26 @@ import { useState } from "react";
 
 import InputFeild from "./InputFeild";
 import useForm from "~/hooks/useForm";
+import axios from "axios";
 
 const Signup = () => {
   const [submitting, setSubmitting] = useState(false);
   const { formik } = useForm("signup");
 
-  const handleSubmit = () => {
-    console.log(formik.values);
-    formik.resetForm();
+  const handleSubmit = async () => {
+    try {
+      setSubmitting(true);
+      const response = await axios.post("/api/auth/signup", {
+        email: formik.values.email,
+        password: formik.values.password,
+      });
+      const data = await response.data;
+      console.log(data);
+      setSubmitting(false);
+      formik.resetForm();
+    } catch (err) {
+      alert(`Error occured during submission : ${err}`);
+    }
   };
 
   return (
@@ -119,6 +131,7 @@ const Signup = () => {
           </Flex>
           <Flex gap={3}>
             <Button
+              isLoading={submitting}
               type="submit"
               _hover={{
                 bg: "gray.700",
