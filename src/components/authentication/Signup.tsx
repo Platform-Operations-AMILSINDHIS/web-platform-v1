@@ -1,52 +1,17 @@
 import { Button, Flex, Input, Select, Text } from "@chakra-ui/react";
-import {
-  Formik,
-  Field,
-  Form,
-  ErrorMessage,
-  useFormik,
-  FormikHelpers,
-} from "formik";
-import InputFeild from "./InputFeild";
+import { Form, Formik } from "formik";
 import { useState } from "react";
 
-interface Values {
-  email: string;
-  password: string;
-  accountName: string;
-  isKAPMember: false;
-  isYACMember: false;
-  age: number;
-  gender: string;
-  firstName: string;
-  lastName: string;
-}
-
-const initialValues: Values = {
-  email: "",
-  password: "",
-  accountName: "",
-  isKAPMember: false,
-  isYACMember: false,
-  age: 0,
-  gender: "",
-  firstName: "",
-  lastName: "",
-};
+import InputFeild from "./InputFeild";
+import useForm from "~/hooks/useForm";
 
 const Signup = () => {
   const [submitting, setSubmitting] = useState(false);
-  const formik = useFormik({
-    initialValues,
-    onSubmit: (values, { setSubmitting }) => {
-      console.log("hi");
-      console.log(values);
-      setSubmitting(false);
-    },
-  });
+  const { formik } = useForm();
 
   const handleSubmit = () => {
     console.log(formik.values);
+    formik.resetForm();
   };
 
   return (
@@ -64,19 +29,36 @@ const Signup = () => {
           </Flex>
           <Flex gap={3} w="full" flexDir="column">
             <InputFeild
+              formik={formik}
               formikEntry="email" // Pass the correct form field key here
               label="Enter your email ID"
               placeholder="xyz@gmail.com"
-              formik={formik} // Pass formik object
             />
             <InputFeild
+              formik={formik}
               label="Create an account name"
               placeholder="user_XYZ@1233"
+              formikEntry="accountName"
             />
-            <InputFeild label="Create a password" placeholder="*********" />
+            <InputFeild
+              formik={formik}
+              label="Create a password"
+              placeholder="*********"
+              formikEntry="password"
+            />
             <Flex w="full" gap={3}>
-              <InputFeild label="First name" placeholder="Enter first name" />
-              <InputFeild label="Last name" placeholder="Enter first name" />
+              <InputFeild
+                formik={formik}
+                label="First name"
+                placeholder="Enter first name"
+                formikEntry="firstName"
+              />
+              <InputFeild
+                formik={formik}
+                label="Last name"
+                placeholder="Enter first name"
+                formikEntry="lastName"
+              />
             </Flex>
             <Flex gap={1} flexDir="column">
               <Text fontWeight={600}>Are you a male or female ?</Text>
@@ -88,6 +70,11 @@ const Signup = () => {
                 focusBorderColor="#FF4D00"
                 border="1px solid"
                 borderColor="gray.400"
+                name="gender"
+                id="gender"
+                value={formik.values.gender}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
               >
                 <option value="male">male</option>
                 <option value="female">female</option>

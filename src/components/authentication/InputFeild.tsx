@@ -1,12 +1,5 @@
 // InputFeild.tsx
 import { Flex, Input, InputGroup, Text } from "@chakra-ui/react";
-import { useFormikContext } from "formik"; // Import useFormikContext from formik library
-
-interface InputFeildProps {
-  label: string;
-  placeholder: string;
-  formikEntry: keyof Values; // Accept keyof Values representing form field key
-}
 
 interface Values {
   email: string;
@@ -20,13 +13,23 @@ interface Values {
   lastName: string;
 }
 
-const InputFeild: React.FC<InputFeildProps> = ({
+interface InputFieldProps {
+  label: string;
+  placeholder: string;
+  formik: {
+    values: Values;
+    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    handleBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
+  };
+  formikEntry: keyof Values;
+}
+
+const InputFeild: React.FC<InputFieldProps> = ({
   label,
   placeholder,
   formikEntry,
+  formik,
 }) => {
-  const { values, handleChange, handleBlur } = useFormikContext<Values>(); // Access formik context
-
   return (
     <InputGroup>
       <Flex gap={1} w="full" flexDir="column">
@@ -40,11 +43,11 @@ const InputFeild: React.FC<InputFeildProps> = ({
           }}
           focusBorderColor="#FF4D00"
           placeholder={placeholder}
+          value={formik.values[formikEntry]?.toString() || ""} // Access value using formik values
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
           name={formikEntry}
           id={formikEntry}
-          value={values[formikEntry]?.toString() || ""} // Access value using formik values
-          onChange={handleChange}
-          onBlur={handleBlur}
         />
       </Flex>
     </InputGroup>

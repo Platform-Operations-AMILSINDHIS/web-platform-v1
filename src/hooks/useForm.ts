@@ -24,13 +24,17 @@ const initialValues: Values = {
   lastName: "",
 };
 
-const formik = useFormik({
-  initialValues,
-  onSubmit: (values, { setSubmitting }) => {
-    console.log("hi");
-    console.log(values);
-    setSubmitting(false);
-  },
-});
+const useForm = () => {
+  const formik = useFormik({
+    initialValues,
+    onSubmit: (values, { setSubmitting }) => {
+      console.log("hi");
+      console.log(values);
+      setSubmitting(false);
+    },
+  });
 
-export default formik;
+  return { formik };
+};
+
+export default useForm;
