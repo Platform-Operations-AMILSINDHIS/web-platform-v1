@@ -5,6 +5,7 @@ import Layout from "~/components/layout";
 import MatrimonyHero from "~/components/matrimony/HeroSection";
 import WhyChooseSection from "~/components/matrimony/WhyChooseSection";
 import MatrimonyFormSection from "~/components/matrimony/MatrimonyFormSection";
+import ContactUsSection from "~/components/matrimony/ContactUsSection";
 
 const MatrimonyPage = () => {
   return (
@@ -20,6 +21,10 @@ const MatrimonyPage = () => {
       <Spacer h="6rem" />
 
       <MatrimonyFormSection />
+
+      <Spacer h="6rem" />
+
+      <ContactUsSection />
 
       <Spacer h="6rem" />
     </Layout>
