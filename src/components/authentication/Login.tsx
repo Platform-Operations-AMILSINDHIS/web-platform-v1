@@ -17,8 +17,8 @@ const Login = () => {
           Login
         </Text>
         <Text fontWeight={500} maxW={400} textAlign="center">
-          Please provide your details to create your account and get started on
-          our platform
+          Great to have you back! Enter your registered credentials to log into
+          your account
         </Text>
       </Flex>
       <Flex gap={3} w="full" flexDir="column">
