@@ -1,4 +1,4 @@
-import { useFormik } from "formik";
+import { FormikConfig, useFormik } from "formik";
 
 interface Values {
   email: string;
@@ -10,6 +10,11 @@ interface Values {
   gender: string;
   firstName: string;
   lastName: string;
+}
+
+interface LoginValues {
+  email: string;
+  password: string;
 }
 
 const initialValues: Values = {
@@ -24,9 +29,14 @@ const initialValues: Values = {
   lastName: "",
 };
 
-const useForm = () => {
+const loginInitialValues: LoginValues = {
+  email: "",
+  password: "",
+};
+
+const useForm = (formType: "signup" | "login"): FormikConfig => {
   const formik = useFormik({
-    initialValues,
+    initialValues: formType === "signup" ? initialValues : loginInitialValues,
     onSubmit: (values, { setSubmitting }) => {
       console.log("hi");
       console.log(values);
