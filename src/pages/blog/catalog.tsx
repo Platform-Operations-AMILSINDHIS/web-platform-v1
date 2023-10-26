@@ -17,26 +17,32 @@ export const getServerSideProps: GetServerSideProps<{
 const CatalogPage = ({
   posts: { blogContentTypeCollection },
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  // blogContentTypeCollection?.items[0].
   const blogPosts = blogContentTypeCollection?.items;
   const uniqueTags: string[] = [];
+  const uniqueTypes: string[] = [];
 
   blogPosts?.forEach((blog) => {
     blog?.blogTags?.forEach((tag) => {
-      if (!uniqueTags.includes(tag)) {
+      if (tag && !uniqueTags.includes(tag)) {
         uniqueTags.push(tag);
       }
     });
   });
 
-  console.log(uniqueTags);
+  blogPosts?.forEach((blog) => {
+    blog?.blogType?.forEach((type) => {
+      if (type && !uniqueTypes.includes(type)) {
+        uniqueTypes.push(type);
+      }
+    });
+  });
 
   return (
     <Layout title="blog catalog">
       <Flex gap={5} flexDir="column">
         <HeroSection />
-        <FiltersSection uniqueTags={uniqueTags} />
       </Flex>
+      <FiltersSection uniqueTags={uniqueTags} />
     </Layout>
   );
 };
