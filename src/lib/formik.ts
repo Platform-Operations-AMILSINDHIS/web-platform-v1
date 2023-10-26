@@ -2,6 +2,7 @@ import { useFormik } from "formik";
 
 interface Values {
   email: string;
+  phonenumber: string;
   password: string;
   accountName: string;
   isKAPMember: false;
@@ -14,6 +15,7 @@ interface Values {
 
 const initialValues: Values = {
   email: "",
+  phonenumber: "",
   password: "",
   accountName: "",
   isKAPMember: false,

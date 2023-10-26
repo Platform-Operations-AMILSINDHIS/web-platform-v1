@@ -60,7 +60,7 @@ const Signup = () => {
             />
             <InputFeild
               formik={formik}
-              formikEntry="phone" // Pass the correct form field key here
+              formikEntry="phonenumber"
               label="Phone number"
               placeholder="+91 xxxx"
             />
