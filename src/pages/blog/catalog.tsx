@@ -2,7 +2,7 @@ import { Box, Flex, Grid, Text } from "@chakra-ui/react";
 import { truncate } from "lodash";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BlogPostThumb from "~/components/blog/blogPostThumb";
 import Layout from "~/components/layout";
 import {
@@ -30,6 +30,7 @@ const CatalogPage = ({
 
   const [typeState, setTypeState] = useState("Blog");
   const [searchQuery, setSearchQuery] = useState("");
+  const [NCFlag, setNCFlag] = useState(false);
 
   const filteredBlogPosts =
     blogPosts?.filter((post) => post?.blogType?.[0] === typeState) || [];
@@ -42,11 +43,24 @@ const CatalogPage = ({
 
   const handleSearch = (value: string) => {
     setSearchQuery(value);
-    const queryResults = renderedBlogs.filter((blog) =>
+  };
+
+  useEffect(() => {
+    // Filter blogs based on typeState
+    const filteredByType =
+      blogPosts?.filter((post) => post?.blogType?.[0] === typeState) || [];
+
+    // Filter blogs based on searchQuery
+    const filteredBySearch = filteredByType.filter((blog) =>
       blog?.blogTitle?.toLowerCase().includes(searchQuery.toLowerCase())
     );
-    setRenderedBlogs(queryResults);
-  };
+
+    // Update renderedBlogs state
+    setRenderedBlogs(filteredBySearch);
+
+    // Update NCFlag state based on search results
+    setNCFlag(filteredBySearch.length === 0);
+  }, [typeState, searchQuery, blogPosts]);
 
   blogPosts?.forEach((blog) => {
     blog?.blogTags?.forEach((tag) => {
@@ -73,29 +87,35 @@ const CatalogPage = ({
         uniqueTypes={uniqueTypes}
         uniqueTags={uniqueTags}
       />
-      {renderedBlogs?.length && filteredBlogPosts?.length > 1 && (
-        <Grid mb={5} templateColumns="repeat(3, 1fr)" gap={2}>
-          {renderedBlogs.length &&
-            renderedBlogs.length >= 1 &&
-            renderedBlogs.map((post, i) => (
-              <Link key={i} href={`/blog/${post?.sys.id}`}>
-                <BlogPostThumb
-                  key={i}
-                  orientation="vertical"
-                  post={{
-                    title: post?.blogTitle ?? "",
-                    author: post?.author ?? "",
-                    date: new Date(post?.dateOfBlog as string) ?? new Date(),
-                    excerpt: truncate(post?.excerpt ?? "", { length: 100 }),
-                    tags: post?.blogTags,
-                    image: post?.blogDisplayPicture?.url ?? "",
-                    type: post?.blogType?.[0] ?? null,
-                  }}
-                />
-              </Link>
-            ))}
-        </Grid>
-      )}
+      {renderedBlogs?.length &&
+        filteredBlogPosts?.length > 1 &&
+        (NCFlag ? (
+          <Flex>
+            <Text>No results available</Text>
+          </Flex>
+        ) : (
+          <Grid mb={5} templateColumns="repeat(3, 1fr)" gap={2}>
+            {renderedBlogs.length &&
+              renderedBlogs.length >= 1 &&
+              renderedBlogs.map((post, i) => (
+                <Link key={i} href={`/blog/${post?.sys.id}`}>
+                  <BlogPostThumb
+                    key={i}
+                    orientation="vertical"
+                    post={{
+                      title: post?.blogTitle ?? "",
+                      author: post?.author ?? "",
+                      date: new Date(post?.dateOfBlog as string) ?? new Date(),
+                      excerpt: truncate(post?.excerpt ?? "", { length: 100 }),
+                      tags: post?.blogTags,
+                      image: post?.blogDisplayPicture?.url ?? "",
+                      type: post?.blogType?.[0] ?? null,
+                    }}
+                  />
+                </Link>
+              ))}
+          </Grid>
+        ))}
     </Layout>
   );
 };
