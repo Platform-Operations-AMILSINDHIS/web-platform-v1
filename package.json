@@ -54,6 +54,7 @@
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
     "react-icons": "^4.10.1",
+    "react-id-swiper": "^4.0.0",
     "react-razorpay": "^2.0.1",
     "superjson": "1.12.2",
     "swiper": "^10.2.0",
