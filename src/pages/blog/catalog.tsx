@@ -1,5 +1,5 @@
 import { Box, Flex, Grid, Text } from "@chakra-ui/react";
-import { filter, truncate } from "lodash";
+import { truncate } from "lodash";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Link from "next/link";
 import { useState } from "react";
@@ -34,17 +34,18 @@ const CatalogPage = ({
   const filteredBlogPosts =
     blogPosts?.filter((post) => post?.blogType?.[0] === typeState) || [];
 
+  const [renderedBlogs, setRenderedBlogs] = useState(filteredBlogPosts);
+
   const handleState = (type: string) => {
     setTypeState(type);
   };
 
   const handleSearch = (value: string) => {
     setSearchQuery(value);
-    const queryResults = filteredBlogPosts.filter((blog) =>
+    const queryResults = renderedBlogs.filter((blog) =>
       blog?.blogTitle?.toLowerCase().includes(searchQuery.toLowerCase())
     );
-    console.log(queryResults);
-    console.log(value);
+    setRenderedBlogs(queryResults);
   };
 
   blogPosts?.forEach((blog) => {
@@ -72,11 +73,11 @@ const CatalogPage = ({
         uniqueTypes={uniqueTypes}
         uniqueTags={uniqueTags}
       />
-      {filteredBlogPosts?.length && filteredBlogPosts?.length > 1 && (
+      {renderedBlogs?.length && filteredBlogPosts?.length > 1 && (
         <Grid mb={5} templateColumns="repeat(3, 1fr)" gap={2}>
-          {filteredBlogPosts.length &&
-            filteredBlogPosts.length >= 1 &&
-            filteredBlogPosts.map((post, i) => (
+          {renderedBlogs.length &&
+            renderedBlogs.length >= 1 &&
+            renderedBlogs.map((post, i) => (
               <Link key={i} href={`/blog/${post?.sys.id}`}>
                 <BlogPostThumb
                   key={i}
