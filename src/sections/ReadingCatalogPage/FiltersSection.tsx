@@ -27,7 +27,7 @@ const FiltersSection: React.FC<SectionProps> = ({
   typeState,
 }) => {
   return (
-    <Flex justify="space-between" w="full">
+    <Flex my={3} justify="space-between" w="full">
       <Box maxW={900} position="relative">
         <Swiper
           direction="horizontal"

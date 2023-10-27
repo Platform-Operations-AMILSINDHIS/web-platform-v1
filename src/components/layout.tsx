@@ -15,7 +15,6 @@ const Layout: React.FC<{
 }> = ({ title, children, maxW = true }) => {
   const router = useRouter();
   const currentEndpoint = router.pathname;
-  console.log(currentEndpoint);
   return (
     <div>
       <Head>
