@@ -46,19 +46,15 @@ const CatalogPage = ({
   };
 
   useEffect(() => {
-    // Filter blogs based on typeState
     const filteredByType =
       blogPosts?.filter((post) => post?.blogType?.[0] === typeState) || [];
 
-    // Filter blogs based on searchQuery
     const filteredBySearch = filteredByType.filter((blog) =>
       blog?.blogTitle?.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    // Update renderedBlogs state
     setRenderedBlogs(filteredBySearch);
 
-    // Update NCFlag state based on search results
     setNCFlag(filteredBySearch.length === 0);
   }, [typeState, searchQuery, blogPosts]);
 
