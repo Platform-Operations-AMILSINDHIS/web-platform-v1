@@ -1,29 +1,17 @@
-import {
-  Box,
-  Button,
-  Checkbox,
-  Flex,
-  Input,
-  InputGroup,
-  Text,
-} from "@chakra-ui/react";
+import { Button, Checkbox, Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
-
-import InputFeild from "./InputFeild";
+import { LoginValues, loginInitialValues } from "~/hooks/useForm";
 import { LabelledInput } from "../forms";
-import useForm from "~/hooks/useForm";
 import { Form, Formik } from "formik";
 
 const Login = () => {
   const [submitting, setSubmitting] = useState(false);
-  const { formik } = useForm("login");
 
   const handleSubmit = () => {
-    console.log(formik.values);
-    formik.resetForm();
+    console.log("hi");
   };
   return (
-    <Formik initialValues={formik.initialValues} onSubmit={handleSubmit}>
+    <Formik initialValues={loginInitialValues} onSubmit={handleSubmit}>
       <Form>
         <Flex py={5} px={2} gap={6} align="center" flexDir="column">
           <Flex gap={3} align="center" flexDir="column">

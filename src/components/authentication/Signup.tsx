@@ -10,59 +10,51 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import InputFeild from "./InputFeild";
-import useForm from "~/hooks/useForm";
+import { Values, initialValues } from "~/hooks/useForm";
 import axios from "axios";
 import { LabelledInput } from "../forms";
 
 const Signup = () => {
   const [submitting, setSubmitting] = useState(false);
-  const [userData, setUserData] = useState({});
-  const [authenticated, setAuthenticated] = useState(false);
-  const { formik } = useForm("signup");
 
-  // useEffect to observe changes in userData
-  useEffect(() => {
-    console.log("userData updated:", userData);
-  }, [userData]);
-
-  const dbUpdation = async (auth_id: string) => {
+  const dbUpdation = async (auth_id: string, values: Values) => {
     try {
       const response = await axios.post("/api/auth/db", {
-        email_id: formik.values.email,
-        account_name: formik.values.accountName,
+        email_id: values.email,
+        account_name: values.accountName,
         KAP_member: false,
         YAC_member: false,
-        age: formik.values.age,
+        age: values.age,
         membership_id: "",
-        gender: formik.values.gender,
-        first_name: formik.values.firstName,
-        last_name: formik.values.lastName,
+        gender: values.gender,
+        first_name: values.firstName,
+        last_name: values.lastName,
         authID: auth_id,
       });
-      const data = await response.data;
-      await setAuthenticated(data.authenticated);
-      console.log({ message: data.message, authenticated });
+
+      console.log({ response });
     } catch (error) {
       alert(`Error occured during submission : ${error}`);
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (values: Values) => {
     try {
       setSubmitting(true);
       const response = await axios.post("/api/auth/signup", {
-        email: formik.values.email,
-        password: formik.values.password,
-        phonenumber: formik.values.phonenumber,
+        email: values.email,
+        password: values.password,
+        phonenumber: values.phonenumber,
       });
-      const data = await response.data;
-      await setUserData(data);
+
+      console.log({ response });
+
+      const { auth_id }: { auth_id: string } = response.data;
+
+      await dbUpdation(auth_id, values);
       setSubmitting(false);
-      console.log({ Values: formik.values, userData });
-      formik.resetForm();
     } catch (err) {
       alert(`Error occured during submission : ${err}`);
     }
@@ -70,9 +62,9 @@ const Signup = () => {
 
   return (
     <Formik
-      initialValues={formik.initialValues}
-      // onSubmit={handleSubmit}
-      onSubmit={console.log}
+      initialValues={initialValues}
+      onSubmit={handleSubmit}
+      // onSubmit={console.log}
     >
       <Form>
         <Flex py={5} px={2} gap={6} align="center" flexDir="column">
@@ -118,61 +110,13 @@ const Signup = () => {
                 placeholder="Enter last name"
               />
             </Flex>
-            {/* <Flex gap={1} flexDir="column">
-              <Text fontWeight={600}>Are you a male or female ?</Text>
-              <Select
-                placeholder="Select a gender"
-                _hover={{
-                  borderColor: "#FF4D00",
-                }}
-                focusBorderColor="#FF4D00"
-                border="1px solid"
-                borderColor="gray.400"
-                name="gender"
-                id="gender"
-                value={formik.values.gender}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              >
-                <option value="male">male</option>
-                <option value="female">female</option>
-              </Select>
-            </Flex> */}
-
             <LabelledInput
               type="select"
               label="Are you a male or female?"
               name="gender"
               placeholder="Select a gender"
               selectOptions={["Male", "Female"]}
-              // onCha
             />
-
-            {/* <Flex gap={1} w="full" flexDir="column">
-              <Text fontWeight={600}>Enter your age</Text>
-              <NumberInput
-                _hover={{
-                  borderColor: "#FF4D00",
-                }}
-                focusBorderColor="#FF4D00"
-                borderColor="gray.400"
-                name="age"
-                id="age"
-                value={formik.values.age}
-                onChange={(value) => {
-                  const age = parseInt(value, 10);
-                  formik.setFieldValue("age", age); // Set the Formik value for age
-                }}
-                onBlur={formik.handleBlur}
-                defaultValue={15}
-              >
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-              </Flex> */}
 
             <LabelledInput
               type="number"
