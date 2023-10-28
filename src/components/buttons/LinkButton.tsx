@@ -9,6 +9,8 @@ interface LinkButtonProps {
   CTATheme?: boolean;
   py?: number | string;
   px?: number | string;
+  size?: string;
+  onClick?: (event: React.MouseEvent<HTMLElement>) => unknown;
 }
 
 const LinkButton: React.FC<LinkButtonProps> = ({
@@ -17,6 +19,8 @@ const LinkButton: React.FC<LinkButtonProps> = ({
   CTAlabel,
   py,
   px,
+  size,
+  onClick,
 }) => {
   return (
     <Button
@@ -25,7 +29,9 @@ const LinkButton: React.FC<LinkButtonProps> = ({
       py={py ?? 7}
       px={px ?? 9}
       as="a"
+      size={size}
       href={CTAlink}
+      onClick={onClick}
     >
       {CTAlabel}
     </Button>

@@ -9,7 +9,9 @@ const LegacyBox = () => {
       backgroundImage="/images/backgrounds/ajrak_bg_legacy.jpg"
     >
       <GridItem>
-        <Text color="#FF4D00">Our History and Founders</Text>
+        <Text fontWeight={500} color="#FF4D00">
+          Our History and Founders
+        </Text>
         <Heading fontSize="5xl" fontWeight="semibold">
           A Legacy of Service & Community Building
         </Heading>
