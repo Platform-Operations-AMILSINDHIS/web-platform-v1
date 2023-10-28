@@ -1,4 +1,4 @@
-import { ChangeEvent, ChangeEventHandler, useEffect } from "react";
+import { ChangeEvent, ChangeEventHandler, useState, useEffect } from "react";
 
 import {
   FormControl,
@@ -7,8 +7,14 @@ import {
   Flex,
   Select,
   FormErrorMessage,
+  Text,
+  Box,
+  Container,
 } from "@chakra-ui/react";
 import { Field, ErrorMessage, useFormikContext } from "formik";
+import { useDropzone } from "react-dropzone";
+
+import { GrDocument } from "react-icons/gr";
 
 export const camelCase = (str: string) =>
   str
@@ -19,7 +25,7 @@ export const camelCase = (str: string) =>
 export const LabelledInput: React.FC<{
   label: string;
   name?: string;
-  type?: string;
+  type?: "text" | "chakra-text" | "date" | "datetime" | "number" | "select";
   validate?: () => string; // validation function returns error string
   onChange?: ChangeEventHandler<HTMLInputElement>;
   defaultValue?: string;
@@ -34,7 +40,7 @@ export const LabelledInput: React.FC<{
   selectOptions,
 }) => (
   <FormControl>
-    <FormLabel fontSize="sm" fontWeight="light">
+    <FormLabel fontSize="md" fontWeight="normal">
       {label}
     </FormLabel>
     {type === "text" ? (
@@ -58,7 +64,7 @@ export const LabelledInput: React.FC<{
           onChange={onChange ?? undefined}
           defaultValue={defaultValue ?? undefined}
         />
-        <ErrorMessage name={name ?? camelCase(label)} />
+        {/* <FormErrorMessage> */}
       </>
     ) : type === "date" ? (
       // TODO: Hook up date picker component to Formik
@@ -145,6 +151,74 @@ export const FormGlobalStateSetter: React.FC<{
   }, [values]);
 
   return null;
+};
+
+export const UploadFile: React.FC = () => {
+  // const [file, setFile] = useState<File>();
+
+  const [formState, setFormState] = useState<{
+    donorName: string;
+    contactNumber: string;
+    email: string;
+  }>();
+
+  const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
+
+  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (event.target.files) {
+  //     const currentFile = event.target.files[0];
+  //     // setFile(currentFile);
+  //   }
+  // };
+
+  const handleUpload = async () => {
+    if (!acceptedFiles || acceptedFiles?.length < 2) return;
+
+    const formData = new FormData();
+    formData.append("file", acceptedFiles[0]!);
+    formData.append("file", acceptedFiles[1]!);
+
+    const response = await fetch("/api/upload", {
+      method: "POST",
+    });
+
+    const { url } = (await response.json()) as { url: string };
+
+    await fetch(url, {
+      method: "PUT",
+      body: formData,
+    });
+  };
+
+  return (
+    <Box>
+      {/* <div {...getRootProps({ className: "dropzone" })}>
+        <input {...getInputProps()} />
+        <p>Drag & drop some file here, or click to select a file</p>
+      </div> */}
+      <Flex
+        h="8rem"
+        w="22rem"
+        bgColor="rgba(251, 31, 255, 0.07)"
+        border="2px dashed #FB1FFF"
+        borderRadius="10px"
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        {...getRootProps({ className: "dropzone" })}
+      >
+        <input {...getInputProps()} />
+        {acceptedFiles.length > 0 ? (
+          <Flex alignItems="center" gap="0.35rem">
+            <GrDocument size="1.5rem" />
+            <Text>{acceptedFiles[0]!.name}</Text>
+          </Flex>
+        ) : (
+          <Text>Drag & drop your files here or choose files</Text>
+        )}
+      </Flex>
+    </Box>
+  );
 };
 
 // const DatePickerField = ({ ...props }) => {
