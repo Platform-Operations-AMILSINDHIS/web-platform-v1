@@ -2,10 +2,10 @@ import { Spacer } from "@chakra-ui/react";
 
 import Layout from "~/components/layout";
 
-import MatrimonyHero from "~/components/matrimony/HeroSection";
-import WhyChooseSection from "~/components/matrimony/WhyChooseSection";
-import MatrimonyFormSection from "~/components/matrimony/MatrimonyFormSection";
-import ContactUsSection from "~/components/matrimony/ContactUsSection";
+import MatrimonyHero from "~/sections/MatrimonyPage/HeroSection";
+import WhyChooseSection from "~/sections/MatrimonyPage/WhyChooseSection";
+import MatrimonyFormSection from "~/sections/MatrimonyPage/MatrimonyFormSection";
+import ContactUsSection from "~/sections/MatrimonyPage/ContactUsSection";
 
 const MatrimonyPage = () => {
   return (
@@ -20,11 +20,11 @@ const MatrimonyPage = () => {
 
       <Spacer h="6rem" />
 
-      <MatrimonyFormSection />
+      <ContactUsSection />
 
       <Spacer h="6rem" />
 
-      <ContactUsSection />
+      <MatrimonyFormSection />
 
       <Spacer h="6rem" />
     </Layout>
