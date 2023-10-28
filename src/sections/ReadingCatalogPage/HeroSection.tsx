@@ -1,7 +1,12 @@
 import { Flex, Box, Text, Spacer } from "@chakra-ui/react";
+import React from "react";
 import BlogCatalogSearchBar from "~/components/blog/BlogCatalogSearchBar";
 
-const HeroSection = () => {
+interface SectionProps {
+  handleSearch: (query: string) => void;
+}
+
+const HeroSection: React.FC<SectionProps> = ({ handleSearch }) => {
   return (
     <Flex py="2rem" direction="column" w="100%" alignItems="center">
       <Text fontSize="2xl" fontWeight="semibold" textColor="#1F293780">
@@ -28,7 +33,7 @@ const HeroSection = () => {
         ever-growing collection of samachar, newsletter and blogs. Stay tuned
         for more
       </Text>
-      <BlogCatalogSearchBar />
+      <BlogCatalogSearchBar handleSearch={handleSearch} />
     </Flex>
   );
 };

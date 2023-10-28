@@ -2,10 +2,13 @@ import { Box, Flex, Grid, Text } from "@chakra-ui/react";
 import { truncate } from "lodash";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BlogPostThumb from "~/components/blog/blogPostThumb";
 import Layout from "~/components/layout";
-import { type PageBlogPostCollectionQuery } from "~/lib/__generated/sdk";
+import {
+  BlogContentType,
+  type PageBlogPostCollectionQuery,
+} from "~/lib/__generated/sdk";
 import { client } from "~/lib/client";
 import FiltersSection from "~/sections/ReadingCatalogPage/FiltersSection";
 import HeroSection from "~/sections/ReadingCatalogPage/HeroSection";
@@ -26,9 +29,34 @@ const CatalogPage = ({
   const uniqueTypes: string[] = [];
 
   const [typeState, setTypeState] = useState("Blog");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [NCFlag, setNCFlag] = useState(false);
+
+  const filteredBlogPosts =
+    blogPosts?.filter((post) => post?.blogType?.[0] === typeState) || [];
+
+  const [renderedBlogs, setRenderedBlogs] = useState(filteredBlogPosts);
+
   const handleState = (type: string) => {
     setTypeState(type);
   };
+
+  const handleSearch = (value: string) => {
+    setSearchQuery(value);
+  };
+
+  useEffect(() => {
+    const filteredByType =
+      blogPosts?.filter((post) => post?.blogType?.[0] === typeState) || [];
+
+    const filteredBySearch = filteredByType.filter((blog) =>
+      blog?.blogTitle?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    setRenderedBlogs(filteredBySearch);
+
+    setNCFlag(filteredBySearch.length === 0);
+  }, [typeState, searchQuery, blogPosts]);
 
   blogPosts?.forEach((blog) => {
     blog?.blogTags?.forEach((tag) => {
@@ -46,43 +74,44 @@ const CatalogPage = ({
     });
   });
 
-  const filteredBlogPosts =
-    blogPosts?.filter((post) => post?.blogType?.[0] === typeState) || [];
-
   return (
     <Layout title="blog catalog">
-      <Flex gap={5} flexDir="column">
-        <HeroSection />
-      </Flex>
+      <HeroSection handleSearch={handleSearch} />
       <FiltersSection
         typeState={typeState}
         stateHandler={handleState}
         uniqueTypes={uniqueTypes}
         uniqueTags={uniqueTags}
       />
-      {filteredBlogPosts?.length && filteredBlogPosts?.length > 1 && (
-        <Grid templateColumns="repeat(3, 1fr)" gap={2}>
-          {filteredBlogPosts.length &&
-            filteredBlogPosts.length >= 1 &&
-            filteredBlogPosts.map((post, i) => (
-              <Link key={i} href={`/blog/${post?.sys.id}`}>
-                <BlogPostThumb
-                  key={i}
-                  orientation="vertical"
-                  post={{
-                    title: post?.blogTitle ?? "",
-                    author: post?.author ?? "",
-                    date: new Date(post?.dateOfBlog as string) ?? new Date(),
-                    excerpt: truncate(post?.excerpt ?? "", { length: 100 }),
-                    tags: post?.blogTags,
-                    image: post?.blogDisplayPicture?.url ?? "",
-                    type: post?.blogType?.[0] ?? null,
-                  }}
-                />
-              </Link>
-            ))}
-        </Grid>
-      )}
+      {renderedBlogs?.length &&
+        filteredBlogPosts?.length > 1 &&
+        (NCFlag ? (
+          <Flex>
+            <Text>No results available</Text>
+          </Flex>
+        ) : (
+          <Grid mb={5} templateColumns="repeat(3, 1fr)" gap={2}>
+            {renderedBlogs.length &&
+              renderedBlogs.length >= 1 &&
+              renderedBlogs.map((post, i) => (
+                <Link key={i} href={`/blog/${post?.sys.id}`}>
+                  <BlogPostThumb
+                    key={i}
+                    orientation="vertical"
+                    post={{
+                      title: post?.blogTitle ?? "",
+                      author: post?.author ?? "",
+                      date: new Date(post?.dateOfBlog as string) ?? new Date(),
+                      excerpt: truncate(post?.excerpt ?? "", { length: 100 }),
+                      tags: post?.blogTags,
+                      image: post?.blogDisplayPicture?.url ?? "",
+                      type: post?.blogType?.[0] ?? null,
+                    }}
+                  />
+                </Link>
+              ))}
+          </Grid>
+        ))}
     </Layout>
   );
 };
