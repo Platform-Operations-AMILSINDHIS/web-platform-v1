@@ -2,7 +2,7 @@ import { Grid, Flex, Text, Heading, Image, Spacer } from "@chakra-ui/react";
 
 const ContactUsSection = () => {
   return (
-    <Flex direction="column" alignItems="center">
+    <Flex id="contact-us" direction="column" alignItems="center">
       <Heading>Contact Us</Heading>
       <Grid mt="3rem" templateColumns="repeat(2, 1fr)" gap="1.5rem">
         {[

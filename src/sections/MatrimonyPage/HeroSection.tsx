@@ -6,7 +6,9 @@ import {
   Box,
   Spacer,
   Image,
+  Flex,
 } from "@chakra-ui/react";
+import LinkButton from "~/components/buttons/LinkButton";
 
 const MatrimonyHero = () => {
   return (
@@ -17,7 +19,7 @@ const MatrimonyHero = () => {
         </Text>
         <Spacer h="0.5rem" />
         <Heading fontWeight="semibold" fontSize="5xl">
-          <Box as="span" color="#0079FF">
+          <Box as="span" color="#FF4D00">
             Matrimony
           </Box>
           &nbsp;Services
@@ -31,6 +33,32 @@ const MatrimonyHero = () => {
           that&nbsp;s the exact reason why we are here for all our prospective
           Amil Sindhi brides and grooms.
         </Text>
+        <Spacer h="2rem" />
+        <Flex gap="1.5rem">
+          <LinkButton
+            CTAlabel="Contact us"
+            CTAlink="/matrimony#contact-us"
+            onClick={(e) => {
+              e.preventDefault();
+
+              document.querySelector("#contact-us")?.scrollIntoView({
+                behavior: "smooth",
+              });
+            }}
+            CTATheme={false}
+          />
+          <LinkButton
+            CTAlabel="Fill matrimony form"
+            CTAlink="/matrimony#matrimony-form"
+            onClick={(e) => {
+              e.preventDefault();
+
+              document.querySelector("#matrimony-form")?.scrollIntoView({
+                behavior: "smooth",
+              });
+            }}
+          />
+        </Flex>
       </GridItem>
       <GridItem>
         <Image alt="" src="/images/matrimony/hero.png" />

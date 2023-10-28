@@ -53,7 +53,8 @@ const MatrimonyFormSection = () => {
 
   return (
     <Grid
-    // templateColumns="2fr 7fr"
+      id="matrimony-form"
+      // templateColumns="2fr 7fr"
     >
       {/* <GridItem>
         <Text fontSize="xl">Membership Form</Text>
