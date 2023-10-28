@@ -8,6 +8,7 @@ import {
 import {
   kapMembershipFormValuesSchema,
   yacMembershipFormValuesSchema,
+  donationsFormSchema,
 } from "~/utils/schemas";
 
 import {
@@ -74,6 +75,18 @@ export const formRouter = createTRPCRouter({
         to: formData.personalInfo.emailId,
         formName: "Young Amil Circle Membership",
       });
+
+      return { success: true };
+    }),
+  donations: publicProcedure
+    .input(Yup.object({ formData: donationsFormSchema }))
+    // .mutation(async ({ input }) => {
+    .mutation(({ input }) => {
+      const { formData } = input;
+
+      console.log({ formData });
+
+      // Send response
 
       return { success: true };
     }),

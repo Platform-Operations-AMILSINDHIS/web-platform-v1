@@ -155,20 +155,28 @@ export const FormGlobalStateSetter: React.FC<{
 
 export const UploadFile: React.FC = () => {
   // const [file, setFile] = useState<File>();
+
+  const [formState, setFormState] = useState<{
+    donorName: string;
+    contactNumber: string;
+    email: string;
+  }>();
+
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
 
   // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   //   if (event.target.files) {
   //     const currentFile = event.target.files[0];
-  //     setFile(currentFile);
+  //     // setFile(currentFile);
   //   }
   // };
 
   const handleUpload = async () => {
-    if (!acceptedFiles) return;
+    if (!acceptedFiles || acceptedFiles?.length < 2) return;
 
     const formData = new FormData();
     formData.append("file", acceptedFiles[0]!);
+    formData.append("file", acceptedFiles[1]!);
 
     const response = await fetch("/api/upload", {
       method: "POST",

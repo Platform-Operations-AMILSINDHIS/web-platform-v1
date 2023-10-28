@@ -11,8 +11,6 @@ import DonationsFormSection from "~/sections/DonationsPage/DonationsFormSection"
 const DonationsPage: NextPage = () => {
   return (
     <Layout title="Home">
-      <Spacer h="5rem" />
-
       <HeroSection />
 
       <Spacer h="2rem" />

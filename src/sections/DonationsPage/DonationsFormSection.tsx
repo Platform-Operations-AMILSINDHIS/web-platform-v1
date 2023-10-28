@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   Flex,
   Box,
@@ -8,23 +9,83 @@ import {
   Spacer,
   Button,
 } from "@chakra-ui/react";
+import { useDropzone } from "react-dropzone";
 
 import { LabelledInput, UploadFile } from "~/components/forms";
 
 import { ArrowForwardIcon } from "@chakra-ui/icons";
+import { GrDocument } from "react-icons/gr";
+
+import { api } from "~/utils/api";
 
 const DonationsForm: React.FC = () => {
+  const donationsFormMut = api.form.donations.useMutation();
+
+  const [form, setForm] = useState<{
+    donorName: string;
+    contactNumber: string;
+    email: string;
+  }>({
+    donorName: "",
+    contactNumber: "",
+    email: "",
+  });
+
+  const {
+    acceptedFiles: panCardAcceptedFiles,
+    getRootProps: getPanCardRootProps,
+    getInputProps: getPanCardInputProps,
+  } = useDropzone();
+
+  const {
+    acceptedFiles: addressProofAcceptedFiles,
+    getRootProps: getAddressProofRootProps,
+    getInputProps: getAddressProofInputProps,
+  } = useDropzone();
+
+  const handleSubmit = () => {
+    const data = {
+      ...form,
+      panCard: panCardAcceptedFiles[0],
+      addressProof: addressProofAcceptedFiles[0],
+    };
+
+    // donationsFormMut
+    //   .mutateAsync({ formData: data })
+    //   .then((res) => {
+    //     console.log({ success: res.success });
+    //   })
+    //   .catch(console.error);
+  };
+
+  // // Logger
+  // useEffect(() => console.log(form), [form]);
+
   return (
     <Flex direction="column" alignItems="center" gap="2rem">
       <Grid templateColumns="repeat(3, 1fr)" gap="2rem">
         <GridItem>
-          <LabelledInput type="chakra-text" label="Full Name of the Donor" />
+          <LabelledInput
+            type="chakra-text"
+            label="Full Name of the Donor"
+            onChange={(e) => setForm({ ...form, donorName: e.target.value })}
+          />
         </GridItem>
         <GridItem>
-          <LabelledInput type="chakra-text" label="Contact Number" />
+          <LabelledInput
+            type="chakra-text"
+            label="Contact Number"
+            onChange={(e) =>
+              setForm({ ...form, contactNumber: e.target.value })
+            }
+          />
         </GridItem>
         <GridItem>
-          <LabelledInput type="chakra-text" label="Email" />
+          <LabelledInput
+            type="chakra-text"
+            label="Email"
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+          />
         </GridItem>
       </Grid>
 
@@ -32,26 +93,26 @@ const DonationsForm: React.FC = () => {
         <GridItem>
           <Text>Copy of PAN Card (Upload)</Text>
           <Spacer h="1rem" />
-          <UploadFile />
-        </GridItem>
-        <GridItem>
-          <Text>Copy of Address Proof (Upload)</Text>
-          <Spacer h="1rem" />
-          <UploadFile />
-        </GridItem>
-        {/* <GridItem>
-          <Text>Copy of PAN Card (Upload)</Text>
-          <Spacer h="1rem" />
           <Flex
             h="8rem"
             w="22rem"
             bgColor="rgba(251, 31, 255, 0.07)"
             border="2px dashed #FB1FFF"
             borderRadius="10px"
+            direction="column"
             justifyContent="center"
             alignItems="center"
+            {...getPanCardRootProps({ className: "dropzone" })}
           >
-            <Text>Drag & drop your files here or choose files</Text>
+            <input {...getPanCardInputProps()} />
+            {panCardAcceptedFiles.length > 0 ? (
+              <Flex alignItems="center" gap="0.35rem">
+                <GrDocument size="1.5rem" />
+                <Text>{panCardAcceptedFiles[0]!.name}</Text>
+              </Flex>
+            ) : (
+              <Text>Drag & drop your files here or choose files</Text>
+            )}
           </Flex>
         </GridItem>
         <GridItem>
@@ -63,12 +124,22 @@ const DonationsForm: React.FC = () => {
             bgColor="rgba(251, 31, 255, 0.07)"
             border="2px dashed #FB1FFF"
             borderRadius="10px"
+            direction="column"
             justifyContent="center"
             alignItems="center"
+            {...getAddressProofRootProps({ className: "dropzone" })}
           >
-            <Text>Drag & drop your files here or choose files</Text>
+            <input {...getAddressProofInputProps()} />
+            {addressProofAcceptedFiles.length > 0 ? (
+              <Flex alignItems="center" gap="0.35rem">
+                <GrDocument size="1.5rem" />
+                <Text>{addressProofAcceptedFiles[0]!.name}</Text>
+              </Flex>
+            ) : (
+              <Text>Drag & drop your files here or choose files</Text>
+            )}
           </Flex>
-        </GridItem> */}
+        </GridItem>
       </Grid>
 
       <Button
@@ -85,7 +156,7 @@ const DonationsForm: React.FC = () => {
 
 const DonationsFormSection = () => {
   return (
-    <Flex direction="column" alignItems="center">
+    <Flex id="donations-form" direction="column" alignItems="center">
       <Box mb="4rem" w="40%" textAlign="center">
         <Heading fontWeight="semibold" fontSize="5xl">
           Donations Form

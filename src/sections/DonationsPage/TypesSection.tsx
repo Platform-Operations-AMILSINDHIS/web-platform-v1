@@ -11,7 +11,7 @@ import {
 
 const TypesSection = () => {
   return (
-    <Flex direction="column" alignItems="center">
+    <Flex id="types-of-donations" direction="column" alignItems="center">
       <Heading mb="3rem" fontWeight={600} fontSize="4xl">
         Types of Donations
       </Heading>
