@@ -1,10 +1,11 @@
 import type { NextPage } from "next";
 import Layout from "~/components/layout";
+import HeroSection from "~/sections/MembersPage/HeroSection";
 
 const MembershipsHomePage: NextPage = () => {
   return (
     <Layout title="Home">
-      <div>hi, this is the memberships home page</div>
+      <HeroSection />
     </Layout>
   );
 };
