@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import InputFeild from "./InputFeild";
 import useForm from "~/hooks/useForm";
 import axios from "axios";
+import { LabelledInput } from "../forms";
 
 const Signup = () => {
   const [submitting, setSubmitting] = useState(false);
@@ -59,8 +60,8 @@ const Signup = () => {
       });
       const data = await response.data;
       await setUserData(data);
-      await dbUpdation(data.auth_id);
       setSubmitting(false);
+      console.log({ Values: formik.values, userData });
       formik.resetForm();
     } catch (err) {
       alert(`Error occured during submission : ${err}`);
@@ -68,7 +69,11 @@ const Signup = () => {
   };
 
   return (
-    <Formik initialValues={formik.initialValues} onSubmit={handleSubmit}>
+    <Formik
+      initialValues={formik.initialValues}
+      // onSubmit={handleSubmit}
+      onSubmit={console.log}
+    >
       <Form>
         <Flex py={5} px={2} gap={6} align="center" flexDir="column">
           <Flex gap={3} align="center" flexDir="column">
@@ -81,45 +86,39 @@ const Signup = () => {
             </Text>
           </Flex>
           <Flex gap={3} w="full" flexDir="column">
-            <InputFeild
-              formik={formik}
-              formikEntry="email" // Pass the correct form field key here
+            <LabelledInput
               label="Enter your email ID"
+              name="email"
               placeholder="xyz@gmail.com"
             />
-            <InputFeild
-              formik={formik}
-              formikEntry="phonenumber"
+            <LabelledInput
               label="Phone number"
-              placeholder="+91 xxxx"
+              name="phonenumber"
+              placeholder="+91 XXXX"
             />
-            <InputFeild
-              formik={formik}
+            <LabelledInput
               label="Create an account name"
+              name="accountName"
               placeholder="user_XYZ@1233"
-              formikEntry="accountName"
             />
-            <InputFeild
-              formik={formik}
+            <LabelledInput
               label="Create a password"
-              placeholder="*********"
-              formikEntry="password"
+              name="password"
+              placeholder="********"
             />
             <Flex w="full" gap={3}>
-              <InputFeild
-                formik={formik}
+              <LabelledInput
                 label="First name"
+                name="firstName"
                 placeholder="Enter first name"
-                formikEntry="firstName"
               />
-              <InputFeild
-                formik={formik}
+              <LabelledInput
                 label="Last name"
-                placeholder="Enter first name"
-                formikEntry="lastName"
+                name="lastName"
+                placeholder="Enter last name"
               />
             </Flex>
-            <Flex gap={1} flexDir="column">
+            {/* <Flex gap={1} flexDir="column">
               <Text fontWeight={600}>Are you a male or female ?</Text>
               <Select
                 placeholder="Select a gender"
@@ -138,8 +137,18 @@ const Signup = () => {
                 <option value="male">male</option>
                 <option value="female">female</option>
               </Select>
-            </Flex>
-            <Flex gap={1} w="full" flexDir="column">
+            </Flex> */}
+
+            <LabelledInput
+              type="select"
+              label="Are you a male or female?"
+              name="gender"
+              placeholder="Select a gender"
+              selectOptions={["Male", "Female"]}
+              // onCha
+            />
+
+            {/* <Flex gap={1} w="full" flexDir="column">
               <Text fontWeight={600}>Enter your age</Text>
               <NumberInput
                 _hover={{
@@ -163,8 +172,17 @@ const Signup = () => {
                   <NumberDecrementStepper />
                 </NumberInputStepper>
               </NumberInput>
-            </Flex>
+              </Flex> */}
+
+            <LabelledInput
+              type="number"
+              label="Enter your age"
+              name="age"
+              placeholder="0"
+              defaultValue="0"
+            />
           </Flex>
+
           <Flex gap={3}>
             <Button
               isLoading={submitting}

@@ -24,6 +24,7 @@ export const camelCase = (str: string) =>
 
 export const LabelledInput: React.FC<{
   label: string;
+  placeholder?: string;
   name?: string;
   type?: "text" | "chakra-text" | "date" | "datetime" | "number" | "select";
   validate?: () => string; // validation function returns error string
@@ -32,6 +33,7 @@ export const LabelledInput: React.FC<{
   selectOptions?: string[];
 }> = ({
   label,
+  placeholder,
   name,
   type = "text",
   validate,
@@ -39,8 +41,8 @@ export const LabelledInput: React.FC<{
   defaultValue,
   selectOptions,
 }) => (
-  <FormControl>
-    <FormLabel fontSize="md" fontWeight="normal">
+  <FormControl fontWeight={500}>
+    <FormLabel color="gray.700" fontWeight={600}>
       {label}
     </FormLabel>
     {type === "text" ? (
@@ -50,8 +52,14 @@ export const LabelledInput: React.FC<{
           id={camelCase(label)}
           name={name ?? camelCase(label)}
           validate={validate ?? undefined}
-          py="30px"
-          borderRadius="5px"
+          placeholder={placeholder}
+          // py="10px"
+          // borderRadius="5px"
+          borderColor="gray.400"
+          _hover={{
+            borderColor: "#FF4D00",
+          }}
+          focusBorderColor="#FF4D00"
         />
         <ErrorMessage name={name ?? camelCase(label)} />
       </>
@@ -100,9 +108,13 @@ export const LabelledInput: React.FC<{
         type="number"
         id={camelCase(label)}
         name={name ?? camelCase(label)}
+        placeholder={placeholder}
         validate={validate ?? undefined}
-        py="30px"
-        borderRadius="5px"
+        _hover={{
+          borderColor: "#FF4D00",
+        }}
+        focusBorderColor="#FF4D00"
+        borderColor="gray.400"
       />
     ) : type === "select" ? (
       // <Flex border="1px solid #E2E8F0" borderRadius="5px" py="10px">
@@ -111,8 +123,15 @@ export const LabelledInput: React.FC<{
         variant="ghost"
         name={name ?? camelCase(label)}
         borderRadius="5px"
-        onChange={onChange ?? undefined}
+        // onChange={onChange ?? undefined}
         defaultValue={defaultValue ?? undefined}
+        placeholder={placeholder}
+        focusBorderColor="#FF4D00"
+        border="1px solid"
+        borderColor="gray.400"
+        _hover={{
+          borderColor: "#FF4D00",
+        }}
       >
         {selectOptions?.map((option) => (
           <option key={option} value={option.toLowerCase()}>

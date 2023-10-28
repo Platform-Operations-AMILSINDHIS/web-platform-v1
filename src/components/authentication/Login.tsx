@@ -10,6 +10,7 @@ import {
 import { useState } from "react";
 
 import InputFeild from "./InputFeild";
+import { LabelledInput } from "../forms";
 import useForm from "~/hooks/useForm";
 import { Form, Formik } from "formik";
 
@@ -35,18 +36,27 @@ const Login = () => {
             </Text>
           </Flex>
           <Flex gap={3} w="full" flexDir="column">
-            <InputFeild
-              formikEntry="email"
-              formik={formik}
-              label="Email ID"
-              placeholder="Enter your email"
+            <LabelledInput
+              label="Enter your email ID"
+              name="email"
+              placeholder="xyz@gmail.com"
             />
-            <InputFeild
-              formikEntry="password"
-              formik={formik}
-              label="Password"
+            {/* <LabelledInput 
+              label="Phone number"
+              name="phonenumber"
+              placeholder="+91 XXXX"
+            /> */}
+            {/* <LabelledInput 
+              label="Create an account name"
+              name="name"
+              placeholder="user_XYZ@1233"
+            /> */}
+            <LabelledInput
+              label="Create a password"
+              name="password"
               placeholder="********"
             />
+
             <Flex
               fontWeight={500}
               w="full"
