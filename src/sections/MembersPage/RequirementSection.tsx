@@ -18,13 +18,13 @@ const RequirementSection = () => {
       </Text>
       <Flex py={5} mx={20} gap={8}>
         <InformationBox
-          URL="/membership/khudabadi-amil-panchayat"
+          URL="/memberships/khudabadi-amil-panchayat"
           identifier="KAP Membership"
           title="Exclusive to only amil sindhis"
           content={info1}
         />
         <InformationBox
-          URL="/membership/young-amil-circle"
+          URL="/memberships/young-amil-circle"
           identifier="YAC membership"
           title="Exclusive for the youth of amil sindhis"
           content={info2}

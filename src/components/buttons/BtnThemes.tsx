@@ -2,6 +2,7 @@
 export const btnThemeDark: React.CSSProperties = {
   color: "white",
   backgroundColor: "#FF4D00",
+  border: "1px solid #FF4D00",
   boxShadow: "0px 4px 0px 0px rgba(0, 0, 0, 0.19)",
 };
 

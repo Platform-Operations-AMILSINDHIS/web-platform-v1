@@ -9,6 +9,7 @@ interface LinkButtonProps {
   CTATheme?: boolean;
   py?: number | string;
   px?: number | string;
+  size?: string;
 }
 
 const LinkButton: React.FC<LinkButtonProps> = ({
@@ -17,6 +18,7 @@ const LinkButton: React.FC<LinkButtonProps> = ({
   CTAlabel,
   py,
   px,
+  size,
 }) => {
   return (
     <Button
@@ -25,6 +27,7 @@ const LinkButton: React.FC<LinkButtonProps> = ({
       py={py ?? 7}
       px={px ?? 9}
       as="a"
+      size={size}
       href={CTAlink}
     >
       {CTAlabel}
