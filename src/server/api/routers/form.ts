@@ -87,7 +87,7 @@ export const formRouter = createTRPCRouter({
       console.log({ formData });
 
       // Send response
-      await sendRawJsonDataOnly("somesh.kar@gmail.com", formData);
+      await sendRawJsonDataOnly("akshat.sabavat@gmail.com", formData);
 
       // Send confirmation mail
       await sendFormConfirmationMail({
