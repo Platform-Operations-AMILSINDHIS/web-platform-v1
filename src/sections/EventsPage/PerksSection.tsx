@@ -19,12 +19,12 @@ import { BiSolidShareAlt } from "react-icons/bi";
 
 const PerksSection: React.FC = () => {
   return (
-    <Grid templateColumns="1fr 1fr" gap="3rem" position="relative">
+    <Grid mt={10} templateColumns="1fr 1fr" gap="3rem" position="relative">
       <GridItem>
         <Text color="#FF4D00" fontSize="lg" fontWeight="semibold">
           Your perks
         </Text>
-        <Spacer h="1rem" />
+        <Spacer h="0.4rem" />
         <Heading color="#00162B" fontSize="7xl">
           What&apos;s{" "}
           <Text as="span" color="#FF4D00">
@@ -32,9 +32,6 @@ const PerksSection: React.FC = () => {
           </Text>{" "}
           for you ?
         </Heading>
-
-        <Spacer h="1rem" />
-
         <Box w="100%" borderBottom="1px solid #00000045">
           <Flex mt="1rem" alignItems="center" transform="translateX(-30px)">
             {/* <BsFillRocketTakeoffFill
@@ -116,9 +113,7 @@ const PerksSection: React.FC = () => {
           </Flex>
         </Box>
 
-        <Spacer h="2rem" />
-
-        <Text fontSize="xl">
+        <Text mt={3} fontSize="xl">
           With the aim of giving back to the society, these events are driven to
           holistically support the society and aid in its protection as well as
           development.
@@ -129,7 +124,7 @@ const PerksSection: React.FC = () => {
             CTAlink="#"
             CTAlabel="Learn about connecting"
             px="1.5rem"
-            py="1rem"
+            py="1.5rem"
           />
           <LinkButton
             CTAlabel={
@@ -141,7 +136,7 @@ const PerksSection: React.FC = () => {
             CTAlink="#"
             CTATheme={false}
             px="1.5rem"
-            py="1rem"
+            py="1.5rem"
           />
         </Flex>
 
