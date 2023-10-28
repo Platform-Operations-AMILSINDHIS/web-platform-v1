@@ -43,6 +43,7 @@ export const env = createEnv({
    */
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
+    NEXT_PUBLIC_R2_ACCESS_URL: z.string(),
   },
 
   /**
@@ -65,6 +66,7 @@ export const env = createEnv({
     R2_SECRET_ACCESS_KEY: process.env.R2_SECRET_ACCESS_KEY,
     R2_BUCKET_NAME: process.env.R2_BUCKET_NAME,
     R2_ACCOUNT_ID: process.env.R2_ACCOUNT_ID,
+    NEXT_PUBLIC_R2_ACCESS_URL: process.env.NEXT_PUBLIC_R2_ACCESS_URL,
     // DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
     // DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
   },

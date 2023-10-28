@@ -86,6 +86,6 @@ export const donationsFormSchema = Yup.object().shape({
   donorName: Yup.string().required("Donor Name is required"),
   contactNumber: Yup.string().required("Contact Number is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
-  panCard: Yup.mixed().required("PAN Card is required"),
-  addressProof: Yup.mixed().required("Address Proof is required"),
+  panCard: Yup.string().url().required("PAN Card URL is required"),
+  addressProof: Yup.string().url().required("Address Proof URL is required"),
 });

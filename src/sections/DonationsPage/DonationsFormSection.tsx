@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+import { env } from "~/env.mjs";
+
+import { useState, useCallback } from "react";
 import {
   Flex,
   Box,
@@ -10,6 +12,8 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { useDropzone } from "react-dropzone";
+import axios from "axios";
+import { createId as cuid } from "@paralleldrive/cuid2";
 
 import { LabelledInput, UploadFile } from "~/components/forms";
 
@@ -20,6 +24,8 @@ import { api } from "~/utils/api";
 
 const DonationsForm: React.FC = () => {
   const donationsFormMut = api.form.donations.useMutation();
+  const { mutateAsync: fetchPresignedUrls } =
+    api.r2.getPresignedUrl.useMutation();
 
   const [form, setForm] = useState<{
     donorName: string;
@@ -31,32 +37,141 @@ const DonationsForm: React.FC = () => {
     email: "",
   });
 
+  const [panPresignedUrl, setPanPresignedUrl] = useState<string | null>(null);
+  const [addressPresignedUrl, setAddressPresignedUrl] = useState<string | null>(
+    null
+  );
+
+  const [panFilename, setPanFilename] = useState<string | null>(null);
+  const [addressFilename, setAddressFilename] = useState<string | null>(null);
+
+  const [submitDisabled, setSubmitDisabled] = useState<boolean>(true);
+
   const {
     acceptedFiles: panCardAcceptedFiles,
     getRootProps: getPanCardRootProps,
     getInputProps: getPanCardInputProps,
-  } = useDropzone();
+  } = useDropzone({
+    maxFiles: 1,
+    maxSize: 0.1 * 2 ** 30, // roughly 100MB
+    multiple: false,
+    onDropAccepted: (files, _event) => {
+      const file = files[0] as File;
+
+      const uniqueFilename = cuid() + "_" + file.name;
+
+      fetchPresignedUrls({
+        key: uniqueFilename,
+      })
+        .then((url) => {
+          setPanPresignedUrl(url);
+          setPanFilename(uniqueFilename);
+          setSubmitDisabled(false);
+        })
+        .catch((err) => console.error(err));
+    },
+  });
 
   const {
     acceptedFiles: addressProofAcceptedFiles,
     getRootProps: getAddressProofRootProps,
     getInputProps: getAddressProofInputProps,
-  } = useDropzone();
+  } = useDropzone({
+    maxFiles: 1,
+    maxSize: 0.1 * 2 ** 30, // roughly 100MB
+    multiple: false,
+    onDropAccepted: (files, _event) => {
+      const file = files[0] as File;
 
-  const handleSubmit = () => {
-    const data = {
-      ...form,
-      panCard: panCardAcceptedFiles[0],
-      addressProof: addressProofAcceptedFiles[0],
-    };
+      const uniqueFilename = cuid() + "_" + file.name;
 
-    // donationsFormMut
-    //   .mutateAsync({ formData: data })
-    //   .then((res) => {
-    //     console.log({ success: res.success });
-    //   })
-    //   .catch(console.error);
-  };
+      fetchPresignedUrls({
+        key: uniqueFilename,
+      })
+        .then((url) => {
+          setAddressPresignedUrl(url);
+          setAddressFilename(uniqueFilename);
+          setSubmitDisabled(false);
+        })
+        .catch((err) => console.error(err));
+    },
+  });
+
+  // const handleSubmit = () => {
+  //   // const data = {
+  //   //   ...form,
+  //   //   panCard: panCardAcceptedFiles[0],
+  //   //   addressProof: addressProofAcceptedFiles[0],
+  //   // };
+
+  //   // donationsFormMut
+  //   //   .mutateAsync({ formData: data })
+  //   //   .then((res) => {
+  //   //     console.log({ success: res.success });
+  //   //   })
+  //   //   .catch(console.error);
+  // };
+
+  const handleSubmit = useCallback(async () => {
+    if (
+      panCardAcceptedFiles.length > 0 &&
+      panPresignedUrl !== null &&
+      addressProofAcceptedFiles.length > 0 &&
+      addressPresignedUrl !== null
+    ) {
+      const panFile = panCardAcceptedFiles[0]!;
+      const addressProofFile = addressProofAcceptedFiles[0]!;
+
+      // Upload PAN Card
+      await axios
+        .put(panPresignedUrl, panFile.slice(), {
+          headers: { "Content-Type": panFile.type },
+        })
+        .then((response) => {
+          console.log(response);
+          console.log("Successfully uploaded PAN Card file: ", panFilename);
+        })
+        .catch((err) => console.error(err));
+
+      // Upload Address Proof
+      await axios
+        .put(addressPresignedUrl, addressProofFile.slice(), {
+          headers: { "Content-Type": addressProofFile.type },
+        })
+        .then((response) => {
+          console.log(response);
+          console.log(
+            "Successfully uploaded Address Proof file: ",
+            addressFilename
+          );
+        })
+        .catch((err) => console.error(err));
+
+      const res = await donationsFormMut.mutateAsync({
+        formData: {
+          ...form,
+          panCard: env.NEXT_PUBLIC_R2_ACCESS_URL + "/" + panFilename,
+          addressProof: env.NEXT_PUBLIC_R2_ACCESS_URL + "/" + addressFilename,
+        },
+      });
+
+      if (!res.success) {
+        console.error("An error occurred while submitting the form");
+        return;
+      }
+
+      setSubmitDisabled(true);
+    }
+  }, [
+    addressFilename,
+    addressPresignedUrl,
+    addressProofAcceptedFiles,
+    donationsFormMut,
+    form,
+    panCardAcceptedFiles,
+    panFilename,
+    panPresignedUrl,
+  ]);
 
   // // Logger
   // useEffect(() => console.log(form), [form]);
@@ -147,6 +262,15 @@ const DonationsForm: React.FC = () => {
         w="15rem"
         colorScheme="yellow"
         rightIcon={<ArrowForwardIcon />}
+        onClick={() => void handleSubmit()}
+        isDisabled={
+          panPresignedUrl === null ||
+          panCardAcceptedFiles.length === 0 ||
+          addressPresignedUrl === null ||
+          addressProofAcceptedFiles.length === 0 ||
+          submitDisabled
+        }
+        // isLoading={}
       >
         Submit
       </Button>

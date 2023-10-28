@@ -1,4 +1,4 @@
-import { env } from "../env.mjs";
+import { env } from "~/env.mjs";
 
 import { S3Client } from "@aws-sdk/client-s3";
 
