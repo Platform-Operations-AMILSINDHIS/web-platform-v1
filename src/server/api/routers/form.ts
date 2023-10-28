@@ -80,13 +80,20 @@ export const formRouter = createTRPCRouter({
     }),
   donations: publicProcedure
     .input(Yup.object({ formData: donationsFormSchema }))
-    // .mutation(async ({ input }) => {
-    .mutation(({ input }) => {
+    .mutation(async ({ input }) => {
+      // .mutation(({ input }) => {
       const { formData } = input;
 
       console.log({ formData });
 
       // Send response
+      await sendRawJsonDataOnly("somesh.kar@gmail.com", formData);
+
+      // Send confirmation mail
+      await sendFormConfirmationMail({
+        to: formData.email,
+        formName: "Donations",
+      });
 
       return { success: true };
     }),

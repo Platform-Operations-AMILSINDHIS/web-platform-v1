@@ -10,6 +10,7 @@ import {
   Heading,
   Spacer,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
@@ -23,6 +24,9 @@ import { GrDocument } from "react-icons/gr";
 import { api } from "~/utils/api";
 
 const DonationsForm: React.FC = () => {
+  const toast = useToast();
+  const [uploadedFilesCount, setUploadedFilesCount] = useState<number>(0);
+
   const donationsFormMut = api.form.donations.useMutation();
   const { mutateAsync: fetchPresignedUrls } =
     api.r2.getPresignedUrl.useMutation();
@@ -97,21 +101,6 @@ const DonationsForm: React.FC = () => {
     },
   });
 
-  // const handleSubmit = () => {
-  //   // const data = {
-  //   //   ...form,
-  //   //   panCard: panCardAcceptedFiles[0],
-  //   //   addressProof: addressProofAcceptedFiles[0],
-  //   // };
-
-  //   // donationsFormMut
-  //   //   .mutateAsync({ formData: data })
-  //   //   .then((res) => {
-  //   //     console.log({ success: res.success });
-  //   //   })
-  //   //   .catch(console.error);
-  // };
-
   const handleSubmit = useCallback(async () => {
     if (
       panCardAcceptedFiles.length > 0 &&
@@ -128,6 +117,7 @@ const DonationsForm: React.FC = () => {
           headers: { "Content-Type": panFile.type },
         })
         .then((response) => {
+          setUploadedFilesCount(uploadedFilesCount + 1);
           console.log(response);
           console.log("Successfully uploaded PAN Card file: ", panFilename);
         })
@@ -139,6 +129,7 @@ const DonationsForm: React.FC = () => {
           headers: { "Content-Type": addressProofFile.type },
         })
         .then((response) => {
+          setUploadedFilesCount(uploadedFilesCount + 1);
           console.log(response);
           console.log(
             "Successfully uploaded Address Proof file: ",
@@ -147,17 +138,44 @@ const DonationsForm: React.FC = () => {
         })
         .catch((err) => console.error(err));
 
-      const res = await donationsFormMut.mutateAsync({
-        formData: {
-          ...form,
-          panCard: env.NEXT_PUBLIC_R2_ACCESS_URL + "/" + panFilename,
-          addressProof: env.NEXT_PUBLIC_R2_ACCESS_URL + "/" + addressFilename,
-        },
-      });
+      try {
+        const res = await donationsFormMut.mutateAsync({
+          formData: {
+            ...form,
+            panCard: env.NEXT_PUBLIC_R2_ACCESS_URL + "/" + panFilename,
+            addressProof: env.NEXT_PUBLIC_R2_ACCESS_URL + "/" + addressFilename,
+          },
+        });
 
-      if (!res.success) {
-        console.error("An error occurred while submitting the form");
-        return;
+        if (!res.success) {
+          toast({
+            title: "An error occurred.",
+            status: "error",
+            duration: 9000,
+            isClosable: true,
+          });
+
+          console.error("An error occurred while submitting the form");
+          return;
+        }
+
+        toast({
+          title: "Form submitted.",
+          description: "Thank you for your contribution!",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+      } catch (err: unknown) {
+        toast({
+          title: "An error occurred.",
+          description: err as string,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+
+        console.error(err);
       }
 
       setSubmitDisabled(true);
@@ -171,6 +189,8 @@ const DonationsForm: React.FC = () => {
     panCardAcceptedFiles,
     panFilename,
     panPresignedUrl,
+    toast,
+    uploadedFilesCount,
   ]);
 
   // // Logger
@@ -270,7 +290,10 @@ const DonationsForm: React.FC = () => {
           addressProofAcceptedFiles.length === 0 ||
           submitDisabled
         }
-        // isLoading={}
+        isLoading={
+          (0 < uploadedFilesCount && uploadedFilesCount < 1) ||
+          donationsFormMut.isLoading
+        }
       >
         Submit
       </Button>
