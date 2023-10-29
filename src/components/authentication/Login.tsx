@@ -3,13 +3,25 @@ import { useState } from "react";
 import { LoginValues, loginInitialValues } from "~/hooks/useForm";
 import { LabelledInput } from "../forms";
 import { Form, Formik } from "formik";
+import axios from "axios";
 
 const Login = () => {
   const [submitting, setSubmitting] = useState(false);
-
-  const handleSubmit = () => {
-    console.log("hi");
+  const handleSubmit = async (values: LoginValues) => {
+    try {
+      setSubmitting(true);
+      const response = await axios.post("/api/auth/login", {
+        email: values.email,
+        password: values.password,
+      });
+      console.log({ responseStatus: response.status });
+      setSubmitting(false);
+    } catch (error) {
+      console.log(error);
+      setSubmitting(false);
+    }
   };
+
   return (
     <Formik initialValues={loginInitialValues} onSubmit={handleSubmit}>
       <Form>
@@ -29,16 +41,7 @@ const Login = () => {
               name="email"
               placeholder="xyz@gmail.com"
             />
-            {/* <LabelledInput 
-              label="Phone number"
-              name="phonenumber"
-              placeholder="+91 XXXX"
-            /> */}
-            {/* <LabelledInput 
-              label="Create an account name"
-              name="name"
-              placeholder="user_XYZ@1233"
-            /> */}
+
             <LabelledInput
               label="Create a password"
               name="password"
@@ -60,6 +63,7 @@ const Login = () => {
           </Flex>
           <Flex gap={3}>
             <Button
+              isLoading={submitting}
               type="submit"
               _hover={{
                 bg: "gray.700",

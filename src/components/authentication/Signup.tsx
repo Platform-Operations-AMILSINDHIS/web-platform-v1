@@ -49,8 +49,6 @@ const Signup = () => {
         phonenumber: values.phonenumber,
       });
 
-      console.log({ response });
-
       const { auth_id }: { auth_id: string } = response.data;
 
       await dbUpdation(auth_id, values);
