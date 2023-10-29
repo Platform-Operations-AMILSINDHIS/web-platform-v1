@@ -61,7 +61,9 @@ export const LabelledInput: React.FC<{
           }}
           focusBorderColor="#FF4D00"
         />
-        <ErrorMessage name={name ?? camelCase(label)} />
+        <Box py={1} fontWeight={600} fontSize="sm" color="red">
+          <ErrorMessage name={name ?? camelCase(label)} />
+        </Box>
       </>
     ) : type === "chakra-text" ? (
       <>

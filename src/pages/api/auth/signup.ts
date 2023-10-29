@@ -21,6 +21,7 @@ const SignUpHandler = async (req: SignUpRequest, res: NextApiResponse) => {
 
     if (error) {
       console.error(error);
+      res.json({ error: error.cause });
       throw error;
     }
 

@@ -12,9 +12,11 @@ import {
 import { Form, Formik } from "formik";
 import { useState } from "react";
 
-import { Values, initialValues } from "~/hooks/useForm";
 import axios from "axios";
+
+import { Values, initialValues } from "~/hooks/useForm";
 import { LabelledInput } from "../forms";
+import { SignUpValidationSchema } from "~/validations/AuthValidations";
 
 const Signup = () => {
   const [submitting, setSubmitting] = useState(false);
@@ -49,6 +51,7 @@ const Signup = () => {
         phonenumber: values.phonenumber,
       });
 
+      console.log(response.data);
       const { auth_id }: { auth_id: string } = response.data;
 
       await dbUpdation(auth_id, values);
@@ -63,6 +66,7 @@ const Signup = () => {
       initialValues={initialValues}
       onSubmit={handleSubmit}
       // onSubmit={console.log}
+      validationSchema={SignUpValidationSchema}
     >
       <Form>
         <Flex py={5} px={2} gap={6} align="center" flexDir="column">
