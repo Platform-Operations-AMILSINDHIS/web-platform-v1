@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import supabase from "../supabase";
+import supabase from "./supabase";
 
 interface ValidateMailHandlerRequest extends NextApiRequest {
   body: {
@@ -8,27 +8,31 @@ interface ValidateMailHandlerRequest extends NextApiRequest {
 }
 
 const ValidateMailHandler = async (
-  req: NextApiRequest,
+  req: ValidateMailHandlerRequest,
   res: NextApiResponse
 ) => {
   const { email } = req.body;
 
   try {
     const { data, error } = await supabase
-      .from("auth")
+      .from("general_accounts")
       .select("*")
-      .eq("email", email);
+      .eq("email_id", email);
 
     if (error) throw error;
 
     if (data && data.length > 0) {
       // Email ID already exists
-      res.status(400).json({ error: "Email ID already in use" });
+      res.status(200).json({ error: "Email ID already in use", trigger: true });
     } else {
       // Email ID is available
-      res.status(200).json({ message: "Email ID is available" });
+      res
+        .status(200)
+        .json({ message: "Email ID is available", trigger: false });
     }
   } catch (error) {
-    alert(`${error} occured, please reload the page`);
+    console.log(error);
   }
 };
+
+export default ValidateMailHandler;

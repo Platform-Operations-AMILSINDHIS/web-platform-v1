@@ -9,7 +9,7 @@ import {
   Select,
   Text,
 } from "@chakra-ui/react";
-import { Form, Formik } from "formik";
+import { Form, Formik, FormikHelpers } from "formik";
 import { useState } from "react";
 
 import axios from "axios";
@@ -24,7 +24,7 @@ const Signup = () => {
   const dbUpdation = async (auth_id: string, values: Values) => {
     try {
       const response = await axios.post("/api/auth/db", {
-        email_id: values.email,
+        email: values.email,
         account_name: values.accountName,
         KAP_member: false,
         YAC_member: false,
@@ -42,9 +42,25 @@ const Signup = () => {
     }
   };
 
-  const handleSubmit = async (values: Values) => {
+  const handleSubmit = async (
+    values: Values,
+    { setErrors }: FormikHelpers<Values>
+  ) => {
     try {
       setSubmitting(true);
+
+      const validateEmailResponse = await axios.post("/api/auth/mail", {
+        email: values.email,
+      });
+
+      console.log({ validateEmailResponse });
+      const { trigger }: { trigger: boolean } = validateEmailResponse.data;
+      if (trigger) {
+        setErrors({ email: "This email already has an account" });
+        setSubmitting(false);
+        return;
+      }
+
       const response = await axios.post("/api/auth/signup", {
         email: values.email,
         password: values.password,
@@ -65,7 +81,6 @@ const Signup = () => {
     <Formik
       initialValues={initialValues}
       onSubmit={handleSubmit}
-      // onSubmit={console.log}
       validationSchema={SignUpValidationSchema}
     >
       <Form>

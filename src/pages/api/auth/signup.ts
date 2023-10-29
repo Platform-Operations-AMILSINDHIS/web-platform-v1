@@ -19,11 +19,7 @@ const SignUpHandler = async (req: SignUpRequest, res: NextApiResponse) => {
       phone: phonenumber,
     });
 
-    if (error) {
-      console.error(error);
-      res.json({ error: error.cause });
-      throw error;
-    }
+    if (error) throw error;
 
     const auth_id = user?.user?.id;
 
