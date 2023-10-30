@@ -2,20 +2,61 @@ import { Button, Checkbox, Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { LoginValues, loginInitialValues } from "~/hooks/useForm";
 import { LabelledInput } from "../forms";
-import { Form, Formik } from "formik";
+import { Form, Formik, FormikHelpers } from "formik";
 import axios from "axios";
 
-const Login = () => {
+interface LoginProps {
+  setCloseModal: (input: boolean) => void;
+}
+
+const Login: React.FC<LoginProps> = ({ setCloseModal }) => {
   const [submitting, setSubmitting] = useState(false);
-  const handleSubmit = async (values: LoginValues) => {
+  const handleSubmit = async (
+    values: LoginValues,
+    { setErrors }: FormikHelpers<LoginValues>
+  ) => {
     try {
       setSubmitting(true);
+
+      const mailValidateResponse = await axios.post<{
+        loginValidated: boolean;
+        message: string;
+      }>("/api/auth/loginValidation/mail", {
+        email: values.email,
+      });
+
+      const { loginValidated, message } = mailValidateResponse.data;
+      console.log(loginValidated);
+      if (!loginValidated) {
+        setErrors({ email: message });
+        setSubmitting(false);
+        return;
+      }
+
+      const passwordValidateResponse = await axios.post<{
+        passwordValidate: boolean;
+        password_server_validate_message: string;
+      }>("/api/auth/loginValidation/password", {
+        email: values.email,
+        password: values.password,
+      });
+
+      const { passwordValidate, password_server_validate_message } =
+        passwordValidateResponse.data;
+
+      if (!passwordValidate) {
+        setErrors({ password: password_server_validate_message });
+        setSubmitting(false);
+        return;
+      }
+
       const response = await axios.post("/api/auth/login", {
         email: values.email,
         password: values.password,
       });
       console.log({ responseStatus: response.status });
       setSubmitting(false);
+      setCloseModal(true);
     } catch (error) {
       console.log(error);
       setSubmitting(false);

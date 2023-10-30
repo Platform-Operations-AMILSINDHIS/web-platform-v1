@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import supabase from "./supabase";
+import supabase from "../supabase";
 
 interface ValidateMailHandlerRequest extends NextApiRequest {
   body: {
@@ -23,12 +23,19 @@ const ValidateMailHandler = async (
 
     if (data && data.length > 0) {
       // Email ID already exists
-      res.status(200).json({ error: "Email ID already in use", trigger: true });
+      res.status(200).json({
+        email_server_validate_message:
+          "Account already exists, forgot password?",
+        trigger: true,
+      });
     } else {
       // Email ID is available
       res
         .status(200)
-        .json({ message: "Email ID is available", trigger: false });
+        .json({
+          email_server_validate_message: "Email ID is available",
+          trigger: false,
+        });
     }
   } catch (error) {
     console.log(error);
