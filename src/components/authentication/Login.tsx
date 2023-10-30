@@ -1,28 +1,29 @@
-import {
-  Box,
-  Button,
-  Checkbox,
-  Flex,
-  Input,
-  InputGroup,
-  Text,
-} from "@chakra-ui/react";
+import { Button, Checkbox, Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
-
-import InputFeild from "./InputFeild";
-import useForm from "~/hooks/useForm";
+import { LoginValues, loginInitialValues } from "~/hooks/useForm";
+import { LabelledInput } from "../forms";
 import { Form, Formik } from "formik";
+import axios from "axios";
 
 const Login = () => {
   const [submitting, setSubmitting] = useState(false);
-  const { formik } = useForm("login");
-
-  const handleSubmit = () => {
-    console.log(formik.values);
-    formik.resetForm();
+  const handleSubmit = async (values: LoginValues) => {
+    try {
+      setSubmitting(true);
+      const response = await axios.post("/api/auth/login", {
+        email: values.email,
+        password: values.password,
+      });
+      console.log({ responseStatus: response.status });
+      setSubmitting(false);
+    } catch (error) {
+      console.log(error);
+      setSubmitting(false);
+    }
   };
+
   return (
-    <Formik initialValues={formik.initialValues} onSubmit={handleSubmit}>
+    <Formik initialValues={loginInitialValues} onSubmit={handleSubmit}>
       <Form>
         <Flex py={5} px={2} gap={6} align="center" flexDir="column">
           <Flex gap={3} align="center" flexDir="column">
@@ -35,18 +36,18 @@ const Login = () => {
             </Text>
           </Flex>
           <Flex gap={3} w="full" flexDir="column">
-            <InputFeild
-              formikEntry="email"
-              formik={formik}
-              label="Email ID"
-              placeholder="Enter your email"
+            <LabelledInput
+              label="Enter your email ID"
+              name="email"
+              placeholder="xyz@gmail.com"
             />
-            <InputFeild
-              formikEntry="password"
-              formik={formik}
-              label="Password"
+
+            <LabelledInput
+              label="Create a password"
+              name="password"
               placeholder="********"
             />
+
             <Flex
               fontWeight={500}
               w="full"
@@ -62,6 +63,7 @@ const Login = () => {
           </Flex>
           <Flex gap={3}>
             <Button
+              isLoading={submitting}
               type="submit"
               _hover={{
                 bg: "gray.700",

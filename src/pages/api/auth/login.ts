@@ -1,33 +1,26 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 import supabase from "./supabase";
 
-interface SupabaseLoginHandlerRequest extends NextApiRequest {
+interface LoginHandlerRequest extends NextApiRequest {
   body: {
     email: string;
-    username: string;
+    password: string;
   };
 }
 
-const SupabaseLoginHandler = async (
-  req: SupabaseLoginHandlerRequest,
-  res: NextApiResponse
-) => {
+const LoginHandler = async (req: LoginHandlerRequest, res: NextApiResponse) => {
+  const { email, password } = req.body;
   try {
-    const query = req.query;
-    const { col, value } = query;
-    const { data: existingUser, error } = await supabase
-      .from("general_accounts")
-      .select("email_id")
-      .eq(`${col}`, value);
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
 
-    if (existingUser && existingUser?.length > 0) {
-      let loginStatus = true;
-      res.status(200).json({ loginStatus, user: existingUser });
-    }
-    if (error) throw error;
+    if (error) res.status(404).json({ data, message: "fucked bro" });
+    res.status(200).json({ data, message: "signed in :)" });
   } catch (error) {
     console.log(error);
   }
 };
 
-export default SupabaseLoginHandler;
+export default LoginHandler;

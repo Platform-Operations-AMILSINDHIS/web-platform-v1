@@ -1,0 +1,14 @@
+import * as Yup from "yup";
+
+export const SignUpValidationSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  phonenumber: Yup.string().required("Phone number is required"),
+  accountName: Yup.string().required("Account name is required"),
+  password: Yup.string().required("Password is required"),
+  firstName: Yup.string().required("First name is required"),
+  lastName: Yup.string().required("Last name is required"),
+  gender: Yup.string().required("Gender is required"),
+  age: Yup.number()
+    .min(0, "Age must be a positive number")
+    .required("Age is required"),
+});

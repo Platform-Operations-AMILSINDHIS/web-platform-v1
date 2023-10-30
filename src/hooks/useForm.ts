@@ -1,9 +1,15 @@
 import { FormikConfig, useFormik } from "formik";
 
-interface Values {
+export interface LoginValues {
   email: string;
-  phonenumber: string;
   password: string;
+}
+
+export interface SignupValues extends LoginValues {
+  phonenumber: string;
+}
+
+export interface Values extends SignupValues {
   accountName: string;
   isKAPMember: false;
   isYACMember: false;
@@ -13,12 +19,7 @@ interface Values {
   lastName: string;
 }
 
-interface LoginValues {
-  email: string;
-  password: string;
-}
-
-const initialValues: Values = {
+export const initialValues: Values = {
   email: "",
   phonenumber: "",
   password: "",
@@ -31,22 +32,13 @@ const initialValues: Values = {
   lastName: "",
 };
 
-const loginInitialValues: LoginValues = {
+export const loginInitialValues: LoginValues = {
   email: "",
   password: "",
 };
 
-const useForm = (formType: "signup" | "login"): FormikConfig => {
-  const formik = useFormik({
-    initialValues: formType === "signup" ? initialValues : loginInitialValues,
-    onSubmit: (values, { setSubmitting }) => {
-      console.log("hi");
-      console.log(values);
-      setSubmitting(false);
-    },
-  });
-
-  return { formik };
+const useForm = () => {
+  return null;
 };
 
 export default useForm;

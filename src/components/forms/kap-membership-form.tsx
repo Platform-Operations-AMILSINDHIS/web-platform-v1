@@ -78,6 +78,15 @@ const steps = [
   },
 ];
 
+export type InputType =
+  | "number"
+  | "select"
+  | "text"
+  | "chakra-text"
+  | "date"
+  | "datetime"
+  | undefined;
+
 const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
   // TODO: Setup global formState for all the Formik forms to mutate onSubmit, maybe use Jotai for this
   const toast = useToast();
@@ -317,7 +326,11 @@ export const PersonalInformationSection: React.FC<{
               { label: "Mobile Number" },
               { label: "Email ID" },
             ].map(({ label, inputType }, i) => (
-              <LabelledInput key={i} label={label} type={inputType ?? "text"} />
+              <LabelledInput
+                key={i}
+                label={label}
+                type={inputType ? (inputType as InputType) : "text"}
+              />
             ))}
           </Grid>
 

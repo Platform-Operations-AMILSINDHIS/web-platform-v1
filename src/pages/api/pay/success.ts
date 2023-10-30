@@ -1,4 +1,4 @@
-import { env } from "~/env.js";
+import { env } from "~/env.mjs";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 

@@ -40,6 +40,8 @@ import {
 
 import { Formik, Form } from "formik";
 
+import type { InputType } from "./kap-membership-form";
+
 const MatrimonyForm: React.FC<{
   activeStep: number;
 }> = ({ activeStep }) => {
@@ -198,7 +200,7 @@ const MatrimonyPersonalInformationSection: React.FC<{
                 key={i}
                 label={label}
                 name={name ?? undefined}
-                type={inputType ?? "text"}
+                type={inputType ? (inputType as InputType) : "text"}
               />
             ))}
           </Grid>
@@ -227,7 +229,7 @@ const MatrimonyPersonalInformationSection: React.FC<{
             ].map(({ label, inputType, selectOptions }, i) => (
               <LabelledInput
                 key={i}
-                type={inputType ?? "text"}
+                type={inputType ? (inputType as InputType) : "text"}
                 label={label}
                 selectOptions={selectOptions}
               />
@@ -256,7 +258,11 @@ const MatrimonyPersonalInformationSection: React.FC<{
                 inputType: "number",
               },
             ].map(({ label, name, inputType }, i) => (
-              <LabelledInput key={i} type={inputType ?? "text"} label={label} />
+              <LabelledInput
+                key={i}
+                type={inputType ? (inputType as InputType) : "text"}
+                label={label}
+              />
             ))}
           </Grid>
         </Form>
@@ -379,7 +385,7 @@ const SpousePreferencesSection: React.FC<{
             ].map(({ label, inputType, selectOptions }, i) => (
               <LabelledInput
                 key={i}
-                type={inputType ?? "text"}
+                type={inputType ? (inputType as InputType) : "text"}
                 label={label}
                 selectOptions={selectOptions}
               />
