@@ -1,4 +1,3 @@
-import { env } from "~/env.mjs";
 import { NextApiRequest, NextApiResponse } from "next";
 import supabase from "./supabase";
 
