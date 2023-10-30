@@ -55,22 +55,6 @@ const Signup = () => {
         return;
       }
 
-      const validatePasswordResponse = await axios.post<{
-        passwordValidate: string;
-        password_server_validate_message: string;
-      }>("/api/auth/signupvalidation/password", {
-        password: values.password,
-      });
-      console.log({ validatePasswordResponse });
-
-      const { passwordValidate, password_server_validate_message } =
-        validatePasswordResponse.data;
-      if (passwordValidate) {
-        setErrors({ password: password_server_validate_message });
-        setSubmitting(false);
-        return;
-      }
-
       const response = await axios.post<{ auth_id: string }>(
         "/api/auth/signup",
         {
