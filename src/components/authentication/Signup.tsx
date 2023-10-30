@@ -1,14 +1,4 @@
-import {
-  Button,
-  Flex,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  Select,
-  Text,
-} from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { Form, Formik, FormikHelpers } from "formik";
 import { useState } from "react";
 
@@ -29,7 +19,6 @@ const Signup = () => {
         KAP_member: false,
         YAC_member: false,
         age: values.age,
-        membership_id: "",
         gender: values.gender,
         first_name: values.firstName,
         last_name: values.lastName,
@@ -50,14 +39,33 @@ const Signup = () => {
     try {
       setSubmitting(true);
 
-      const validateEmailResponse = await axios.post("/api/auth/mail", {
-        email: values.email,
-      });
+      const validateEmailResponse = await axios.post(
+        "/api/auth/signupvalidation/mail",
+        {
+          email: values.email,
+        }
+      );
 
       console.log({ validateEmailResponse });
       const { trigger }: { trigger: boolean } = validateEmailResponse.data;
       if (trigger) {
-        setErrors({ email: "This email already has an account" });
+        setErrors({ email: validateEmailResponse.data.error });
+        setSubmitting(false);
+        return;
+      }
+
+      const validatePasswordResponse = await axios.post(
+        "/api/auth/signupvalidation/password",
+        {
+          password: values.password,
+        }
+      );
+      console.log({ validatePasswordResponse });
+
+      const { trigger_password }: { trigger_password: boolean } =
+        validatePasswordResponse.data;
+      if (trigger_password) {
+        setErrors({ password: "This password is taken" });
         setSubmitting(false);
         return;
       }

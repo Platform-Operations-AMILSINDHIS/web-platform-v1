@@ -44,7 +44,6 @@ const DBHandler = async (req: DBHandlerRequest, res: NextApiResponse) => {
         KAP_member,
         YAC_member,
         age,
-        membership_id: "",
         gender,
         first_name,
         last_name,
