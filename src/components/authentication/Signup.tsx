@@ -34,6 +34,7 @@ const Signup = () => {
         first_name: values.firstName,
         last_name: values.lastName,
         authID: auth_id,
+        password: values.password,
       });
 
       console.log({ response });

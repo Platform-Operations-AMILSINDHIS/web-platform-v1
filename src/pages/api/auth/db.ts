@@ -6,6 +6,7 @@ interface DBHandlerRequest extends NextApiRequest {
   body: {
     email: string;
     authID: string;
+    password: string;
     account_name: string;
     KAP_member: boolean;
     YAC_member: boolean;
@@ -21,6 +22,7 @@ const DBHandler = async (req: DBHandlerRequest, res: NextApiResponse) => {
   const {
     email,
     authID,
+    password,
     account_name,
     gender,
     first_name,
@@ -34,6 +36,7 @@ const DBHandler = async (req: DBHandlerRequest, res: NextApiResponse) => {
       {
         email_id: email,
         auth_id: authID,
+        password: password,
         account_name,
         KAP_member,
         YAC_member,
