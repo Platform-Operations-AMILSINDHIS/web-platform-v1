@@ -14,21 +14,34 @@ const Login = () => {
     try {
       setSubmitting(true);
 
-      const mailValidateResponse = await axios.post(
-        "/api/auth/loginvalidation/mail",
-        {
-          email: values.email,
-        }
-      );
+      const mailValidateResponse = await axios.post<{
+        loginValidated: boolean;
+        message: string;
+      }>("/api/auth/loginValidation/mail", {
+        email: values.email,
+      });
 
-      const {
-        loginValidated,
-        message,
-      }: { loginValidated: boolean; message: string } =
-        mailValidateResponse.data;
+      const { loginValidated, message } = mailValidateResponse.data;
       console.log(loginValidated);
       if (!loginValidated) {
         setErrors({ email: message });
+        setSubmitting(false);
+        return;
+      }
+
+      const passwordValidateResponse = await axios.post<{
+        passwordValidate: boolean;
+        password_server_validate_message: string;
+      }>("/api/auth/loginValidation/password", {
+        email: values.email,
+        password: values.password,
+      });
+
+      const { passwordValidate, password_server_validate_message } =
+        passwordValidateResponse.data;
+
+      if (!passwordValidate) {
+        setErrors({ password: password_server_validate_message });
         setSubmitting(false);
         return;
       }

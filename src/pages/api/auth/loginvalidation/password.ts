@@ -32,11 +32,14 @@ const ValidatePasswordHandler = async (
     );
 
     if (!passwordCheck) {
+      res.status(200).json({
+        passwordValidate: false,
+        password_server_validate_message: "Invalid Password",
+      });
+    } else {
       res
         .status(200)
-        .json({ passwordValidate: false, message: "Invalid Password" });
-    } else {
-      res.status(200).json({ passwordValidate: true, message: "" });
+        .json({ passwordValidate: true, password_server_validate_message: "" });
     }
   } catch (error) {
     console.error(error);

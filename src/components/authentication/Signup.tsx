@@ -41,31 +41,32 @@ const Signup = () => {
 
       const validateEmailResponse = await axios.post<{
         trigger: boolean;
-        message: string;
-      }>("/api/auth/signupvalidate/mail", {
+        email_server_validate_message: string;
+      }>("/api/auth/signupvalidation/mail", {
         email: values.email,
       });
 
       console.log({ validateEmailResponse });
-      const { trigger, message } = validateEmailResponse.data;
+      const { trigger, email_server_validate_message } =
+        validateEmailResponse.data;
       if (trigger) {
-        setErrors({ email: message });
+        setErrors({ email: email_server_validate_message });
         setSubmitting(false);
         return;
       }
 
-      const validatePasswordResponse = await axios.post(
-        "/api/auth/signupvalidation/password",
-        {
-          password: values.password,
-        }
-      );
+      const validatePasswordResponse = await axios.post<{
+        passwordValidate: string;
+        password_server_validate_message: string;
+      }>("/api/auth/signupvalidation/password", {
+        password: values.password,
+      });
       console.log({ validatePasswordResponse });
 
-      const { trigger_password }: { trigger_password: boolean } =
+      const { passwordValidate, password_server_validate_message } =
         validatePasswordResponse.data;
-      if (trigger_password) {
-        setErrors({ password: "This password is taken" });
+      if (passwordValidate) {
+        setErrors({ password: password_server_validate_message });
         setSubmitting(false);
         return;
       }

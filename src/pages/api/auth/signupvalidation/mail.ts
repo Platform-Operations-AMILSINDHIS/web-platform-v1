@@ -24,14 +24,18 @@ const ValidateMailHandler = async (
     if (data && data.length > 0) {
       // Email ID already exists
       res.status(200).json({
-        message: "Account already exists, forgot password?",
+        email_server_validate_message:
+          "Account already exists, forgot password?",
         trigger: true,
       });
     } else {
       // Email ID is available
       res
         .status(200)
-        .json({ message: "Email ID is available", trigger: false });
+        .json({
+          email_server_validate_message: "Email ID is available",
+          trigger: false,
+        });
     }
   } catch (error) {
     console.log(error);
