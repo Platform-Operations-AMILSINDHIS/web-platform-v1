@@ -20,6 +20,10 @@
           "linkURL": "/blog"
         },
         {
+          "linkTitle": "Reading Catalog",
+          "linkURL": "/blog/catalog"
+        },
+        {
           "linkTitle": "Matrimony",
           "linkURL": "/matrimony"
         }

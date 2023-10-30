@@ -71,6 +71,9 @@ dependencies:
   '@trpc/server':
     specifier: ^10.26.0
     version: 10.26.0
+  '@types/bcrypt':
+    specifier: ^5.0.1
+    version: 5.0.1
   '@types/lodash':
     specifier: ^4.14.197
     version: 4.14.197
@@ -4533,6 +4536,12 @@ packages:
 
   /@trpc/server@10.26.0:
     resolution: {integrity: sha512-+Wt0NFAeflVSNiUnHIDNN3C8jP7XIRmYrcgJ6IsAnm0lK4p/FkpCpeu1aig5qxrgZx30PHNDLZ/3FttVSEW2aQ==}
+    dev: false
+
+  /@types/bcrypt@5.0.1:
+    resolution: {integrity: sha512-dIIrEsLV1/v0AUNI8oHMaRRTSeVjoy5ID8oclJavtPj8CwPJoD1eFoNXEypuu6k091brEzBeOo3LlxeAH9zRZg==}
+    dependencies:
+      '@types/node': 18.16.0
     dev: false
 
   /@types/bluebird@3.5.39:

@@ -27,8 +27,8 @@ const Signup = () => {
       });
 
       console.log({ response });
-    } catch (error) {
-      alert(`Error occured during submission : ${error}`);
+    } catch (error: unknown) {
+      alert(`Error occured during submission : ${error as string}`);
     }
   };
 
@@ -39,15 +39,15 @@ const Signup = () => {
     try {
       setSubmitting(true);
 
-      const validateEmailResponse = await axios.post(
-        "/api/auth/signupvalidation/mail",
-        {
-          email: values.email,
-        }
-      );
+      const validateEmailResponse = await axios.post<{
+        trigger: boolean;
+        message: string;
+      }>("/api/auth/mail", {
+        email: values.email,
+      });
 
       console.log({ validateEmailResponse });
-      const { trigger }: { trigger: boolean } = validateEmailResponse.data;
+      const { trigger } = validateEmailResponse.data;
       if (trigger) {
         setErrors({ email: validateEmailResponse.data.error });
         setSubmitting(false);
@@ -70,19 +70,22 @@ const Signup = () => {
         return;
       }
 
-      const response = await axios.post("/api/auth/signup", {
-        email: values.email,
-        password: values.password,
-        phonenumber: values.phonenumber,
-      });
+      const response = await axios.post<{ auth_id: string }>(
+        "/api/auth/signup",
+        {
+          email: values.email,
+          password: values.password,
+          phonenumber: values.phonenumber,
+        }
+      );
 
       console.log(response.data);
-      const { auth_id }: { auth_id: string } = response.data;
+      const { auth_id } = response.data;
 
       await dbUpdation(auth_id, values);
       setSubmitting(false);
-    } catch (err) {
-      alert(`Error occured during submission : ${err}`);
+    } catch (err: unknown) {
+      alert(`Error occured during submission : ${err as string}`);
     }
   };
 
