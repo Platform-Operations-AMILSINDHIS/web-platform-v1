@@ -5,7 +5,11 @@ import { LabelledInput } from "../forms";
 import { Form, Formik, FormikHelpers } from "formik";
 import axios from "axios";
 
-const Login = () => {
+interface LoginProps {
+  setCloseModal: (input: boolean) => void;
+}
+
+const Login: React.FC<LoginProps> = ({ setCloseModal }) => {
   const [submitting, setSubmitting] = useState(false);
   const handleSubmit = async (
     values: LoginValues,
@@ -52,6 +56,7 @@ const Login = () => {
       });
       console.log({ responseStatus: response.status });
       setSubmitting(false);
+      setCloseModal(true);
     } catch (error) {
       console.log(error);
       setSubmitting(false);

@@ -1,4 +1,4 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Text, useToast } from "@chakra-ui/react";
 import { Form, Formik, FormikHelpers } from "formik";
 import { useState } from "react";
 
@@ -8,8 +8,13 @@ import { Values, initialValues } from "~/hooks/useForm";
 import { LabelledInput } from "../forms";
 import { SignUpValidationSchema } from "~/validations/AuthValidations";
 
-const Signup = () => {
+interface SignupProps {
+  setCloseModal: (input: boolean) => void;
+}
+
+const Signup: React.FC<SignupProps> = ({ setCloseModal }) => {
   const [submitting, setSubmitting] = useState(false);
+  const toast = useToast();
 
   const dbUpdation = async (auth_id: string, values: Values) => {
     try {
@@ -69,6 +74,14 @@ const Signup = () => {
 
       await dbUpdation(auth_id, values);
       setSubmitting(false);
+      toast({
+        title: "Account Created",
+        description: "Your account has been created successfully!",
+        status: "success",
+        duration: 5000, // How long the toast will be displayed in milliseconds
+        isClosable: true,
+      });
+      setCloseModal(true);
     } catch (err: unknown) {
       alert(`Error occured during submission : ${err as string}`);
     }
