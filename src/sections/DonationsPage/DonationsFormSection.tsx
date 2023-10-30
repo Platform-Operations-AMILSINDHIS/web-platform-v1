@@ -16,7 +16,7 @@ import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import { createId as cuid } from "@paralleldrive/cuid2";
 
-import { LabelledInput, UploadFile } from "~/components/forms";
+import { LabelledInput } from "~/components/forms";
 
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { GrDocument } from "react-icons/gr";

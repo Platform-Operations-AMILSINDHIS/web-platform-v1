@@ -21,6 +21,7 @@ import {
   Stepper,
   useSteps,
   useToast,
+  Tag,
 } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 
@@ -66,15 +67,15 @@ const steps = [
   },
   {
     title: "Step 3",
-    description: "Membership Details",
-  },
-  {
-    title: "Step 4",
     description: "Family Members",
   },
   {
-    title: "Step 5",
+    title: "Step 4",
     description: "Proposer Details",
+  },
+  {
+    title: "Step 5",
+    description: "Membership Details",
   },
 ];
 
@@ -144,6 +145,7 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
     [formState]
   );
 
+  const [paymentAmount, setPaymentAmount] = useState<number>(0);
   const { handlePayment } = usePayment({
     prefillDetails: {
       name: `${formState.personalInfo.firstName}${
@@ -165,7 +167,7 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
 
   return (
     <>
-      <Stepper index={activeStep}>
+      <Stepper index={activeStep} colorScheme="orange">
         {steps.map(({ title, description }, index) => (
           <Step key={index}>
             <StepIndicator>
@@ -207,15 +209,6 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
       )}
 
       {activeStep === 3 && (
-        <MembershipDetailsSection
-          initialValues={formState.membershipInfo}
-          stateSetter={(values: KAPMembershipInfo) =>
-            setFormState({ ...formState, membershipInfo: values })
-          }
-        />
-      )}
-
-      {/* {activeStep === 4 && (
         <FamilyMemberDetailsSection
           initialValues={formState.familyMembers ?? []}
           stateSetter={(values: FamilyMember[]) =>
@@ -224,14 +217,25 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
         />
       )}
 
-      {activeStep === 5 && (
+      {activeStep === 4 && (
         <ProposerDetailsSection
           initialValues={formState.proposerInfo}
           stateSetter={(values: ProposerInfo) =>
             setFormState({ ...formState, proposerInfo: values })
           }
         />
-      )} */}
+      )}
+
+      {activeStep === 5 && (
+        <MembershipDetailsSection
+          initialValues={formState.membershipInfo}
+          stateSetter={(values: KAPMembershipInfo) =>
+            setFormState({ ...formState, membershipInfo: values })
+          }
+          paymentAmountState={paymentAmount}
+          paymentAmountStateSetter={setPaymentAmount}
+        />
+      )}
 
       <Spacer h="2rem" />
 
@@ -239,6 +243,7 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
       <Flex justify="space-between">
         {activeStep > 1 ? (
           <Button
+            colorScheme="orange"
             leftIcon={<ArrowBackIcon />}
             size="lg"
             onClick={() => setActiveStep(activeStep - 1)}
@@ -250,16 +255,16 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
         )}
 
         <Button
-          colorScheme="blue"
+          colorScheme="orange"
           rightIcon={
             activeStep !== steps.length ? <ArrowForwardIcon /> : undefined
           }
           size="lg"
           isLoading={formMut.isLoading}
           onClick={
-            activeStep === 3
+            activeStep === 5
               ? async () => {
-                  await handlePayment(500000, "kap_membership");
+                  await handlePayment(paymentAmount, "kap_membership");
                 }
               : activeStep === steps.length
               ? () => {
@@ -282,7 +287,7 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
         >
           {/* Next */}
           {/* {activeStep === steps.length ? "Submit" : "Next"} */}
-          {activeStep === 3 ? "Pay now" : "Next"}
+          {activeStep === 5 ? "Pay now" : "Next"}
         </Button>
       </Flex>
     </>
@@ -426,64 +431,6 @@ export const AddressDetailsSection: React.FC<{
           </Grid>
         </Form>
       </Formik>
-    </>
-  );
-};
-
-const MembershipDetailsSection: React.FC<{
-  initialValues: KAPMembershipInfo;
-  stateSetter: (values: KAPMembershipInfo) => void;
-}> = ({ initialValues, stateSetter }) => {
-  return (
-    <>
-      <Heading>Type of Membership</Heading>
-      <Grid mt="2rem" gap="2rem" templateColumns={["1fr", "repeat(4, 1fr)"]}>
-        {[
-          { label: "Patron", Icon: FaHandHoldingHeart },
-          { label: "Life-Member", Icon: FaUserFriends },
-        ].map(({ Icon, label }, i) => (
-          <Flex
-            key={i}
-            px="20px"
-            py="18px"
-            gap="1rem"
-            align="center"
-            border={
-              initialValues.membershipType === label.toLowerCase()
-                ? "1px solid #3182CE"
-                : "1px solid #CBD5E0"
-            }
-            borderRadius="5px"
-            cursor="pointer"
-            onClick={() =>
-              stateSetter({
-                membershipType: label === "Patron" ? "patron" : "life-member",
-              })
-            }
-          >
-            <Icon size="40px" />
-            <Text fontSize="lg" fontWeight="normal">
-              {label}
-            </Text>
-          </Flex>
-        ))}
-      </Grid>
-
-      <Spacer h="2rem" />
-
-      <Heading size="lg">Declaration</Heading>
-      <Flex flexDir="column" mt="1rem" gap="0.75rem" maxW="60%">
-        <Text>
-          The Applicant hereby declares that, I am a Khudabadi Amil and request
-          the Committee to admit me as Patron / Life-Member of The Khudabadi
-          Amil Panchayat of Bombay.
-        </Text>
-        <Text>
-          I agree to abide by the Constitution and Rules of the Khudabadi Amil
-          Panchayat of Bombay in force from time to time.
-        </Text>
-        <Text>I hereby agree to pay Rs 5000/- as membership fees.</Text>
-      </Flex>
     </>
   );
 };
@@ -633,7 +580,92 @@ export const ProposerDetailsSection: React.FC<{
           I agree to abide by the Constitution and rules of the Khudabadi Amil
           Panchayat of Bombay in force from time to time.
         </ListItem>
-        <ListItem>I agree to pay Rs 1000/- as membership fees.</ListItem>
+      </UnorderedList>
+    </>
+  );
+};
+
+const MembershipDetailsSection: React.FC<{
+  initialValues: KAPMembershipInfo;
+  stateSetter: (values: KAPMembershipInfo) => void;
+  paymentAmountState: number;
+  paymentAmountStateSetter: (paymentAmount: number) => void;
+}> = ({
+  initialValues,
+  stateSetter,
+  paymentAmountState,
+  paymentAmountStateSetter,
+}) => {
+  return (
+    <>
+      <Heading>Type of Membership</Heading>
+      <Grid mt="2rem" gap="2rem" templateColumns={["1fr", "repeat(4, 1fr)"]}>
+        {[
+          { label: "Patron", Icon: FaHandHoldingHeart },
+          { label: "Life-Member", Icon: FaUserFriends },
+        ].map(({ Icon, label }, i) => (
+          <Flex
+            key={i}
+            px="20px"
+            py="18px"
+            gap="1rem"
+            align="center"
+            border={
+              initialValues.membershipType === label.toLowerCase()
+                ? "1px solid #C05621"
+                : "1px solid #CBD5E0"
+            }
+            borderRadius="5px"
+            cursor="pointer"
+            onClick={() => {
+              stateSetter({
+                membershipType: label === "Patron" ? "patron" : "life-member",
+              });
+
+              paymentAmountStateSetter(
+                label === "Patron"
+                  ? 250000
+                  : label === "Life-Member"
+                  ? 500000
+                  : 0
+              );
+            }}
+          >
+            <Icon size="40px" />
+            <Text fontSize="lg" fontWeight="normal">
+              {label}
+            </Text>
+          </Flex>
+        ))}
+      </Grid>
+
+      <Spacer h="2rem" />
+
+      <Heading size="lg">Declaration</Heading>
+      <UnorderedList mt="1rem" spacing="0.75rem" maxW="60%">
+        <ListItem>
+          The Applicant hereby declares that, I am a Khudabadi Amil and request
+          the Committee to admit me as
+          <Tag size="md" colorScheme="orange">
+            {paymentAmountState === 250000
+              ? "Patron"
+              : paymentAmountState === 500000
+              ? "Life-Member"
+              : "—"}
+          </Tag>{" "}
+          of The Khudabadi Amil Panchayat of Bombay.
+        </ListItem>
+        <ListItem>
+          I agree to abide by the Constitution and Rules of the Khudabadi Amil
+          Panchayat of Bombay in force from time to time.
+        </ListItem>
+        <ListItem>
+          I hereby agree to pay{" "}
+          <Tag size="md" colorScheme="orange">
+            Rs. {paymentAmountState !== 0 ? paymentAmountState / 100 : "—"}
+          </Tag>{" "}
+          as membership fees.
+        </ListItem>
       </UnorderedList>
     </>
   );
