@@ -67,7 +67,7 @@ const MatrimonyFormSection = () => {
       <GridItem>
         <Spacer h="1.5rem" />
 
-        <Stepper index={activeStep}>
+        <Stepper index={activeStep} colorScheme="orange">
           {steps.map(({ title, description }, index) => (
             <Step key={index}>
               <StepIndicator>
@@ -98,6 +98,7 @@ const MatrimonyFormSection = () => {
         <Flex justify="space-between">
           {activeStep > 1 ? (
             <Button
+              colorScheme="orange"
               leftIcon={<ArrowBackIcon />}
               size="lg"
               onClick={() => setActiveStep(activeStep - 1)}
@@ -109,7 +110,7 @@ const MatrimonyFormSection = () => {
           )}
 
           <Button
-            colorScheme="blue"
+            colorScheme="orange"
             rightIcon={
               activeStep !== steps.length ? <ArrowForwardIcon /> : undefined
             }
