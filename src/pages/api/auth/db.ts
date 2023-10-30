@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import supabase from "./supabase";
+import hasher from "~/utils/hasher";
 
 interface DBHandlerRequest extends NextApiRequest {
   body: {
@@ -30,12 +31,15 @@ const DBHandler = async (req: DBHandlerRequest, res: NextApiResponse) => {
     YAC_member,
     age,
   } = req.body;
+
+  const hashed_password = await hasher(password);
+
   try {
     const { data, error } = await supabase.from("general_accounts").insert([
       {
         email_id: email,
         auth_id: authID,
-        password: password,
+        password: hashed_password,
         account_name,
         KAP_member,
         YAC_member,
