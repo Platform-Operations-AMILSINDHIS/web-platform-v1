@@ -33,7 +33,7 @@ const CatalogPage = ({
   const [NCFlag, setNCFlag] = useState(false);
 
   const filteredBlogPosts =
-    blogPosts?.filter((post) => post?.blogType?.[0] === typeState) || [];
+    blogPosts?.filter((post) => post?.blogType?.[0] === typeState) ?? [];
 
   const [renderedBlogs, setRenderedBlogs] = useState(filteredBlogPosts);
 
@@ -47,7 +47,7 @@ const CatalogPage = ({
 
   useEffect(() => {
     const filteredByType =
-      blogPosts?.filter((post) => post?.blogType?.[0] === typeState) || [];
+      blogPosts?.filter((post) => post?.blogType?.[0] === typeState) ?? [];
 
     const filteredBySearch = filteredByType.filter((blog) =>
       blog?.blogTitle?.toLowerCase().includes(searchQuery.toLowerCase())

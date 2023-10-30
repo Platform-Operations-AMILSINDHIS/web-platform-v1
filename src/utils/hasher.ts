@@ -1,8 +1,8 @@
-const bcrypt = require("bcrypt");
+import bcrypt from "bcrypt";
 const hasher = async (password: string) => {
   const saltRounds = 10;
   try {
-    const hashedPassword = bcrypt.hash(password, saltRounds);
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
     return hashedPassword;
   } catch (error) {
     throw error;
