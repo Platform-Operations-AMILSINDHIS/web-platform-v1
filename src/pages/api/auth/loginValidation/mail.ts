@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import supabase from "../supabase";
-import { errorMonitor } from "events";
 
 interface LoginMailValidationHandlerRequest extends NextApiRequest {
   body: {
@@ -26,7 +25,7 @@ const LoginMailValidationHandler = async (
     } else {
       res
         .status(200)
-        .json({ loginValidated: false, message: "Email not registered" });
+        .json({ loginValidated: false, message: "Account does not exist" });
     }
   } catch (error) {
     console.log(error);

@@ -2,14 +2,37 @@ import { Button, Checkbox, Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { LoginValues, loginInitialValues } from "~/hooks/useForm";
 import { LabelledInput } from "../forms";
-import { Form, Formik } from "formik";
+import { Form, Formik, FormikHelpers } from "formik";
 import axios from "axios";
 
 const Login = () => {
   const [submitting, setSubmitting] = useState(false);
-  const handleSubmit = async (values: LoginValues) => {
+  const handleSubmit = async (
+    values: LoginValues,
+    { setErrors }: FormikHelpers<LoginValues>
+  ) => {
     try {
       setSubmitting(true);
+
+      const mailValidateResponse = await axios.post(
+        "/api/auth/loginvalidation/mail",
+        {
+          email: values.email,
+        }
+      );
+
+      const {
+        loginValidated,
+        message,
+      }: { loginValidated: boolean; message: string } =
+        mailValidateResponse.data;
+      console.log(loginValidated);
+      if (!loginValidated) {
+        setErrors({ email: message });
+        setSubmitting(false);
+        return;
+      }
+
       const response = await axios.post("/api/auth/login", {
         email: values.email,
         password: values.password,
