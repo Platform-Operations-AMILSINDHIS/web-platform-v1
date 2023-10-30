@@ -42,14 +42,14 @@ const Signup = () => {
       const validateEmailResponse = await axios.post<{
         trigger: boolean;
         message: string;
-      }>("/api/auth/mail", {
+      }>("/api/auth/signupvalidate/mail", {
         email: values.email,
       });
 
       console.log({ validateEmailResponse });
-      const { trigger } = validateEmailResponse.data;
+      const { trigger, message } = validateEmailResponse.data;
       if (trigger) {
-        setErrors({ email: validateEmailResponse.data.error });
+        setErrors({ email: message });
         setSubmitting(false);
         return;
       }
