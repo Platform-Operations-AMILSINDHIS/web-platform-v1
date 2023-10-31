@@ -368,6 +368,7 @@ export const AddressDetailsSection: React.FC<{
       <Heading>Residential Address</Heading>
       <Formik
         initialValues={initialValues}
+        validationSchema={addressInfoSchema}
         onSubmit={(values, actions) => {
           console.log({ values, actions });
           alert(JSON.stringify(values, null, 2));
@@ -532,6 +533,7 @@ export const ProposerDetailsSection: React.FC<{
 
       <Formik
         initialValues={initialValues}
+        validationSchema={proposerInfoSchema}
         onSubmit={(values, actions) => {
           console.log({ values, actions });
           alert(JSON.stringify(values, null, 2));
@@ -624,9 +626,9 @@ const MembershipDetailsSection: React.FC<{
 
               paymentAmountStateSetter(
                 label === "Patron"
-                  ? 250000
-                  : label === "Life-Member"
                   ? 500000
+                  : label === "Life-Member"
+                  ? 250000
                   : 0
               );
             }}
@@ -647,9 +649,9 @@ const MembershipDetailsSection: React.FC<{
           The Applicant hereby declares that, I am a Khudabadi Amil and request
           the Committee to admit me as
           <Tag size="md" colorScheme="orange">
-            {paymentAmountState === 250000
+            {paymentAmountState === 500000
               ? "Patron"
-              : paymentAmountState === 500000
+              : paymentAmountState === 250000
               ? "Life-Member"
               : "—"}
           </Tag>{" "}

@@ -14,6 +14,12 @@ const theme = extendTheme({
     heading: "'satoshi sans', sans-serif",
     body: "'satoshi sans', sans-serif",
   },
+  colors: {
+    orange: {
+      500: "#FF4D00",
+      600: "#DD4809",
+    },
+  },
 });
 
 const MyApp: AppType<{ session: Session | null }> = ({

@@ -23,10 +23,10 @@ export const personalInfoSchema = Yup.object().shape({
   emailId: Yup.string()
     .email("Invalid email address")
     .required("Email ID is required"),
-  maidenSurname: Yup.string(),
-  maidenName: Yup.string(),
-  fathersName: Yup.string(),
-  mothersName: Yup.string(),
+  maidenSurname: Yup.string().required("Maiden Surname is required"),
+  maidenName: Yup.string().required("Maiden Name is required"),
+  fathersName: Yup.string().required("Fathers Name is required"),
+  mothersName: Yup.string().required("Mothers Name is required"),
 });
 
 export const addressInfoSchema = Yup.object().shape({
@@ -42,10 +42,10 @@ export const addressInfoSchema = Yup.object().shape({
   }),
   officeAddress: Yup.object()
     .shape({
-      addressLine1: Yup.string().required("Office Address Line 1 is required"),
-      addressLine2: Yup.string().required("Office Address Line 2 is required"),
+      addressLine1: Yup.string(),
+      addressLine2: Yup.string(),
       addressLine3: Yup.string(),
-      pinCode: Yup.string().required("Office Pin Code is required"),
+      pinCode: Yup.string(),
     })
     .optional(),
 });
