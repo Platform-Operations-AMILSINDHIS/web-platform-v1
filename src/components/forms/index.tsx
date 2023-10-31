@@ -10,7 +10,15 @@ import {
   Text,
   Box,
 } from "@chakra-ui/react";
-import { Field, ErrorMessage, useFormikContext } from "formik";
+import {
+  Field,
+  ErrorMessage,
+  useFormikContext,
+  FieldInputProps,
+  FieldMetaProps,
+  FieldHelperProps,
+  FormikHelpers,
+} from "formik";
 
 export const camelCase = (str: string) =>
   str
@@ -87,7 +95,7 @@ export const LabelledInput: React.FC<{
           <ErrorMessage name={name ?? camelCase(label)} />
         </Flex> */}
 
-        <Field
+        {/* <Field
           as={Input}
           type="date"
           id={camelCase(label)}
@@ -102,7 +110,47 @@ export const LabelledInput: React.FC<{
         />
         <Box py={1} fontWeight={600} fontSize="sm" color="red">
           <ErrorMessage name={name ?? camelCase(label)} />
-        </Box>
+        </Box> */}
+
+        <Field name={name ?? camelCase(label)}>
+          {({
+            field,
+            meta,
+            form: { setFieldValue },
+          }: {
+            field: FieldInputProps<Date>;
+            meta: FieldMetaProps<Date>;
+            form: FormikHelpers<Date>;
+          }) => {
+            return (
+              <>
+                <Input
+                  // {...field}
+                  type="date"
+                  onChange={(e) => {
+                    void setFieldValue(field.name, new Date(e.target.value));
+                    console.log({ d: new Date(e.target.value) });
+                  }}
+                  value={
+                    field.value
+                      ? field.value.toISOString().split("T")[0]
+                      : undefined
+                  }
+                  id={camelCase(label)}
+                  placeholder={placeholder}
+                  borderColor="gray.400"
+                  _hover={{
+                    borderColor: "#FF4D00",
+                  }}
+                  focusBorderColor="#FF4D00"
+                />
+                <Box py={1} fontWeight={600} fontSize="sm" color="red">
+                  <ErrorMessage name={name ?? camelCase(label)} />
+                </Box>
+              </>
+            );
+          }}
+        </Field>
       </>
     ) : type === "datetime" ? (
       <Flex border="1px solid #E2E8F0" borderRadius="5px" py="10px">
