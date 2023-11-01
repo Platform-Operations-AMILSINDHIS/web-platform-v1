@@ -150,7 +150,6 @@ const Signup: React.FC<SignupProps> = ({ setCloseModal }) => {
               label="Enter your age"
               name="age"
               placeholder="0"
-              defaultValue="0"
             />
           </Flex>
 

@@ -4,6 +4,7 @@ import { LoginValues, loginInitialValues } from "~/hooks/useForm";
 import { LabelledInput } from "../forms";
 import { Form, Formik, FormikHelpers } from "formik";
 import axios from "axios";
+import { LoginValidation } from "~/validations/AuthValidations";
 
 interface LoginProps {
   setCloseModal: (input: boolean) => void;
@@ -64,7 +65,11 @@ const Login: React.FC<LoginProps> = ({ setCloseModal }) => {
   };
 
   return (
-    <Formik initialValues={loginInitialValues} onSubmit={handleSubmit}>
+    <Formik
+      validationSchema={LoginValidation}
+      initialValues={loginInitialValues}
+      onSubmit={handleSubmit}
+    >
       <Form>
         <Flex py={5} px={2} gap={6} align="center" flexDir="column">
           <Flex gap={3} align="center" flexDir="column">

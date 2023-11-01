@@ -6,8 +6,6 @@ import {
   Input,
   Flex,
   Select,
-  FormErrorMessage,
-  Text,
   Box,
 } from "@chakra-ui/react";
 import { Field, ErrorMessage, useFormikContext } from "formik";
@@ -128,6 +126,7 @@ export const LabelledInput: React.FC<{
         }}
         focusBorderColor="#FF4D00"
         borderColor="gray.400"
+        color="gray.700"
       />
     ) : type === "select" ? (
       // <Flex border="1px solid #E2E8F0" borderRadius="5px" py="10px">
@@ -142,6 +141,7 @@ export const LabelledInput: React.FC<{
         focusBorderColor="#FF4D00"
         border="1px solid"
         borderColor="gray.400"
+        color="gray.700"
         _hover={{
           borderColor: "#FF4D00",
         }}
