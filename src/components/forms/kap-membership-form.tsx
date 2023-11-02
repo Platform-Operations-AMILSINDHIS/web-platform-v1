@@ -24,6 +24,8 @@ import {
   Tag,
 } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
+import { atom, useAtom } from "jotai";
+import { focusAtom } from "jotai-optics";
 
 import { FaHandHoldingHeart, FaUserFriends } from "react-icons/fa";
 import { ArrowBackIcon, ArrowForwardIcon, CloseIcon } from "@chakra-ui/icons";
@@ -88,62 +90,81 @@ export type InputType =
   | "datetime"
   | undefined;
 
+const kapFormAtom = atom<KAPMembershipFormValues>({
+  personalInfo: {
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    occupation: "",
+    dateOfBirth: new Date(),
+    mobileNumber: "",
+    emailId: "",
+    maidenSurname: "",
+    maidenName: "",
+    fathersName: "",
+    mothersName: "",
+  },
+  addressInfo: {
+    residentialAddress: {
+      addressLine1: "",
+      addressLine2: "",
+      addressLine3: "",
+      pinCode: "",
+    },
+  },
+  membershipInfo: {
+    membershipType: null,
+  },
+  familyMembers: [
+    {
+      memberName: "",
+      relationship: "",
+      occupation: "",
+      age: null,
+    },
+  ],
+  proposerInfo: {
+    firstName: "",
+    lastName: "",
+    mobileNumber: "",
+  },
+});
+
+const personalInfoAtom = focusAtom(kapFormAtom, (optic) =>
+  optic.prop("personalInfo")
+);
+const addressInfoAtom = focusAtom(kapFormAtom, (optic) =>
+  optic.prop("addressInfo")
+);
+const membershipInfoAtom = focusAtom(kapFormAtom, (optic) =>
+  optic.prop("membershipInfo")
+);
+const familyMembersAtom = focusAtom(kapFormAtom, (optic) =>
+  optic.prop("familyMembers")
+);
+const proposerInfoAtom = focusAtom(kapFormAtom, (optic) =>
+  optic.prop("proposerInfo")
+);
+
+const activeStepAtom = atom<number>(1);
+
 const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
   // TODO: Setup global formState for all the Formik forms to mutate onSubmit, maybe use Jotai for this
   const toast = useToast();
 
-  const [formState, setFormState] = useState<KAPMembershipFormValues>({
-    personalInfo: {
-      firstName: "",
-      middleName: "",
-      lastName: "",
-      occupation: "",
-      dateOfBirth: new Date(),
-      mobileNumber: "",
-      emailId: "",
-      maidenSurname: "",
-      maidenName: "",
-      fathersName: "",
-      mothersName: "",
-    },
-    addressInfo: {
-      residentialAddress: {
-        addressLine1: "",
-        addressLine2: "",
-        addressLine3: "",
-        pinCode: "",
-      },
-    },
-    membershipInfo: {
-      membershipType: null,
-    },
-    familyMembers: [
-      {
-        memberName: "",
-        relationship: "",
-        occupation: "",
-        age: null,
-      },
-    ],
-    proposerInfo: {
-      firstName: "",
-      lastName: "",
-      mobileNumber: "",
-    },
-  });
+  const [formState, setFormState] = useAtom(kapFormAtom);
 
-  const { activeStep, setActiveStep } = useSteps({
-    index: 1,
-    count: steps.length,
-  });
+  // const { activeStep, setActiveStep } = useSteps({
+  //   index: 1,
+  //   count: steps.length,
+  // });
+
+  const [activeStep, setActiveStep] = useAtom(activeStepAtom);
 
   const formMut = api.form.kapMembership.useMutation();
 
   // Logger
-  useEffect(
-    () => console.log(JSON.stringify(formState.personalInfo, null, 2)),
-    [formState]
-  );
+  useEffect(() => console.log(JSON.stringify(formState, null, 2)), [formState]);
 
   const [paymentAmount, setPaymentAmount] = useState<number>(0);
   const { handlePayment } = usePayment({
@@ -190,14 +211,7 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
 
       <Spacer h="2rem" />
 
-      {activeStep === 1 && (
-        <PersonalInformationSection
-          initialValues={formState.personalInfo}
-          stateSetter={(values: PersonalInfo) =>
-            setFormState({ ...formState, personalInfo: values })
-          }
-        />
-      )}
+      {activeStep === 1 && <PersonalInformationSection />}
 
       {activeStep === 2 && (
         <AddressDetailsSection
@@ -240,7 +254,7 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
       <Spacer h="2rem" />
 
       {/* Navigation buttons */}
-      <Flex justify="space-between">
+      {/* <Flex justify="space-between">
         {activeStep > 1 ? (
           <Button
             colorScheme="orange"
@@ -285,19 +299,17 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
               : () => setActiveStep(activeStep + 1)
           }
         >
-          {/* Next */}
-          {/* {activeStep === steps.length ? "Submit" : "Next"} */}
           {activeStep === 5 ? "Pay now" : "Next"}
         </Button>
-      </Flex>
+      </Flex> */}
     </>
   );
 };
 
-export const PersonalInformationSection: React.FC<{
-  initialValues: PersonalInfo;
-  stateSetter: (values: PersonalInfo) => void;
-}> = ({ initialValues, stateSetter }) => {
+export const PersonalInformationSection: React.FC = () => {
+  const [activeStep, setActiveStep] = useAtom(activeStepAtom);
+  const [personalInfo, setPersonalInfo] = useAtom(personalInfoAtom);
+
   return (
     <>
       <Heading>Personal Information</Heading>
@@ -307,16 +319,16 @@ export const PersonalInformationSection: React.FC<{
       </Text>
 
       <Formik
-        initialValues={initialValues}
+        initialValues={personalInfo}
         validationSchema={personalInfoSchema}
         onSubmit={(values, actions) => {
-          console.log({ values, actions });
-          alert(JSON.stringify(values, null, 2));
+          // console.log({ values });
+          setPersonalInfo(values);
           actions.setSubmitting(false);
+          setActiveStep(activeStep + 1);
         }}
       >
         <Form>
-          <FormGlobalStateSetter stateSetter={stateSetter} />
           <Grid
             mt="2rem"
             gap="2rem"
@@ -353,6 +365,17 @@ export const PersonalInformationSection: React.FC<{
               <LabelledInput key={i} label={label} name={name ?? label} />
             ))}
           </Grid>
+          <Flex w="100%" justifyContent="space-between">
+            <Box></Box>
+            <Button
+              type="submit"
+              colorScheme="orange"
+              rightIcon={<ArrowForwardIcon />}
+              size="lg"
+            >
+              Next
+            </Button>
+          </Flex>
         </Form>
       </Formik>
     </>
