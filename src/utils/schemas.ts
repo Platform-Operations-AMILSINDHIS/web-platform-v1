@@ -60,11 +60,11 @@ export const proposerInfoSchema = Yup.object().shape({
   firstName: Yup.string().required("First Name is required"),
   lastName: Yup.string().required("Last Name is required"),
   mobileNumber: Yup.string()
+    .required("Mobile Number is required")
     .matches(
       /^(?:\+\d{1,3}[-\s]?)?(?:\d{1,4}[-\s]?)?(?:\(\d{1,4}\))?(?:[\d\s]{10,})$/,
       "Invalid phone number format"
-    )
-    .required("Mobile Number is required"),
+    ),
 });
 
 export const kapMembershipFormValuesSchema = Yup.object().shape({

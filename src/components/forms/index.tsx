@@ -71,10 +71,14 @@ export const LabelledInput: React.FC<{
       <>
         <Input
           name={name ?? camelCase(label)}
-          py="30px"
-          borderRadius="5px"
           onChange={onChange ?? undefined}
           defaultValue={defaultValue ?? undefined}
+          placeholder={placeholder}
+          borderColor="gray.400"
+          _hover={{
+            borderColor: "#FF4D00",
+          }}
+          focusBorderColor="#FF4D00"
         />
         {/* <FormErrorMessage> */}
       </>

@@ -27,8 +27,8 @@ import { Formik, Form } from "formik";
 import { atom, useAtom } from "jotai";
 import { focusAtom } from "jotai-optics";
 
-import { FaHandHoldingHeart, FaUserFriends } from "react-icons/fa";
-import { ArrowBackIcon, ArrowForwardIcon, CloseIcon } from "@chakra-ui/icons";
+import { FaHandHoldingHeart, FaUserFriends, FaRupeeSign } from "react-icons/fa";
+import { ArrowBackIcon, ArrowForwardIcon, DeleteIcon } from "@chakra-ui/icons";
 
 import {
   LabelledInput,
@@ -112,9 +112,6 @@ const kapFormAtom = atom<KAPMembershipFormValues>({
       pinCode: "",
     },
   },
-  membershipInfo: {
-    membershipType: null,
-  },
   familyMembers: [
     {
       memberName: "",
@@ -128,6 +125,9 @@ const kapFormAtom = atom<KAPMembershipFormValues>({
     lastName: "",
     mobileNumber: "",
   },
+  membershipInfo: {
+    membershipType: null,
+  },
 });
 
 const personalInfoAtom = focusAtom(kapFormAtom, (optic) =>
@@ -136,17 +136,17 @@ const personalInfoAtom = focusAtom(kapFormAtom, (optic) =>
 const addressInfoAtom = focusAtom(kapFormAtom, (optic) =>
   optic.prop("addressInfo")
 );
-const membershipInfoAtom = focusAtom(kapFormAtom, (optic) =>
-  optic.prop("membershipInfo")
-);
 const familyMembersAtom = focusAtom(kapFormAtom, (optic) =>
   optic.prop("familyMembers")
 );
 const proposerInfoAtom = focusAtom(kapFormAtom, (optic) =>
   optic.prop("proposerInfo")
 );
+const membershipInfoAtom = focusAtom(kapFormAtom, (optic) =>
+  optic.prop("membershipInfo")
+);
 
-const activeStepAtom = atom<number>(1);
+const activeStepAtom = atom<number>(5);
 
 const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
   // TODO: Setup global formState for all the Formik forms to mutate onSubmit, maybe use Jotai for this
@@ -154,30 +154,12 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
 
   const [formState, setFormState] = useAtom(kapFormAtom);
 
-  // const { activeStep, setActiveStep } = useSteps({
-  //   index: 1,
-  //   count: steps.length,
-  // });
-
   const [activeStep, setActiveStep] = useAtom(activeStepAtom);
 
   const formMut = api.form.kapMembership.useMutation();
 
   // Logger
   useEffect(() => console.log(JSON.stringify(formState, null, 2)), [formState]);
-
-  const [paymentAmount, setPaymentAmount] = useState<number>(0);
-  const { handlePayment } = usePayment({
-    prefillDetails: {
-      name: `${formState.personalInfo.firstName}${
-        formState.personalInfo.middleName
-          ? ` ${formState.personalInfo.middleName}`
-          : ""
-      } ${formState.personalInfo.lastName}`,
-      email: formState.personalInfo.emailId,
-      contact: formState.personalInfo.mobileNumber,
-    },
-  });
 
   // useEffect(() => {
   //   if (isSubmitted && formMut.status === "idle") {
@@ -211,45 +193,15 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
 
       <Spacer h="2rem" />
 
-      {activeStep === 1 && <PersonalInformationSection />}
-
-      {activeStep === 2 && (
-        <AddressDetailsSection
-          initialValues={formState.addressInfo}
-          stateSetter={(values: AddressInfo) =>
-            setFormState({ ...formState, addressInfo: values })
-          }
-        />
-      )}
-
-      {activeStep === 3 && (
-        <FamilyMemberDetailsSection
-          initialValues={formState.familyMembers ?? []}
-          stateSetter={(values: FamilyMember[]) =>
-            setFormState({ ...formState, familyMembers: values })
-          }
-        />
-      )}
-
-      {activeStep === 4 && (
-        <ProposerDetailsSection
-          initialValues={formState.proposerInfo}
-          stateSetter={(values: ProposerInfo) =>
-            setFormState({ ...formState, proposerInfo: values })
-          }
-        />
-      )}
-
-      {activeStep === 5 && (
-        <MembershipDetailsSection
-          initialValues={formState.membershipInfo}
-          stateSetter={(values: KAPMembershipInfo) =>
-            setFormState({ ...formState, membershipInfo: values })
-          }
-          paymentAmountState={paymentAmount}
-          paymentAmountStateSetter={setPaymentAmount}
-        />
-      )}
+      {[
+        PersonalInformationSection,
+        AddressDetailsSection,
+        FamilyMemberDetailsSection,
+        ProposerDetailsSection,
+        MembershipDetailsSection,
+      ].map((FormSection, i) => (
+        <>{activeStep === i + 1 && <FormSection />}</>
+      ))}
 
       <Spacer h="2rem" />
 
@@ -320,7 +272,7 @@ export const PersonalInformationSection: React.FC = () => {
 
       <Formik
         initialValues={personalInfo}
-        validationSchema={personalInfoSchema}
+        // validationSchema={personalInfoSchema}
         onSubmit={(values, actions) => {
           // console.log({ values });
           setPersonalInfo(values);
@@ -328,146 +280,172 @@ export const PersonalInformationSection: React.FC = () => {
           setActiveStep(activeStep + 1);
         }}
       >
-        <Form>
-          <Grid
-            mt="2rem"
-            gap="2rem"
-            templateColumns={["1fr", "repeat(3, 1fr)"]}
-          >
-            {[
-              { label: "First Name" },
-              { label: "Middle Name" },
-              { label: "Last Name" },
-              { label: "Occupation" },
-              { label: "Date of Birth", inputType: "date" },
-              { label: "Mobile Number" },
-              { label: "Email ID" },
-            ].map(({ label, inputType }, i) => (
-              <LabelledInput
-                key={i}
-                label={label}
-                type={inputType ? (inputType as InputType) : "text"}
-              />
-            ))}
-          </Grid>
-
-          <Grid
-            mt="2rem"
-            gap="2rem"
-            templateColumns={["1fr", "repeat(3, 1fr)"]}
-          >
-            {[
-              { label: "Maiden Surname", name: "maidenSurname" },
-              { label: "Maiden Name", name: "maidenName" },
-              { label: "Father's name", name: "fathersName" },
-              { label: "Mother's name", name: "mothersName" },
-            ].map(({ label, name }, i) => (
-              <LabelledInput key={i} label={label} name={name ?? label} />
-            ))}
-          </Grid>
-          <Flex w="100%" justifyContent="space-between">
-            <Box></Box>
-            <Button
-              type="submit"
-              colorScheme="orange"
-              rightIcon={<ArrowForwardIcon />}
-              size="lg"
+        {(formik) => (
+          <Form>
+            <Grid
+              mt="2rem"
+              gap="2rem"
+              templateColumns={["1fr", "repeat(3, 1fr)"]}
             >
-              Next
-            </Button>
-          </Flex>
-        </Form>
+              {[
+                { label: "First Name" },
+                { label: "Middle Name" },
+                { label: "Last Name" },
+                { label: "Occupation" },
+                { label: "Date of Birth", inputType: "date" },
+                { label: "Mobile Number" },
+                { label: "Email ID" },
+              ].map(({ label, inputType }, i) => (
+                <LabelledInput
+                  key={i}
+                  label={label}
+                  type={inputType ? (inputType as InputType) : "text"}
+                />
+              ))}
+            </Grid>
+
+            <Grid
+              mt="2rem"
+              gap="2rem"
+              templateColumns={["1fr", "repeat(3, 1fr)"]}
+            >
+              {[
+                { label: "Maiden Surname", name: "maidenSurname" },
+                { label: "Maiden Name", name: "maidenName" },
+                { label: "Father's name", name: "fathersName" },
+                { label: "Mother's name", name: "mothersName" },
+              ].map(({ label, name }, i) => (
+                <LabelledInput key={i} label={label} name={name ?? label} />
+              ))}
+            </Grid>
+            <Flex w="100%" justifyContent="space-between">
+              <Box></Box>
+              <Button
+                type="submit"
+                isDisabled={!(formik.isValid && formik.dirty)}
+                colorScheme="orange"
+                rightIcon={<ArrowForwardIcon />}
+                size="lg"
+              >
+                Next
+              </Button>
+            </Flex>
+          </Form>
+        )}
       </Formik>
     </>
   );
 };
 
-export const AddressDetailsSection: React.FC<{
-  initialValues: AddressInfo;
-  stateSetter: (values: AddressInfo) => void;
-}> = ({ initialValues, stateSetter }) => {
+export const AddressDetailsSection: React.FC = () => {
+  const [activeStep, setActiveStep] = useAtom(activeStepAtom);
+  const [addressInfo, setAddressInfo] = useAtom(addressInfoAtom);
+
   return (
     <>
       <Heading>Residential Address</Heading>
       <Formik
-        initialValues={initialValues}
-        validationSchema={addressInfoSchema}
+        initialValues={addressInfo}
+        // validationSchema={addressInfoSchema}
         onSubmit={(values, actions) => {
-          console.log({ values, actions });
-          alert(JSON.stringify(values, null, 2));
+          // console.log({ values });
+          setAddressInfo(values);
           actions.setSubmitting(false);
+          setActiveStep(activeStep + 1);
         }}
       >
-        <Form>
-          <FormGlobalStateSetter stateSetter={stateSetter} />
-          <Grid
-            mt="2rem"
-            gap="2rem"
-            templateColumns={["1fr", "repeat(2, 1fr)"]}
-          >
-            {[
-              {
-                label: "Address Line 1",
-                name: "residentialAddress.addressLine1",
-              },
-              {
-                label: "Address Line 2",
-                name: "residentialAddress.addressLine2",
-              },
-              {
-                label: "Address Line 3",
-                name: "residentialAddress.addressLine3",
-              },
-              { label: "Pin Code", name: "residentialAddress.pinCode" },
-            ].map(({ label, name }, i) => (
-              <LabelledInput key={i} label={label} name={name ?? label} />
-            ))}
-          </Grid>
+        {(formik) => (
+          <Form>
+            <Grid
+              mt="2rem"
+              gap="2rem"
+              templateColumns={["1fr", "repeat(2, 1fr)"]}
+            >
+              {[
+                {
+                  label: "Address Line 1",
+                  name: "residentialAddress.addressLine1",
+                },
+                {
+                  label: "Address Line 2",
+                  name: "residentialAddress.addressLine2",
+                },
+                {
+                  label: "Address Line 3",
+                  name: "residentialAddress.addressLine3",
+                },
+                { label: "Pin Code", name: "residentialAddress.pinCode" },
+              ].map(({ label, name }, i) => (
+                <LabelledInput key={i} label={label} name={name ?? label} />
+              ))}
+            </Grid>
 
-          <Spacer h="3rem" />
+            <Spacer h="3rem" />
 
-          <Flex align="baseline" gap="0.5rem">
-            <Heading>Office Address</Heading>
-            <Text fontSize="xs">(Optional)</Text>
-          </Flex>
-          <Grid
-            mt="2rem"
-            gap="2rem"
-            templateColumns={["1fr", "repeat(2, 1fr)"]}
-          >
-            {[
-              {
-                label: "Office Address Line 1",
-                name: "officeAddress.addressLine1",
-              },
-              {
-                label: "Office Address Line 2",
-                name: "officeAddress.addressLine2",
-              },
-              {
-                label: "Office Address Line 3",
-                name: "officeAddress.addressLine3",
-              },
-              { label: "Pin Code", name: "officeAddress.pinCode" },
-            ].map(({ label, name }, i) => (
-              <LabelledInput key={i} label={label} name={name ?? label} />
-            ))}
-          </Grid>
-        </Form>
+            <Flex align="baseline" gap="0.5rem">
+              <Heading>Office Address</Heading>
+              <Text fontSize="xs">(Optional)</Text>
+            </Flex>
+            <Grid
+              mt="2rem"
+              gap="2rem"
+              templateColumns={["1fr", "repeat(2, 1fr)"]}
+            >
+              {[
+                {
+                  label: "Office Address Line 1",
+                  name: "officeAddress.addressLine1",
+                },
+                {
+                  label: "Office Address Line 2",
+                  name: "officeAddress.addressLine2",
+                },
+                {
+                  label: "Office Address Line 3",
+                  name: "officeAddress.addressLine3",
+                },
+                { label: "Pin Code", name: "officeAddress.pinCode" },
+              ].map(({ label, name }, i) => (
+                <LabelledInput key={i} label={label} name={name ?? label} />
+              ))}
+            </Grid>
+            <Spacer h="2rem" />
+            <Flex w="100%" justifyContent="space-between">
+              <Button
+                colorScheme="orange"
+                leftIcon={<ArrowBackIcon />}
+                size="lg"
+                onClick={() => setActiveStep(activeStep - 1)}
+              >
+                Previous
+              </Button>
+
+              <Button
+                type="submit"
+                isDisabled={!(formik.isValid && formik.dirty)}
+                colorScheme="orange"
+                rightIcon={<ArrowForwardIcon />}
+                size="lg"
+              >
+                Next
+              </Button>
+            </Flex>
+          </Form>
+        )}
       </Formik>
     </>
   );
 };
 
-export const FamilyMemberDetailsSection: React.FC<{
-  initialValues: FamilyMember[];
-  stateSetter: (values: FamilyMember[]) => void;
-}> = ({ initialValues, stateSetter }) => {
+export const FamilyMemberDetailsSection: React.FC = () => {
   // TODO: Use Formik FieldArray instead of this
-  const [familyMembers, setFamilyMembers] =
-    useState<FamilyMember[]>(initialValues);
+  // const [familyMembers, setFamilyMembers] =
+  //   useState<FamilyMember[]>(initialValues);
   // useEffect(() => console.log({ familyMembers }), [familyMembers]);
-  useEffect(() => stateSetter(familyMembers), [familyMembers, stateSetter]);
+  // useEffect(() => stateSetter(familyMembers), [familyMembers, stateSetter]);
+
+  const [activeStep, setActiveStep] = useAtom(activeStepAtom);
+  const [familyMembers, setFamilyMembers] = useAtom(familyMembersAtom);
 
   return (
     <>
@@ -480,7 +458,7 @@ export const FamilyMemberDetailsSection: React.FC<{
         gap="2rem"
         templateColumns={["1fr", "repeat(4, 4fr) 1fr"]}
       >
-        {familyMembers.map((fm: FamilyMember, i) => (
+        {familyMembers?.map((fm: FamilyMember, i) => (
           <>
             {[
               {
@@ -512,11 +490,11 @@ export const FamilyMemberDetailsSection: React.FC<{
             ))}
             <IconButton
               my="auto"
-              h="50%"
+              h="70%"
               aria-label="button"
               colorScheme="red"
               bgColor="red.400"
-              icon={<CloseIcon />}
+              icon={<DeleteIcon />}
               // Remove this family member
               onClick={() => {
                 const newMembers = [...familyMembers];
@@ -533,7 +511,7 @@ export const FamilyMemberDetailsSection: React.FC<{
           gridColumn="span 2"
           onClick={() =>
             setFamilyMembers([
-              ...familyMembers,
+              ...(familyMembers ?? []),
               { memberName: "", relationship: "", occupation: "", age: null },
             ])
           }
@@ -542,85 +520,137 @@ export const FamilyMemberDetailsSection: React.FC<{
         </Button>
         <Box />
       </Grid>
+      <Spacer h="2rem" />
+      <Flex w="100%" justifyContent="space-between">
+        <Button
+          colorScheme="orange"
+          leftIcon={<ArrowBackIcon />}
+          size="lg"
+          onClick={() => setActiveStep(activeStep - 1)}
+        >
+          Previous
+        </Button>
+
+        <Button
+          type="submit"
+          colorScheme="orange"
+          rightIcon={<ArrowForwardIcon />}
+          size="lg"
+          onClick={() => setActiveStep(activeStep + 1)}
+        >
+          Next
+        </Button>
+      </Flex>
     </>
   );
 };
 
-export const ProposerDetailsSection: React.FC<{
-  initialValues: ProposerInfo;
-  stateSetter: (values: ProposerInfo) => void;
-}> = ({ initialValues, stateSetter }) => {
+export const ProposerDetailsSection: React.FC = () => {
+  const [activeStep, setActiveStep] = useAtom(activeStepAtom);
+  const [proposerInfo, setProposerInfo] = useAtom(proposerInfoAtom);
+
   return (
     <>
       <Heading>Proposer Details</Heading>
 
       <Formik
-        initialValues={initialValues}
+        initialValues={proposerInfo}
         validationSchema={proposerInfoSchema}
         onSubmit={(values, actions) => {
-          console.log({ values, actions });
-          alert(JSON.stringify(values, null, 2));
+          // console.log({ values });
+
+          setProposerInfo(values);
           actions.setSubmitting(false);
+          setActiveStep(activeStep + 1);
         }}
       >
-        <Form>
-          <FormGlobalStateSetter stateSetter={stateSetter} />
-          <Grid
-            mt="2rem"
-            gap="2rem"
-            templateColumns={["1fr", "repeat(3, 1fr)"]}
-          >
-            {[
-              { label: "First Name" },
-              { label: "Last Name" },
-              { label: "Mobile Number" },
-            ].map(({ label }, i) => (
-              <LabelledInput key={i} label={label} />
-            ))}
-          </Grid>
-        </Form>
+        {(formik) => (
+          <Form>
+            <Grid
+              mt="2rem"
+              gap="2rem"
+              templateColumns={["1fr", "repeat(3, 1fr)"]}
+            >
+              {[
+                { label: "First Name" },
+                { label: "Last Name" },
+                { label: "Mobile Number" },
+              ].map(({ label }, i) => (
+                <LabelledInput key={i} label={label} />
+              ))}
+            </Grid>
+
+            <Spacer h="2rem" />
+
+            <Heading size="md">Proposer Certification</Heading>
+            <Flex flexDir="column" mt="1rem" gap="0.75rem" maxW="50%">
+              <Text>
+                By submitting this form, I certify that the applicant is a
+                Khudabadi Amil and is eligible for membership of the Khudabadi
+                Amil Panchayat of Bombay.
+              </Text>
+            </Flex>
+
+            <Spacer h="2rem" />
+
+            <Heading size="lg">Declaration</Heading>
+            <UnorderedList mt="1rem" spacing="0.75rem" maxW="60%">
+              <ListItem>
+                The Applicant hereby declares that: I am a Khudabadi Amil and
+                request the Committee to admit me as Patron / Life-Member of The
+                Khudabadi Amil Panchayat of Bombay.
+              </ListItem>
+              <ListItem>
+                I agree to abide by the Constitution and rules of the Khudabadi
+                Amil Panchayat of Bombay in force from time to time.
+              </ListItem>
+            </UnorderedList>
+            <Spacer h="2rem" />
+            <Flex w="100%" justifyContent="space-between">
+              <Button
+                colorScheme="orange"
+                leftIcon={<ArrowBackIcon />}
+                size="lg"
+                onClick={() => setActiveStep(activeStep - 1)}
+              >
+                Previous
+              </Button>
+
+              <Button
+                type="submit"
+                isDisabled={!(formik.isValid && formik.dirty)}
+                colorScheme="orange"
+                rightIcon={<ArrowForwardIcon />}
+                size="lg"
+              >
+                Next
+              </Button>
+            </Flex>
+          </Form>
+        )}
       </Formik>
-
-      <Spacer h="2rem" />
-
-      <Heading size="md">Proposer Certification</Heading>
-      <Flex flexDir="column" mt="1rem" gap="0.75rem" maxW="50%">
-        <Text>
-          By submitting this form, I certify that the applicant is a Khudabadi
-          Amil and is eligible for membership of the Khudabadi Amil Panchayat of
-          Bombay.
-        </Text>
-      </Flex>
-
-      <Spacer h="2rem" />
-
-      <Heading size="lg">Declaration</Heading>
-      <UnorderedList mt="1rem" spacing="0.75rem" maxW="60%">
-        <ListItem>
-          The Applicant hereby declares that: I am a Khudabadi Amil and request
-          the Committee to admit me as Patron / Life-Member of The Khudabadi
-          Amil Panchayat of Bombay.
-        </ListItem>
-        <ListItem>
-          I agree to abide by the Constitution and rules of the Khudabadi Amil
-          Panchayat of Bombay in force from time to time.
-        </ListItem>
-      </UnorderedList>
     </>
   );
 };
 
-const MembershipDetailsSection: React.FC<{
-  initialValues: KAPMembershipInfo;
-  stateSetter: (values: KAPMembershipInfo) => void;
-  paymentAmountState: number;
-  paymentAmountStateSetter: (paymentAmount: number) => void;
-}> = ({
-  initialValues,
-  stateSetter,
-  paymentAmountState,
-  paymentAmountStateSetter,
-}) => {
+const MembershipDetailsSection: React.FC = () => {
+  const [activeStep, setActiveStep] = useAtom(activeStepAtom);
+  const [membershipInfo, setMembershipInfo] = useAtom(membershipInfoAtom);
+  const [formState] = useAtom(atom((get) => get(kapFormAtom)));
+
+  const [paymentAmount, setPaymentAmount] = useState<number>(0);
+  const { handlePayment } = usePayment({
+    prefillDetails: {
+      name: `${formState.personalInfo.firstName}${
+        formState.personalInfo.middleName
+          ? ` ${formState.personalInfo.middleName}`
+          : ""
+      } ${formState.personalInfo.lastName}`,
+      email: formState.personalInfo.emailId,
+      contact: formState.personalInfo.mobileNumber,
+    },
+  });
+
   return (
     <>
       <Heading>Type of Membership</Heading>
@@ -636,18 +666,18 @@ const MembershipDetailsSection: React.FC<{
             gap="1rem"
             align="center"
             border={
-              initialValues.membershipType === label.toLowerCase()
+              membershipInfo.membershipType === label.toLowerCase()
                 ? "1px solid #C05621"
                 : "1px solid #CBD5E0"
             }
             borderRadius="5px"
             cursor="pointer"
             onClick={() => {
-              stateSetter({
+              setMembershipInfo({
                 membershipType: label === "Patron" ? "patron" : "life-member",
               });
 
-              paymentAmountStateSetter(
+              setPaymentAmount(
                 label === "Patron"
                   ? 500000
                   : label === "Life-Member"
@@ -672,9 +702,9 @@ const MembershipDetailsSection: React.FC<{
           The Applicant hereby declares that, I am a Khudabadi Amil and request
           the Committee to admit me as
           <Tag size="md" colorScheme="orange">
-            {paymentAmountState === 500000
+            {paymentAmount === 500000
               ? "Patron"
-              : paymentAmountState === 250000
+              : paymentAmount === 250000
               ? "Life-Member"
               : "—"}
           </Tag>{" "}
@@ -687,11 +717,33 @@ const MembershipDetailsSection: React.FC<{
         <ListItem>
           I hereby agree to pay{" "}
           <Tag size="md" colorScheme="orange">
-            Rs. {paymentAmountState !== 0 ? paymentAmountState / 100 : "—"}
+            Rs. {paymentAmount !== 0 ? paymentAmount / 100 : "—"}
           </Tag>{" "}
           as membership fees.
         </ListItem>
       </UnorderedList>
+      <Spacer h="2rem" />
+      <Flex w="100%" justifyContent="space-between">
+        <Button
+          colorScheme="orange"
+          leftIcon={<ArrowBackIcon />}
+          size="lg"
+          onClick={() => setActiveStep(activeStep - 1)}
+        >
+          Previous
+        </Button>
+
+        <Button
+          type="submit"
+          isDisabled={paymentAmount === 0}
+          colorScheme="orange"
+          leftIcon={<FaRupeeSign />}
+          size="lg"
+          onClick={() => void handlePayment(paymentAmount, "kap_membership")}
+        >
+          Pay now
+        </Button>
+      </Flex>
     </>
   );
 };
