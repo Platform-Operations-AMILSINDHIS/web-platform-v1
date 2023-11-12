@@ -9,17 +9,12 @@ import {
 
 interface kapModalProps {
   modalState: boolean;
-  displayState: boolean;
   handleModal: () => void;
 }
 
-const kapModal: React.FC<kapModalProps> = ({
-  displayState,
-  modalState,
-  handleModal,
-}) => {
+const KapModal: React.FC<kapModalProps> = ({ modalState, handleModal }) => {
   return (
-    <Modal onClose={handleModal} isOpen={displayState}>
+    <Modal onClose={handleModal} isOpen={modalState}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>KAP Membership</ModalHeader>
@@ -29,4 +24,4 @@ const kapModal: React.FC<kapModalProps> = ({
   );
 };
 
-export default kapModal;
+export default KapModal;

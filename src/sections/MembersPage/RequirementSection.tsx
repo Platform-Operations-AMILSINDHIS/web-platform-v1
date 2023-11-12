@@ -1,4 +1,4 @@
-import { Flex, Text, Heading } from "@chakra-ui/react";
+import { Flex, Text, Heading, useDisclosure } from "@chakra-ui/react";
 import InformationBox from "~/components/members/InformationBox";
 
 const info1 = [
