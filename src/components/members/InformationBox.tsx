@@ -2,11 +2,12 @@ import { Flex, Heading, Text, useDisclosure } from "@chakra-ui/react";
 import LinkButton from "../buttons/LinkButton";
 import ModalButton from "../buttons/ModalButtons";
 import KapModal from "../membership_modals/kapModal";
+import YacModal from "../membership_modals/yacModal";
 
 interface InformationBoxProps {
   identifier: string;
   title: string;
-  modalDisplayState?: boolean;
+  modalDisplayState: boolean;
   content: string[];
   URL: string;
 }
@@ -65,7 +66,11 @@ const InformationBox: React.FC<InformationBoxProps> = ({
           fontSize="sm"
           CTAaction={handleModal}
         />
-        <KapModal handleModal={onClose} modalState={isOpen} />
+        {modalDisplayState ? (
+          <KapModal handleModal={onClose} modalState={isOpen} />
+        ) : (
+          <YacModal handleModal={onClose} modalState={isOpen} />
+        )}
       </Flex>
     </Flex>
   );
