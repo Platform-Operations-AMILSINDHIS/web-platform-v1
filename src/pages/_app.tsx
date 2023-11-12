@@ -3,6 +3,7 @@ import { type AppType } from "next/app";
 
 import { SessionProvider } from "next-auth/react";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { Provider as JotaiProvider } from "jotai";
 
 import { api } from "~/utils/api";
 
@@ -14,6 +15,12 @@ const theme = extendTheme({
     heading: "'satoshi sans', sans-serif",
     body: "'satoshi sans', sans-serif",
   },
+  colors: {
+    orange: {
+      500: "#FF4D00",
+      600: "#DD4809",
+    },
+  },
 });
 
 const MyApp: AppType<{ session: Session | null }> = ({
@@ -23,7 +30,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <ChakraProvider theme={theme}>
-        <Component {...pageProps} />
+        <JotaiProvider>
+          <Component {...pageProps} />
+        </JotaiProvider>
       </ChakraProvider>
     </SessionProvider>
   );

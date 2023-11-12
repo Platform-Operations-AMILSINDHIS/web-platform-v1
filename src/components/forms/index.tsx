@@ -1,4 +1,4 @@
-import { ChangeEvent, ChangeEventHandler, useEffect } from "react";
+import { ChangeEvent, ChangeEventHandler, useState, useEffect } from "react";
 
 import {
   FormControl,
@@ -7,8 +7,18 @@ import {
   Flex,
   Select,
   FormErrorMessage,
+  Text,
+  Box,
 } from "@chakra-ui/react";
-import { Field, ErrorMessage, useFormikContext } from "formik";
+import {
+  Field,
+  ErrorMessage,
+  useFormikContext,
+  FieldInputProps,
+  FieldMetaProps,
+  FieldHelperProps,
+  FormikHelpers,
+} from "formik";
 
 export const camelCase = (str: string) =>
   str
@@ -18,14 +28,16 @@ export const camelCase = (str: string) =>
 
 export const LabelledInput: React.FC<{
   label: string;
+  placeholder?: string;
   name?: string;
-  type?: string;
+  type?: "text" | "chakra-text" | "date" | "datetime" | "number" | "select";
   validate?: () => string; // validation function returns error string
   onChange?: ChangeEventHandler<HTMLInputElement>;
   defaultValue?: string;
   selectOptions?: string[];
 }> = ({
   label,
+  placeholder,
   name,
   type = "text",
   validate,
@@ -33,8 +45,8 @@ export const LabelledInput: React.FC<{
   defaultValue,
   selectOptions,
 }) => (
-  <FormControl>
-    <FormLabel fontSize="sm" fontWeight="light">
+  <FormControl fontWeight={500}>
+    <FormLabel color="gray.700" fontWeight={600}>
       {label}
     </FormLabel>
     {type === "text" ? (
@@ -44,26 +56,36 @@ export const LabelledInput: React.FC<{
           id={camelCase(label)}
           name={name ?? camelCase(label)}
           validate={validate ?? undefined}
-          py="30px"
-          borderRadius="5px"
+          placeholder={placeholder}
+          borderColor="gray.400"
+          _hover={{
+            borderColor: "#FF4D00",
+          }}
+          focusBorderColor="#FF4D00"
         />
-        <ErrorMessage name={name ?? camelCase(label)} />
+        <Box py={1} fontWeight={600} fontSize="sm" color="red">
+          <ErrorMessage name={name ?? camelCase(label)} />
+        </Box>
       </>
     ) : type === "chakra-text" ? (
       <>
         <Input
           name={name ?? camelCase(label)}
-          py="30px"
-          borderRadius="5px"
           onChange={onChange ?? undefined}
           defaultValue={defaultValue ?? undefined}
+          placeholder={placeholder}
+          borderColor="gray.400"
+          _hover={{
+            borderColor: "#FF4D00",
+          }}
+          focusBorderColor="#FF4D00"
         />
-        <ErrorMessage name={name ?? camelCase(label)} />
+        {/* <FormErrorMessage> */}
       </>
     ) : type === "date" ? (
       // TODO: Hook up date picker component to Formik
       <>
-        <Flex>
+        {/* <Flex>
           <Input
             type="date"
             variant="ghost"
@@ -75,7 +97,64 @@ export const LabelledInput: React.FC<{
             defaultValue={defaultValue ?? undefined}
           />
           <ErrorMessage name={name ?? camelCase(label)} />
-        </Flex>
+        </Flex> */}
+
+        {/* <Field
+          as={Input}
+          type="date"
+          id={camelCase(label)}
+          name={name ?? camelCase(label)}
+          validate={validate ?? undefined}
+          placeholder={placeholder}
+          borderColor="gray.400"
+          _hover={{
+            borderColor: "#FF4D00",
+          }}
+          focusBorderColor="#FF4D00"
+        />
+        <Box py={1} fontWeight={600} fontSize="sm" color="red">
+          <ErrorMessage name={name ?? camelCase(label)} />
+        </Box> */}
+
+        <Field name={name ?? camelCase(label)}>
+          {({
+            field,
+            meta,
+            form: { setFieldValue },
+          }: {
+            field: FieldInputProps<Date>;
+            meta: FieldMetaProps<Date>;
+            form: FormikHelpers<Date>;
+          }) => {
+            return (
+              <>
+                <Input
+                  // {...field}
+                  type="date"
+                  onChange={(e) => {
+                    void setFieldValue(field.name, new Date(e.target.value));
+                    console.log({ d: new Date(e.target.value) });
+                  }}
+                  value={
+                    field.value
+                      ? field.value.toISOString().split("T")[0]
+                      : undefined
+                  }
+                  id={camelCase(label)}
+                  placeholder={placeholder}
+                  borderColor="gray.400"
+                  _hover={{
+                    borderColor: "#FF4D00",
+                  }}
+                  focusBorderColor="#FF4D00"
+                />
+                <Box py={1} fontWeight={600} fontSize="sm" color="red">
+                  <ErrorMessage name={name ?? camelCase(label)} />
+                </Box>
+              </>
+            );
+          }}
+        </Field>
       </>
     ) : type === "datetime" ? (
       <Flex border="1px solid #E2E8F0" borderRadius="5px" py="10px">
@@ -94,9 +173,13 @@ export const LabelledInput: React.FC<{
         type="number"
         id={camelCase(label)}
         name={name ?? camelCase(label)}
+        placeholder={placeholder}
         validate={validate ?? undefined}
-        py="30px"
-        borderRadius="5px"
+        _hover={{
+          borderColor: "#FF4D00",
+        }}
+        focusBorderColor="#FF4D00"
+        borderColor="gray.400"
       />
     ) : type === "select" ? (
       // <Flex border="1px solid #E2E8F0" borderRadius="5px" py="10px">
@@ -105,8 +188,15 @@ export const LabelledInput: React.FC<{
         variant="ghost"
         name={name ?? camelCase(label)}
         borderRadius="5px"
-        onChange={onChange ?? undefined}
+        // onChange={onChange ?? undefined}
         defaultValue={defaultValue ?? undefined}
+        placeholder={placeholder}
+        focusBorderColor="#FF4D00"
+        border="1px solid"
+        borderColor="gray.400"
+        _hover={{
+          borderColor: "#FF4D00",
+        }}
       >
         {selectOptions?.map((option) => (
           <option key={option} value={option.toLowerCase()}>
@@ -146,17 +236,3 @@ export const FormGlobalStateSetter: React.FC<{
 
   return null;
 };
-
-// const DatePickerField = ({ ...props }) => {
-//   const [field, , { setValue }] = useField(props);
-
-//   return (
-//     <ChakraDatePicker
-//       {...field}
-//       initialValue={new Date()}
-//       onDateChange={(date: Date | null) => {
-//         setValue(date).catch(console.error);
-//       }}
-//     />
-//   );
-// };
