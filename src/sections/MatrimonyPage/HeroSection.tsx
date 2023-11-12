@@ -18,7 +18,7 @@ const MatrimonyHero = () => {
           Khudabadi Amil Panchayat presents
         </Text>
         <Spacer h="0.5rem" />
-        <Heading fontWeight="semibold" fontSize="5xl">
+        <Heading fontWeight="bold" fontSize="5xl">
           <Box as="span" color="#FF4D00">
             Matrimony
           </Box>
