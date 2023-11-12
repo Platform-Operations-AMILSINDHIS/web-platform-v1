@@ -9,12 +9,16 @@ import {
   FormErrorMessage,
   Text,
   Box,
-  Container,
 } from "@chakra-ui/react";
-import { Field, ErrorMessage, useFormikContext } from "formik";
-import { useDropzone } from "react-dropzone";
-
-import { GrDocument } from "react-icons/gr";
+import {
+  Field,
+  ErrorMessage,
+  useFormikContext,
+  FieldInputProps,
+  FieldMetaProps,
+  FieldHelperProps,
+  FormikHelpers,
+} from "formik";
 
 export const camelCase = (str: string) =>
   str
@@ -53,8 +57,6 @@ export const LabelledInput: React.FC<{
           name={name ?? camelCase(label)}
           validate={validate ?? undefined}
           placeholder={placeholder}
-          // py="10px"
-          // borderRadius="5px"
           borderColor="gray.400"
           _hover={{
             borderColor: "#FF4D00",
@@ -69,17 +71,21 @@ export const LabelledInput: React.FC<{
       <>
         <Input
           name={name ?? camelCase(label)}
-          py="30px"
-          borderRadius="5px"
           onChange={onChange ?? undefined}
           defaultValue={defaultValue ?? undefined}
+          placeholder={placeholder}
+          borderColor="gray.400"
+          _hover={{
+            borderColor: "#FF4D00",
+          }}
+          focusBorderColor="#FF4D00"
         />
         {/* <FormErrorMessage> */}
       </>
     ) : type === "date" ? (
       // TODO: Hook up date picker component to Formik
       <>
-        <Flex>
+        {/* <Flex>
           <Input
             type="date"
             variant="ghost"
@@ -91,7 +97,64 @@ export const LabelledInput: React.FC<{
             defaultValue={defaultValue ?? undefined}
           />
           <ErrorMessage name={name ?? camelCase(label)} />
-        </Flex>
+        </Flex> */}
+
+        {/* <Field
+          as={Input}
+          type="date"
+          id={camelCase(label)}
+          name={name ?? camelCase(label)}
+          validate={validate ?? undefined}
+          placeholder={placeholder}
+          borderColor="gray.400"
+          _hover={{
+            borderColor: "#FF4D00",
+          }}
+          focusBorderColor="#FF4D00"
+        />
+        <Box py={1} fontWeight={600} fontSize="sm" color="red">
+          <ErrorMessage name={name ?? camelCase(label)} />
+        </Box> */}
+
+        <Field name={name ?? camelCase(label)}>
+          {({
+            field,
+            meta,
+            form: { setFieldValue },
+          }: {
+            field: FieldInputProps<Date>;
+            meta: FieldMetaProps<Date>;
+            form: FormikHelpers<Date>;
+          }) => {
+            return (
+              <>
+                <Input
+                  // {...field}
+                  type="date"
+                  onChange={(e) => {
+                    void setFieldValue(field.name, new Date(e.target.value));
+                    console.log({ d: new Date(e.target.value) });
+                  }}
+                  value={
+                    field.value
+                      ? field.value.toISOString().split("T")[0]
+                      : undefined
+                  }
+                  id={camelCase(label)}
+                  placeholder={placeholder}
+                  borderColor="gray.400"
+                  _hover={{
+                    borderColor: "#FF4D00",
+                  }}
+                  focusBorderColor="#FF4D00"
+                />
+                <Box py={1} fontWeight={600} fontSize="sm" color="red">
+                  <ErrorMessage name={name ?? camelCase(label)} />
+                </Box>
+              </>
+            );
+          }}
+        </Field>
       </>
     ) : type === "datetime" ? (
       <Flex border="1px solid #E2E8F0" borderRadius="5px" py="10px">
@@ -173,85 +236,3 @@ export const FormGlobalStateSetter: React.FC<{
 
   return null;
 };
-
-export const UploadFile: React.FC = () => {
-  // const [file, setFile] = useState<File>();
-
-  const [formState, setFormState] = useState<{
-    donorName: string;
-    contactNumber: string;
-    email: string;
-  }>();
-
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
-
-  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (event.target.files) {
-  //     const currentFile = event.target.files[0];
-  //     // setFile(currentFile);
-  //   }
-  // };
-
-  const handleUpload = async () => {
-    if (!acceptedFiles || acceptedFiles?.length < 2) return;
-
-    const formData = new FormData();
-    formData.append("file", acceptedFiles[0]!);
-    formData.append("file", acceptedFiles[1]!);
-
-    const response = await fetch("/api/upload", {
-      method: "POST",
-    });
-
-    const { url } = (await response.json()) as { url: string };
-
-    await fetch(url, {
-      method: "PUT",
-      body: formData,
-    });
-  };
-
-  return (
-    <Box>
-      {/* <div {...getRootProps({ className: "dropzone" })}>
-        <input {...getInputProps()} />
-        <p>Drag & drop some file here, or click to select a file</p>
-      </div> */}
-      <Flex
-        h="8rem"
-        w="22rem"
-        bgColor="rgba(251, 31, 255, 0.07)"
-        border="2px dashed #FB1FFF"
-        borderRadius="10px"
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
-        {...getRootProps({ className: "dropzone" })}
-      >
-        <input {...getInputProps()} />
-        {acceptedFiles.length > 0 ? (
-          <Flex alignItems="center" gap="0.35rem">
-            <GrDocument size="1.5rem" />
-            <Text>{acceptedFiles[0]!.name}</Text>
-          </Flex>
-        ) : (
-          <Text>Drag & drop your files here or choose files</Text>
-        )}
-      </Flex>
-    </Box>
-  );
-};
-
-// const DatePickerField = ({ ...props }) => {
-//   const [field, , { setValue }] = useField(props);
-
-//   return (
-//     <ChakraDatePicker
-//       {...field}
-//       initialValue={new Date()}
-//       onDateChange={(date: Date | null) => {
-//         setValue(date).catch(console.error);
-//       }}
-//     />
-//   );
-// };
