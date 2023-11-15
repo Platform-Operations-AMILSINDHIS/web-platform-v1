@@ -7,7 +7,7 @@ import RequirementSection from "~/sections/MembersPage/RequirementSection";
 
 const MembershipsHomePage: NextPage = () => {
   return (
-    <Layout title="Home">
+    <Layout title="Memberships">
       <HeroSection />
       <RequirementSection />
       <Flex w="full" justify="center">

@@ -70,7 +70,6 @@ export async function sendRawJsonDataOnly(to: string, data: any) {
   await sendMail({ to, subject, html });
 }
 
-/* eslint-disable  @typescript-eslint/no-explicit-any */
 export async function sendRawJsonDataWithPDF(
   to: string,
   data: any,

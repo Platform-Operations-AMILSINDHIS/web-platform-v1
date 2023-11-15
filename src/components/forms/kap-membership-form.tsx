@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, type ChangeEvent, useEffect } from "react";
 import {
   Heading,
   Text,
@@ -30,12 +30,7 @@ import { focusAtom } from "jotai-optics";
 import { FaHandHoldingHeart, FaUserFriends, FaRupeeSign } from "react-icons/fa";
 import { ArrowBackIcon, ArrowForwardIcon, DeleteIcon } from "@chakra-ui/icons";
 
-import {
-  LabelledInput,
-  FormObserver,
-  FormGlobalStateSetter,
-  camelCase,
-} from "./index";
+import { LabelledInput, camelCase } from "./index";
 
 import type {
   KAPMembershipFormValues,
@@ -146,20 +141,18 @@ const membershipInfoAtom = focusAtom(kapFormAtom, (optic) =>
   optic.prop("membershipInfo")
 );
 
-const activeStepAtom = atom<number>(5);
+const activeStepAtom = atom<number>(1);
 
 const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
   // TODO: Setup global formState for all the Formik forms to mutate onSubmit, maybe use Jotai for this
   const toast = useToast();
 
-  const [formState, setFormState] = useAtom(kapFormAtom);
+  // const [formState, setFormState] = useAtom(kapFormAtom);
 
   const [activeStep, setActiveStep] = useAtom(activeStepAtom);
 
-  const formMut = api.form.kapMembership.useMutation();
-
   // Logger
-  useEffect(() => console.log(JSON.stringify(formState, null, 2)), [formState]);
+  // useEffect(() => console.log(JSON.stringify(formState, null, 2)), [formState]);
 
   // useEffect(() => {
   //   if (isSubmitted && formMut.status === "idle") {
@@ -200,7 +193,7 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
         ProposerDetailsSection,
         MembershipDetailsSection,
       ].map((FormSection, i) => (
-        <>{activeStep === i + 1 && <FormSection />}</>
+        <>{activeStep === i + 1 && <FormSection key={i} />}</>
       ))}
 
       <Spacer h="2rem" />
@@ -272,7 +265,7 @@ export const PersonalInformationSection: React.FC = () => {
 
       <Formik
         initialValues={personalInfo}
-        // validationSchema={personalInfoSchema}
+        validationSchema={personalInfoSchema}
         onSubmit={(values, actions) => {
           // console.log({ values });
           setPersonalInfo(values);
@@ -346,7 +339,7 @@ export const AddressDetailsSection: React.FC = () => {
       <Heading>Residential Address</Heading>
       <Formik
         initialValues={addressInfo}
-        // validationSchema={addressInfoSchema}
+        validationSchema={addressInfoSchema}
         onSubmit={(values, actions) => {
           // console.log({ values });
           setAddressInfo(values);
@@ -634,12 +627,17 @@ export const ProposerDetailsSection: React.FC = () => {
 };
 
 const MembershipDetailsSection: React.FC = () => {
+  const toast = useToast();
+
+  const formMut = api.form.kapMembership.useMutation();
+
   const [activeStep, setActiveStep] = useAtom(activeStepAtom);
   const [membershipInfo, setMembershipInfo] = useAtom(membershipInfoAtom);
   const [formState] = useAtom(atom((get) => get(kapFormAtom)));
 
   const [paymentAmount, setPaymentAmount] = useState<number>(0);
-  const { handlePayment } = usePayment({
+
+  const { handlePayment, paymentId } = usePayment({
     prefillDetails: {
       name: `${formState.personalInfo.firstName}${
         formState.personalInfo.middleName
@@ -650,6 +648,48 @@ const MembershipDetailsSection: React.FC = () => {
       contact: formState.personalInfo.mobileNumber,
     },
   });
+
+  useEffect(() => {
+    console.log("useEffect triggered here");
+
+    if (paymentId) {
+      formMut
+        .mutateAsync(
+          { formData: formState, paymentId },
+          {
+            onSuccess: () => {
+              toast({
+                title: "Response recorded successfully",
+                description: "Your form response has been recorded.",
+                status: "success",
+                duration: 9000,
+                isClosable: true,
+              });
+            },
+            onError: (error) => {
+              toast({
+                title: "Error",
+                // description: "Something went wrong, please try again later.",
+                description: error.message,
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+              });
+            },
+          }
+        )
+        .then(() => {
+          toast({
+            title: "Response recorded successfully",
+            description: "Your form response has been recorded.",
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+          });
+        })
+        .catch(console.error);
+    }
+  }, [paymentId]);
 
   return (
     <>
@@ -739,7 +779,11 @@ const MembershipDetailsSection: React.FC = () => {
           colorScheme="orange"
           leftIcon={<FaRupeeSign />}
           size="lg"
-          onClick={() => void handlePayment(paymentAmount, "kap_membership")}
+          onClick={() => {
+            void handlePayment(paymentAmount, "kap_membership").catch(
+              console.error
+            );
+          }}
         >
           Pay now
         </Button>

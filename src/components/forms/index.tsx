@@ -211,28 +211,28 @@ export const LabelledInput: React.FC<{
   </FormControl>
 );
 
-export const FormObserver: React.FC = () => {
-  const { values } = useFormikContext();
+// export const FormObserver: React.FC = () => {
+//   const { values } = useFormikContext();
 
-  useEffect(() => {
-    console.log("FormObserver::values", values);
-  }, [values]);
+//   useEffect(() => {
+//     console.log("FormObserver::values", values);
+//   }, [values]);
 
-  return null;
-};
+//   return null;
+// };
 
-// TODO: Turn this into a hook which accepts a type and a stateSetter
-// which takes in that type and sets it to global formState
-export const FormGlobalStateSetter: React.FC<{
-  /* eslint-disable  @typescript-eslint/no-explicit-any */
-  stateSetter: (...args: any[]) => any;
-}> = ({ stateSetter }) => {
-  const { values } = useFormikContext();
+// // TODO: Turn this into a hook which accepts a type and a stateSetter
+// // which takes in that type and sets it to global formState
+// export const FormGlobalStateSetter: React.FC<{
+//   /* eslint-disable  @typescript-eslint/no-explicit-any */
+//   stateSetter: (...args: any[]) => any;
+// }> = ({ stateSetter }) => {
+//   const { values } = useFormikContext();
 
-  useEffect(() => {
-    // console.log("FormObserver::values", values);
-    stateSetter(values);
-  }, [values]);
+//   useEffect(() => {
+//     // console.log("FormObserver::values", values);
+//     stateSetter(values);
+//   }, [stateSetter, values]);
 
-  return null;
-};
+//   return null;
+// };

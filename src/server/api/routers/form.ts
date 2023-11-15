@@ -19,7 +19,12 @@ import {
 
 export const formRouter = createTRPCRouter({
   kapMembership: publicProcedure
-    .input(Yup.object({ formData: kapMembershipFormValuesSchema }))
+    .input(
+      Yup.object({
+        formData: kapMembershipFormValuesSchema,
+        paymentId: Yup.string().required(),
+      })
+    )
     .mutation(async ({ input }) => {
       const { formData } = input;
 
@@ -40,7 +45,8 @@ export const formRouter = createTRPCRouter({
       //   "kap-membership"
       // );
       await sendRawJsonDataWithPDF(
-        "akshat.sabavat@gmail.com",
+        // "akshat.sabavat@gmail.com",
+        "somesh.kar@gmail.com",
         formData,
         "kap-membership"
       );

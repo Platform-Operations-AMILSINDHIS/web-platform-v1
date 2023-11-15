@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 import AmilLogo from "../../public/images/amil-sindhis-logo.png";
@@ -29,6 +30,8 @@ interface UsePaymentProps {
 const usePayment = ({
   prefillDetails: { name, email, contact },
 }: UsePaymentProps) => {
+  const [paymentId, setPaymentId] = useState<string | null>(null);
+
   const loadScript = (src: string) => {
     return new Promise((resolve) => {
       const script = document.createElement("script");
@@ -45,10 +48,11 @@ const usePayment = ({
 
   const handlePayment = async (amount: number, receiptId: string) => {
     try {
-      const res = await loadScript(
+      const isScriptLoaded = await loadScript(
         "https://checkout.razorpay.com/v1/checkout.js"
       );
-      if (!res) {
+
+      if (!isScriptLoaded) {
         alert("Razorpay SDK failed to load. Are you online?");
         return;
       }
@@ -57,6 +61,7 @@ const usePayment = ({
         amount,
         receipt: receiptId,
       });
+
       if (!result?.data || result.status !== 200) {
         alert("Server error. Are you online?");
         console.error("Server Error: ", result);
@@ -84,10 +89,24 @@ const usePayment = ({
           axios
             .post("/api/pay/success", data)
             .then((resp) => {
-              if (resp.data === "success") {
+              const res = resp.data as {
+                msg: string;
+                orderId: string;
+                paymentId: string;
+              };
+
+              alert("console.logging the response");
+
+              if (res.msg === "success") {
+                setPaymentId(res.paymentId);
+
                 console.log("success");
+                console.log({ res });
               } else if (resp.data === "error") {
                 console.log("error");
+                alert("An error occurred with the payment");
+
+                console.log({ res });
               }
             })
             .catch(console.error);
@@ -123,7 +142,7 @@ const usePayment = ({
     }
   };
 
-  return { handlePayment };
+  return { handlePayment, paymentId };
 };
 
 export default usePayment;
