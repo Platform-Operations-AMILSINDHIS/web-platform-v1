@@ -95,7 +95,7 @@ const usePayment = ({
                 paymentId: string;
               };
 
-              alert("console.logging the response");
+              // alert("console.logging the response");
 
               if (res.msg === "success") {
                 setPaymentId(res.paymentId);

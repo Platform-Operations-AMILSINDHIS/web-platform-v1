@@ -106,6 +106,12 @@ const kapFormAtom = atom<KAPMembershipFormValues>({
       addressLine3: "",
       pinCode: "",
     },
+    officeAddress: {
+      addressLine1: "",
+      addressLine2: "",
+      addressLine3: "",
+      pinCode: "",
+    },
   },
   familyMembers: [
     {
@@ -636,6 +642,7 @@ const MembershipDetailsSection: React.FC = () => {
   const [formState] = useAtom(atom((get) => get(kapFormAtom)));
 
   const [paymentAmount, setPaymentAmount] = useState<number>(0);
+  const [isPaying, setIsPaying] = useState<boolean>(false);
 
   const { handlePayment, paymentId } = usePayment({
     prefillDetails: {
@@ -678,15 +685,6 @@ const MembershipDetailsSection: React.FC = () => {
             },
           }
         )
-        .then(() => {
-          toast({
-            title: "Response recorded successfully",
-            description: "Your form response has been recorded.",
-            status: "success",
-            duration: 9000,
-            isClosable: true,
-          });
-        })
         .catch(console.error);
     }
   }, [paymentId]);
@@ -775,11 +773,14 @@ const MembershipDetailsSection: React.FC = () => {
 
         <Button
           type="submit"
-          isDisabled={paymentAmount === 0}
+          isDisabled={paymentAmount === 0 || isPaying}
+          isLoading={isPaying}
           colorScheme="orange"
           leftIcon={<FaRupeeSign />}
           size="lg"
           onClick={() => {
+            setIsPaying(true);
+
             void handlePayment(paymentAmount, "kap_membership").catch(
               console.error
             );

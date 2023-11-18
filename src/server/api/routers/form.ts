@@ -45,8 +45,8 @@ export const formRouter = createTRPCRouter({
       //   "kap-membership"
       // );
       await sendRawJsonDataWithPDF(
-        // "akshat.sabavat@gmail.com",
-        "somesh.kar@gmail.com",
+        "akshat.sabavat@gmail.com",
+        // "somesh.kar@gmail.com",
         formData,
         "kap-membership"
       );
