@@ -11,6 +11,7 @@ import type {
 import { generateKAPMembershipPDF } from "./pdfs/kap-membership";
 
 import type { KAPMembershipFormValues } from "~/types/forms/membership";
+import { createId } from "~/utils/helper";
 
 // const transporter = nodemailer.createTransport({
 //   host: "smtp.gmail.com",
@@ -90,8 +91,7 @@ export async function sendRawJsonDataWithPDF(
   let pdf;
   if (formType === "kap-membership") {
     pdf = await generateKAPMembershipPDF({
-      // TODO: Dynamically generate membership number
-      membershipNumber: "123456",
+      membershipNumber: createId().toUpperCase(),
       kapForm: data as KAPMembershipFormValues,
     });
   } else if (formType === "yac-membership") {

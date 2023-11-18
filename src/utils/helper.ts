@@ -1,3 +1,5 @@
+import { init } from "@paralleldrive/cuid2";
+
 export const convertDATE = (date: Date) => {
   const inputDate = new Date(date);
 
@@ -44,3 +46,9 @@ export const formatDate = (date: Date) => {
 
   return formattedDate;
 };
+
+export const createId = init({
+  random: Math.random,
+  length: 6,
+  fingerprint: "D6LzbC7JIVWrYVJcamWshmLkrUFpHM",
+});
