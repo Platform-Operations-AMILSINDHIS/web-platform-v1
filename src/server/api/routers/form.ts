@@ -63,7 +63,12 @@ export const formRouter = createTRPCRouter({
       return { success: true };
     }),
   yacMembership: publicProcedure
-    .input(Yup.object({ formData: yacMembershipFormValuesSchema }))
+    .input(
+      Yup.object({
+        formData: yacMembershipFormValuesSchema,
+        paymentId: Yup.string().required(),
+      })
+    )
     .mutation(async ({ input }) => {
       const { formData } = input;
 

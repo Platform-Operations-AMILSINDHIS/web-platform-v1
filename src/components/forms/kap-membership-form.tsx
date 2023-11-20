@@ -34,11 +34,7 @@ import { LabelledInput, camelCase } from "./index";
 
 import type {
   KAPMembershipFormValues,
-  PersonalInfo,
   FamilyMember,
-  AddressInfo,
-  KAPMembershipInfo,
-  ProposerInfo,
 } from "~/types/forms/membership";
 
 import {
@@ -150,22 +146,11 @@ const membershipInfoAtom = focusAtom(kapFormAtom, (optic) =>
 const activeStepAtom = atom<number>(1);
 
 const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
-  // TODO: Setup global formState for all the Formik forms to mutate onSubmit, maybe use Jotai for this
-  const toast = useToast();
-
-  // const [formState, setFormState] = useAtom(kapFormAtom);
-
-  const [activeStep, setActiveStep] = useAtom(activeStepAtom);
+  const [activeStep] = useAtom(activeStepAtom);
 
   // Logger
+  // const [formState] = useAtom(kapFormAtom);
   // useEffect(() => console.log(JSON.stringify(formState, null, 2)), [formState]);
-
-  // useEffect(() => {
-  //   if (isSubmitted && formMut.status === "idle") {
-  //     console.log(JSON.stringify(formState.proposerInfo, null, 2));
-  //     formMut.mutate({ formData: formState });
-  //   }
-  // }, [isSubmitted, formState, formMut]);
 
   return (
     <>
@@ -203,56 +188,6 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
       ))}
 
       <Spacer h="2rem" />
-
-      {/* Navigation buttons */}
-      {/* <Flex justify="space-between">
-        {activeStep > 1 ? (
-          <Button
-            colorScheme="orange"
-            leftIcon={<ArrowBackIcon />}
-            size="lg"
-            onClick={() => setActiveStep(activeStep - 1)}
-          >
-            Previous
-          </Button>
-        ) : (
-          <div></div>
-        )}
-
-        <Button
-          colorScheme="orange"
-          rightIcon={
-            activeStep !== steps.length ? <ArrowForwardIcon /> : undefined
-          }
-          size="lg"
-          isLoading={formMut.isLoading}
-          onClick={
-            activeStep === 5
-              ? async () => {
-                  await handlePayment(paymentAmount, "kap_membership");
-                }
-              : activeStep === steps.length
-              ? () => {
-                  console.log("submit here");
-                  formMut
-                    .mutateAsync({ formData: formState })
-                    .then(() => {
-                      toast({
-                        title: "Response recorded successfully",
-                        description: "Your form response has been recorded.",
-                        status: "success",
-                        duration: 9000,
-                        isClosable: true,
-                      });
-                    })
-                    .catch(console.error);
-                }
-              : () => setActiveStep(activeStep + 1)
-          }
-        >
-          {activeStep === 5 ? "Pay now" : "Next"}
-        </Button>
-      </Flex> */}
     </>
   );
 };
@@ -306,7 +241,7 @@ export const PersonalInformationSection: React.FC = () => {
             <Grid
               mt="2rem"
               gap="2rem"
-              templateColumns={["1fr", "repeat(3, 1fr)"]}
+              templateColumns={["1fr", "repeat(2, 1fr)"]}
             >
               {[
                 { label: "Maiden Surname", name: "maidenSurname" },
@@ -317,7 +252,7 @@ export const PersonalInformationSection: React.FC = () => {
                 <LabelledInput key={i} label={label} name={name ?? label} />
               ))}
             </Grid>
-            <Flex w="100%" justifyContent="space-between">
+            <Flex mt="2rem" w="100%" justifyContent="space-between">
               <Box></Box>
               <Button
                 type="submit"
@@ -438,11 +373,6 @@ export const AddressDetailsSection: React.FC = () => {
 
 export const FamilyMemberDetailsSection: React.FC = () => {
   // TODO: Use Formik FieldArray instead of this
-  // const [familyMembers, setFamilyMembers] =
-  //   useState<FamilyMember[]>(initialValues);
-  // useEffect(() => console.log({ familyMembers }), [familyMembers]);
-  // useEffect(() => stateSetter(familyMembers), [familyMembers, stateSetter]);
-
   const [activeStep, setActiveStep] = useAtom(activeStepAtom);
   const [familyMembers, setFamilyMembers] = useAtom(familyMembersAtom);
 

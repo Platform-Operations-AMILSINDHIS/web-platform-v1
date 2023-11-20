@@ -70,9 +70,9 @@ export const proposerInfoSchema = Yup.object().shape({
 export const kapMembershipFormValuesSchema = Yup.object().shape({
   personalInfo: personalInfoSchema,
   addressInfo: addressInfoSchema,
-  membershipInfo: kapMembershipInfoSchema,
   familyMembers: Yup.array().of(familyMemberSchema).optional(),
   proposerInfo: proposerInfoSchema,
+  membershipInfo: kapMembershipInfoSchema,
 });
 
 export const yacMembershipFormValuesSchema = Yup.object().shape({

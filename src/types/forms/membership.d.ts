@@ -48,9 +48,9 @@ export interface ProposerInfo {
 export interface KAPMembershipFormValues {
   personalInfo: PersonalInfo;
   addressInfo: AddressInfo;
-  membershipInfo: KAPMembershipInfo;
   familyMembers?: FamilyMember[];
   proposerInfo: ProposerInfo;
+  membershipInfo: KAPMembershipInfo;
 }
 
 export interface YACMembershipFormValues {
