@@ -1,4 +1,5 @@
 import { init } from "@paralleldrive/cuid2";
+import { ToWords } from "to-words";
 
 export const convertDATE = (date: Date) => {
   const inputDate = new Date(date);
@@ -51,4 +52,8 @@ export const createId = init({
   random: Math.random,
   length: 6,
   fingerprint: "D6LzbC7JIVWrYVJcamWshmLkrUFpHM",
+});
+
+export const toWords = new ToWords({
+  localeCode: "en-IN",
 });

@@ -34,6 +34,7 @@ export const LabelledInput: React.FC<{
   validate?: () => string; // validation function returns error string
   onChange?: ChangeEventHandler<HTMLInputElement>;
   defaultValue?: string;
+  required?: boolean;
   selectOptions?: string[];
 }> = ({
   label,
@@ -43,6 +44,7 @@ export const LabelledInput: React.FC<{
   validate,
   onChange,
   defaultValue,
+  required,
   selectOptions,
 }) => (
   <FormControl fontWeight={500}>
@@ -74,6 +76,7 @@ export const LabelledInput: React.FC<{
           onChange={onChange ?? undefined}
           defaultValue={defaultValue ?? undefined}
           placeholder={placeholder}
+          required={required ?? false}
           borderColor="gray.400"
           _hover={{
             borderColor: "#FF4D00",

@@ -9,8 +9,12 @@ import type {
 } from "~/types/mails";
 
 import { generateKAPMembershipPDF } from "./pdfs/kap-membership";
+import { generateYACMembershipPDF } from "./pdfs/yac-membership";
 
-import type { KAPMembershipFormValues } from "~/types/forms/membership";
+import type {
+  KAPMembershipFormValues,
+  YACMembershipFormValues,
+} from "~/types/forms/membership";
 import { createId } from "~/utils/helper";
 
 // const transporter = nodemailer.createTransport({
@@ -95,6 +99,10 @@ export async function sendRawJsonDataWithPDF(
       kapForm: data as KAPMembershipFormValues,
     });
   } else if (formType === "yac-membership") {
+    pdf = await generateYACMembershipPDF({
+      membershipNumber: createId().toUpperCase(),
+      yacForm: data as YACMembershipFormValues,
+    });
   }
 
   await sendMail({

@@ -183,38 +183,6 @@ const YoungAmilCircleMembershipForm: React.FC = () => {
 
       <Spacer h="2rem" />
 
-      {/* {activeStep === 1 && (
-        <PersonalInformationSection
-          initialValues={formState.personalInfo}
-          stateSetter={(values: PersonalInfo) =>
-            setFormState({ ...formState, personalInfo: values })
-          }
-        />
-      )}
-
-      {activeStep === 2 && (
-        <AddressDetailsSection
-          initialValues={formState.addressInfo}
-          stateSetter={(values: AddressInfo) =>
-            setFormState({ ...formState, addressInfo: values })
-          }
-        />
-      )}
-
-      {activeStep === 3 && (
-        <FamilyMemberDetailsSection
-          initialValues={formState.familyMembers ?? []}
-          stateSetter={(values: FamilyMember[]) =>
-            setFormState({ ...formState, familyMembers: values })
-          }
-        />
-      )}
-
-      {activeStep === 4 && (
-        <ProposerDetailsSection
-        />
-      )} */}
-
       {[
         PersonalInformationSection,
         AddressDetailsSection,
@@ -225,51 +193,6 @@ const YoungAmilCircleMembershipForm: React.FC = () => {
       ))}
 
       <Spacer h="2rem" />
-
-      {/* Navigation buttons */}
-      {/* <Flex justify="space-between">
-        {activeStep > 1 ? (
-          <Button
-            leftIcon={<ArrowBackIcon />}
-            size="lg"
-            onClick={() => setActiveStep(activeStep - 1)}
-          >
-            Previous
-          </Button>
-        ) : (
-          <div></div>
-        )}
-
-        <Button
-          colorScheme="blue"
-          rightIcon={
-            activeStep !== steps.length ? <ArrowForwardIcon /> : undefined
-          }
-          size="lg"
-          isLoading={formMut.isLoading}
-          onClick={
-            activeStep === steps.length
-              ? () => {
-                  console.log("submit here");
-                  formMut
-                    .mutateAsync({ formData: formState })
-                    .then(() => {
-                      toast({
-                        title: "Response recorded successfully",
-                        description: "Your form response has been recorded.",
-                        status: "success",
-                        duration: 9000,
-                        isClosable: true,
-                      });
-                    })
-                    .catch(console.error);
-                }
-              : () => setActiveStep(activeStep + 1)
-          }
-        >
-          {activeStep === steps.length ? "Submit" : "Next"}
-        </Button>
-      </Flex> */}
     </>
   );
 };
@@ -679,6 +602,7 @@ export const ProposerDetailsSection: React.FC = () => {
             <Flex w="100%" justifyContent="space-between">
               <Button
                 colorScheme="orange"
+                isDisabled={isPaying}
                 leftIcon={<ArrowBackIcon />}
                 size="lg"
                 onClick={() => setActiveStep(activeStep - 1)}
