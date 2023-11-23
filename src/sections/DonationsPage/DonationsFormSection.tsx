@@ -52,7 +52,7 @@ const DonationsForm: React.FC = () => {
     email: "",
   });
 
-  const { handlePayment, paymentId } = usePayment({
+  const { handlePayment, paymentId, isPaying } = usePayment({
     prefillDetails: {
       name: form.donorName,
       email: form.email,
@@ -377,6 +377,7 @@ const DonationsForm: React.FC = () => {
           submitDisabled
         }
         isLoading={
+          (isPaying && !paymentId) ||
           (0 < uploadedFilesCount && uploadedFilesCount < 1) ||
           donationsFormMut.isLoading
         }

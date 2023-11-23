@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 import AmilLogo from "../../public/images/amil-sindhis-logo.png";
@@ -31,6 +31,7 @@ const usePayment = ({
   prefillDetails: { name, email, contact },
 }: UsePaymentProps) => {
   const [paymentId, setPaymentId] = useState<string | null>(null);
+  const [isPaying, setIsPaying] = useState<boolean>(false);
 
   const loadScript = (src: string) => {
     return new Promise((resolve) => {
@@ -48,6 +49,8 @@ const usePayment = ({
 
   const handlePayment = async (amount: number, receiptId: string) => {
     try {
+      setIsPaying(true);
+
       const isScriptLoaded = await loadScript(
         "https://checkout.razorpay.com/v1/checkout.js"
       );
@@ -142,7 +145,7 @@ const usePayment = ({
     }
   };
 
-  return { handlePayment, paymentId };
+  return { handlePayment, paymentId, isPaying };
 };
 
 export default usePayment;
