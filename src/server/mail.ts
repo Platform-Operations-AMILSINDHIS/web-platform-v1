@@ -4,6 +4,7 @@ import { env } from "~/env.mjs";
 
 import type {
   ConfirmationMailType,
+  DonationFormConfirmationMailType,
   RSVPMailType,
   SendMailType,
 } from "~/types/mails";
@@ -126,6 +127,29 @@ export const sendFormConfirmationMail = async ({
   `;
 
   await sendMail({ to, subject, html });
+};
+
+export const sendDonationFormConfirmationMail = async ({
+  amount,
+  contactNumber,
+  donorName,
+  email,
+}: DonationFormConfirmationMailType) => {
+  const subject = `Thank you for donating!`;
+
+  const html = `
+    <div style="font-size: 14px;">
+      <p>Hey ${donorName.split(" ")[0]},</p>
+      <br>
+      <p>This is email is to confirm that we have received your donation for Rs. ${amount}/-</p>
+      <p>We cannot express our gratitude for this, and wholeheartedly thank you for your contribution to the Amil Sindhis community.</p>
+      <br>
+      <p>Regards,</p>
+      <p>Team Amil Sindhis</p>
+    </div>
+  `;
+
+  await sendMail({ to: email, subject, html });
 };
 
 export const sendRsvpMailForEvent = async ({

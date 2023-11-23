@@ -13,6 +13,7 @@ import {
 
 import {
   sendFormConfirmationMail,
+  sendDonationFormConfirmationMail,
   sendRawJsonDataWithPDF,
   sendRawJsonDataOnly,
 } from "../../mail";
@@ -100,12 +101,14 @@ export const formRouter = createTRPCRouter({
 
       // Send response
       await sendRawJsonDataOnly("akshat.sabavat@gmail.com", formData);
+      // await sendRawJsonDataOnly("somesh.kar@gmail.com", formData);
 
       // Send confirmation mail
-      await sendFormConfirmationMail({
-        to: formData.email,
-        formName: "Donations",
-      });
+      await sendDonationFormConfirmationMail(formData);
+      // await sendFormConfirmationMail({
+      //   to: formData.email,
+      //   formName: "Donations",
+      // });
 
       return { success: true };
     }),

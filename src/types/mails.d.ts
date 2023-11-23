@@ -7,13 +7,20 @@ export interface SendMailType {
   attachments?: Attachment[];
 }
 
+export interface RSVPMailType {
+  to: string;
+  eventTitle: string;
+  eventDate: Date;
+}
+
 export interface ConfirmationMailType {
   to: string;
   formName: string;
 }
 
-export interface RSVPMailType {
-  to: string;
-  eventTitle: string;
-  eventDate: Date;
+export interface DonationFormConfirmationMailType {
+  amount: number;
+  donorName: string;
+  contactNumber: string;
+  email: string;
 }
