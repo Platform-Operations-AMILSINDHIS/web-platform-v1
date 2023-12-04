@@ -8,7 +8,15 @@ import {
   Select,
   Box,
 } from "@chakra-ui/react";
-import { Field, ErrorMessage, useFormikContext } from "formik";
+import {
+  Field,
+  ErrorMessage,
+  useFormikContext,
+  FieldInputProps,
+  FieldMetaProps,
+  FieldHelperProps,
+  FormikHelpers,
+} from "formik";
 
 export const camelCase = (str: string) =>
   str
@@ -24,6 +32,7 @@ export const LabelledInput: React.FC<{
   validate?: () => string; // validation function returns error string
   onChange?: ChangeEventHandler<HTMLInputElement>;
   defaultValue?: string;
+  required?: boolean;
   selectOptions?: string[];
 }> = ({
   label,
@@ -33,6 +42,7 @@ export const LabelledInput: React.FC<{
   validate,
   onChange,
   defaultValue,
+  required,
   selectOptions,
 }) => (
   <FormControl fontWeight={500}>
@@ -61,10 +71,15 @@ export const LabelledInput: React.FC<{
       <>
         <Input
           name={name ?? camelCase(label)}
-          py="30px"
-          borderRadius="5px"
           onChange={onChange ?? undefined}
           defaultValue={defaultValue ?? undefined}
+          placeholder={placeholder}
+          required={required ?? false}
+          borderColor="gray.400"
+          _hover={{
+            borderColor: "#FF4D00",
+          }}
+          focusBorderColor="#FF4D00"
         />
         {/* <FormErrorMessage> */}
       </>
@@ -85,7 +100,7 @@ export const LabelledInput: React.FC<{
           <ErrorMessage name={name ?? camelCase(label)} />
         </Flex> */}
 
-        <Field
+        {/* <Field
           as={Input}
           type="date"
           id={camelCase(label)}
@@ -100,7 +115,47 @@ export const LabelledInput: React.FC<{
         />
         <Box py={1} fontWeight={600} fontSize="sm" color="red">
           <ErrorMessage name={name ?? camelCase(label)} />
-        </Box>
+        </Box> */}
+
+        <Field name={name ?? camelCase(label)}>
+          {({
+            field,
+            meta,
+            form: { setFieldValue },
+          }: {
+            field: FieldInputProps<Date>;
+            meta: FieldMetaProps<Date>;
+            form: FormikHelpers<Date>;
+          }) => {
+            return (
+              <>
+                <Input
+                  // {...field}
+                  type="date"
+                  onChange={(e) => {
+                    void setFieldValue(field.name, new Date(e.target.value));
+                    console.log({ d: new Date(e.target.value) });
+                  }}
+                  value={
+                    field.value
+                      ? field.value.toISOString().split("T")[0]
+                      : undefined
+                  }
+                  id={camelCase(label)}
+                  placeholder={placeholder}
+                  borderColor="gray.400"
+                  _hover={{
+                    borderColor: "#FF4D00",
+                  }}
+                  focusBorderColor="#FF4D00"
+                />
+                <Box py={1} fontWeight={600} fontSize="sm" color="red">
+                  <ErrorMessage name={name ?? camelCase(label)} />
+                </Box>
+              </>
+            );
+          }}
+        </Field>
       </>
     ) : type === "datetime" ? (
       <Flex border="1px solid #E2E8F0" borderRadius="5px" py="10px">
@@ -159,28 +214,28 @@ export const LabelledInput: React.FC<{
   </FormControl>
 );
 
-export const FormObserver: React.FC = () => {
-  const { values } = useFormikContext();
+// export const FormObserver: React.FC = () => {
+//   const { values } = useFormikContext();
 
-  useEffect(() => {
-    console.log("FormObserver::values", values);
-  }, [values]);
+//   useEffect(() => {
+//     console.log("FormObserver::values", values);
+//   }, [values]);
 
-  return null;
-};
+//   return null;
+// };
 
-// TODO: Turn this into a hook which accepts a type and a stateSetter
-// which takes in that type and sets it to global formState
-export const FormGlobalStateSetter: React.FC<{
-  /* eslint-disable  @typescript-eslint/no-explicit-any */
-  stateSetter: (...args: any[]) => any;
-}> = ({ stateSetter }) => {
-  const { values } = useFormikContext();
+// // TODO: Turn this into a hook which accepts a type and a stateSetter
+// // which takes in that type and sets it to global formState
+// export const FormGlobalStateSetter: React.FC<{
+//   /* eslint-disable  @typescript-eslint/no-explicit-any */
+//   stateSetter: (...args: any[]) => any;
+// }> = ({ stateSetter }) => {
+//   const { values } = useFormikContext();
 
-  useEffect(() => {
-    // console.log("FormObserver::values", values);
-    stateSetter(values);
-  }, [values]);
+//   useEffect(() => {
+//     // console.log("FormObserver::values", values);
+//     stateSetter(values);
+//   }, [stateSetter, values]);
 
-  return null;
-};
+//   return null;
+// };

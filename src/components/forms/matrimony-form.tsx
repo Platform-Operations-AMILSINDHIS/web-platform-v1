@@ -102,8 +102,8 @@ const MatrimonyForm: React.FC<{
     },
   });
 
-  // Logger
-  useEffect(() => console.log(JSON.stringify(formState, null, 2)), [formState]);
+  // // Logger
+  // useEffect(() => console.log(JSON.stringify(formState, null, 2)), [formState]);
 
   return (
     <>

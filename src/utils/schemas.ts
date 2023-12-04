@@ -23,10 +23,10 @@ export const personalInfoSchema = Yup.object().shape({
   emailId: Yup.string()
     .email("Invalid email address")
     .required("Email ID is required"),
-  maidenSurname: Yup.string(),
-  maidenName: Yup.string(),
-  fathersName: Yup.string(),
-  mothersName: Yup.string(),
+  maidenSurname: Yup.string().required("Maiden Surname is required"),
+  maidenName: Yup.string().required("Maiden Name is required"),
+  fathersName: Yup.string().required("Fathers Name is required"),
+  mothersName: Yup.string().required("Mothers Name is required"),
 });
 
 export const addressInfoSchema = Yup.object().shape({
@@ -42,10 +42,10 @@ export const addressInfoSchema = Yup.object().shape({
   }),
   officeAddress: Yup.object()
     .shape({
-      addressLine1: Yup.string().required("Office Address Line 1 is required"),
-      addressLine2: Yup.string().required("Office Address Line 2 is required"),
+      addressLine1: Yup.string(),
+      addressLine2: Yup.string(),
       addressLine3: Yup.string(),
-      pinCode: Yup.string().required("Office Pin Code is required"),
+      pinCode: Yup.string(),
     })
     .optional(),
 });
@@ -60,19 +60,19 @@ export const proposerInfoSchema = Yup.object().shape({
   firstName: Yup.string().required("First Name is required"),
   lastName: Yup.string().required("Last Name is required"),
   mobileNumber: Yup.string()
+    .required("Mobile Number is required")
     .matches(
       /^(?:\+\d{1,3}[-\s]?)?(?:\d{1,4}[-\s]?)?(?:\(\d{1,4}\))?(?:[\d\s]{10,})$/,
       "Invalid phone number format"
-    )
-    .required("Mobile Number is required"),
+    ),
 });
 
 export const kapMembershipFormValuesSchema = Yup.object().shape({
   personalInfo: personalInfoSchema,
   addressInfo: addressInfoSchema,
-  membershipInfo: kapMembershipInfoSchema,
   familyMembers: Yup.array().of(familyMemberSchema).optional(),
   proposerInfo: proposerInfoSchema,
+  membershipInfo: kapMembershipInfoSchema,
 });
 
 export const yacMembershipFormValuesSchema = Yup.object().shape({
@@ -83,6 +83,7 @@ export const yacMembershipFormValuesSchema = Yup.object().shape({
 });
 
 export const donationsFormSchema = Yup.object().shape({
+  amount: Yup.number().required("Donation Amount is required"),
   donorName: Yup.string().required("Donor Name is required"),
   contactNumber: Yup.string().required("Contact Number is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
