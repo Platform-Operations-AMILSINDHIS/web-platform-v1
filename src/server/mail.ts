@@ -4,13 +4,19 @@ import { env } from "~/env.mjs";
 
 import type {
   ConfirmationMailType,
+  DonationFormConfirmationMailType,
   RSVPMailType,
   SendMailType,
 } from "~/types/mails";
 
 import { generateKAPMembershipPDF } from "./pdfs/kap-membership";
+import { generateYACMembershipPDF } from "./pdfs/yac-membership";
 
-import type { KAPMembershipFormValues } from "~/types/forms/membership";
+import type {
+  KAPMembershipFormValues,
+  YACMembershipFormValues,
+} from "~/types/forms/membership";
+import { createId } from "~/utils/helper";
 
 // const transporter = nodemailer.createTransport({
 //   host: "smtp.gmail.com",
@@ -70,7 +76,6 @@ export async function sendRawJsonDataOnly(to: string, data: any) {
   await sendMail({ to, subject, html });
 }
 
-/* eslint-disable  @typescript-eslint/no-explicit-any */
 export async function sendRawJsonDataWithPDF(
   to: string,
   data: any,
@@ -91,11 +96,14 @@ export async function sendRawJsonDataWithPDF(
   let pdf;
   if (formType === "kap-membership") {
     pdf = await generateKAPMembershipPDF({
-      // TODO: Dynamically generate membership number
-      membershipNumber: "123456",
+      membershipNumber: createId().toUpperCase(),
       kapForm: data as KAPMembershipFormValues,
     });
   } else if (formType === "yac-membership") {
+    pdf = await generateYACMembershipPDF({
+      membershipNumber: createId().toUpperCase(),
+      yacForm: data as YACMembershipFormValues,
+    });
   }
 
   await sendMail({
@@ -119,6 +127,29 @@ export const sendFormConfirmationMail = async ({
   `;
 
   await sendMail({ to, subject, html });
+};
+
+export const sendDonationFormConfirmationMail = async ({
+  amount,
+  contactNumber,
+  donorName,
+  email,
+}: DonationFormConfirmationMailType) => {
+  const subject = `Thank you for donating!`;
+
+  const html = `
+    <div style="font-size: 14px;">
+      <p>Hey ${donorName.split(" ")[0]},</p>
+      <br>
+      <p>This is email is to confirm that we have received your donation for Rs. ${amount}/-</p>
+      <p>We cannot express our gratitude for this, and wholeheartedly thank you for your contribution to the Amil Sindhis community.</p>
+      <br>
+      <p>Regards,</p>
+      <p>Team Amil Sindhis</p>
+    </div>
+  `;
+
+  await sendMail({ to: email, subject, html });
 };
 
 export const sendRsvpMailForEvent = async ({

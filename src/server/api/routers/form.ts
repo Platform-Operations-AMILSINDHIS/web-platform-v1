@@ -13,13 +13,19 @@ import {
 
 import {
   sendFormConfirmationMail,
+  sendDonationFormConfirmationMail,
   sendRawJsonDataWithPDF,
   sendRawJsonDataOnly,
 } from "../../mail";
 
 export const formRouter = createTRPCRouter({
   kapMembership: publicProcedure
-    .input(Yup.object({ formData: kapMembershipFormValuesSchema }))
+    .input(
+      Yup.object({
+        formData: kapMembershipFormValuesSchema,
+        paymentId: Yup.string().required(),
+      })
+    )
     .mutation(async ({ input }) => {
       const { formData } = input;
 
@@ -41,6 +47,7 @@ export const formRouter = createTRPCRouter({
       // );
       await sendRawJsonDataWithPDF(
         "akshat.sabavat@gmail.com",
+        // "somesh.kar@gmail.com",
         formData,
         "kap-membership"
       );
@@ -57,7 +64,12 @@ export const formRouter = createTRPCRouter({
       return { success: true };
     }),
   yacMembership: publicProcedure
-    .input(Yup.object({ formData: yacMembershipFormValuesSchema }))
+    .input(
+      Yup.object({
+        formData: yacMembershipFormValuesSchema,
+        paymentId: Yup.string().required(),
+      })
+    )
     .mutation(async ({ input }) => {
       const { formData } = input;
 
@@ -65,6 +77,7 @@ export const formRouter = createTRPCRouter({
 
       // Send response
       await sendRawJsonDataWithPDF(
+        // "akshat.sabavat@gmail.com",
         "somesh.kar@gmail.com",
         formData,
         "yac-membership"
@@ -88,12 +101,14 @@ export const formRouter = createTRPCRouter({
 
       // Send response
       await sendRawJsonDataOnly("akshat.sabavat@gmail.com", formData);
+      // await sendRawJsonDataOnly("somesh.kar@gmail.com", formData);
 
       // Send confirmation mail
-      await sendFormConfirmationMail({
-        to: formData.email,
-        formName: "Donations",
-      });
+      await sendDonationFormConfirmationMail(formData);
+      // await sendFormConfirmationMail({
+      //   to: formData.email,
+      //   formName: "Donations",
+      // });
 
       return { success: true };
     }),

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, type ChangeEvent, useEffect } from "react";
 import {
   Heading,
   Text,
@@ -30,20 +30,11 @@ import { focusAtom } from "jotai-optics";
 import { FaHandHoldingHeart, FaUserFriends, FaRupeeSign } from "react-icons/fa";
 import { ArrowBackIcon, ArrowForwardIcon, DeleteIcon } from "@chakra-ui/icons";
 
-import {
-  LabelledInput,
-  FormObserver,
-  FormGlobalStateSetter,
-  camelCase,
-} from "./index";
+import { LabelledInput, camelCase } from "./index";
 
 import type {
   KAPMembershipFormValues,
-  PersonalInfo,
   FamilyMember,
-  AddressInfo,
-  KAPMembershipInfo,
-  ProposerInfo,
 } from "~/types/forms/membership";
 
 import {
@@ -111,6 +102,12 @@ const kapFormAtom = atom<KAPMembershipFormValues>({
       addressLine3: "",
       pinCode: "",
     },
+    officeAddress: {
+      addressLine1: "",
+      addressLine2: "",
+      addressLine3: "",
+      pinCode: "",
+    },
   },
   familyMembers: [
     {
@@ -146,27 +143,14 @@ const membershipInfoAtom = focusAtom(kapFormAtom, (optic) =>
   optic.prop("membershipInfo")
 );
 
-const activeStepAtom = atom<number>(5);
+const activeStepAtom = atom<number>(1);
 
 const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
-  // TODO: Setup global formState for all the Formik forms to mutate onSubmit, maybe use Jotai for this
-  const toast = useToast();
-
-  const [formState, setFormState] = useAtom(kapFormAtom);
-
-  const [activeStep, setActiveStep] = useAtom(activeStepAtom);
-
-  const formMut = api.form.kapMembership.useMutation();
+  const [activeStep] = useAtom(activeStepAtom);
 
   // Logger
-  useEffect(() => console.log(JSON.stringify(formState, null, 2)), [formState]);
-
-  // useEffect(() => {
-  //   if (isSubmitted && formMut.status === "idle") {
-  //     console.log(JSON.stringify(formState.proposerInfo, null, 2));
-  //     formMut.mutate({ formData: formState });
-  //   }
-  // }, [isSubmitted, formState, formMut]);
+  // const [formState] = useAtom(kapFormAtom);
+  // useEffect(() => console.log(JSON.stringify(formState, null, 2)), [formState]);
 
   return (
     <>
@@ -200,60 +184,10 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
         ProposerDetailsSection,
         MembershipDetailsSection,
       ].map((FormSection, i) => (
-        <>{activeStep === i + 1 && <FormSection />}</>
+        <>{activeStep === i + 1 && <FormSection key={i} />}</>
       ))}
 
       <Spacer h="2rem" />
-
-      {/* Navigation buttons */}
-      {/* <Flex justify="space-between">
-        {activeStep > 1 ? (
-          <Button
-            colorScheme="orange"
-            leftIcon={<ArrowBackIcon />}
-            size="lg"
-            onClick={() => setActiveStep(activeStep - 1)}
-          >
-            Previous
-          </Button>
-        ) : (
-          <div></div>
-        )}
-
-        <Button
-          colorScheme="orange"
-          rightIcon={
-            activeStep !== steps.length ? <ArrowForwardIcon /> : undefined
-          }
-          size="lg"
-          isLoading={formMut.isLoading}
-          onClick={
-            activeStep === 5
-              ? async () => {
-                  await handlePayment(paymentAmount, "kap_membership");
-                }
-              : activeStep === steps.length
-              ? () => {
-                  console.log("submit here");
-                  formMut
-                    .mutateAsync({ formData: formState })
-                    .then(() => {
-                      toast({
-                        title: "Response recorded successfully",
-                        description: "Your form response has been recorded.",
-                        status: "success",
-                        duration: 9000,
-                        isClosable: true,
-                      });
-                    })
-                    .catch(console.error);
-                }
-              : () => setActiveStep(activeStep + 1)
-          }
-        >
-          {activeStep === 5 ? "Pay now" : "Next"}
-        </Button>
-      </Flex> */}
     </>
   );
 };
@@ -272,7 +206,7 @@ export const PersonalInformationSection: React.FC = () => {
 
       <Formik
         initialValues={personalInfo}
-        // validationSchema={personalInfoSchema}
+        validationSchema={personalInfoSchema}
         onSubmit={(values, actions) => {
           // console.log({ values });
           setPersonalInfo(values);
@@ -307,7 +241,7 @@ export const PersonalInformationSection: React.FC = () => {
             <Grid
               mt="2rem"
               gap="2rem"
-              templateColumns={["1fr", "repeat(3, 1fr)"]}
+              templateColumns={["1fr", "repeat(2, 1fr)"]}
             >
               {[
                 { label: "Maiden Surname", name: "maidenSurname" },
@@ -318,7 +252,7 @@ export const PersonalInformationSection: React.FC = () => {
                 <LabelledInput key={i} label={label} name={name ?? label} />
               ))}
             </Grid>
-            <Flex w="100%" justifyContent="space-between">
+            <Flex mt="2rem" w="100%" justifyContent="space-between">
               <Box></Box>
               <Button
                 type="submit"
@@ -346,7 +280,7 @@ export const AddressDetailsSection: React.FC = () => {
       <Heading>Residential Address</Heading>
       <Formik
         initialValues={addressInfo}
-        // validationSchema={addressInfoSchema}
+        validationSchema={addressInfoSchema}
         onSubmit={(values, actions) => {
           // console.log({ values });
           setAddressInfo(values);
@@ -439,11 +373,6 @@ export const AddressDetailsSection: React.FC = () => {
 
 export const FamilyMemberDetailsSection: React.FC = () => {
   // TODO: Use Formik FieldArray instead of this
-  // const [familyMembers, setFamilyMembers] =
-  //   useState<FamilyMember[]>(initialValues);
-  // useEffect(() => console.log({ familyMembers }), [familyMembers]);
-  // useEffect(() => stateSetter(familyMembers), [familyMembers, stateSetter]);
-
   const [activeStep, setActiveStep] = useAtom(activeStepAtom);
   const [familyMembers, setFamilyMembers] = useAtom(familyMembersAtom);
 
@@ -634,12 +563,18 @@ export const ProposerDetailsSection: React.FC = () => {
 };
 
 const MembershipDetailsSection: React.FC = () => {
+  const toast = useToast();
+
+  const formMut = api.form.kapMembership.useMutation();
+
   const [activeStep, setActiveStep] = useAtom(activeStepAtom);
   const [membershipInfo, setMembershipInfo] = useAtom(membershipInfoAtom);
   const [formState] = useAtom(atom((get) => get(kapFormAtom)));
 
   const [paymentAmount, setPaymentAmount] = useState<number>(0);
-  const { handlePayment } = usePayment({
+  const [isPaying, setIsPaying] = useState<boolean>(false);
+
+  const { handlePayment, paymentId } = usePayment({
     prefillDetails: {
       name: `${formState.personalInfo.firstName}${
         formState.personalInfo.middleName
@@ -650,6 +585,39 @@ const MembershipDetailsSection: React.FC = () => {
       contact: formState.personalInfo.mobileNumber,
     },
   });
+
+  useEffect(() => {
+    console.log("useEffect triggered here");
+
+    if (paymentId) {
+      formMut
+        .mutateAsync(
+          { formData: formState, paymentId },
+          {
+            onSuccess: () => {
+              toast({
+                title: "Response recorded successfully",
+                description: "Your form response has been recorded.",
+                status: "success",
+                duration: 9000,
+                isClosable: true,
+              });
+            },
+            onError: (error) => {
+              toast({
+                title: "Error",
+                // description: "Something went wrong, please try again later.",
+                description: error.message,
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+              });
+            },
+          }
+        )
+        .catch(console.error);
+    }
+  }, [paymentId]);
 
   return (
     <>
@@ -735,11 +703,18 @@ const MembershipDetailsSection: React.FC = () => {
 
         <Button
           type="submit"
-          isDisabled={paymentAmount === 0}
+          isDisabled={paymentAmount === 0 || isPaying}
+          isLoading={isPaying}
           colorScheme="orange"
           leftIcon={<FaRupeeSign />}
           size="lg"
-          onClick={() => void handlePayment(paymentAmount, "kap_membership")}
+          onClick={() => {
+            setIsPaying(true);
+
+            void handlePayment(paymentAmount, "kap_membership").catch(
+              console.error
+            );
+          }}
         >
           Pay now
         </Button>

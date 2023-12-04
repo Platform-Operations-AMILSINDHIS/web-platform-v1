@@ -8,11 +8,11 @@ import {
   renderToBuffer,
 } from "@react-pdf/renderer";
 
-import type { KAPMembershipFormValues } from "~/types/forms/membership";
+import type { YACMembershipFormValues } from "~/types/forms/membership";
 
-interface KAPMembershipFormPDFProps {
+interface YACMembershipFormPDFProps {
   membershipNumber: string;
-  kapForm: KAPMembershipFormValues;
+  yacForm: YACMembershipFormValues;
   amount?: string;
 }
 
@@ -72,9 +72,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
+export const YACMembershipPDF: React.FC<YACMembershipFormPDFProps> = ({
   membershipNumber,
-  kapForm,
+  yacForm,
 }) => {
   return (
     <Document>
@@ -135,7 +135,7 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
               height: 20,
             }}
           >
-            <Text>Membership / Application Form - Patron / Life-Member</Text>
+            <Text>YAC Membership / Application Form - Member</Text>
           </View>
 
           <View style={{ ...styles.connectedSectionRow, height: 60 }}>
@@ -166,17 +166,17 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
             >
               <View style={{ ...styles.rightTextWithBorder, height: "33%" }}>
                 <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                  {kapForm.personalInfo.lastName.toUpperCase()}
+                  {yacForm.personalInfo.lastName.toUpperCase()}
                 </Text>
               </View>
               <View style={{ ...styles.rightTextWithBorder, height: "33%" }}>
                 <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                  {kapForm.personalInfo.firstName.toUpperCase()}
+                  {yacForm.personalInfo.firstName.toUpperCase()}
                 </Text>
               </View>
               <View style={{ ...styles.rightTextWithBorder, height: "33%" }}>
                 <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                  {kapForm.personalInfo?.middleName?.toUpperCase() ?? ""}
+                  {yacForm.personalInfo?.middleName?.toUpperCase() ?? ""}
                 </Text>
               </View>
             </View>
@@ -203,22 +203,22 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
             >
               <View style={{ ...styles.rightTextWithBorder, height: "25%" }}>
                 <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                  {kapForm.personalInfo.maidenSurname.toUpperCase()}
+                  {yacForm.personalInfo.maidenSurname.toUpperCase()}
                 </Text>
               </View>
               <View style={{ ...styles.rightTextWithBorder, height: "25%" }}>
                 <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                  {kapForm.personalInfo.maidenName.toUpperCase()}
+                  {yacForm.personalInfo.maidenName.toUpperCase()}
                 </Text>
               </View>
               <View style={{ ...styles.rightTextWithBorder, height: "25%" }}>
                 <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                  {kapForm.personalInfo.fathersName.toUpperCase()}
+                  {yacForm.personalInfo.fathersName.toUpperCase()}
                 </Text>
               </View>
               <View style={{ ...styles.rightTextWithBorder, height: "25%" }}>
                 <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                  {kapForm.personalInfo.mothersName.toUpperCase()}
+                  {yacForm.personalInfo.mothersName.toUpperCase()}
                 </Text>
               </View>
             </View>
@@ -244,17 +244,17 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
             >
               <View style={{ ...styles.rightTextWithBorder, height: "25%" }}>
                 <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                  {kapForm.addressInfo.residentialAddress.addressLine1.toUpperCase()}
+                  {yacForm.addressInfo.residentialAddress.addressLine1.toUpperCase()}
                 </Text>
               </View>
               <View style={{ ...styles.rightTextWithBorder, height: "25%" }}>
                 <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                  {kapForm.addressInfo.residentialAddress.addressLine2.toUpperCase()}
+                  {yacForm.addressInfo.residentialAddress.addressLine2.toUpperCase()}
                 </Text>
               </View>
               <View style={{ ...styles.rightTextWithBorder, height: "25%" }}>
                 <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                  {kapForm.addressInfo.residentialAddress?.addressLine3?.toUpperCase() ??
+                  {yacForm.addressInfo.residentialAddress?.addressLine3?.toUpperCase() ??
                     ""}
                 </Text>
               </View>
@@ -264,7 +264,7 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
                 </View>
                 <View style={{ ...styles.rightTextWithBorder, width: "35%" }}>
                   <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                    {kapForm.addressInfo.residentialAddress.pinCode.toUpperCase()}
+                    {yacForm.addressInfo.residentialAddress.pinCode.toUpperCase()}
                   </Text>
                 </View>
                 <View style={{ ...styles.centerTextWithBorder, width: "15%" }}>
@@ -272,7 +272,7 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
                 </View>
                 <View style={{ ...styles.rightTextWithBorder, width: "35%" }}>
                   <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                    {kapForm.personalInfo.mobileNumber.toUpperCase()}
+                    {yacForm.personalInfo.mobileNumber.toUpperCase()}
                   </Text>
                 </View>
               </View>
@@ -299,19 +299,19 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
             >
               <View style={{ ...styles.rightTextWithBorder, height: "25%" }}>
                 <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                  {kapForm.addressInfo.officeAddress?.addressLine1.toUpperCase() ??
+                  {yacForm.addressInfo.officeAddress?.addressLine1.toUpperCase() ??
                     ""}
                 </Text>
               </View>
               <View style={{ ...styles.rightTextWithBorder, height: "25%" }}>
                 <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                  {kapForm.addressInfo.officeAddress?.addressLine2.toUpperCase() ??
+                  {yacForm.addressInfo.officeAddress?.addressLine2.toUpperCase() ??
                     ""}
                 </Text>
               </View>
               <View style={{ ...styles.rightTextWithBorder, height: "25%" }}>
                 <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                  {kapForm.addressInfo.officeAddress?.addressLine3?.toUpperCase() ??
+                  {yacForm.addressInfo.officeAddress?.addressLine3?.toUpperCase() ??
                     ""}
                 </Text>
               </View>
@@ -321,7 +321,7 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
                 </View>
                 <View style={{ ...styles.rightTextWithBorder, width: "35%" }}>
                   <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                    {kapForm.addressInfo.officeAddress?.pinCode.toUpperCase() ??
+                    {yacForm.addressInfo.officeAddress?.pinCode.toUpperCase() ??
                       ""}
                   </Text>
                 </View>
@@ -330,7 +330,7 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
                 </View>
                 <View style={{ ...styles.rightTextWithBorder, width: "35%" }}>
                   <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                    {kapForm.personalInfo.mobileNumber.toUpperCase()}
+                    {yacForm.personalInfo.mobileNumber.toUpperCase()}
                   </Text>
                 </View>
               </View>
@@ -349,7 +349,7 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
             </View>
             <View style={{ ...styles.rightTextWithBorder, width: "35%" }}>
               <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                {kapForm.personalInfo.occupation.toUpperCase()}
+                {yacForm.personalInfo.occupation.toUpperCase()}
               </Text>
             </View>
             <View
@@ -364,7 +364,7 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
             </View>
             <View style={{ ...styles.rightTextWithBorder, width: "15%" }}>
               <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                {kapForm.personalInfo.dateOfBirth.toLocaleDateString("en-IN")}
+                {yacForm.personalInfo.dateOfBirth.toLocaleDateString("en-IN")}
               </Text>
             </View>
             <View
@@ -381,7 +381,7 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
               <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
                 {Math.floor(
                   (new Date().getTime() -
-                    kapForm.personalInfo.dateOfBirth.getTime()) /
+                    yacForm.personalInfo.dateOfBirth.getTime()) /
                     (1000 * 60 * 60 * 24 * 365)
                 )}
               </Text>
@@ -426,16 +426,16 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
                   <Text style={{ fontSize: 10 }}>Age</Text>
                 </View>
               </View>
-              {kapForm.familyMembers?.[0] ? (
+              {yacForm.familyMembers?.[0] ? (
                 <View style={{ flexDirection: "row", height: "16.66%" }}>
                   <View style={{ ...styles.rightTextWithBorder, width: "25%" }}>
                     <Text style={{ fontSize: 10 }}>
-                      {kapForm.familyMembers[0].memberName?.toUpperCase()}
+                      {yacForm.familyMembers[0].memberName?.toUpperCase()}
                     </Text>
                   </View>
                   <View style={{ ...styles.rightTextWithBorder, width: "25%" }}>
                     <Text style={{ fontSize: 10 }}>
-                      {kapForm.familyMembers[0].relationship?.toUpperCase()}
+                      {yacForm.familyMembers[0].relationship?.toUpperCase()}
                     </Text>
                   </View>
                   <View
@@ -445,12 +445,12 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
                     }}
                   >
                     <Text style={{ fontSize: 6 }}>
-                      {kapForm.familyMembers[0].occupation?.toUpperCase()}
+                      {yacForm.familyMembers[0].occupation?.toUpperCase()}
                     </Text>
                   </View>
                   <View style={{ ...styles.rightTextWithBorder, width: "25%" }}>
                     <Text style={{ fontSize: 10 }}>
-                      {kapForm.familyMembers[0].age?.toString()}
+                      {yacForm.familyMembers[0].age?.toString()}
                     </Text>
                   </View>
                 </View>
@@ -471,26 +471,26 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
                 </View>
               )}
 
-              {kapForm.familyMembers?.[1] ? (
+              {yacForm.familyMembers?.[1] ? (
                 <View style={{ flexDirection: "row", height: "16.66%" }}>
                   <View style={{ ...styles.rightTextWithBorder, width: "25%" }}>
                     <Text style={{ fontSize: 10 }}>
-                      {kapForm.familyMembers[1].memberName?.toUpperCase()}
+                      {yacForm.familyMembers[1].memberName?.toUpperCase()}
                     </Text>
                   </View>
                   <View style={{ ...styles.rightTextWithBorder, width: "25%" }}>
                     <Text style={{ fontSize: 10 }}>
-                      {kapForm.familyMembers[1].relationship?.toUpperCase()}
+                      {yacForm.familyMembers[1].relationship?.toUpperCase()}
                     </Text>
                   </View>
                   <View style={{ ...styles.rightTextWithBorder, width: "25%" }}>
                     <Text style={{ fontSize: 6 }}>
-                      {kapForm.familyMembers[1].occupation?.toUpperCase()}
+                      {yacForm.familyMembers[1].occupation?.toUpperCase()}
                     </Text>
                   </View>
                   <View style={{ ...styles.rightTextWithBorder, width: "25%" }}>
                     <Text style={{ fontSize: 10 }}>
-                      {kapForm.familyMembers[1].age?.toString()}
+                      {yacForm.familyMembers[1].age?.toString()}
                     </Text>
                   </View>
                 </View>
@@ -511,26 +511,26 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
                 </View>
               )}
 
-              {kapForm.familyMembers?.[2] ? (
+              {yacForm.familyMembers?.[2] ? (
                 <View style={{ flexDirection: "row", height: "16.66%" }}>
                   <View style={{ ...styles.rightTextWithBorder, width: "25%" }}>
                     <Text style={{ fontSize: 10 }}>
-                      {kapForm.familyMembers[2].memberName?.toUpperCase()}
+                      {yacForm.familyMembers[2].memberName?.toUpperCase()}
                     </Text>
                   </View>
                   <View style={{ ...styles.rightTextWithBorder, width: "25%" }}>
                     <Text style={{ fontSize: 10 }}>
-                      {kapForm.familyMembers[2].relationship?.toUpperCase()}
+                      {yacForm.familyMembers[2].relationship?.toUpperCase()}
                     </Text>
                   </View>
                   <View style={{ ...styles.rightTextWithBorder, width: "25%" }}>
                     <Text style={{ fontSize: 6 }}>
-                      {kapForm.familyMembers[2].occupation?.toUpperCase()}
+                      {yacForm.familyMembers[2].occupation?.toUpperCase()}
                     </Text>
                   </View>
                   <View style={{ ...styles.rightTextWithBorder, width: "25%" }}>
                     <Text style={{ fontSize: 10 }}>
-                      {kapForm.familyMembers[2].age?.toString()}
+                      {yacForm.familyMembers[2].age?.toString()}
                     </Text>
                   </View>
                 </View>
@@ -551,26 +551,26 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
                 </View>
               )}
 
-              {kapForm.familyMembers?.[3] ? (
+              {yacForm.familyMembers?.[3] ? (
                 <View style={{ flexDirection: "row", height: "16.66%" }}>
                   <View style={{ ...styles.rightTextWithBorder, width: "25%" }}>
                     <Text style={{ fontSize: 10 }}>
-                      {kapForm.familyMembers[3].memberName?.toUpperCase()}
+                      {yacForm.familyMembers[3].memberName?.toUpperCase()}
                     </Text>
                   </View>
                   <View style={{ ...styles.rightTextWithBorder, width: "25%" }}>
                     <Text style={{ fontSize: 10 }}>
-                      {kapForm.familyMembers[3].relationship?.toUpperCase()}
+                      {yacForm.familyMembers[3].relationship?.toUpperCase()}
                     </Text>
                   </View>
                   <View style={{ ...styles.rightTextWithBorder, width: "25%" }}>
                     <Text style={{ fontSize: 6 }}>
-                      {kapForm.familyMembers[3].occupation?.toUpperCase()}
+                      {yacForm.familyMembers[3].occupation?.toUpperCase()}
                     </Text>
                   </View>
                   <View style={{ ...styles.rightTextWithBorder, width: "25%" }}>
                     <Text style={{ fontSize: 10 }}>
-                      {kapForm.familyMembers[3].age?.toString()}
+                      {yacForm.familyMembers[3].age?.toString()}
                     </Text>
                   </View>
                 </View>
@@ -591,26 +591,26 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
                 </View>
               )}
 
-              {kapForm.familyMembers?.[4] ? (
+              {yacForm.familyMembers?.[4] ? (
                 <View style={{ flexDirection: "row", height: "16.66%" }}>
                   <View style={{ ...styles.rightTextWithBorder, width: "25%" }}>
                     <Text style={{ fontSize: 10 }}>
-                      {kapForm.familyMembers[4].memberName?.toUpperCase()}
+                      {yacForm.familyMembers[4].memberName?.toUpperCase()}
                     </Text>
                   </View>
                   <View style={{ ...styles.rightTextWithBorder, width: "25%" }}>
                     <Text style={{ fontSize: 10 }}>
-                      {kapForm.familyMembers[4].relationship?.toUpperCase()}
+                      {yacForm.familyMembers[4].relationship?.toUpperCase()}
                     </Text>
                   </View>
                   <View style={{ ...styles.rightTextWithBorder, width: "25%" }}>
                     <Text style={{ fontSize: 6 }}>
-                      {kapForm.familyMembers[4].occupation?.toUpperCase()}
+                      {yacForm.familyMembers[4].occupation?.toUpperCase()}
                     </Text>
                   </View>
                   <View style={{ ...styles.rightTextWithBorder, width: "25%" }}>
                     <Text style={{ fontSize: 10 }}>
-                      {kapForm.familyMembers[4].age?.toString()}
+                      {yacForm.familyMembers[4].age?.toString()}
                     </Text>
                   </View>
                 </View>
@@ -666,8 +666,7 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
                 </Text>
                 <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
                   {/* TODO: Strike out whichever is not applicable */}
-                  admit me as Patron / Life-Member of The Khudabadi Amil
-                  Panchayat of Bombay.
+                  admit me as a Member of The Young Amil Circle.
                 </Text>
                 <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
                   I agree to abide by the Constitution and Rules of the
@@ -677,7 +676,7 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
                   force from time to time.
                 </Text>
                 <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                  I hereby enclose cheque / cash for Rs. 5000/- as membership
+                  I hereby enclose cheque / cash for Rs. 1000/- as membership
                   fees.
                 </Text>
                 <Text
@@ -734,21 +733,21 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
                     style={{ ...styles.rightTextWithBorder, height: "33%" }}
                   >
                     <Text style={{ ...styles.fieldValue, fontSize: 8 }}>
-                      {kapForm.personalInfo.lastName.toUpperCase()}
+                      {yacForm.personalInfo.lastName.toUpperCase()}
                     </Text>
                   </View>
                   <View
                     style={{ ...styles.rightTextWithBorder, height: "33%" }}
                   >
                     <Text style={{ ...styles.fieldValue, fontSize: 8 }}>
-                      {kapForm.personalInfo.firstName.toUpperCase()}
+                      {yacForm.personalInfo.firstName.toUpperCase()}
                     </Text>
                   </View>
                   <View
                     style={{ ...styles.rightTextWithBorder, height: "33%" }}
                   >
                     <Text style={{ ...styles.fieldValue, fontSize: 8 }}>
-                      {kapForm.personalInfo.middleName?.toUpperCase() ?? ""}
+                      {yacForm.personalInfo.middleName?.toUpperCase() ?? ""}
                     </Text>
                   </View>
                 </View>
@@ -768,17 +767,28 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
                   eligible for
                 </Text>
                 <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                  membership of the Khudabadi Amil Panchayat of Bombay.
+                  membership of the Young Amil Circle.
                 </Text>
-                <Text
+                <View
                   style={{
-                    ...styles.fieldValue,
-                    paddingTop: 2,
-                    fontSize: 10,
+                    ...styles.rightTextWithBorder,
+                    flexDirection: "column",
+                    alignItems: "baseline",
+                    paddingHorizontal: 4,
+                    paddingTop: 3,
+                    height: "50%",
                   }}
                 >
-                  Date: {new Date().toLocaleDateString("en-IN")}
-                </Text>
+                  <Text
+                    style={{
+                      ...styles.fieldValue,
+                      paddingTop: 2,
+                      fontSize: 10,
+                    }}
+                  >
+                    Date: {new Date().toLocaleDateString("en-IN")}
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -788,6 +798,6 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
   );
 };
 
-export const generateKAPMembershipPDF = async (
-  props: KAPMembershipFormPDFProps
-) => await renderToBuffer(<KAPMembershipPDF {...props} />);
+export const generateYACMembershipPDF = async (
+  props: YACMembershipFormPDFProps
+) => await renderToBuffer(<YACMembershipPDF {...props} />);
