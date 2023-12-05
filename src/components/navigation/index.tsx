@@ -5,7 +5,7 @@ import Image from "next/image";
 
 import AmilSindhiLogo from "../../../public/images/amil-sindhis-logo.png";
 import ModalButton from "../buttons/ModalButtons";
-import { useState } from "react";
+import { use, useState } from "react";
 import AuthModal from "../authentication/AuthModal";
 import { useUserAtom, userAtom } from "~/lib/atom";
 import { IoIosLogOut } from "react-icons/io";
