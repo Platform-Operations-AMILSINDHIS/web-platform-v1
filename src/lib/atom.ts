@@ -1,4 +1,5 @@
 import { atom, useAtom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 
 export interface userAtomBody {
   auth_id: string;
@@ -15,7 +16,7 @@ export interface userAtomState {
   user: userAtomBody | null;
 }
 
-export const userAtom = atom<userAtomState>({
+export const userAtom = atomWithStorage<userAtomState>("userAtomState", {
   user: null,
 });
 export const useUserAtom = () => useAtom(userAtom);
