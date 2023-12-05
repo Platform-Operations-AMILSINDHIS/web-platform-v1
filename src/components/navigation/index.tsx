@@ -1,15 +1,13 @@
-import { Box, Button, Flex, Icon, Text, useDisclosure } from "@chakra-ui/react";
+import { Box, Flex, useDisclosure } from "@chakra-ui/react";
 import NavigationDropDown from "./NavigationDropDown";
 import NavigationRegular from "./NavigationRegular";
 import Image from "next/image";
 
 import AmilSindhiLogo from "../../../public/images/amil-sindhis-logo.png";
 import ModalButton from "../buttons/ModalButtons";
-import { use, useState } from "react";
+import { useState } from "react";
 import AuthModal from "../authentication/AuthModal";
 import { useUserAtom, userAtom } from "~/lib/atom";
-import { IoIosLogOut } from "react-icons/io";
-import { FaUserCircle } from "react-icons/fa";
 import AccountDisplay from "./AccountDisplay";
 
 interface NavigationProps {
