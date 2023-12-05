@@ -10,7 +10,7 @@ import AuthModal from "../authentication/AuthModal";
 import { useUserAtom, userAtom } from "~/lib/atom";
 import { IoIosLogOut } from "react-icons/io";
 import { FaUserCircle } from "react-icons/fa";
-import AccountDisplay from "./accountDisplay";
+import AccountDisplay from "./AccountDisplay";
 
 interface NavigationProps {
   navigationItems: {
