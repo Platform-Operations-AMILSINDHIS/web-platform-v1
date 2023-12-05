@@ -5,13 +5,32 @@ import { LabelledInput } from "../forms";
 import { Form, Formik, FormikHelpers } from "formik";
 import axios from "axios";
 import { LoginValidation } from "~/validations/AuthValidations";
+import { useUserAtom } from "~/lib/atom";
+import type { userAtomBody } from "~/lib/atom";
 
 interface LoginProps {
   setCloseModal: (input: boolean) => void;
 }
 
 const Login: React.FC<LoginProps> = ({ setCloseModal }) => {
+  const [{ user }, setUserAtom] = useUserAtom();
   const [submitting, setSubmitting] = useState(false);
+
+  const handleUserAtom = (userObject: userAtomBody) => {
+    setUserAtom({
+      user: {
+        account_name: userObject.account_name,
+        age: userObject.age,
+        auth_id: userObject.auth_id,
+        email_id: userObject.email_id,
+        first_name: userObject.first_name,
+        gender: userObject.gender,
+        last_name: userObject.last_name,
+        user_member: userObject.user_member,
+      },
+    });
+  };
+
   const handleSubmit = async (
     values: LoginValues,
     { setErrors }: FormikHelpers<LoginValues>
@@ -50,12 +69,32 @@ const Login: React.FC<LoginProps> = ({ setCloseModal }) => {
         setSubmitting(false);
         return;
       }
-
       const response = await axios.post("/api/auth/login", {
         email: values.email,
         password: values.password,
       });
-      console.log({ responseStatus: response.status });
+
+      console.log({
+        responseStatus: response.status,
+        message: "hey",
+        data: response.data.userData[0],
+      });
+
+      const userHit = response.data.userData[0];
+
+      const filteredUserData: userAtomBody = {
+        auth_id: userHit.auth_id,
+        account_name: userHit.account_name,
+        age: userHit.age,
+        email_id: userHit.email_id,
+        first_name: userHit.first_name,
+        gender: userHit.gender,
+        last_name: userHit.last_name,
+        user_member: userHit.Kap_member ? 1 : userHit.Yac_member ? 2 : 0,
+      };
+
+      handleUserAtom(filteredUserData);
+      console.log(user);
       setSubmitting(false);
       setCloseModal(true);
     } catch (error) {

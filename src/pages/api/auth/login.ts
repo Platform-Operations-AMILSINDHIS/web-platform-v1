@@ -17,9 +17,16 @@ const LoginHandler = async (req: LoginHandlerRequest, res: NextApiResponse) => {
     });
 
     if (error) res.status(404).json({ data, message: "fucked bro" });
-    res.status(200).json({ data, message: "signed in :)" });
+
+    const { data: userData, error: fetchError } = await supabase
+      .from("general_accounts")
+      .select("*")
+      .eq("email_id", data.user?.email);
+
+    if (fetchError) res.status(404).json({ message: "fetch error from table" });
+    res.status(200).json({ userData, message: "signed in :)" });
   } catch (error) {
-    console.log(error);
+    console.log({ error, message: "ass" });
   }
 };
 
