@@ -15,7 +15,7 @@ const AccountDisplay: React.FC<AccountDisplayProps> = ({ user }) => {
       gap={3}
     >
       <Icon color="#FF4D00" boxSize={5} as={FaUserCircle} />
-      <Text>{user.account_name}</Text>
+      <Text>{user?.account_name}</Text>
     </Flex>
   );
 };
