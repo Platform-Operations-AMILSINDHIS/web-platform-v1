@@ -63,7 +63,7 @@ const AccountOptionsPopover: React.FC<{ children: React.ReactNode }> = ({
               align="center"
             >
               <Icon boxSize={4} as={MdOutlinePassword}></Icon>
-              <Text>Send Password Recovery</Text>
+              <Text>Reset Password</Text>
             </Flex>
             <Flex
               _hover={{ color: "gray.800", cursor: "pointer" }}
