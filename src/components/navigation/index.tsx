@@ -8,6 +8,9 @@ import ModalButton from "../buttons/ModalButtons";
 import { useState } from "react";
 import AuthModal from "../authentication/AuthModal";
 import { useUserAtom, userAtom } from "~/lib/atom";
+import { IoIosLogOut } from "react-icons/io";
+import { FaUserCircle } from "react-icons/fa";
+import AccountDisplay from "./accountDisplay";
 
 interface NavigationProps {
   navigationItems: {
@@ -93,7 +96,7 @@ const Navigation: React.FC<NavigationProps> = ({
         </Flex>
 
         {user ? (
-          <Text>{user.account_name}</Text>
+          <AccountDisplay user={user} />
         ) : (
           <Flex gap={3} color="gray.700">
             <ModalButton
