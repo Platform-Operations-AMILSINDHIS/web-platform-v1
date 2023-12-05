@@ -11,11 +11,12 @@ import {
   PopoverTrigger,
   Text,
 } from "@chakra-ui/react";
+import axios from "axios";
 import React from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
 import { MdOutlinePassword, MdOutlineLogout } from "react-icons/md";
-import { userAtomBody } from "~/lib/atom";
+import { useUserAtom, userAtomBody } from "~/lib/atom";
 
 interface AccountDisplayProps {
   user: userAtomBody | null;
@@ -24,6 +25,21 @@ interface AccountDisplayProps {
 const AccountOptionsPopover: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const [, setUser] = useUserAtom();
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post("/api/auth/logout");
+      if (response.data.responseFlag === 1) {
+        window.location.href = "/";
+        setUser({ user: null });
+      } else {
+        console.log("Logout failed", response.data.errorMessage);
+      }
+    } catch (error) {
+      console.log("Error during logout:", error);
+    }
+  };
+
   return (
     <Popover>
       <PopoverTrigger>{children}</PopoverTrigger>
@@ -55,7 +71,7 @@ const AccountOptionsPopover: React.FC<{ children: React.ReactNode }> = ({
               align="center"
             >
               <Icon boxSize={4} as={MdOutlineLogout}></Icon>
-              <Text>Sign Out</Text>
+              <Text onClick={handleLogout}>Sign Out</Text>
             </Flex>
           </Flex>
         </PopoverBody>

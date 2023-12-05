@@ -7,7 +7,7 @@ import AmilSindhiLogo from "../../../public/images/amil-sindhis-logo.png";
 import ModalButton from "../buttons/ModalButtons";
 import { useState } from "react";
 import AuthModal from "../authentication/AuthModal";
-import { useUserAtom, userAtom } from "~/lib/atom";
+import { useUserAtom } from "~/lib/atom";
 import AccountDisplay from "./AccountDisplay";
 
 interface NavigationProps {
