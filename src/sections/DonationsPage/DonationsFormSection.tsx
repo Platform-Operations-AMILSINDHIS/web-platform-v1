@@ -404,6 +404,7 @@ const DonationsFormSection = () => {
   return (
     <Box position="relative">
       <Box
+        display={user ? "none" : ""}
         left="50%"
         top="50%"
         transform="translate(-50%,-50%)"
@@ -413,7 +414,10 @@ const DonationsFormSection = () => {
       >
         <UserBlockModal />
       </Box>
-      <Box _hover={{ cursor: "not-allowed" }} filter="blur(2px)">
+      <Box
+        _hover={user ? {} : { cursor: "not-allowed" }}
+        filter={user ? "" : "blur(2px)"}
+      >
         <Flex id="donations-form" direction="column" alignItems="center">
           <Box mb="4rem" w="40%" textAlign="center">
             <Heading fontWeight="semibold" fontSize="5xl">

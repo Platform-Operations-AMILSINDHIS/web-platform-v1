@@ -25,7 +25,7 @@ const UserBlockModal = () => {
       h={250}
       w={500}
     >
-      <Flex gap={3} px={10} align="center" flexDir="column">
+      <Flex gap={2} px={10} align="center" flexDir="column">
         <Text fontWeight={600} textAlign="center" fontSize="xl">
           Please Login to continue further
         </Text>
@@ -38,7 +38,7 @@ const UserBlockModal = () => {
           handleModal={onClose}
           modalState={isOpen}
         />
-        <Flex mt={2} gap={2}>
+        <Flex mt={3} gap={2}>
           <ModalButton
             CTAlabel="Login"
             CTATheme={false}
