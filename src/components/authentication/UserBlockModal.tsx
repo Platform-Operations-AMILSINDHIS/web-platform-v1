@@ -1,7 +1,17 @@
 import { Flex, Text, useDisclosure } from "@chakra-ui/react";
 import ModalButton from "../buttons/ModalButtons";
+import { useState } from "react";
+import AuthModal from "./AuthModal";
 
 const UserBlockModal = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [displayState, setDisplayState] = useState(false);
+
+  const handleModal = (state: boolean) => {
+    setDisplayState(state);
+    onOpen();
+  };
+
   return (
     <Flex
       boxShadow="rgba(0, 0, 0, 0.24) 0px 3px 8px;"
@@ -23,17 +33,22 @@ const UserBlockModal = () => {
           To continue further and access all the features of the platform,
           create an account or login
         </Text>
+        <AuthModal
+          displayState={displayState}
+          handleModal={onClose}
+          modalState={isOpen}
+        />
         <Flex mt={2} gap={2}>
           <ModalButton
             CTAlabel="Login"
             CTATheme={false}
-            CTAaction={() => console.log("hi")}
+            CTAaction={() => handleModal(true)}
             CTASize="md"
           />
           <ModalButton
             CTAlabel="Create Account"
             CTATheme={true}
-            CTAaction={() => console.log("hi")}
+            CTAaction={() => handleModal(false)}
             CTASize="md"
           />
         </Flex>{" "}
