@@ -43,7 +43,10 @@ const ValidatePasswordHandler = async (
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Something went wrong with password",
+    });
   }
 };
 

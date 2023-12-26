@@ -12,3 +12,8 @@ export const SignUpValidationSchema = Yup.object().shape({
     .min(0, "Age must be a positive number")
     .required("Age is required"),
 });
+
+export const LoginValidation = Yup.object().shape({
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  password: Yup.string().required("Enter your password"),
+});
