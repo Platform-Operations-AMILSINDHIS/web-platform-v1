@@ -391,20 +391,41 @@ const DonationsForm: React.FC = () => {
 
 const DonationsFormSection = () => {
   return (
-    <Flex id="donations-form" direction="column" alignItems="center">
-      <Box mb="4rem" w="40%" textAlign="center">
-        <Heading fontWeight="semibold" fontSize="5xl">
-          Donations Form
-        </Heading>
-        <Spacer h="1rem" />
-        <Text fontSize="lg">
-          Fill out the fields below to complete your personal profile. Make sure
-          to fill all the fields and not miss out any important details.
-        </Text>
+    <Box position="relative">
+      <Box
+        left="50%"
+        top="50%"
+        transform="translate(-50%,-50%)"
+        zIndex={2}
+        h={100}
+        w={100}
+        bg="red"
+        position="absolute"
+      >
+        <Text>hi</Text>
       </Box>
+      <Box
+        position="relative"
+        zIndex="0"
+        backdropFilter="blur(100px)" // Adjust the blur strength here
+      >
+        <Flex id="donations-form" direction="column" alignItems="center">
+          <Box mb="4rem" w="40%" textAlign="center">
+            <Heading fontWeight="semibold" fontSize="5xl">
+              Donations Form
+            </Heading>
+            <Spacer h="1rem" />
+            <Text fontSize="lg">
+              Fill out the fields below to complete your personal profile. Make
+              sure to fill all the fields and not miss out any important
+              details.
+            </Text>
+          </Box>
 
-      <DonationsForm />
-    </Flex>
+          <DonationsForm />
+        </Flex>
+      </Box>
+    </Box>
   );
 };
 
