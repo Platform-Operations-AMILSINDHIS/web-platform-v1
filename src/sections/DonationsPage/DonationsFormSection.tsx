@@ -17,6 +17,7 @@ import {
   FormControl,
   FormHelperText,
   FormLabel,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
@@ -31,6 +32,7 @@ import usePayment from "~/hooks/usePayment";
 
 import { toWords } from "~/utils/helper";
 import { api } from "~/utils/api";
+import UserBlockModal from "~/components/authentication/UserBlockModal";
 
 const DonationsForm: React.FC = () => {
   const toast = useToast();
@@ -390,6 +392,10 @@ const DonationsForm: React.FC = () => {
 };
 
 const DonationsFormSection = () => {
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  const handleModal = () => {
+    onOpen();
+  };
   return (
     <Box position="relative">
       <Box
@@ -397,12 +403,10 @@ const DonationsFormSection = () => {
         top="50%"
         transform="translate(-50%,-50%)"
         zIndex={2}
-        h={100}
-        w={100}
-        bg="red"
+        height={100}
         position="absolute"
       >
-        <Text>hi</Text>
+        <UserBlockModal handleModal={onClose} modalState={isOpen} />
       </Box>
       <Box
         position="relative"
