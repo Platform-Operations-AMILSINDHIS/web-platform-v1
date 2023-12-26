@@ -33,6 +33,7 @@ import usePayment from "~/hooks/usePayment";
 import { toWords } from "~/utils/helper";
 import { api } from "~/utils/api";
 import UserBlockModal from "~/components/authentication/UserBlockModal";
+import { useUserAtom } from "~/lib/atom";
 
 const DonationsForm: React.FC = () => {
   const toast = useToast();
@@ -392,8 +393,12 @@ const DonationsForm: React.FC = () => {
 };
 
 const DonationsFormSection = () => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
-  const handleModal = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [displayState, setDisplayState] = useState(false);
+  const [{ user }] = useUserAtom();
+
+  const handleModal = (state: boolean) => {
+    setDisplayState(state);
     onOpen();
   };
   return (
@@ -406,13 +411,9 @@ const DonationsFormSection = () => {
         height={100}
         position="absolute"
       >
-        <UserBlockModal handleModal={onClose} modalState={isOpen} />
+        <UserBlockModal />
       </Box>
-      <Box
-        position="relative"
-        zIndex="0"
-        backdropFilter="blur(100px)" // Adjust the blur strength here
-      >
+      <Box _hover={{ cursor: "not-allowed" }} filter="blur(2px)">
         <Flex id="donations-form" direction="column" alignItems="center">
           <Box mb="4rem" w="40%" textAlign="center">
             <Heading fontWeight="semibold" fontSize="5xl">
