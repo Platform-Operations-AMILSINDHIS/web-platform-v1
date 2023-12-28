@@ -56,41 +56,10 @@ const MatrimonyFormSection = () => {
       id="matrimony-form"
       // templateColumns="2fr 7fr"
     >
-      {/* <GridItem>
-        <Text fontSize="xl">Membership Form</Text>
-        <Text>
-          Fill out the fields below to complete your personal profile, make sure
-          to full all the fields and not miss out any important details.
-        </Text>
-      </GridItem> */}
-
       <GridItem>
         <Spacer h="1.5rem" />
 
-        <Stepper index={activeStep} colorScheme="orange">
-          {steps.map(({ title, description }, index) => (
-            <Step key={index}>
-              <StepIndicator>
-                <StepStatus
-                  complete={<StepIcon />}
-                  incomplete={<StepNumber />}
-                  active={<StepNumber />}
-                />
-              </StepIndicator>
-
-              <Box flexShrink="0">
-                <StepTitle>{title}</StepTitle>
-                <StepDescription>{description}</StepDescription>
-              </Box>
-
-              <StepSeparator />
-            </Step>
-          ))}
-        </Stepper>
-
-        <Spacer h="2rem" />
-
-        <MatrimonyForm activeStep={activeStep} />
+        <MatrimonyForm />
 
         <Spacer h="2rem" />
 

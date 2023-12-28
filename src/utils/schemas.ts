@@ -1,4 +1,3 @@
-import { z } from "zod";
 import * as Yup from "yup";
 
 export const familyMemberSchema = Yup.object().shape({
@@ -89,4 +88,55 @@ export const donationsFormSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
   panCard: Yup.string().url().required("PAN Card URL is required"),
   addressProof: Yup.string().url().required("Address Proof URL is required"),
+});
+
+export const matrimonyPersonalInfoSchema = Yup.object().shape({
+  firstName: Yup.string().required(),
+  middleName: Yup.string().required(),
+  lastName: Yup.string().required(),
+  dateAndTimeOfBirth: Yup.date().required(),
+  placeOfBirth: Yup.string().required(),
+  mobileNumber: Yup.string().required(),
+  emailId: Yup.string().email().required(),
+  occupation: Yup.string().required(),
+  incomePerAnnum: Yup.number().nullable(),
+  gender: Yup.mixed().oneOf(["male", "female"]).nullable(),
+  maritalStatus: Yup.mixed()
+    .oneOf(["single", "divorcee", "windower", "widow"])
+    .nullable(),
+  manglik: Yup.mixed().oneOf(["yes", "no"]).nullable(),
+  heightFeet: Yup.number().nullable(),
+  heightInches: Yup.number().nullable(),
+  weight: Yup.number().nullable(),
+  qualifications: Yup.array().of(Yup.string()).required(),
+  hobbies: Yup.string().required(),
+  complexionAndFeatures: Yup.string().required(),
+});
+
+export const residentialAddressDetailsSchema = Yup.object().shape({
+  addressLine1: Yup.string().required(),
+  addressLine2: Yup.string().required(),
+  addressLine3: Yup.string().required(),
+  pinCode: Yup.string().required(),
+});
+
+export const matrimonySpousePreferencesSchema = Yup.object().shape({
+  working: Yup.boolean().nullable(),
+  dietaryPreference: Yup.mixed().oneOf(["veg", "non-veg"]).nullable(),
+  qualificationRequirements: Yup.string().required(),
+  complexion: Yup.string().required(),
+  heightFeet: Yup.number().nullable(),
+  heightInches: Yup.number().nullable(),
+  weight: Yup.number().nullable(),
+  horoscopeMatching: Yup.mixed().oneOf(["yes", "no"]).nullable(),
+  build: Yup.mixed().oneOf(["medium", "slim", "healthy"]).nullable(),
+  siblings: Yup.mixed().oneOf(["yes", "no"]).nullable(),
+});
+
+export const matrimonyFormValuesSchema = Yup.object().shape({
+  personalInfo: matrimonyPersonalInfoSchema,
+  familyMembers: Yup.array().of(familyMemberSchema),
+  residentialAddressDetails: residentialAddressDetailsSchema,
+  spousePreferences: matrimonySpousePreferencesSchema,
+  proposerInfo: proposerInfoSchema,
 });

@@ -10,7 +10,7 @@ import {
   BsYoutube,
 } from "react-icons/bs";
 
-import { FooterConstants } from "../constants/LandingConstants.json";
+import Constants from "../constants/LandingConstants.json";
 
 const socialLinks = [
   {
@@ -78,7 +78,7 @@ const Footer = () => {
             </Flex>
           </Flex>
           <Flex gap="70px">
-            {FooterConstants.map((footerDiv, index) => {
+            {Constants.FooterConstants.map((footerDiv, index) => {
               return (
                 <Flex gap={7} flexDir="column" key={index}>
                   <Text fontWeight={600}>{footerDiv.FooterColumnTitle}</Text>
