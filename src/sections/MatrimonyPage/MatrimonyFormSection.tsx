@@ -52,44 +52,13 @@ const MatrimonyFormSection = () => {
   });
 
   return (
-    <Grid
-      id="matrimony-form"
-      // templateColumns="2fr 7fr"
-    >
+    <Grid id="matrimony-form">
       <GridItem>
         <Spacer h="1.5rem" />
 
         <MatrimonyForm />
 
         <Spacer h="2rem" />
-
-        {/* Navigation buttons */}
-        <Flex justify="space-between">
-          {activeStep > 1 ? (
-            <Button
-              colorScheme="orange"
-              leftIcon={<ArrowBackIcon />}
-              size="lg"
-              onClick={() => setActiveStep(activeStep - 1)}
-            >
-              Previous
-            </Button>
-          ) : (
-            <div></div>
-          )}
-
-          <Button
-            colorScheme="orange"
-            rightIcon={
-              activeStep !== steps.length ? <ArrowForwardIcon /> : undefined
-            }
-            size="lg"
-            onClick={() => setActiveStep(activeStep + 1)}
-          >
-            {/* Next */}
-            {activeStep === steps.length ? "Submit" : "Next"}
-          </Button>
-        </Flex>
       </GridItem>
     </Grid>
   );

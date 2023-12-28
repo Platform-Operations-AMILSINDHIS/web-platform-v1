@@ -91,14 +91,16 @@ export const donationsFormSchema = Yup.object().shape({
 });
 
 export const matrimonyPersonalInfoSchema = Yup.object().shape({
-  firstName: Yup.string().required(),
-  middleName: Yup.string().required(),
-  lastName: Yup.string().required(),
-  dateAndTimeOfBirth: Yup.date().required(),
-  placeOfBirth: Yup.string().required(),
-  mobileNumber: Yup.string().required(),
-  emailId: Yup.string().email().required(),
-  occupation: Yup.string().required(),
+  firstName: Yup.string().required("First Name is required"),
+  middleName: Yup.string().required("Middle Name is required"),
+  lastName: Yup.string().required("Last Name is required"),
+  dateAndTimeOfBirth: Yup.date().required("Date And Time Of Birth is required"),
+  placeOfBirth: Yup.string().required("Place Of Birth is required"),
+  mobileNumber: Yup.string().required("Mobile Number is required"),
+  emailId: Yup.string()
+    .email("Invalid Email Id")
+    .required("Email Id is required"),
+  occupation: Yup.string().required("Occupation is required"),
   incomePerAnnum: Yup.number().nullable(),
   gender: Yup.mixed().oneOf(["male", "female"]).nullable(),
   maritalStatus: Yup.mixed()
@@ -108,23 +110,29 @@ export const matrimonyPersonalInfoSchema = Yup.object().shape({
   heightFeet: Yup.number().nullable(),
   heightInches: Yup.number().nullable(),
   weight: Yup.number().nullable(),
-  qualifications: Yup.array().of(Yup.string()).required(),
-  hobbies: Yup.string().required(),
-  complexionAndFeatures: Yup.string().required(),
+  qualifications: Yup.array()
+    .of(Yup.string())
+    .required("Qualifications are required"),
+  hobbies: Yup.string().required("Hobbies are required"),
+  complexionAndFeatures: Yup.string().required(
+    "Complexion And Features are required"
+  ),
 });
 
 export const residentialAddressDetailsSchema = Yup.object().shape({
-  addressLine1: Yup.string().required(),
-  addressLine2: Yup.string().required(),
-  addressLine3: Yup.string().required(),
-  pinCode: Yup.string().required(),
+  addressLine1: Yup.string().required("Address Line 1 is required"),
+  addressLine2: Yup.string().required("Address Line 2 is required"),
+  addressLine3: Yup.string().required("Address Line 3 is required"),
+  pinCode: Yup.string().required("PIN Code is required"),
 });
 
 export const matrimonySpousePreferencesSchema = Yup.object().shape({
   working: Yup.boolean().nullable(),
   dietaryPreference: Yup.mixed().oneOf(["veg", "non-veg"]).nullable(),
-  qualificationRequirements: Yup.string().required(),
-  complexion: Yup.string().required(),
+  qualificationRequirements: Yup.string().required(
+    "Qualification Requirements are required"
+  ),
+  complexion: Yup.string().required("Complexion is required"),
   heightFeet: Yup.number().nullable(),
   heightInches: Yup.number().nullable(),
   weight: Yup.number().nullable(),

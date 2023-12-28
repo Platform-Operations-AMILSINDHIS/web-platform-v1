@@ -213,7 +213,7 @@ const MatrimonyPersonalInformationSection: React.FC = () => {
 
       <Formik
         initialValues={personalInfo}
-        validationSchema={matrimonyPersonalInfoSchema}
+        // validationSchema={matrimonyPersonalInfoSchema}
         onSubmit={(values, actions) => {
           // console.log({ values });
           setPersonalInfo(values);
@@ -342,7 +342,7 @@ const MatrimonyAddressDetailsSection: React.FC = () => {
       <Heading>Residential Address</Heading>
       <Formik
         initialValues={residentialAddressDetails}
-        validationSchema={residentialAddressDetailsSchema}
+        // validationSchema={residentialAddressDetailsSchema}
         onSubmit={(values, actions) => {
           // console.log({ values });
           setResidentialAddressDetails(values);
@@ -517,7 +517,7 @@ const SpousePreferencesSection: React.FC = () => {
       <Heading>Spouse Preferences</Heading>
       <Formik
         initialValues={spousePreferences}
-        validationSchema={matrimonySpousePreferencesSchema}
+        // validationSchema={matrimonySpousePreferencesSchema}
         onSubmit={(values, actions) => {
           // console.log({ values })
           setSpousePreferences(values);
@@ -622,7 +622,7 @@ export const ProposerDetailsSection: React.FC = () => {
 
       <Formik
         initialValues={proposerInfo}
-        validationSchema={proposerInfoSchema}
+        // validationSchema={proposerInfoSchema}
         onSubmit={(values, actions) => {
           // console.log({ values });
 
