@@ -629,6 +629,8 @@ export const ProposerDetailsSection: React.FC = () => {
           setProposerInfo(values);
           actions.setSubmitting(false);
           setActiveStep(activeStep + 1);
+
+          // TODO: Call trpc mut and submit matrimony profile here
         }}
       >
         {(formik) => (
