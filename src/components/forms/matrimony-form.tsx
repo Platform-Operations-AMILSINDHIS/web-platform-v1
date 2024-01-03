@@ -1,5 +1,5 @@
+import React, { useEffect } from "react";
 import { atom, useAtom } from "jotai";
-import React from "react";
 import {
   Heading,
   Text,
@@ -50,6 +50,8 @@ import { Formik, Form } from "formik";
 import type { InputType } from "./kap-membership-form";
 import { focusAtom } from "jotai-optics";
 
+import { api } from "~/utils/api";
+
 const steps = [
   {
     title: "Step 1",
@@ -78,7 +80,7 @@ const matrimonyFormAtom = atom<MatrimonyFormValues>({
     firstName: "",
     middleName: "",
     lastName: "",
-    dateAndTimeOfBirth: new Date(),
+    dateAndTimeOfBirth: "",
     placeOfBirth: "",
     mobileNumber: "",
     emailId: "",
@@ -203,6 +205,11 @@ const MatrimonyPersonalInformationSection: React.FC = () => {
   const [activeStep, setActiveStep] = useAtom(activeStepAtom);
   const [personalInfo, setPersonalInfo] = useAtom(personalInfoAtom);
 
+  useEffect(
+    () => console.log(JSON.stringify(personalInfo, null, 2)),
+    [personalInfo]
+  );
+
   return (
     <>
       <Heading>Personal Information</Heading>
@@ -213,9 +220,10 @@ const MatrimonyPersonalInformationSection: React.FC = () => {
 
       <Formik
         initialValues={personalInfo}
-        // validationSchema={matrimonyPersonalInfoSchema}
+        validationSchema={matrimonyPersonalInfoSchema}
         onSubmit={(values, actions) => {
           // console.log({ values });
+          console.log({values})
           setPersonalInfo(values);
           actions.setSubmitting(false);
           setActiveStep(activeStep + 1);
@@ -241,7 +249,7 @@ const MatrimonyPersonalInformationSection: React.FC = () => {
                 { label: "Mobile Number" },
                 { label: "Email ID" },
                 { label: "Occupation" },
-                { label: "Income per Annum", inputType: "number" },
+                { label: "Income per Annum", inputType: "text" },
               ].map(({ label, name, inputType }, i) => (
                 <LabelledInput
                   key={i}
@@ -292,22 +300,23 @@ const MatrimonyPersonalInformationSection: React.FC = () => {
                 {
                   label: "Height in Feet",
                   name: "heightFeet",
-                  inputType: "number",
+                  // inputType: "number",
                 },
                 {
                   label: "Height in Inches",
                   name: "heightInches",
-                  inputType: "number",
+                  // inputType: "number",
                 },
                 {
                   label: "Weight (in Kg)",
                   name: "weight",
-                  inputType: "number",
+                  // inputType: "number",
                 },
-              ].map(({ label, name, inputType }, i) => (
+              ].map(({ label, name }, i) => (
                 <LabelledInput
                   key={i}
-                  type={inputType ? (inputType as InputType) : "text"}
+                  type="text"
+                  // type={inputType ? (inputType as InputType) : "text"}
                   label={label}
                 />
               ))}
@@ -320,6 +329,8 @@ const MatrimonyPersonalInformationSection: React.FC = () => {
                 colorScheme="orange"
                 rightIcon={<ArrowForwardIcon />}
                 size="lg"
+                onClick={() => console.log({ errors: formik.errors })}
+                // disabled={!formik.isValid || !formik.dirty}  // Updated condition
               >
                 Next
               </Button>
@@ -342,7 +353,7 @@ const MatrimonyAddressDetailsSection: React.FC = () => {
       <Heading>Residential Address</Heading>
       <Formik
         initialValues={residentialAddressDetails}
-        // validationSchema={residentialAddressDetailsSchema}
+        validationSchema={residentialAddressDetailsSchema}
         onSubmit={(values, actions) => {
           // console.log({ values });
           setResidentialAddressDetails(values);
@@ -517,7 +528,7 @@ const SpousePreferencesSection: React.FC = () => {
       <Heading>Spouse Preferences</Heading>
       <Formik
         initialValues={spousePreferences}
-        // validationSchema={matrimonySpousePreferencesSchema}
+        validationSchema={matrimonySpousePreferencesSchema}
         onSubmit={(values, actions) => {
           // console.log({ values })
           setSpousePreferences(values);
@@ -613,8 +624,33 @@ const SpousePreferencesSection: React.FC = () => {
 };
 
 export const ProposerDetailsSection: React.FC = () => {
+  const toast = useToast();
+
+  const matrimonyFormMut = api.form.matrimony.useMutation({
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Success",
+        description: "Your matrimony profile has been submitted successfully",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    },
+  });
+
   const [activeStep, setActiveStep] = useAtom(activeStepAtom);
   const [proposerInfo, setProposerInfo] = useAtom(proposerInfoAtom);
+
+  const [matrimonyFormData] = useAtom(matrimonyFormAtom);
 
   return (
     <>
@@ -622,15 +658,23 @@ export const ProposerDetailsSection: React.FC = () => {
 
       <Formik
         initialValues={proposerInfo}
-        // validationSchema={proposerInfoSchema}
+        validationSchema={proposerInfoSchema}
         onSubmit={(values, actions) => {
           // console.log({ values });
 
           setProposerInfo(values);
           actions.setSubmitting(false);
-          setActiveStep(activeStep + 1);
+          // setActiveStep(activeStep + 1);
 
           // TODO: Call trpc mut and submit matrimony profile here
+          matrimonyFormMut
+            .mutateAsync({
+              formData: matrimonyFormData,
+            })
+            .then(() => {
+              console.log("yo");
+            })
+            .catch(console.error);
         }}
       >
         {(formik) => (
@@ -688,6 +732,7 @@ export const ProposerDetailsSection: React.FC = () => {
               <Button
                 type="submit"
                 isDisabled={!(formik.isValid && formik.dirty)}
+                isLoading={matrimonyFormMut.isLoading}
                 colorScheme="orange"
                 rightIcon={<ArrowForwardIcon />}
                 size="lg"

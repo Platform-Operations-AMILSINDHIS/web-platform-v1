@@ -92,9 +92,11 @@ export const donationsFormSchema = Yup.object().shape({
 
 export const matrimonyPersonalInfoSchema = Yup.object().shape({
   firstName: Yup.string().required("First Name is required"),
-  middleName: Yup.string().required("Middle Name is required"),
+  middleName: Yup.string().optional(),
   lastName: Yup.string().required("Last Name is required"),
-  dateAndTimeOfBirth: Yup.date().required("Date And Time Of Birth is required"),
+  dateAndTimeOfBirth: Yup.string().required(
+    "Date And Time Of Birth is required"
+  ),
   placeOfBirth: Yup.string().required("Place Of Birth is required"),
   mobileNumber: Yup.string().required("Mobile Number is required"),
   emailId: Yup.string()
@@ -102,21 +104,21 @@ export const matrimonyPersonalInfoSchema = Yup.object().shape({
     .required("Email Id is required"),
   occupation: Yup.string().required("Occupation is required"),
   incomePerAnnum: Yup.number().nullable(),
-  gender: Yup.mixed().oneOf(["male", "female"]).nullable(),
+  gender: Yup.mixed().oneOf(["Male", "Female"]).nullable(),
   maritalStatus: Yup.mixed()
-    .oneOf(["single", "divorcee", "windower", "widow"])
+    .oneOf(["Single", "Divorcee", "Widower", "Widow"])
     .nullable(),
-  manglik: Yup.mixed().oneOf(["yes", "no"]).nullable(),
+  manglik: Yup.mixed().oneOf(["Yes", "No"]).nullable(),
   heightFeet: Yup.number().nullable(),
   heightInches: Yup.number().nullable(),
   weight: Yup.number().nullable(),
-  qualifications: Yup.array()
-    .of(Yup.string())
-    .required("Qualifications are required"),
-  hobbies: Yup.string().required("Hobbies are required"),
-  complexionAndFeatures: Yup.string().required(
-    "Complexion And Features are required"
-  ),
+  // qualifications: Yup.array()
+  //   .of(Yup.string())
+  //   .required("Qualifications are required"),
+  // hobbies: Yup.string().required("Hobbies are required"),
+  // complexionAndFeatures: Yup.string().required(
+  //   "Complexion And Features are required"
+  // ),
 });
 
 export const residentialAddressDetailsSchema = Yup.object().shape({

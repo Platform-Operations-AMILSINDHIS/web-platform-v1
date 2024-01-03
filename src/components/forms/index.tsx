@@ -158,16 +158,31 @@ export const LabelledInput: React.FC<{
         </Field>
       </>
     ) : type === "datetime" ? (
-      <Flex border="1px solid #E2E8F0" borderRadius="5px" py="10px">
-        <Input
-          type="datetime-local"
-          variant="ghost"
-          name={name ?? camelCase(label)}
-          borderRadius="5px"
-          onChange={onChange ?? undefined}
-          defaultValue={defaultValue ?? undefined}
-        />
-      </Flex>
+      <Field name={name ?? camelCase(label)}>
+        {({
+          field,
+          form: { setFieldValue },
+        }: {
+          field: FieldInputProps<string>;
+          form: FormikHelpers<string>;
+        }) => (
+          <Input
+            type="datetime-local"
+            variant="outline"
+            name={field.name}
+            borderRadius="5px"
+          borderColor="gray.400"
+          _hover={{
+            borderColor: "#FF4D00",
+          }}
+          focusBorderColor="#FF4D00"
+            onChange={(e) => {
+              setFieldValue(field.name, e.target.value);
+            }}
+            value={field.value}
+          />
+        )}
+      </Field>
     ) : type === "number" ? (
       <Field
         as={Input}
@@ -202,7 +217,7 @@ export const LabelledInput: React.FC<{
         }}
       >
         {selectOptions?.map((option) => (
-          <option key={option} value={option.toLowerCase()}>
+          <option key={option} value={option}>
             {option}
           </option>
         ))}

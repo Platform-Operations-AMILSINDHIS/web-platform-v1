@@ -16,7 +16,8 @@ import MatrimonyForm from "~/components/forms/matrimony-form";
 const MatrimonyFormSection = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [displayState, setDisplayState] = useState(false);
-  const [{ user }] = useUserAtom();
+  // const [{ user }] = useUserAtom();
+  const user = true;
 
   const handleModal = (state: boolean) => {
     setDisplayState(state);
