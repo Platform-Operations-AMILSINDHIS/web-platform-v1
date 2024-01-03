@@ -177,7 +177,7 @@ export const LabelledInput: React.FC<{
           }}
           focusBorderColor="#FF4D00"
             onChange={(e) => {
-              setFieldValue(field.name, e.target.value);
+              void setFieldValue(field.name, e.target.value);
             }}
             value={field.value}
           />

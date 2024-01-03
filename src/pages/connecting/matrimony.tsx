@@ -96,7 +96,7 @@ const MatrimonyFormPage: NextPage = () => {
 
       <Spacer h="2rem" />
 
-      <MatrimonyForm activeStep={activeStep} />
+      <MatrimonyForm />
 
       <Spacer h="2rem" />
 

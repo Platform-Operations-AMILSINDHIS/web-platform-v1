@@ -28,7 +28,10 @@ const AccountOptionsPopover: React.FC<{ children: React.ReactNode }> = ({
   const [, setUser] = useUserAtom();
   const handleLogout = async () => {
     try {
-      const response = await axios.post("/api/auth/logout");
+      const response = await axios.post<{
+        responseFlag: number;
+        errorMessage: string;
+      }>("/api/auth/logout");
       if (response.data.responseFlag === 1) {
         window.location.href = "/";
         setUser({ user: null });
@@ -71,7 +74,7 @@ const AccountOptionsPopover: React.FC<{ children: React.ReactNode }> = ({
               align="center"
             >
               <Icon boxSize={4} as={MdOutlineLogout}></Icon>
-              <Text onClick={handleLogout}>Sign Out</Text>
+              <Text onClick={() => void handleLogout()}>Sign Out</Text>
             </Flex>
           </Flex>
         </PopoverBody>

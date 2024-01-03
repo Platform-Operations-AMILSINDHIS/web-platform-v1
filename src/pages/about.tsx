@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import type { NextPage, GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { Spacer } from "@chakra-ui/react";
 
 import Layout from "~/components/layout";
@@ -12,14 +12,26 @@ import ConstitutionBox from "~/sections/AboutPage/ConstitutionBox";
 import ConnectingAndYACSection from "~/sections/AboutPage/ConnectingAndYACSection";
 import CommunityBox from "~/sections/AboutPage/CommunityBox";
 
-const AboutPage: NextPage = () => {
+import { client } from "~/lib/client";
+
+import type { InduShaniWordsQueryQuery } from "~/lib/__generated/sdk";
+
+export const getServerSideProps: GetServerSideProps<{
+  induShaniWords: string;
+}> = async () => {
+  const post = await client.induShaniWordsQuery();
+  console.log({ induShaniWords: post.induShaniWords?.herWords });
+  return { props: { induShaniWords: post.induShaniWords?.herWords ?? "" } };
+};
+
+const AboutPage = ({induShaniWords}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <Layout title="Home">
       <HeroSection />
       <Spacer h="2rem" />
       <LegacyBox />
       <Spacer h="2rem" />
-      <FoundingMembers />
+      <FoundingMembers {...{induShaniWords}} />
       <Spacer h="8rem" />
       <PresidentsSection />
       <Spacer h="8rem" />

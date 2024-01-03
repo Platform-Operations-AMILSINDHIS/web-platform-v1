@@ -1,6 +1,7 @@
 import { Flex, Grid, Box, Text, Spacer, Image } from "@chakra-ui/react";
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 
-const FoundingMembers = () => {
+const FoundingMembers = ({induShaniWords}: {induShaniWords: string;}) => {
   return (
     <Box textAlign="center">
       <Text textColor="#FF4D00" fontWeight={600}>
@@ -68,15 +69,26 @@ const FoundingMembers = () => {
       {/* Two paragraphs of text here */}
 
       <Box mx="auto" maxW="62%" textAlign="center">
-        <Text>
-          These ten individuals came together with a shared vision of providing
-          assistance to their fellow Amil Sindhis who had faced displacement and
-          adversity. Their dedication and foresight laid the foundation for a
-          charitable trust that would go on to impact countless lives
-          positively.
+        {/* <Box>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "2rem" }}
+            dangerouslySetInnerHTML={{
+              __html: documentToHtmlString({
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                nodeType: "document",
+                content: ,
+                data: {},
+              }),
+            }}
+          />
+        </Box> */}
+
+        <Text whiteSpace="pre-wrap">
+          {induShaniWords}
         </Text>
 
-        <Spacer h="1rem" />
+        {/* <Spacer h="1rem" />
 
         <Text>
           Since its inception, the Panchayat has continued to uphold the values
@@ -86,7 +98,7 @@ const FoundingMembers = () => {
           Amil Sindhi community. The legacy of these founding members lives on,
           as their commitment to service and community building continues to
           inspire future generations within the Panchayat.
-        </Text>
+        </Text> */}
       </Box>
     </Box>
   );
