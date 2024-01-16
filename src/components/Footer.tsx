@@ -68,7 +68,6 @@ const Footer = () => {
     undefined
   );
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [displayState, setDisplayState] = useState<boolean>(false);
 
   return (
     <>
@@ -76,7 +75,7 @@ const Footer = () => {
         <ModalOverlay />
         <ModalContent maxW="50vw">
           <ModalBody>
-            <Box dangerouslySetInnerHTML={{ __html: modalContent || "" }} />
+            <Box dangerouslySetInnerHTML={{ __html: modalContent ?? "" }} />
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -123,12 +122,11 @@ const Footer = () => {
                                 ? (e) => {
                                     e.preventDefault();
                                     if (navItem.LinkText) {
-                                      setDisplayState(true);
                                       setModalContent(navItem.LinkText);
                                       onOpen();
                                     }
                                   }
-                                : () => {}
+                                : () => { return }
                             }
                           >
                             {navItem.LinkLabel}
