@@ -2,6 +2,7 @@ import { Box, Divider, Flex, Icon, Spacer, Text } from "@chakra-ui/react";
 import { BsTelephone } from "react-icons/bs";
 import { CiLocationOn } from "react-icons/ci";
 import { AiOutlineMail } from "react-icons/ai";
+import { FooterConstants } from "../constants/LandingConstants.json";
 import {
   BsFacebook,
   BsTwitter,
@@ -10,7 +11,8 @@ import {
   BsYoutube,
 } from "react-icons/bs";
 
-import { FooterConstants } from "../constants/LandingConstants.json";
+import AmilSindhiLogo from "../../public/images/amil-sindhis-logo.png";
+import Image from "next/image";
 
 const socialLinks = [
   {
@@ -42,11 +44,12 @@ const contactLinks = [
   },
   {
     ICON: BsTelephone,
-    LinkLabel: "(414)687-5892",
+    LinkLabel: "(+91)9820081700",
   },
   {
     ICON: CiLocationOn,
-    LinkLabel: "794 Mcallister St San Francisco, 94102",
+    LinkLabel:
+      "1 A, Sindhu House,1st Floor, Nanabhai Lane, Fort, Mumbai, Maharashtra 400001",
   },
 ];
 
@@ -62,11 +65,14 @@ const Footer = () => {
     >
       <Flex w="full" flexDir="column" align="center" justify="center">
         <Flex mb={10} w="full" justify="space-between">
-          <Flex gap={3} flexDir="column">
-            <Text fontSize="3xl">Logo</Text>
-            <Text w={300} fontSize="md" color="gray.400">
-              Lorem ipsum dolor sit amet consectetur adipiscing elit aliquam
-            </Text>
+          <Flex align="center" gap={3} flexDir="column">
+            <Image
+              src={AmilSindhiLogo}
+              width={200}
+              height={200}
+              alt="NGO_Logo"
+            />
+
             <Flex gap={5}>
               {socialLinks.map(({ ICON, url }, index) => {
                 return (
