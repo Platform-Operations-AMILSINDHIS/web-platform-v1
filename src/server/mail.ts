@@ -16,6 +16,8 @@ import type {
   KAPMembershipFormValues,
   YACMembershipFormValues,
 } from "~/types/forms/membership";
+import type { DonationsFormValues } from "~/types/forms/donations";
+import type { MatrimonyFormValues } from "~/types/forms/matrimony";
 import { createId } from "~/utils/helper";
 
 // const transporter = nodemailer.createTransport({
@@ -76,20 +78,37 @@ export async function sendRawJsonDataOnly(to: string, data: any) {
   await sendMail({ to, subject, html });
 }
 
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 export async function sendRawJsonDataWithPDF(
   to: string,
   data: any,
   formType: "kap-membership" | "yac-membership"
 ) {
-  const subject = "Form Response";
+  // const subject = "Form Response";
+
+  // const html = `
+  //   <div style="font-size: 16px;">
+  //     <p>Here is the form response:</p>
+
+  //     <pre>
+  //       ${JSON.stringify(data, null, 2)}
+  //     </pre>
+  //   </div>
+  // `;
+
+  const formName = formType === "kap-membership" ? "KAP" : "YAC";
+  const subject = `New ${formName} Form Submission`;
+  /* eslint-disable  @typescript-eslint/no-unsafe-assignment */
+  const { personalInfo, paymentId } = data;
+  /* eslint-disable  @typescript-eslint/no-unsafe-assignment */
+  const { firstName, lastName, emailId } = personalInfo;
 
   const html = `
     <div style="font-size: 16px;">
-      <p>Here is the form response:</p>
-
-      <pre>
-        ${JSON.stringify(data, null, 2)}
-      </pre>
+      <p>A new ${formName} form has been filled.</p>
+      <p>Name: ${firstName} ${lastName}</p>
+      <p>Email: ${emailId}</p>
+      <p>Amount Paid: ${paymentId}</p>
     </div>
   `;
 
@@ -129,27 +148,92 @@ export const sendFormConfirmationMail = async ({
   await sendMail({ to, subject, html });
 };
 
+// export const sendDonationFormConfirmationMail = async ({
+//   amount,
+//   contactNumber,
+//   donorName,
+//   email,
+// }: DonationFormConfirmationMailType) => {
+//   const subject = `Thank you for donating!`;
+
+//   const html = `
+//     <div style="font-size: 14px;">
+//       <p>Hey ${donorName.split(" ")[0]},</p>
+//       <br>
+//       <p>This is email is to confirm that we have received your donation for Rs. ${amount}/-</p>
+//       <p>We cannot express our gratitude for this, and wholeheartedly thank you for your contribution to the Amil Sindhis community.</p>
+//       <br>
+//       <p>Regards,</p>
+//       <p>Team Amil Sindhis</p>
+//     </div>
+//   `;
+
+//   await sendMail({ to: email, subject, html });
+// };
+
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+export const sendMatrimonyFormNotificationMail = async (
+  to: string,
+  /* eslint-disable  @typescript-eslint/no-unsafe-assignment */
+  formData: any
+) => {
+  const { personalInfo } = formData;
+  const { firstName, lastName, emailId } = personalInfo;
+  const subject = `New Matrimony Form Submission`;
+
+  const html = `
+    <div style="font-size: 16px;">
+      <p>A new Matrimony form has been filled.</p>
+      <p>Name: ${firstName} ${lastName}</p>
+      <p>Email: ${emailId}</p>
+    </div>
+  `;
+
+  await sendMail({ to, subject, html });
+};
+
 export const sendDonationFormConfirmationMail = async ({
   amount,
-  contactNumber,
   donorName,
   email,
 }: DonationFormConfirmationMailType) => {
-  const subject = `Thank you for donating!`;
+  const subject = `Thank you for your donation, ${donorName.split(" ")[0]}!`;
 
   const html = `
-    <div style="font-size: 14px;">
-      <p>Hey ${donorName.split(" ")[0]},</p>
-      <br>
-      <p>This is email is to confirm that we have received your donation for Rs. ${amount}/-</p>
-      <p>We cannot express our gratitude for this, and wholeheartedly thank you for your contribution to the Amil Sindhis community.</p>
-      <br>
-      <p>Regards,</p>
-      <p>Team Amil Sindhis</p>
+    <div style="font-family: Arial, sans-serif; font-size: 16px;">
+      <p>Dear ${donorName.split(" ")[0]},</p>
+      <p>Thank you for your generous donation of Rs. ${amount}/- to the Amil Sindhis community.</p>
+      <p>Your support helps us continue our mission and assist those in our community who need it most.</p>
+      <p>Thank you again for your support!</p>
+      <p>Best regards,</p>
+      <p><strong>Team Amil Sindhis</strong></p>
     </div>
   `;
 
   await sendMail({ to: email, subject, html });
+};
+
+export const sendDonationNotificationMail = async (
+  to: string,
+  formData: {
+    donorName: string;
+    email: string;
+    amount: number;
+  }
+) => {
+  const { donorName, email, amount } = formData;
+  const subject = `New Donation Received`;
+
+  const html = `
+    <div style="font-size: 16px;">
+      <p>A new donation has been received.</p>
+      <p>Donor Name: ${donorName}</p>
+      <p>Email: ${email}</p>
+      <p>Amount: ${amount}</p>
+    </div>
+  `;
+
+  await sendMail({ to, subject, html });
 };
 
 export const sendRsvpMailForEvent = async ({

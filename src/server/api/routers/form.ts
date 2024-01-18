@@ -9,6 +9,7 @@ import {
   kapMembershipFormValuesSchema,
   yacMembershipFormValuesSchema,
   donationsFormSchema,
+  matrimonyFormValuesSchema,
 } from "~/utils/schemas";
 
 import {
@@ -16,6 +17,8 @@ import {
   sendDonationFormConfirmationMail,
   sendRawJsonDataWithPDF,
   sendRawJsonDataOnly,
+  sendDonationNotificationMail,
+  sendMatrimonyFormNotificationMail,
 } from "../../mail";
 
 export const formRouter = createTRPCRouter({
@@ -77,8 +80,8 @@ export const formRouter = createTRPCRouter({
 
       // Send response
       await sendRawJsonDataWithPDF(
-        // "akshat.sabavat@gmail.com",
-        "somesh.kar@gmail.com",
+        "akshat.sabavat@gmail.com",
+        // "somesh.kar@gmail.com",
         formData,
         "yac-membership"
       );
@@ -100,8 +103,13 @@ export const formRouter = createTRPCRouter({
       console.log({ formData });
 
       // Send response
-      await sendRawJsonDataOnly("akshat.sabavat@gmail.com", formData);
+      // await sendRawJsonDataOnly("akshat.sabavat@gmail.com", formData);
       // await sendRawJsonDataOnly("somesh.kar@gmail.com", formData);
+      await sendDonationNotificationMail("akshat.sabavat@gmail.com", {
+        donorName: formData.donorName,
+        email: formData.email,
+        amount: formData.amount,
+      });
 
       // Send confirmation mail
       await sendDonationFormConfirmationMail(formData);
@@ -109,6 +117,29 @@ export const formRouter = createTRPCRouter({
       //   to: formData.email,
       //   formName: "Donations",
       // });
+
+      return { success: true };
+    }),
+  matrimony: publicProcedure
+    .input(Yup.object({ formData: matrimonyFormValuesSchema }))
+    .mutation(async ({ input }) => {
+      // .mutation(({ input }) => {
+      const { formData } = input;
+
+      console.log({ formData });
+
+      // Send response
+      // await sendRawJsonDataOnly("akshat.sabavat@gmail.com", formData);
+      await sendMatrimonyFormNotificationMail(
+        "akshat.sabavat@gmail.com",
+        formData
+      );
+
+      // Send confirmation mail
+      await sendFormConfirmationMail({
+        to: formData.personalInfo.emailId,
+        formName: "Matrimony",
+      });
 
       return { success: true };
     }),

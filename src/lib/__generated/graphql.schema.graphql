@@ -90,59 +90,10 @@ input AssetFilter {
 }
 
 type AssetLinkingCollections {
-  blogContentTypeCollection(limit: Int = 100, locale: String, order: [AssetLinkingCollectionsBlogContentTypeCollectionOrder], preview: Boolean, skip: Int = 0): BlogContentTypeCollection
+  blogContentTypeCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): BlogContentTypeCollection
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-  eventContentTypeCollection(limit: Int = 100, locale: String, order: [AssetLinkingCollectionsEventContentTypeCollectionOrder], preview: Boolean, skip: Int = 0): EventContentTypeCollection
-  eventImageSliderCollection(limit: Int = 100, locale: String, order: [AssetLinkingCollectionsEventImageSliderCollectionOrder], preview: Boolean, skip: Int = 0): EventImageSliderCollection
-}
-
-enum AssetLinkingCollectionsBlogContentTypeCollectionOrder {
-  author_ASC
-  author_DESC
-  blogSlug_ASC
-  blogSlug_DESC
-  blogTitle_ASC
-  blogTitle_DESC
-  dateOfBlog_ASC
-  dateOfBlog_DESC
-  sys_firstPublishedAt_ASC
-  sys_firstPublishedAt_DESC
-  sys_id_ASC
-  sys_id_DESC
-  sys_publishedAt_ASC
-  sys_publishedAt_DESC
-  sys_publishedVersion_ASC
-  sys_publishedVersion_DESC
-}
-
-enum AssetLinkingCollectionsEventContentTypeCollectionOrder {
-  eventDates_ASC
-  eventDates_DESC
-  eventLocation_ASC
-  eventLocation_DESC
-  eventSlug_ASC
-  eventSlug_DESC
-  eventTitle_ASC
-  eventTitle_DESC
-  sys_firstPublishedAt_ASC
-  sys_firstPublishedAt_DESC
-  sys_id_ASC
-  sys_id_DESC
-  sys_publishedAt_ASC
-  sys_publishedAt_DESC
-  sys_publishedVersion_ASC
-  sys_publishedVersion_DESC
-}
-
-enum AssetLinkingCollectionsEventImageSliderCollectionOrder {
-  sys_firstPublishedAt_ASC
-  sys_firstPublishedAt_DESC
-  sys_id_ASC
-  sys_id_DESC
-  sys_publishedAt_ASC
-  sys_publishedAt_DESC
-  sys_publishedVersion_ASC
-  sys_publishedVersion_DESC
+  eventContentTypeCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EventContentTypeCollection
+  eventImageSliderCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EventImageSliderCollection
 }
 
 enum AssetOrder {
@@ -210,6 +161,8 @@ type BlogContentTypeBlogContentLinks {
 
 type BlogContentTypeBlogContentResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 type BlogContentTypeCollection {
@@ -413,6 +366,8 @@ type EventContentTypeEventDescriptionLinks {
 
 type EventContentTypeEventDescriptionResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 input EventContentTypeFilter {
@@ -659,6 +614,52 @@ input ImageTransformOptions {
 }
 
 """
+words by InduShani [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/induShaniWords)
+"""
+type InduShaniWords implements Entry {
+  contentfulMetadata: ContentfulMetadata!
+  herWords(locale: String): String
+  linkedFrom(allowedLocales: [String]): InduShaniWordsLinkingCollections
+  sys: Sys!
+}
+
+type InduShaniWordsCollection {
+  items: [InduShaniWords]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+input InduShaniWordsFilter {
+  AND: [InduShaniWordsFilter]
+  OR: [InduShaniWordsFilter]
+  contentfulMetadata: ContentfulMetadataFilter
+  herWords: String
+  herWords_contains: String
+  herWords_exists: Boolean
+  herWords_in: [String]
+  herWords_not: String
+  herWords_not_contains: String
+  herWords_not_in: [String]
+  sys: SysFilter
+}
+
+type InduShaniWordsLinkingCollections {
+  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+}
+
+enum InduShaniWordsOrder {
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+"""
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
 scalar JSON
@@ -678,6 +679,8 @@ type Query {
   eventContentTypeCollection(limit: Int = 100, locale: String, order: [EventContentTypeOrder], preview: Boolean, skip: Int = 0, where: EventContentTypeFilter): EventContentTypeCollection
   eventImageSlider(id: String!, locale: String, preview: Boolean): EventImageSlider
   eventImageSliderCollection(limit: Int = 100, locale: String, order: [EventImageSliderOrder], preview: Boolean, skip: Int = 0, where: EventImageSliderFilter): EventImageSliderCollection
+  induShaniWords(id: String!, locale: String, preview: Boolean): InduShaniWords
+  induShaniWordsCollection(limit: Int = 100, locale: String, order: [InduShaniWordsOrder], preview: Boolean, skip: Int = 0, where: InduShaniWordsFilter): InduShaniWordsCollection
 }
 
 type ResourceLink {

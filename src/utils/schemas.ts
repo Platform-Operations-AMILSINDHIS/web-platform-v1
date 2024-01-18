@@ -1,4 +1,3 @@
-import { z } from "zod";
 import * as Yup from "yup";
 
 export const familyMemberSchema = Yup.object().shape({
@@ -89,4 +88,65 @@ export const donationsFormSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
   panCard: Yup.string().url().required("PAN Card URL is required"),
   addressProof: Yup.string().url().required("Address Proof URL is required"),
+});
+
+export const matrimonyPersonalInfoSchema = Yup.object().shape({
+  firstName: Yup.string().required("First Name is required"),
+  middleName: Yup.string().optional(),
+  lastName: Yup.string().required("Last Name is required"),
+  dateAndTimeOfBirth: Yup.string().required(
+    "Date And Time Of Birth is required"
+  ),
+  placeOfBirth: Yup.string().required("Place Of Birth is required"),
+  mobileNumber: Yup.string().required("Mobile Number is required"),
+  emailId: Yup.string()
+    .email("Invalid Email Id")
+    .required("Email Id is required"),
+  occupation: Yup.string().required("Occupation is required"),
+  incomePerAnnum: Yup.number().nullable(),
+  gender: Yup.mixed().oneOf(["Male", "Female"]).nullable(),
+  maritalStatus: Yup.mixed()
+    .oneOf(["Single", "Divorcee", "Widower", "Widow"])
+    .nullable(),
+  manglik: Yup.mixed().oneOf(["Yes", "No"]).nullable(),
+  heightFeet: Yup.number().nullable(),
+  heightInches: Yup.number().nullable(),
+  weight: Yup.number().nullable(),
+  // qualifications: Yup.array()
+  //   .of(Yup.string())
+  //   .required("Qualifications are required"),
+  // hobbies: Yup.string().required("Hobbies are required"),
+  // complexionAndFeatures: Yup.string().required(
+  //   "Complexion And Features are required"
+  // ),
+});
+
+export const residentialAddressDetailsSchema = Yup.object().shape({
+  addressLine1: Yup.string().required("Address Line 1 is required"),
+  addressLine2: Yup.string().required("Address Line 2 is required"),
+  addressLine3: Yup.string().required("Address Line 3 is required"),
+  pinCode: Yup.string().required("PIN Code is required"),
+});
+
+export const matrimonySpousePreferencesSchema = Yup.object().shape({
+  working: Yup.boolean().nullable(),
+  dietaryPreference: Yup.mixed().oneOf(["veg", "non-veg"]).nullable(),
+  qualificationRequirements: Yup.string().required(
+    "Qualification Requirements are required"
+  ),
+  complexion: Yup.string().required("Complexion is required"),
+  heightFeet: Yup.number().nullable(),
+  heightInches: Yup.number().nullable(),
+  weight: Yup.number().nullable(),
+  horoscopeMatching: Yup.mixed().oneOf(["yes", "no"]).nullable(),
+  build: Yup.mixed().oneOf(["medium", "slim", "healthy"]).nullable(),
+  siblings: Yup.mixed().oneOf(["yes", "no"]).nullable(),
+});
+
+export const matrimonyFormValuesSchema = Yup.object().shape({
+  personalInfo: matrimonyPersonalInfoSchema,
+  familyMembers: Yup.array().of(familyMemberSchema),
+  residentialAddressDetails: residentialAddressDetailsSchema,
+  spousePreferences: matrimonySpousePreferencesSchema,
+  proposerInfo: proposerInfoSchema,
 });
