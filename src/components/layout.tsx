@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Navigation from "./navigation";
+import Navigation from "./Navigation";
 
 import { satoshi } from "../utils/fonts";
 import { Box, Flex } from "@chakra-ui/react";

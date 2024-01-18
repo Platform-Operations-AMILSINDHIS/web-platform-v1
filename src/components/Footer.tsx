@@ -1,20 +1,8 @@
-import { useState } from "react";
-import {
-  Box,
-  Divider,
-  Flex,
-  Icon,
-  Spacer,
-  Text,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalBody,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Divider, Flex, Icon, Spacer, Text } from "@chakra-ui/react";
 import { BsTelephone } from "react-icons/bs";
 import { CiLocationOn } from "react-icons/ci";
 import { AiOutlineMail } from "react-icons/ai";
+import { FooterConstants } from "../constants/LandingConstants.json";
 import {
   BsFacebook,
   BsTwitter,
@@ -23,7 +11,8 @@ import {
   BsYoutube,
 } from "react-icons/bs";
 
-import Constants from "../constants/LandingConstants.json";
+import AmilSindhiLogo from "../../public/images/amil-sindhis-logo.png";
+import Image from "next/image";
 
 const socialLinks = [
   {
@@ -55,132 +44,110 @@ const contactLinks = [
   },
   {
     ICON: BsTelephone,
-    LinkLabel: "(414)687-5892",
+    LinkLabel: "(+91)9820081700",
   },
   {
     ICON: CiLocationOn,
-    LinkLabel: "794 Mcallister St San Francisco, 94102",
+    LinkLabel:
+      "1 A, Sindhu House,1st Floor, Nanabhai Lane, Fort, Mumbai, Maharashtra 400001",
   },
 ];
 
 const Footer = () => {
-  const [modalContent, setModalContent] = useState<string | undefined>(
-    undefined
-  );
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   return (
-    <>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent maxW="50vw">
-          <ModalBody>
-            <Box dangerouslySetInnerHTML={{ __html: modalContent ?? "" }} />
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-      <Box
-        pt="65px"
-        color="gray.200"
-        bg="rgba(0,22,43)"
-        px="130px"
-        w="full"
-        as="footer"
-      >
-        <Flex w="full" flexDir="column" align="center" justify="center">
-          <Flex mb={10} w="full" justify="space-between">
-            <Flex gap={3} flexDir="column">
-              <Text fontSize="3xl">Logo</Text>
-              <Text w={300} fontSize="md" color="gray.400">
-                Lorem ipsum dolor sit amet consectetur adipiscing elit aliquam
-              </Text>
-              <Flex gap={5}>
-                {socialLinks.map(({ ICON, url }, index) => {
-                  return (
-                    <Box key={index} as="a" href={url}>
-                      <Icon color="#FF4D00" as={ICON} />
-                    </Box>
-                  );
-                })}
-              </Flex>
-            </Flex>
-            <Flex gap="70px">
-              {Constants.FooterConstants.map((footerDiv, index) => {
+    <Box
+      pt="65px"
+      color="gray.200"
+      bg="rgba(0,22,43)"
+      px="130px"
+      w="full"
+      as="footer"
+    >
+      <Flex w="full" flexDir="column" align="center" justify="center">
+        <Flex mb={10} w="full" justify="space-between">
+          <Flex align="center" gap={3} flexDir="column">
+            <Image
+              src={AmilSindhiLogo}
+              width={200}
+              height={200}
+              alt="NGO_Logo"
+            />
+
+            <Flex gap={5}>
+              {socialLinks.map(({ ICON, url }, index) => {
                 return (
-                  <Flex gap={7} flexDir="column" key={index}>
-                    <Text fontWeight={600}>{footerDiv.FooterColumnTitle}</Text>
-                    <Flex gap={2} flexDir="column">
-                      {footerDiv.FooterColumnItems.map((navItem, index) => {
-                        return (
-                          <Text
-                            color="gray.400"
-                            key={index}
-                            as="a"
-                            href={navItem.LinkUrl ?? "#"}
-                            onClick={
-                              navItem.LinkText
-                                ? (e) => {
-                                    e.preventDefault();
-                                    if (navItem.LinkText) {
-                                      setModalContent(navItem.LinkText);
-                                      onOpen();
-                                    }
-                                  }
-                                : () => { return }
-                            }
-                          >
-                            {navItem.LinkLabel}
-                          </Text>
-                        );
-                      })}
-                    </Flex>
+                  <Box key={index} as="a" href={url}>
+                    <Icon color="#FF4D00" as={ICON} />
+                  </Box>
+                );
+              })}
+            </Flex>
+          </Flex>
+          <Flex gap="70px">
+            {FooterConstants.map((footerDiv, index) => {
+              return (
+                <Flex gap={7} flexDir="column" key={index}>
+                  <Text fontWeight={600}>{footerDiv.FooterColumnTitle}</Text>
+                  <Flex gap={2} flexDir="column">
+                    {footerDiv.FooterColumnItems.map((navItem, index) => {
+                      return (
+                        <Text
+                          color="gray.400"
+                          key={index}
+                          as="a"
+                          href={navItem.LinkUrl}
+                        >
+                          {navItem.LinkLabel}
+                        </Text>
+                      );
+                    })}
+                  </Flex>
+                </Flex>
+              );
+            })}
+          </Flex>
+          <Flex gap={7} flexDir="column">
+            <Text fontWeight={600}>Contact us</Text>
+            <Flex gap={4} flexDir="column">
+              {contactLinks.map(({ ICON, LinkLabel }, index) => {
+                return (
+                  <Flex gap={3} align="flex-start" key={index}>
+                    <Icon boxSize={5} as={ICON} />
+                    <Text w={250} color="gray.400">
+                      {LinkLabel}
+                    </Text>
                   </Flex>
                 );
               })}
             </Flex>
-            <Flex gap={7} flexDir="column">
-              <Text fontWeight={600}>Contact us</Text>
-              <Flex gap={4} flexDir="column">
-                {contactLinks.map(({ ICON, LinkLabel }, index) => {
-                  return (
-                    <Flex gap={3} align="flex-start" key={index}>
-                      <Icon boxSize={5} as={ICON} />
-                      <Text w={250} color="gray.400">
-                        {LinkLabel}
-                      </Text>
-                    </Flex>
-                  );
-                })}
-              </Flex>
-            </Flex>
-          </Flex>
-          <Divider />
-          <Flex color="gray.300" w="full" justify="space-between" my={5}>
-            <Text>Copyright © 2023 Amil Sindhi</Text>
-            <Text>
-              All Rights Reserved |{" "}
-              <span
-                style={{
-                  color: "#FF4D00",
-                  textDecoration: "underline",
-                }}
-              >
-                Terms and Conditions
-              </span>{" "}
-              |{" "}
-              <span
-                style={{
-                  color: "#FF4D00",
-                  textDecoration: "underline",
-                }}
-              >
-                Privacy Policy
-              </span>{" "}
-            </Text>
           </Flex>
         </Flex>
-      </Box>
-    </>
+        <Divider />
+        <Flex color="gray.300" w="full" justify="space-between" my={5}>
+          <Text>Copyright © 2023 Amil Sindhi</Text>
+          <Text>
+            All Rights Reserved |{" "}
+            <span
+              style={{
+                color: "#FF4D00",
+                textDecoration: "underline",
+              }}
+            >
+              Terms and Conditions
+            </span>{" "}
+            |{" "}
+            <span
+              style={{
+                color: "#FF4D00",
+                textDecoration: "underline",
+              }}
+            >
+              Privacy Policy
+            </span>{" "}
+          </Text>
+        </Flex>
+      </Flex>
+    </Box>
   );
 };
 

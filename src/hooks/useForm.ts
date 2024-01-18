@@ -19,6 +19,12 @@ export interface Values extends SignupValues {
   lastName: string;
 }
 
+export interface RecoveryPasswordValues {
+  email: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
 export const initialValues: Values = {
   email: "",
   phonenumber: "",
@@ -35,6 +41,12 @@ export const initialValues: Values = {
 export const loginInitialValues: LoginValues = {
   email: "",
   password: "",
+};
+
+export const RecoveryPasswordInitialValues: RecoveryPasswordValues = {
+  email: "",
+  newPassword: "",
+  confirmPassword: "",
 };
 
 const useForm = () => {

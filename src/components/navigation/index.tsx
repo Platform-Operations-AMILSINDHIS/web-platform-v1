@@ -1,6 +1,4 @@
 import { Box, Flex, useDisclosure } from "@chakra-ui/react";
-import NavigationDropDown from "./NavigationDropDown";
-import NavigationRegular from "./NavigationRegular";
 import Image from "next/image";
 
 import AmilSindhiLogo from "../../../public/images/amil-sindhis-logo.png";
@@ -9,6 +7,8 @@ import { useState } from "react";
 import AuthModal from "../authentication/AuthModal";
 import { useUserAtom } from "~/lib/atom";
 import AccountDisplay from "./AccountDisplay";
+import NavigationDropDown from "./NavigationDropDown";
+import NavigationRegular from "./NavigationRegular";
 
 interface NavigationProps {
   navigationItems: {

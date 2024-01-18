@@ -52,18 +52,15 @@ const AccountOptionsPopover: React.FC<{ children: React.ReactNode }> = ({
         <PopoverHeader>Account Options</PopoverHeader>
         <PopoverBody className="shadow-xl" color="gray.600">
           <Flex gap={2} flexDir="column">
-            <Flex
-              _hover={{ color: "gray.800", cursor: "pointer" }}
-              gap={2}
-              align="center"
-            >
+            <Flex _hover={{ cursor: "not-allowed" }} gap={2} align="center">
               <Icon boxSize={4} as={IoMdSettings}></Icon>
-              <Text>Settings</Text>
+              <Text color="gray.500">Settings (Coming soon)</Text>
             </Flex>
             <Flex
               _hover={{ color: "gray.800", cursor: "pointer" }}
               gap={2}
               align="center"
+              onClick={() => (window.location.href = "/recovery")}
             >
               <Icon boxSize={4} as={MdOutlinePassword}></Icon>
               <Text>Reset Password</Text>
