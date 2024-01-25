@@ -115,6 +115,7 @@ const Navigation: React.FC<NavigationProps> = ({
         displayState={displayState}
         modalState={isOpen}
         handleModal={onClose}
+        displayFunction={handleModal}
       />
     </>
   );

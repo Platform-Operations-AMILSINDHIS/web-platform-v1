@@ -10,9 +10,10 @@ import type { userAtomBody } from "~/lib/atom";
 
 interface LoginProps {
   setCloseModal: (input: boolean) => void;
+  displayFunction: (input: boolean) => void;
 }
 
-const Login: React.FC<LoginProps> = ({ setCloseModal }) => {
+const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
   const [{ user }, setUserAtom] = useUserAtom();
   const [submitting, setSubmitting] = useState(false);
 
@@ -203,8 +204,9 @@ const Login: React.FC<LoginProps> = ({ setCloseModal }) => {
                 color: "white",
                 bg: "#FF4D00",
               }}
+              onClick={() => displayFunction(false)}
             >
-              Create Account
+              New Here ?
             </Button>
           </Flex>
         </Flex>

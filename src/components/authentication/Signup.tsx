@@ -10,9 +10,10 @@ import { SignUpValidationSchema } from "~/validations/AuthValidations";
 
 interface SignupProps {
   setCloseModal: (input: boolean) => void;
+  displayFunction: (input: boolean) => void;
 }
 
-const Signup: React.FC<SignupProps> = ({ setCloseModal }) => {
+const Signup: React.FC<SignupProps> = ({ setCloseModal, displayFunction }) => {
   const [submitting, setSubmitting] = useState(false);
   const toast = useToast();
 
@@ -75,9 +76,9 @@ const Signup: React.FC<SignupProps> = ({ setCloseModal }) => {
       await dbUpdation(auth_id, values);
       setSubmitting(false);
       toast({
-        title: "Account Created",
-        description: "Your account has been created successfully!",
-        status: "success",
+        title: "Activate your account",
+        description: "An activation link has been sent to your Email ID",
+        status: "info",
         duration: 5000, // How long the toast will be displayed in milliseconds
         isClosable: true,
       });
@@ -166,6 +167,7 @@ const Signup: React.FC<SignupProps> = ({ setCloseModal }) => {
               Create account
             </Button>
             <Button
+              onClick={() => displayFunction(true)}
               color="#FF4D00"
               bg="none"
               border="2px solid"

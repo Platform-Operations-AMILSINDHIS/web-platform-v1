@@ -44,7 +44,7 @@ const contactLinks = [
   },
   {
     ICON: BsTelephone,
-    LinkLabel: "(+91)9820081700",
+    LinkLabel: "(+91) 9820081700",
   },
   {
     ICON: CiLocationOn,

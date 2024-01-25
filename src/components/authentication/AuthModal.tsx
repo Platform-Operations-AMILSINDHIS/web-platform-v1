@@ -7,12 +7,14 @@ interface AuthModalProps {
   modalState: boolean;
   displayState: boolean;
   handleModal: () => void;
+  displayFunction: (state: boolean) => void;
 }
 
 const AuthModal: React.FC<AuthModalProps> = ({
   modalState,
   handleModal,
   displayState,
+  displayFunction,
 }) => {
   const [closeModal, setCloseModal] = useState(false);
   useEffect(() => {
@@ -26,9 +28,15 @@ const AuthModal: React.FC<AuthModalProps> = ({
       <ModalContent>
         <ModalBody>
           {displayState ? (
-            <Login setCloseModal={setCloseModal} />
+            <Login
+              displayFunction={displayFunction}
+              setCloseModal={setCloseModal}
+            />
           ) : (
-            <Signup setCloseModal={setCloseModal} />
+            <Signup
+              displayFunction={displayFunction}
+              setCloseModal={setCloseModal}
+            />
           )}
         </ModalBody>
       </ModalContent>

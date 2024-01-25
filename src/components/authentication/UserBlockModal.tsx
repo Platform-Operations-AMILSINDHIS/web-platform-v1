@@ -34,6 +34,7 @@ const UserBlockModal = () => {
           create an account or login
         </Text>
         <AuthModal
+          displayFunction={handleModal}
           displayState={displayState}
           handleModal={onClose}
           modalState={isOpen}
