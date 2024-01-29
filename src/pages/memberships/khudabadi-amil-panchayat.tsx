@@ -27,7 +27,7 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
           height={100}
           position="absolute"
         >
-          {user && user.age >= 21 ? (
+          {user && user.age <= 21 ? (
             <UserBlockModal />
           ) : (
             <Flex

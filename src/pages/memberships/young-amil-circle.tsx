@@ -9,6 +9,9 @@ import { useUserAtom } from "~/lib/atom";
 
 const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
   const [{ user }] = useUserAtom();
+
+  console.log({ user });
+
   return (
     <Layout title="KAP Membership Form">
       <Spacer h="1.5rem" />
@@ -26,38 +29,42 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
           height={100}
           position="absolute"
         >
-          {user && user.age >= 16 ? (
-            <UserBlockModal />
+          {user ? (
+            user.age <= 16 || user.age >= 30 ? (
+              <>
+                <Flex
+                  boxShadow="rgba(0, 0, 0, 0.24) 0px 3px 8px;"
+                  border="1px solid"
+                  borderColor="gray.200"
+                  padding={5}
+                  borderRadius={20}
+                  bg={"white"}
+                  justify="center"
+                  align="center"
+                  h={250}
+                  w={500}
+                >
+                  <Flex gap={2} px={10} align="center" flexDir="column">
+                    <Text fontWeight={600} textAlign="center" fontSize="xl">
+                      Age Requirement not met
+                    </Text>
+                    {user.age > 30 ? (
+                      <Text textAlign="center">
+                        You need to be below 30 years of age to be eligible for
+                        YAC member application
+                      </Text>
+                    ) : (
+                      <Text textAlign="center">
+                        You need to be atleast 16 years of age to be eligible
+                        for YAC member application
+                      </Text>
+                    )}
+                  </Flex>
+                </Flex>
+              </>
+            ) : null
           ) : (
-            <Flex
-              boxShadow="rgba(0, 0, 0, 0.24) 0px 3px 8px;"
-              border="1px solid"
-              borderColor="gray.200"
-              padding={5}
-              borderRadius={20}
-              bg={"white"}
-              justify="center"
-              align="center"
-              h={250}
-              w={500}
-            >
-              <Flex gap={2} px={10} align="center" flexDir="column">
-                <Text fontWeight={600} textAlign="center" fontSize="xl">
-                  Age Requirement not met
-                </Text>
-                {user && user.age > 30 ? (
-                  <Text textAlign="center">
-                    You need to be below 30 years of age to be eligible for YAC
-                    member application
-                  </Text>
-                ) : (
-                  <Text textAlign="center">
-                    You need to be atleast 16 years of age to be eligible for
-                    YAC member application
-                  </Text>
-                )}
-              </Flex>
-            </Flex>
+            <UserBlockModal />
           )}
         </Box>
         <Box
