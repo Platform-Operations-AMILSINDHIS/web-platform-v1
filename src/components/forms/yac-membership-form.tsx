@@ -510,12 +510,12 @@ export const ProposerDetailsSection: React.FC = () => {
         .mutateAsync(
           { formData: formState, paymentId },
           {
-            onSuccess: () => {
+            onSuccess: ({ membershipId }) => {
               toast({
                 title: "Response recorded successfully",
-                description: "Your form response has been recorded.",
+                description: `Your membership ID: ${membershipId}`,
                 status: "success",
-                duration: 9000,
+                duration: 90000,
                 isClosable: true,
               });
             },
