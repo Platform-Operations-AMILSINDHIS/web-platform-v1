@@ -1,7 +1,10 @@
-import { Flex, Grid, Box, Text, Spacer, Image } from "@chakra-ui/react";
-import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import { Flex, Grid, Box, Text, Spacer, Icon } from "@chakra-ui/react";
+import Image from "next/image";
 
-const FoundingMembers = ({induShaniWords}: {induShaniWords: string;}) => {
+import InduShaniImage from "../../../public/images/Presidents/InduShaniCircle.jpg";
+import { BsChatLeftQuoteFill } from "react-icons/bs";
+
+const FoundingMembers = ({ induShaniWords }: { induShaniWords: string }) => {
   return (
     <Box textAlign="center">
       <Text textColor="#FF4D00" fontWeight={600}>
@@ -13,35 +16,35 @@ const FoundingMembers = ({induShaniWords}: {induShaniWords: string;}) => {
       <Grid templateColumns="repeat(5, 1fr)" gap="1.5rem">
         {[
           {
-            image: "https://placehold.jp/297x323.png",
+            image: "",
             role: "President",
             name: "Fatechand Assudmal Jhangiani",
             description:
               "A dedicated leader and visionary who played a pivotal role in establishing the Panchayat.",
           },
           {
-            image: "https://placehold.jp/297x323.png",
+            image: "",
             role: "Vice-President",
             name: "Jagatrai Issardas Shivdasani",
             description:
               "An integral part of the founding team, contributing his expertise and leadership.",
           },
           {
-            image: "https://placehold.jp/297x323.png",
+            image: "",
             role: "Honorary Secretary",
             name: "Wadhumal Hukumatrai Alimchandani",
             description:
               "The driving force behind the Panchayat's administrative foundation.",
           },
           {
-            image: "https://placehold.jp/297x323.png",
+            image: "",
             role: "Joint Secretary",
             name: "Tahilram Assudmal Gurbaxani",
             description:
               "A key member responsible for the Panchayat's early organization and operations.",
           },
           {
-            image: "https://placehold.jp/297x323.png",
+            image: "",
             role: "Advocate",
             name: "Hassasingh H. Advani",
             description:
@@ -63,43 +66,26 @@ const FoundingMembers = ({induShaniWords}: {induShaniWords: string;}) => {
           </Flex>
         ))}
       </Grid>
-
       <Spacer h="5rem" />
-
-      {/* Two paragraphs of text here */}
-
-      <Box mx="auto" maxW="62%" textAlign="center">
-        {/* <Box>
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "2rem" }}
-            dangerouslySetInnerHTML={{
-              __html: documentToHtmlString({
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                nodeType: "document",
-                content: ,
-                data: {},
-              }),
-            }}
+      <Flex gap={10} align="center" flexDir="column">
+        <Flex position="relative" gap={3} align="center" flexDir="column">
+          <Image width={100} alt="" src={InduShaniImage} />
+          <Icon
+            bottom={10}
+            left={115}
+            color="orange.500"
+            boxSize={8}
+            position="absolute"
+            as={BsChatLeftQuoteFill}
           />
-        </Box> */}
-
-        <Text whiteSpace="pre-wrap">
-          {induShaniWords}
-        </Text>
-
-        {/* <Spacer h="1rem" />
-
-        <Text>
-          Since its inception, the Panchayat has continued to uphold the values
-          and principles set forth by its founders. It has evolved into a
-          dynamic organization that not only provides crucial support to those
-          in need but also serves as a vital cultural and social hub for the
-          Amil Sindhi community. The legacy of these founding members lives on,
-          as their commitment to service and community building continues to
-          inspire future generations within the Panchayat.
-        </Text> */}
-      </Box>
+          <Text fontWeight={600} fontSize="xl">
+            President Speaks
+          </Text>
+        </Flex>
+        <Box mx="auto" maxW="62%" textAlign="center">
+          <Text whiteSpace="pre-wrap">{induShaniWords}</Text>
+        </Box>
+      </Flex>
     </Box>
   );
 };

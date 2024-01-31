@@ -3,17 +3,23 @@ import {
   Box,
   Text,
   Heading,
-  Image,
   UnorderedList,
   ListItem,
   Spacer,
   Grid,
   GridItem,
 } from "@chakra-ui/react";
+import Image from "next/image";
+
+import KT_Pic from "../../../public/images/Presidents/Mr._K.T._Shahani.jpg";
+import Late_Dewan_Fatehchand_Asudomal_Jhangiani_pic from "../../../public/images/Presidents/Late_Dewan_Fatehchand_Asudomal_Jhangiani.jpg";
+import Vishni_Malkani_pic from "../../../public/images/Presidents/Mrs._Vishni_Malkani.jpg";
+import Kamla_Hiranand_pic from "../../../public/images/Presidents/Kamla_Hiranand.jpg";
+import Indu_Shahani_pic from "../../../public/images/Presidents/Dr._Indu_Shahani.jpg";
 
 const PresidentsSection = () => {
   return (
-    <>
+    <Flex flexDir="column" align="center" gap={10}>
       <Flex direction="column" alignItems="center">
         <Text textColor="#FF4D00" fontWeight={600}>
           Our Past and Current Presidents
@@ -30,10 +36,10 @@ const PresidentsSection = () => {
 
       <Spacer h="5rem" />
 
-      <Flex mx="auto" w="80%" gap="4rem" direction="column" alignItems="center">
+      <Flex mx="auto" w="70%" gap="3rem" direction="column" alignItems="center">
         {[
           {
-            image: "https://placehold.jp/512x263.png",
+            image: Late_Dewan_Fatehchand_Asudomal_Jhangiani_pic,
             name: "Fatehchand Assudomal Jhangiani",
             points: [
               "An esteemed leader whose tenure marked a period of growth and progress for the Panchayat.",
@@ -41,7 +47,7 @@ const PresidentsSection = () => {
             ],
           },
           {
-            image: "https://placehold.jp/512x263.png",
+            image: KT_Pic,
             name: "Kishinchand T Shahani",
             points: [
               "A prominent figure who continued the legacy of strong leadership within the Panchayat.",
@@ -49,7 +55,7 @@ const PresidentsSection = () => {
             ],
           },
           {
-            image: "https://placehold.jp/512x263.png",
+            image: Vishni_Malkani_pic,
             name: "Vishni Malkani",
             points: [
               "A compassionate leader who championed the cause of education and empowerment.",
@@ -57,31 +63,31 @@ const PresidentsSection = () => {
             ],
           },
           {
-            image: "https://placehold.jp/512x263.png",
+            image: Kamla_Hiranand_pic,
             name: "Kamla Hiranand",
             points: [
               "A trailblazer who played a significant role in advancing gender equality and community welfare.",
               "Committed to fostering unity and inclusivity within the Amil Sindhi community.",
             ],
           },
+          // {
+          //   image: "",
+          //   name: "Mangharam Sipahimalani",
+          //   points: [
+          //     "A visionary leader who focused on cultural preservation and heritage promotion.",
+          //     "Instrumental in initiatives to document and celebrate Amil Sindhi culture.",
+          //   ],
+          // },
+          // {
+          //   image: "",
+          //   name: "Mohan Mirchandani",
+          //   points: [
+          //     "A dedicated advocate for community engagement and outreach.",
+          //     "Known for strengthening the Panchayat's connections with the global Amil Sindhi diaspora.",
+          //   ],
+          // },
           {
-            image: "https://placehold.jp/512x263.png",
-            name: "Mangharam Sipahimalani",
-            points: [
-              "A visionary leader who focused on cultural preservation and heritage promotion.",
-              "Instrumental in initiatives to document and celebrate Amil Sindhi culture.",
-            ],
-          },
-          {
-            image: "https://placehold.jp/512x263.png",
-            name: "Mohan Mirchandani",
-            points: [
-              "A dedicated advocate for community engagement and outreach.",
-              "Known for strengthening the Panchayat's connections with the global Amil Sindhi diaspora.",
-            ],
-          },
-          {
-            image: "https://placehold.jp/512x263.png",
+            image: Indu_Shahani_pic,
             name: "Dr. Indu Shahani",
             points: [
               "A respected academic and leader with a strong commitment to education and empowerment.",
@@ -92,14 +98,15 @@ const PresidentsSection = () => {
           <Flex
             key={i}
             mx="auto"
-            gap="2rem"
+            gap="5rem"
             direction={i % 2 === 0 ? "row" : "row-reverse"}
+            justify="space-between"
           >
             <Box>
-              <Image alt="" src={image} />
+              <Image width={250} height={100} alt="car" src={image} />
             </Box>
 
-            <Box w="50%">
+            <Box w="60%">
               <Text fontSize="2xl" fontWeight={500}>
                 {name}
               </Text>
@@ -115,7 +122,7 @@ const PresidentsSection = () => {
           </Flex>
         ))}
       </Flex>
-    </>
+    </Flex>
   );
 };
 

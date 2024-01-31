@@ -88,7 +88,7 @@ const ComitteesSection = () => {
                   <AccordionIcon />
                 </AccordionButton>
               </h2>
-              <AccordionPanel pb={4} fontSize="xl">
+              <AccordionPanel pb={4} fontSize="lg">
                 {content}
               </AccordionPanel>
             </AccordionItem>
