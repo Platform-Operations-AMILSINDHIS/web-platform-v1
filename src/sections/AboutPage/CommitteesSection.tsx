@@ -15,7 +15,9 @@ const ComitteesSection = () => {
   return (
     <Grid templateColumns="1fr 1fr" gap="2rem">
       <GridItem>
-        <Text color="#FF4D00">Committees and Their Contributions</Text>
+        <Text mb={1} fontWeight={600} color="#FF4D00">
+          Committees and Their Contributions
+        </Text>
         <Heading fontWeight={600} fontSize="5xl">
           Our Commitment to Empower and Support
         </Heading>

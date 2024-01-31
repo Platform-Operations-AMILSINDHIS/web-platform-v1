@@ -8,7 +8,7 @@ const FoundingMembers = ({ induShaniWords }: { induShaniWords: string }) => {
   return (
     <Box textAlign="center">
       <Text textColor="#FF4D00" fontWeight={600}>
-        Meet Our Founding Members
+        Members of Managing committe
       </Text>
 
       <Spacer h="2rem" />
@@ -67,7 +67,7 @@ const FoundingMembers = ({ induShaniWords }: { induShaniWords: string }) => {
         ))}
       </Grid>
       <Spacer h="5rem" />
-      <Flex gap={10} align="center" flexDir="column">
+      <Flex gap={8} align="center" flexDir="column">
         <Flex position="relative" gap={3} align="center" flexDir="column">
           <Image width={100} alt="" src={InduShaniImage} />
           <Icon
@@ -85,6 +85,12 @@ const FoundingMembers = ({ induShaniWords }: { induShaniWords: string }) => {
         <Box mx="auto" maxW="62%" textAlign="center">
           <Text whiteSpace="pre-wrap">{induShaniWords}</Text>
         </Box>
+        <Flex flexDir="column" align="center">
+          <Text fontWeight="bold" fontSize="lg">
+            - Dr. Indu Shahani
+          </Text>
+          <Text>President of Khudabadi Amil Panchayat of Bombay</Text>
+        </Flex>
       </Flex>
     </Box>
   );
