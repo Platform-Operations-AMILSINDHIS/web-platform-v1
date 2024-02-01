@@ -4,44 +4,6 @@ import Image from "next/image";
 import InduShaniImage from "../../../public/images/Presidents/InduShaniCircle.jpg";
 import { BsChatLeftQuoteFill } from "react-icons/bs";
 
-const dummyFoundingMembers = [
-  {
-    image: "https://placehold.jp/297x323.png",
-    role: "President",
-    name: "Fatechand Assudmal Jhangiani",
-    description:
-      "A dedicated leader and visionary who played a pivotal role in establishing the Panchayat.",
-  },
-  {
-    image: "https://placehold.jp/297x323.png",
-    role: "Vice-President",
-    name: "Jagatrai Issardas Shivdasani",
-    description:
-      "An integral part of the founding team, contributing his expertise and leadership.",
-  },
-  {
-    image: "https://placehold.jp/297x323.png",
-    role: "Honorary Secretary",
-    name: "Wadhumal Hukumatrai Alimchandani",
-    description:
-      "The driving force behind the Panchayat's administrative foundation.",
-  },
-  {
-    image: "https://placehold.jp/297x323.png",
-    role: "Joint Secretary",
-    name: "Tahilram Assudmal Gurbaxani",
-    description:
-      "A key member responsible for the Panchayat's early organization and operations.",
-  },
-  {
-    image: "https://placehold.jp/297x323.png",
-    role: "Advocate",
-    name: "Hassasingh H. Advani",
-    description:
-      "A key member responsible for the Panchayat's early organization and operations.",
-  },
-];
-
 const FoundingMembers = ({
   induShaniWords,
   foundingMembers,
@@ -69,7 +31,7 @@ const FoundingMembers = ({
               alignItems="baseline"
               textAlign="left"
             >
-              <Image alt="" src={displayPictureUrl} />
+              <Image width={300} height={300} alt="" src={displayPictureUrl} />
               <Text mt="0.75rem" fontWeight={500}>
                 {position}
               </Text>
@@ -106,8 +68,7 @@ const FoundingMembers = ({
         </Flex>
       </Flex>
 
-        <Text whiteSpace="pre-wrap">{induShaniWords}</Text>
-      </Box>
+      <Text whiteSpace="pre-wrap">{induShaniWords}</Text>
     </Box>
   );
 };

@@ -14,7 +14,7 @@ const RequirementSection = () => {
   return (
     <Flex w="full" align="center" flexDir="column">
       <Text fontWeight={500} fontSize="3xl">
-        Membership Requirements
+        Become a member now
       </Text>
       <Flex py={5} mx={20} gap={8}>
         <InformationBox
