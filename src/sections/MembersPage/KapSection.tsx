@@ -30,7 +30,7 @@ const KAPSection = () => {
         </Flex>
       </Flex>
       <Flex w="full" align="center" flexDir="column">
-        <Flex align="center" flexDir="column">
+        <Flex gap={1} align="center" flexDir="column">
           <Text fontWeight={500} fontSize={"3xl"}>
             Offerings from KAP
           </Text>

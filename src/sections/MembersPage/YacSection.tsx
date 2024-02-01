@@ -1,10 +1,15 @@
 import { Flex, Box, Text, Grid } from "@chakra-ui/react";
+
 import Image from "next/image";
+import FeatureDisplay from "~/components/members/FeatureDisplay";
 
 import YacSectionPic01 from "../../../public/images/membership/KAPImage02.svg";
 import YAC_illustration from "../../../public/images/membership/YAC_illustration.svg";
-import { FaPeopleGroup } from "react-icons/fa6";
-import TextDisplay from "~/components/members/TextDisplay";
+import YAC_FeatureIcon01 from "../../../public/images/membership/YAC_icon01.svg";
+import YAC_FeatureIcon02 from "../../../public/images/membership/YAC_icon02.svg";
+import YAC_FeatureIcon03 from "../../../public/images/membership/YAC_icon03.svg";
+import YAC_FeatureIcon04 from "../../../public/images/membership/YAC_icon04.svg";
+import YAC_FeatureIcon05 from "../../../public/images/membership/YAC_icon05.svg";
 
 const YacSection = () => {
   return (
@@ -28,7 +33,7 @@ const YacSection = () => {
         </Box>
       </Flex>
       <Flex gap={10} flexDir="column">
-        <Flex flexDir="column">
+        <Flex gap={1} flexDir="column">
           <Text fontWeight={500} fontSize={"3xl"}>
             Offerings from KAP
           </Text>
@@ -37,9 +42,30 @@ const YacSection = () => {
             like
           </Text>
         </Flex>
-        <Flex>
-          <Image alt="yac_illustration" width={450} src={YAC_illustration} />
-          <Grid templateColumns="repeat(2, 1fr)" gap={3}></Grid>
+        <Flex my={5} justify="space-between">
+          <Image alt="yac_illustration" width={400} src={YAC_illustration} />
+          <Grid templateColumns="repeat(2, 1fr)" gap={10}>
+            <FeatureDisplay
+              content="Participate in YAC events, ranging from social initiatives to fun gatherings."
+              icon={YAC_FeatureIcon01}
+            />
+            <FeatureDisplay
+              content="Participate in YAC events, ranging from social initiatives to fun gatherings."
+              icon={YAC_FeatureIcon02}
+            />
+            <FeatureDisplay
+              content="Participate in YAC events, ranging from social initiatives to fun gatherings."
+              icon={YAC_FeatureIcon03}
+            />
+            <FeatureDisplay
+              content="Participate in YAC events, ranging from social initiatives to fun gatherings."
+              icon={YAC_FeatureIcon04}
+            />
+            <FeatureDisplay
+              content="Participate in YAC events, ranging from social initiatives to fun gatherings."
+              icon={YAC_FeatureIcon05}
+            />
+          </Grid>
         </Flex>
       </Flex>
     </Flex>
