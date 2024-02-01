@@ -41,7 +41,7 @@ const dummyFoundingMembers = [
 
 const FoundingMembers = ({
   induShaniWords,
-  foundingMembers
+  foundingMembers,
 }: {
   induShaniWords: string;
   foundingMembers: {
@@ -53,27 +53,29 @@ const FoundingMembers = ({
   return (
     <Box textAlign="center">
       <Text textColor="#FF4D00" fontWeight={600}>
-        Meet Our Founding Members
+        Meet Our Office Bearers
       </Text>
 
       <Spacer h="2rem" />
 
       <Grid templateColumns="repeat(5, 1fr)" gap="1.5rem">
-        {foundingMembers.reverse().map(({ name, position, displayPictureUrl }, i) => (
-          <Flex
-            key={i}
-            direction="column"
-            alignItems="baseline"
-            textAlign="left"
-          >
-            <Image alt="" src={displayPictureUrl} />
-            <Text mt="0.75rem" fontWeight={500}>
-              {position}
-            </Text>
-            <Text fontWeight={700}>{name}</Text>
-            {/* <Text>{description}</Text> */}
-          </Flex>
-        ))}
+        {foundingMembers
+          .reverse()
+          .map(({ name, position, displayPictureUrl }, i) => (
+            <Flex
+              key={i}
+              direction="column"
+              alignItems="baseline"
+              textAlign="left"
+            >
+              <Image alt="" src={displayPictureUrl} />
+              <Text mt="0.75rem" fontWeight={500}>
+                {position}
+              </Text>
+              <Text fontWeight={700}>{name}</Text>
+              {/* <Text>{description}</Text> */}
+            </Flex>
+          ))}
       </Grid>
 
       <Spacer h="5rem" />
