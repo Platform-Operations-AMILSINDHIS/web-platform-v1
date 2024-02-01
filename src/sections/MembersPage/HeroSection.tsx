@@ -1,4 +1,10 @@
 import { Flex, Box, Text, Spacer } from "@chakra-ui/react";
+import Image from "next/image";
+
+import HeroImage01 from "../../../public/images/membership/HeroImage01.svg";
+import HeroImage02 from "../../../public/images/membership/HeroImage02.svg";
+import LinkButton from "~/components/buttons/LinkButton";
+import { ArrowForwardIcon } from "@chakra-ui/icons";
 
 const HeroSection = () => {
   return (
@@ -32,6 +38,49 @@ const HeroSection = () => {
         Then, this is the place to be! With open arms, we invite our fellow Amil
         Sindhis to be a part of our vibrant community!
       </Text>
+
+      <Flex align="flex-start" justify="space-between" mt={20} mb={10} w="full">
+        <Box w="50%">
+          <Image alt="HeroImage-01" src={HeroImage01} />
+        </Box>
+        <Flex mt={-5} flexDir="column">
+          <Flex flexDir="column">
+            <Text fontWeight={500} fontSize="5xl">
+              Join us today
+            </Text>
+            <Text fontSize="lg" w={575}>
+              A member of KAP stands a chance to engage in cultural events,
+              activities as well as to build resources that preserve our rich
+              heritage
+            </Text>
+            <Flex gap={3} my={4}>
+              <LinkButton
+                CTAlabel="Learn More"
+                CTAlink="/"
+                size="sm"
+                py={5}
+                px={5}
+              />
+              <LinkButton
+                CTAlabel={
+                  <Flex alignItems="center" gap="0.5rem">
+                    <Box>Enroll Now</Box>
+                    <ArrowForwardIcon />
+                  </Flex>
+                }
+                CTAlink="#"
+                CTATheme={false}
+                size="sm"
+                py={5}
+                px={5}
+              />
+            </Flex>
+          </Flex>
+          <Box h="50%">
+            <Image width={600} alt="HeroImage-02" src={HeroImage02} />
+          </Box>
+        </Flex>
+      </Flex>
     </Flex>
   );
 };

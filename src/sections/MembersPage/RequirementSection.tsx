@@ -1,4 +1,4 @@
-import { Flex, Text, Heading } from "@chakra-ui/react";
+import { Flex, Text, Heading, useDisclosure } from "@chakra-ui/react";
 import InformationBox from "~/components/members/InformationBox";
 
 const info1 = [
@@ -18,12 +18,14 @@ const RequirementSection = () => {
       </Text>
       <Flex py={5} mx={20} gap={8}>
         <InformationBox
+          modalDisplayState={true}
           URL="/memberships/khudabadi-amil-panchayat"
           identifier="KAP Membership"
           title="Exclusive to only amil sindhis"
           content={info1}
         />
         <InformationBox
+          modalDisplayState={false}
           URL="/memberships/young-amil-circle"
           identifier="YAC membership"
           title="Exclusive for the youth of amil sindhis"
