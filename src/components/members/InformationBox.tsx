@@ -35,6 +35,7 @@ const InformationBox: React.FC<InformationBoxProps> = ({
           textTransform="capitalize"
           fontSize="4xl"
           fontWeight="semibold"
+          mb={1}
         >
           {title}
         </Heading>
@@ -42,20 +43,13 @@ const InformationBox: React.FC<InformationBoxProps> = ({
           return <Text key={index}>{text}</Text>;
         })}
       </Flex>
-      <Flex gap={3} w="full">
+      <Flex mt={1} gap={3} w="full">
         <LinkButton
           size="sm"
           px={5}
           py={5}
           CTATheme={false}
           CTAlabel={"Go to Form"}
-          CTAlink={URL}
-        />
-        <LinkButton
-          size="sm"
-          px={5}
-          py={5}
-          CTAlabel={"Learn More"}
           CTAlink={URL}
         />
       </Flex>
