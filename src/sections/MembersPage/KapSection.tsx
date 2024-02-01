@@ -1,7 +1,12 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
+import { FaPeopleGroup } from "react-icons/fa6";
+import { FaGlobeAmericas } from "react-icons/fa";
+import { ImNewspaper } from "react-icons/im";
+
 import Image from "next/image";
 
 import KAPImage01 from "../../../public/images/membership/KAPImage01.jpg";
+import TextDisplay from "~/components/members/TextDisplay";
 
 const KAPSection = () => {
   return (
@@ -33,6 +38,22 @@ const KAPSection = () => {
             As an official member of KAP, you will have posses various benefits
             like
           </Text>
+        </Flex>
+        <Flex gap={10} flexDir="column" mt={8}>
+          <Flex gap={10}>
+            <TextDisplay
+              content="Attending the AGM and connecting with fellow community members from all walks of life"
+              icon={FaPeopleGroup}
+            />
+            <TextDisplay
+              content="Joining the organizing committee of social initiatives like Health Checkup Camps, etc."
+              icon={FaGlobeAmericas}
+            />
+          </Flex>
+          <TextDisplay
+            content="Receiving the Amil Samachar, which provides the current affairs of KAP, YAC, and the community."
+            icon={ImNewspaper}
+          />
         </Flex>
       </Flex>
     </Flex>
