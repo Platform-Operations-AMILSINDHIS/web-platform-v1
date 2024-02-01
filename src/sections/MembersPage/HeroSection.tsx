@@ -1,8 +1,8 @@
 import { Flex, Box, Text, Spacer } from "@chakra-ui/react";
 import Image from "next/image";
 
-import HeroImage01 from "../../../public/images/membership/HeroImage01.jpg";
-import HeroImage02 from "../../../public/images/membership/HeroImage02.jpg";
+import HeroImage01 from "../../../public/images/membership/HeroImage01.svg";
+import HeroImage02 from "../../../public/images/membership/HeroImage02.svg";
 import LinkButton from "~/components/buttons/LinkButton";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 

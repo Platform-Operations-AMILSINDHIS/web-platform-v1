@@ -5,7 +5,7 @@ import { ImNewspaper } from "react-icons/im";
 
 import Image from "next/image";
 
-import KAPImage01 from "../../../public/images/membership/KAPImage01.jpg";
+import KAPImage01 from "../../../public/images/membership/KAPImage01.svg";
 import TextDisplay from "~/components/members/TextDisplay";
 
 const KAPSection = () => {
