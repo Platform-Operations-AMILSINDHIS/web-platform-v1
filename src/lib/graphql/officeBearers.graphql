@@ -1,0 +1,11 @@
+query officeBearersQuery {
+	officeBearersCollection {
+		items {
+			displayPicture {
+				url
+			}
+			officeBearerPosition
+			officeBearerName
+		}
+	}
+}

@@ -177,6 +177,8 @@ export type AssetLinkingCollections = {
   entryCollection?: Maybe<EntryCollection>;
   eventContentTypeCollection?: Maybe<EventContentTypeCollection>;
   eventImageSliderCollection?: Maybe<EventImageSliderCollection>;
+  membersOfTheManagingCommitteeKapCollection?: Maybe<MembersOfTheManagingCommitteeKapCollection>;
+  officeBearersCollection?: Maybe<OfficeBearersCollection>;
 };
 
 
@@ -205,6 +207,22 @@ export type AssetLinkingCollectionsEventContentTypeCollectionArgs = {
 
 
 export type AssetLinkingCollectionsEventImageSliderCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type AssetLinkingCollectionsMembersOfTheManagingCommitteeKapCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type AssetLinkingCollectionsOfficeBearersCollectionArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   locale?: InputMaybe<Scalars['String']['input']>;
   preview?: InputMaybe<Scalars['Boolean']['input']>;
@@ -917,8 +935,197 @@ export enum InduShaniWordsOrder {
   SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
 }
 
+/** Managing community member details [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/membersOfTheManagingCommitteeKap) */
+export type MembersOfTheManagingCommitteeKap = Entry & {
+  __typename?: 'MembersOfTheManagingCommitteeKap';
+  contentfulMetadata: ContentfulMetadata;
+  linkedFrom?: Maybe<MembersOfTheManagingCommitteeKapLinkingCollections>;
+  mkapDisplayPicture?: Maybe<Asset>;
+  mkapName?: Maybe<Scalars['String']['output']>;
+  mkapPosition?: Maybe<Scalars['String']['output']>;
+  sys: Sys;
+};
+
+
+/** Managing community member details [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/membersOfTheManagingCommitteeKap) */
+export type MembersOfTheManagingCommitteeKapLinkedFromArgs = {
+  allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+
+/** Managing community member details [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/membersOfTheManagingCommitteeKap) */
+export type MembersOfTheManagingCommitteeKapMkapDisplayPictureArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+/** Managing community member details [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/membersOfTheManagingCommitteeKap) */
+export type MembersOfTheManagingCommitteeKapMkapNameArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** Managing community member details [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/membersOfTheManagingCommitteeKap) */
+export type MembersOfTheManagingCommitteeKapMkapPositionArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type MembersOfTheManagingCommitteeKapCollection = {
+  __typename?: 'MembersOfTheManagingCommitteeKapCollection';
+  items: Array<Maybe<MembersOfTheManagingCommitteeKap>>;
+  limit: Scalars['Int']['output'];
+  skip: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+};
+
+export type MembersOfTheManagingCommitteeKapFilter = {
+  AND?: InputMaybe<Array<InputMaybe<MembersOfTheManagingCommitteeKapFilter>>>;
+  OR?: InputMaybe<Array<InputMaybe<MembersOfTheManagingCommitteeKapFilter>>>;
+  contentfulMetadata?: InputMaybe<ContentfulMetadataFilter>;
+  mkapDisplayPicture_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  mkapName?: InputMaybe<Scalars['String']['input']>;
+  mkapName_contains?: InputMaybe<Scalars['String']['input']>;
+  mkapName_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  mkapName_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  mkapName_not?: InputMaybe<Scalars['String']['input']>;
+  mkapName_not_contains?: InputMaybe<Scalars['String']['input']>;
+  mkapName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  mkapPosition?: InputMaybe<Scalars['String']['input']>;
+  mkapPosition_contains?: InputMaybe<Scalars['String']['input']>;
+  mkapPosition_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  mkapPosition_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  mkapPosition_not?: InputMaybe<Scalars['String']['input']>;
+  mkapPosition_not_contains?: InputMaybe<Scalars['String']['input']>;
+  mkapPosition_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  sys?: InputMaybe<SysFilter>;
+};
+
+export type MembersOfTheManagingCommitteeKapLinkingCollections = {
+  __typename?: 'MembersOfTheManagingCommitteeKapLinkingCollections';
+  entryCollection?: Maybe<EntryCollection>;
+};
+
+
+export type MembersOfTheManagingCommitteeKapLinkingCollectionsEntryCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export enum MembersOfTheManagingCommitteeKapOrder {
+  MkapNameAsc = 'mkapName_ASC',
+  MkapNameDesc = 'mkapName_DESC',
+  MkapPositionAsc = 'mkapPosition_ASC',
+  MkapPositionDesc = 'mkapPosition_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
+}
+
+/** Updation of Office Bearers to be done here [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/officeBearers) */
+export type OfficeBearers = Entry & {
+  __typename?: 'OfficeBearers';
+  contentfulMetadata: ContentfulMetadata;
+  displayPicture?: Maybe<Asset>;
+  linkedFrom?: Maybe<OfficeBearersLinkingCollections>;
+  officeBearerName?: Maybe<Scalars['String']['output']>;
+  officeBearerPosition?: Maybe<Scalars['String']['output']>;
+  sys: Sys;
+};
+
+
+/** Updation of Office Bearers to be done here [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/officeBearers) */
+export type OfficeBearersDisplayPictureArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+/** Updation of Office Bearers to be done here [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/officeBearers) */
+export type OfficeBearersLinkedFromArgs = {
+  allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+
+/** Updation of Office Bearers to be done here [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/officeBearers) */
+export type OfficeBearersOfficeBearerNameArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** Updation of Office Bearers to be done here [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/officeBearers) */
+export type OfficeBearersOfficeBearerPositionArgs = {
+  locale?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type OfficeBearersCollection = {
+  __typename?: 'OfficeBearersCollection';
+  items: Array<Maybe<OfficeBearers>>;
+  limit: Scalars['Int']['output'];
+  skip: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+};
+
+export type OfficeBearersFilter = {
+  AND?: InputMaybe<Array<InputMaybe<OfficeBearersFilter>>>;
+  OR?: InputMaybe<Array<InputMaybe<OfficeBearersFilter>>>;
+  contentfulMetadata?: InputMaybe<ContentfulMetadataFilter>;
+  displayPicture_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  officeBearerName?: InputMaybe<Scalars['String']['input']>;
+  officeBearerName_contains?: InputMaybe<Scalars['String']['input']>;
+  officeBearerName_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  officeBearerName_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  officeBearerName_not?: InputMaybe<Scalars['String']['input']>;
+  officeBearerName_not_contains?: InputMaybe<Scalars['String']['input']>;
+  officeBearerName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  officeBearerPosition?: InputMaybe<Scalars['String']['input']>;
+  officeBearerPosition_contains?: InputMaybe<Scalars['String']['input']>;
+  officeBearerPosition_exists?: InputMaybe<Scalars['Boolean']['input']>;
+  officeBearerPosition_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  officeBearerPosition_not?: InputMaybe<Scalars['String']['input']>;
+  officeBearerPosition_not_contains?: InputMaybe<Scalars['String']['input']>;
+  officeBearerPosition_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  sys?: InputMaybe<SysFilter>;
+};
+
+export type OfficeBearersLinkingCollections = {
+  __typename?: 'OfficeBearersLinkingCollections';
+  entryCollection?: Maybe<EntryCollection>;
+};
+
+
+export type OfficeBearersLinkingCollectionsEntryCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export enum OfficeBearersOrder {
+  OfficeBearerNameAsc = 'officeBearerName_ASC',
+  OfficeBearerNameDesc = 'officeBearerName_DESC',
+  OfficeBearerPositionAsc = 'officeBearerPosition_ASC',
+  OfficeBearerPositionDesc = 'officeBearerPosition_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
+}
+
 export type Query = {
   __typename?: 'Query';
+  _node?: Maybe<_Node>;
   asset?: Maybe<Asset>;
   assetCollection?: Maybe<AssetCollection>;
   blogContentType?: Maybe<BlogContentType>;
@@ -930,6 +1137,17 @@ export type Query = {
   eventImageSliderCollection?: Maybe<EventImageSliderCollection>;
   induShaniWords?: Maybe<InduShaniWords>;
   induShaniWordsCollection?: Maybe<InduShaniWordsCollection>;
+  membersOfTheManagingCommitteeKap?: Maybe<MembersOfTheManagingCommitteeKap>;
+  membersOfTheManagingCommitteeKapCollection?: Maybe<MembersOfTheManagingCommitteeKapCollection>;
+  officeBearers?: Maybe<OfficeBearers>;
+  officeBearersCollection?: Maybe<OfficeBearersCollection>;
+};
+
+
+export type Query_NodeArgs = {
+  id: Scalars['ID']['input'];
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
@@ -1027,6 +1245,40 @@ export type QueryInduShaniWordsCollectionArgs = {
   where?: InputMaybe<InduShaniWordsFilter>;
 };
 
+
+export type QueryMembersOfTheManagingCommitteeKapArgs = {
+  id: Scalars['String']['input'];
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+export type QueryMembersOfTheManagingCommitteeKapCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Array<InputMaybe<MembersOfTheManagingCommitteeKapOrder>>>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<MembersOfTheManagingCommitteeKapFilter>;
+};
+
+
+export type QueryOfficeBearersArgs = {
+  id: Scalars['String']['input'];
+  locale?: InputMaybe<Scalars['String']['input']>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+export type QueryOfficeBearersCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  locale?: InputMaybe<Scalars['String']['input']>;
+  order?: InputMaybe<Array<InputMaybe<OfficeBearersOrder>>>;
+  preview?: InputMaybe<Scalars['Boolean']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<OfficeBearersFilter>;
+};
+
 export type ResourceLink = {
   __typename?: 'ResourceLink';
   sys: ResourceSys;
@@ -1086,6 +1338,10 @@ export type SysFilter = {
   publishedVersion_not_in?: InputMaybe<Array<InputMaybe<Scalars['Float']['input']>>>;
 };
 
+export type _Node = {
+  _id: Scalars['ID']['output'];
+};
+
 export type EventCollectionQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1102,6 +1358,16 @@ export type InduShaniWordsQueryQueryVariables = Exact<{ [key: string]: never; }>
 
 
 export type InduShaniWordsQueryQuery = { __typename?: 'Query', induShaniWords?: { __typename?: 'InduShaniWords', herWords?: string | null } | null };
+
+export type MembersOfTheManagingCommitteeKapQueryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MembersOfTheManagingCommitteeKapQueryQuery = { __typename?: 'Query', membersOfTheManagingCommitteeKapCollection?: { __typename?: 'MembersOfTheManagingCommitteeKapCollection', items: Array<{ __typename?: 'MembersOfTheManagingCommitteeKap', mkapName?: string | null, mkapPosition?: string | null, mkapDisplayPicture?: { __typename?: 'Asset', url?: string | null } | null } | null> } | null };
+
+export type OfficeBearersQueryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type OfficeBearersQueryQuery = { __typename?: 'Query', officeBearersCollection?: { __typename?: 'OfficeBearersCollection', items: Array<{ __typename?: 'OfficeBearers', officeBearerPosition?: string | null, officeBearerName?: string | null, displayPicture?: { __typename?: 'Asset', url?: string | null } | null } | null> } | null };
 
 export type PageBlogPostQueryVariables = Exact<{
   id: Scalars['String']['input'];
@@ -1169,6 +1435,32 @@ export const InduShaniWordsQueryDocument = gql`
   }
 }
     `;
+export const MembersOfTheManagingCommitteeKapQueryDocument = gql`
+    query membersOfTheManagingCommitteeKapQuery {
+  membersOfTheManagingCommitteeKapCollection {
+    items {
+      mkapName
+      mkapPosition
+      mkapDisplayPicture {
+        url
+      }
+    }
+  }
+}
+    `;
+export const OfficeBearersQueryDocument = gql`
+    query officeBearersQuery {
+  officeBearersCollection {
+    items {
+      displayPicture {
+        url
+      }
+      officeBearerPosition
+      officeBearerName
+    }
+  }
+}
+    `;
 export const PageBlogPostDocument = gql`
     query pageBlogPost($id: String!) {
   blogContentType(id: $id) {
@@ -1223,6 +1515,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     induShaniWordsQuery(variables?: InduShaniWordsQueryQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<InduShaniWordsQueryQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<InduShaniWordsQueryQuery>(InduShaniWordsQueryDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'induShaniWordsQuery', 'query');
+    },
+    membersOfTheManagingCommitteeKapQuery(variables?: MembersOfTheManagingCommitteeKapQueryQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<MembersOfTheManagingCommitteeKapQueryQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<MembersOfTheManagingCommitteeKapQueryQuery>(MembersOfTheManagingCommitteeKapQueryDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'membersOfTheManagingCommitteeKapQuery', 'query');
+    },
+    officeBearersQuery(variables?: OfficeBearersQueryQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<OfficeBearersQueryQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<OfficeBearersQueryQuery>(OfficeBearersQueryDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'officeBearersQuery', 'query');
     },
     pageBlogPost(variables: PageBlogPostQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<PageBlogPostQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<PageBlogPostQuery>(PageBlogPostDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'pageBlogPost', 'query');

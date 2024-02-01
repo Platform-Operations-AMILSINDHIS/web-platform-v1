@@ -4,67 +4,79 @@ import Image from "next/image";
 import InduShaniImage from "../../../public/images/Presidents/InduShaniCircle.jpg";
 import { BsChatLeftQuoteFill } from "react-icons/bs";
 
-const FoundingMembers = ({ induShaniWords }: { induShaniWords: string }) => {
+const dummyFoundingMembers = [
+  {
+    image: "https://placehold.jp/297x323.png",
+    role: "President",
+    name: "Fatechand Assudmal Jhangiani",
+    description:
+      "A dedicated leader and visionary who played a pivotal role in establishing the Panchayat.",
+  },
+  {
+    image: "https://placehold.jp/297x323.png",
+    role: "Vice-President",
+    name: "Jagatrai Issardas Shivdasani",
+    description:
+      "An integral part of the founding team, contributing his expertise and leadership.",
+  },
+  {
+    image: "https://placehold.jp/297x323.png",
+    role: "Honorary Secretary",
+    name: "Wadhumal Hukumatrai Alimchandani",
+    description:
+      "The driving force behind the Panchayat's administrative foundation.",
+  },
+  {
+    image: "https://placehold.jp/297x323.png",
+    role: "Joint Secretary",
+    name: "Tahilram Assudmal Gurbaxani",
+    description:
+      "A key member responsible for the Panchayat's early organization and operations.",
+  },
+  {
+    image: "https://placehold.jp/297x323.png",
+    role: "Advocate",
+    name: "Hassasingh H. Advani",
+    description:
+      "A key member responsible for the Panchayat's early organization and operations.",
+  },
+];
+
+const FoundingMembers = ({
+  induShaniWords,
+  foundingMembers,
+}: {
+  induShaniWords: string;
+  foundingMembers: {
+    name: string;
+    position: string;
+    displayPictureUrl: string;
+  }[];
+}) => {
   return (
     <Box textAlign="center">
       <Text textColor="#FF4D00" fontWeight={600}>
-        Members of Managing committe
+        Meet Our Office Bearers
       </Text>
-
       <Spacer h="2rem" />
-
       <Grid templateColumns="repeat(5, 1fr)" gap="1.5rem">
-        {[
-          {
-            image: "",
-            role: "President",
-            name: "Fatechand Assudmal Jhangiani",
-            description:
-              "A dedicated leader and visionary who played a pivotal role in establishing the Panchayat.",
-          },
-          {
-            image: "",
-            role: "Vice-President",
-            name: "Jagatrai Issardas Shivdasani",
-            description:
-              "An integral part of the founding team, contributing his expertise and leadership.",
-          },
-          {
-            image: "",
-            role: "Honorary Secretary",
-            name: "Wadhumal Hukumatrai Alimchandani",
-            description:
-              "The driving force behind the Panchayat's administrative foundation.",
-          },
-          {
-            image: "",
-            role: "Joint Secretary",
-            name: "Tahilram Assudmal Gurbaxani",
-            description:
-              "A key member responsible for the Panchayat's early organization and operations.",
-          },
-          {
-            image: "",
-            role: "Advocate",
-            name: "Hassasingh H. Advani",
-            description:
-              "A key member responsible for the Panchayat's early organization and operations.",
-          },
-        ].map(({ image, role, name, description }, i) => (
-          <Flex
-            key={i}
-            direction="column"
-            alignItems="baseline"
-            textAlign="left"
-          >
-            <Image alt="" src={image} />
-            <Text mt="0.75rem" fontWeight={500}>
-              {role}
-            </Text>
-            <Text fontWeight={700}>{name}</Text>
-            <Text>{description}</Text>
-          </Flex>
-        ))}
+        {foundingMembers
+          .reverse()
+          .map(({ name, position, displayPictureUrl }, i) => (
+            <Flex
+              key={i}
+              direction="column"
+              alignItems="baseline"
+              textAlign="left"
+            >
+              <Image alt="" src={displayPictureUrl} />
+              <Text mt="0.75rem" fontWeight={500}>
+                {position}
+              </Text>
+              <Text fontWeight={700}>{name}</Text>
+              {/* <Text>{description}</Text> */}
+            </Flex>
+          ))}
       </Grid>
       <Spacer h="5rem" />
       <Flex gap={8} align="center" flexDir="column">
@@ -78,6 +90,7 @@ const FoundingMembers = ({ induShaniWords }: { induShaniWords: string }) => {
             position="absolute"
             as={BsChatLeftQuoteFill}
           />
+
           <Text fontWeight={600} fontSize="xl">
             President Speaks
           </Text>
@@ -92,6 +105,9 @@ const FoundingMembers = ({ induShaniWords }: { induShaniWords: string }) => {
           <Text>President of Khudabadi Amil Panchayat of Bombay</Text>
         </Flex>
       </Flex>
+
+        <Text whiteSpace="pre-wrap">{induShaniWords}</Text>
+      </Box>
     </Box>
   );
 };

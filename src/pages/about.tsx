@@ -1,4 +1,9 @@
-import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
+
+import type {
+  NextPage,
+  GetServerSideProps,
+  InferGetServerSidePropsType,
+} from "next";
 import { Spacer } from "@chakra-ui/react";
 
 import Layout from "~/components/layout";
@@ -16,14 +21,40 @@ import { client } from "~/lib/client";
 
 export const getServerSideProps: GetServerSideProps<{
   induShaniWords: string;
+  foundingMembers: {
+    name: string;
+    position: string;
+    displayPictureUrl: string;
+  }[];
 }> = async () => {
-  const post = await client.induShaniWordsQuery();
-  console.log({ induShaniWords: post.induShaniWords?.herWords });
-  return { props: { induShaniWords: post.induShaniWords?.herWords ?? "" } };
+  const iswQ = await client.induShaniWordsQuery();
+  const foundingMembersQ = await client.officeBearersQuery();
+
+  console.log({
+    induShaniWords: iswQ.induShaniWords?.herWords,
+    foundingMembers:
+      foundingMembersQ.officeBearersCollection?.items.map((ob) => ({
+        name: ob?.officeBearerName ?? "",
+        position: ob?.officeBearerPosition ?? "",
+        displayPictureUrl: ob?.displayPicture?.url ?? "",
+      })) ?? [],
+  });
+  return {
+    props: {
+      induShaniWords: iswQ.induShaniWords?.herWords ?? "",
+      foundingMembers:
+        foundingMembersQ.officeBearersCollection?.items.map((ob) => ({
+          name: ob?.officeBearerName ?? "",
+          position: ob?.officeBearerPosition ?? "",
+          displayPictureUrl: ob?.displayPicture?.url ?? "",
+        })) ?? [],
+    },
+  };
 };
 
 const AboutPage = ({
   induShaniWords,
+  foundingMembers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <Layout title="Home">
@@ -31,7 +62,9 @@ const AboutPage = ({
       <Spacer h="2rem" />
       <LegacyBox />
       <Spacer h="2rem" />
-      <FoundingMembers {...{ induShaniWords }} />
+      <FoundingMembers {...{ induShaniWords, foundingMembers }} />
+      <Spacer h="8rem" />
+      <PresidentsSection />
       <Spacer h="8rem" />
       <CommitteesSection />
       <Spacer h="8rem" />
@@ -40,8 +73,6 @@ const AboutPage = ({
       <ConnectingAndYACSection />
       <Spacer h="8rem" />
       <CommunityBox />
-      <Spacer h="8rem" />
-      <PresidentsSection />
       <Spacer h="8rem" />
     </Layout>
   );
