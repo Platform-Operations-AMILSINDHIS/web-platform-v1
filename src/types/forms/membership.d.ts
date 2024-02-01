@@ -7,7 +7,7 @@ export interface FamilyMember {
 
 export interface PersonalInfo {
   firstName: string;
-  middleName: string;
+  middleName?: string;
   lastName: string;
   occupation: string;
   dateOfBirth: Date;
@@ -24,13 +24,13 @@ export interface AddressInfo {
   residentialAddress: {
     addressLine1: string;
     addressLine2: string;
-    addressLine3: string;
+    addressLine3?: string;
     pinCode: string;
   };
   officeAddress?: {
     addressLine1: string;
     addressLine2: string;
-    addressLine3: string;
+    addressLine3?: string;
     pinCode: string;
   };
 }
@@ -48,9 +48,9 @@ export interface ProposerInfo {
 export interface KAPMembershipFormValues {
   personalInfo: PersonalInfo;
   addressInfo: AddressInfo;
-  membershipInfo: KAPMembershipInfo;
   familyMembers?: FamilyMember[];
   proposerInfo: ProposerInfo;
+  membershipInfo: KAPMembershipInfo;
 }
 
 export interface YACMembershipFormValues {

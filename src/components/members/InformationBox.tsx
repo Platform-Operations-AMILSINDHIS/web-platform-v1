@@ -44,6 +44,7 @@ const InformationBox: React.FC<InformationBoxProps> = ({
           textTransform="capitalize"
           fontSize="4xl"
           fontWeight="semibold"
+          mb={1}
         >
           {title}
         </Heading>
@@ -51,7 +52,7 @@ const InformationBox: React.FC<InformationBoxProps> = ({
           return <Text key={index}>{text}</Text>;
         })}
       </Flex>
-      <Flex gap={3} w="full">
+      <Flex mt={1} gap={3} w="full">
         <LinkButton
           size="sm"
           px={5}
@@ -60,17 +61,6 @@ const InformationBox: React.FC<InformationBoxProps> = ({
           CTAlabel={"Go to Form"}
           CTAlink={URL}
         />
-        <ModalButton
-          CTATheme={true}
-          CTAlabel="Learn more"
-          fontSize="sm"
-          CTAaction={handleModal}
-        />
-        {modalDisplayState ? (
-          <KapModal handleModal={onClose} modalState={isOpen} />
-        ) : (
-          <YacModal handleModal={onClose} modalState={isOpen} />
-        )}
       </Flex>
     </Flex>
   );

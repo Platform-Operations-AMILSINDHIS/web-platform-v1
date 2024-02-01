@@ -90,59 +90,12 @@ input AssetFilter {
 }
 
 type AssetLinkingCollections {
-  blogContentTypeCollection(limit: Int = 100, locale: String, order: [AssetLinkingCollectionsBlogContentTypeCollectionOrder], preview: Boolean, skip: Int = 0): BlogContentTypeCollection
+  blogContentTypeCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): BlogContentTypeCollection
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-  eventContentTypeCollection(limit: Int = 100, locale: String, order: [AssetLinkingCollectionsEventContentTypeCollectionOrder], preview: Boolean, skip: Int = 0): EventContentTypeCollection
-  eventImageSliderCollection(limit: Int = 100, locale: String, order: [AssetLinkingCollectionsEventImageSliderCollectionOrder], preview: Boolean, skip: Int = 0): EventImageSliderCollection
-}
-
-enum AssetLinkingCollectionsBlogContentTypeCollectionOrder {
-  author_ASC
-  author_DESC
-  blogSlug_ASC
-  blogSlug_DESC
-  blogTitle_ASC
-  blogTitle_DESC
-  dateOfBlog_ASC
-  dateOfBlog_DESC
-  sys_firstPublishedAt_ASC
-  sys_firstPublishedAt_DESC
-  sys_id_ASC
-  sys_id_DESC
-  sys_publishedAt_ASC
-  sys_publishedAt_DESC
-  sys_publishedVersion_ASC
-  sys_publishedVersion_DESC
-}
-
-enum AssetLinkingCollectionsEventContentTypeCollectionOrder {
-  eventDates_ASC
-  eventDates_DESC
-  eventLocation_ASC
-  eventLocation_DESC
-  eventSlug_ASC
-  eventSlug_DESC
-  eventTitle_ASC
-  eventTitle_DESC
-  sys_firstPublishedAt_ASC
-  sys_firstPublishedAt_DESC
-  sys_id_ASC
-  sys_id_DESC
-  sys_publishedAt_ASC
-  sys_publishedAt_DESC
-  sys_publishedVersion_ASC
-  sys_publishedVersion_DESC
-}
-
-enum AssetLinkingCollectionsEventImageSliderCollectionOrder {
-  sys_firstPublishedAt_ASC
-  sys_firstPublishedAt_DESC
-  sys_id_ASC
-  sys_id_DESC
-  sys_publishedAt_ASC
-  sys_publishedAt_DESC
-  sys_publishedVersion_ASC
-  sys_publishedVersion_DESC
+  eventContentTypeCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EventContentTypeCollection
+  eventImageSliderCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EventImageSliderCollection
+  membersOfTheManagingCommitteeKapCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): MembersOfTheManagingCommitteeKapCollection
+  officeBearersCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): OfficeBearersCollection
 }
 
 enum AssetOrder {
@@ -210,6 +163,8 @@ type BlogContentTypeBlogContentLinks {
 
 type BlogContentTypeBlogContentResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 type BlogContentTypeCollection {
@@ -413,6 +368,8 @@ type EventContentTypeEventDescriptionLinks {
 
 type EventContentTypeEventDescriptionResources {
   block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 input EventContentTypeFilter {
@@ -659,9 +616,175 @@ input ImageTransformOptions {
 }
 
 """
+words by InduShani [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/induShaniWords)
+"""
+type InduShaniWords implements Entry {
+  contentfulMetadata: ContentfulMetadata!
+  herWords(locale: String): String
+  linkedFrom(allowedLocales: [String]): InduShaniWordsLinkingCollections
+  sys: Sys!
+}
+
+type InduShaniWordsCollection {
+  items: [InduShaniWords]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+input InduShaniWordsFilter {
+  AND: [InduShaniWordsFilter]
+  OR: [InduShaniWordsFilter]
+  contentfulMetadata: ContentfulMetadataFilter
+  herWords: String
+  herWords_contains: String
+  herWords_exists: Boolean
+  herWords_in: [String]
+  herWords_not: String
+  herWords_not_contains: String
+  herWords_not_in: [String]
+  sys: SysFilter
+}
+
+type InduShaniWordsLinkingCollections {
+  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+}
+
+enum InduShaniWordsOrder {
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+"""
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
 scalar JSON
+
+"""
+Managing community member details [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/membersOfTheManagingCommitteeKap)
+"""
+type MembersOfTheManagingCommitteeKap implements Entry {
+  contentfulMetadata: ContentfulMetadata!
+  linkedFrom(allowedLocales: [String]): MembersOfTheManagingCommitteeKapLinkingCollections
+  mkapDisplayPicture(locale: String, preview: Boolean): Asset
+  mkapName(locale: String): String
+  mkapPosition(locale: String): String
+  sys: Sys!
+}
+
+type MembersOfTheManagingCommitteeKapCollection {
+  items: [MembersOfTheManagingCommitteeKap]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+input MembersOfTheManagingCommitteeKapFilter {
+  AND: [MembersOfTheManagingCommitteeKapFilter]
+  OR: [MembersOfTheManagingCommitteeKapFilter]
+  contentfulMetadata: ContentfulMetadataFilter
+  mkapDisplayPicture_exists: Boolean
+  mkapName: String
+  mkapName_contains: String
+  mkapName_exists: Boolean
+  mkapName_in: [String]
+  mkapName_not: String
+  mkapName_not_contains: String
+  mkapName_not_in: [String]
+  mkapPosition: String
+  mkapPosition_contains: String
+  mkapPosition_exists: Boolean
+  mkapPosition_in: [String]
+  mkapPosition_not: String
+  mkapPosition_not_contains: String
+  mkapPosition_not_in: [String]
+  sys: SysFilter
+}
+
+type MembersOfTheManagingCommitteeKapLinkingCollections {
+  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+}
+
+enum MembersOfTheManagingCommitteeKapOrder {
+  mkapName_ASC
+  mkapName_DESC
+  mkapPosition_ASC
+  mkapPosition_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+"""
+Updation of Office Bearers to be done here [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/officeBearers)
+"""
+type OfficeBearers implements Entry {
+  contentfulMetadata: ContentfulMetadata!
+  displayPicture(locale: String, preview: Boolean): Asset
+  linkedFrom(allowedLocales: [String]): OfficeBearersLinkingCollections
+  officeBearerName(locale: String): String
+  officeBearerPosition(locale: String): String
+  sys: Sys!
+}
+
+type OfficeBearersCollection {
+  items: [OfficeBearers]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+input OfficeBearersFilter {
+  AND: [OfficeBearersFilter]
+  OR: [OfficeBearersFilter]
+  contentfulMetadata: ContentfulMetadataFilter
+  displayPicture_exists: Boolean
+  officeBearerName: String
+  officeBearerName_contains: String
+  officeBearerName_exists: Boolean
+  officeBearerName_in: [String]
+  officeBearerName_not: String
+  officeBearerName_not_contains: String
+  officeBearerName_not_in: [String]
+  officeBearerPosition: String
+  officeBearerPosition_contains: String
+  officeBearerPosition_exists: Boolean
+  officeBearerPosition_in: [String]
+  officeBearerPosition_not: String
+  officeBearerPosition_not_contains: String
+  officeBearerPosition_not_in: [String]
+  sys: SysFilter
+}
+
+type OfficeBearersLinkingCollections {
+  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+}
+
+enum OfficeBearersOrder {
+  officeBearerName_ASC
+  officeBearerName_DESC
+  officeBearerPosition_ASC
+  officeBearerPosition_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
 
 """
 The 'Quality' type represents quality as whole numeric values between `1` and `100`.
@@ -669,6 +792,7 @@ The 'Quality' type represents quality as whole numeric values between `1` and `1
 scalar Quality
 
 type Query {
+  _node(id: ID!, locale: String, preview: Boolean): _Node
   asset(id: String!, locale: String, preview: Boolean): Asset
   assetCollection(limit: Int = 100, locale: String, order: [AssetOrder], preview: Boolean, skip: Int = 0, where: AssetFilter): AssetCollection
   blogContentType(id: String!, locale: String, preview: Boolean): BlogContentType
@@ -678,6 +802,12 @@ type Query {
   eventContentTypeCollection(limit: Int = 100, locale: String, order: [EventContentTypeOrder], preview: Boolean, skip: Int = 0, where: EventContentTypeFilter): EventContentTypeCollection
   eventImageSlider(id: String!, locale: String, preview: Boolean): EventImageSlider
   eventImageSliderCollection(limit: Int = 100, locale: String, order: [EventImageSliderOrder], preview: Boolean, skip: Int = 0, where: EventImageSliderFilter): EventImageSliderCollection
+  induShaniWords(id: String!, locale: String, preview: Boolean): InduShaniWords
+  induShaniWordsCollection(limit: Int = 100, locale: String, order: [InduShaniWordsOrder], preview: Boolean, skip: Int = 0, where: InduShaniWordsFilter): InduShaniWordsCollection
+  membersOfTheManagingCommitteeKap(id: String!, locale: String, preview: Boolean): MembersOfTheManagingCommitteeKap
+  membersOfTheManagingCommitteeKapCollection(limit: Int = 100, locale: String, order: [MembersOfTheManagingCommitteeKapOrder], preview: Boolean, skip: Int = 0, where: MembersOfTheManagingCommitteeKapFilter): MembersOfTheManagingCommitteeKapCollection
+  officeBearers(id: String!, locale: String, preview: Boolean): OfficeBearers
+  officeBearersCollection(limit: Int = 100, locale: String, order: [OfficeBearersOrder], preview: Boolean, skip: Int = 0, where: OfficeBearersFilter): OfficeBearersCollection
 }
 
 type ResourceLink {
@@ -734,4 +864,8 @@ input SysFilter {
   publishedVersion_lte: Float
   publishedVersion_not: Float
   publishedVersion_not_in: [Float]
+}
+
+interface _Node {
+  _id: ID!
 }

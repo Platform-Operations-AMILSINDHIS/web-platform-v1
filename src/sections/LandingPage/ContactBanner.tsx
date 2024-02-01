@@ -73,13 +73,15 @@ const ContactBanner = ({ imageUrl }: sectionProps) => {
                 placeholder="Send a message..."
                 background="white"
               />
-              <InputRightAddon
-                background="#1F2937"
-                cursor="pointer"
-                border="#000"
-              >
-                <FaShare color="white" />
-              </InputRightAddon>
+              <Box as="a" href="mailto:amilsindhis@gmail.com">
+                <InputRightAddon
+                  background="#1F2937"
+                  cursor="pointer"
+                  border="#000"
+                >
+                  <FaShare color="white" />
+                </InputRightAddon>
+              </Box>
             </InputGroup>
           </Flex>
         </Flex>

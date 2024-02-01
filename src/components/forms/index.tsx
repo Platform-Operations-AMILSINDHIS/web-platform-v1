@@ -6,8 +6,6 @@ import {
   Input,
   Flex,
   Select,
-  FormErrorMessage,
-  Text,
   Box,
 } from "@chakra-ui/react";
 import {
@@ -34,6 +32,7 @@ export const LabelledInput: React.FC<{
   validate?: () => string; // validation function returns error string
   onChange?: ChangeEventHandler<HTMLInputElement>;
   defaultValue?: string;
+  required?: boolean;
   selectOptions?: string[];
 }> = ({
   label,
@@ -43,6 +42,7 @@ export const LabelledInput: React.FC<{
   validate,
   onChange,
   defaultValue,
+  required,
   selectOptions,
 }) => (
   <FormControl fontWeight={500}>
@@ -74,6 +74,7 @@ export const LabelledInput: React.FC<{
           onChange={onChange ?? undefined}
           defaultValue={defaultValue ?? undefined}
           placeholder={placeholder}
+          required={required ?? false}
           borderColor="gray.400"
           _hover={{
             borderColor: "#FF4D00",
@@ -157,16 +158,31 @@ export const LabelledInput: React.FC<{
         </Field>
       </>
     ) : type === "datetime" ? (
-      <Flex border="1px solid #E2E8F0" borderRadius="5px" py="10px">
-        <Input
-          type="datetime-local"
-          variant="ghost"
-          name={name ?? camelCase(label)}
-          borderRadius="5px"
-          onChange={onChange ?? undefined}
-          defaultValue={defaultValue ?? undefined}
-        />
-      </Flex>
+      <Field name={name ?? camelCase(label)}>
+        {({
+          field,
+          form: { setFieldValue },
+        }: {
+          field: FieldInputProps<string>;
+          form: FormikHelpers<string>;
+        }) => (
+          <Input
+            type="datetime-local"
+            variant="outline"
+            name={field.name}
+            borderRadius="5px"
+          borderColor="gray.400"
+          _hover={{
+            borderColor: "#FF4D00",
+          }}
+          focusBorderColor="#FF4D00"
+            onChange={(e) => {
+              void setFieldValue(field.name, e.target.value);
+            }}
+            value={field.value}
+          />
+        )}
+      </Field>
     ) : type === "number" ? (
       <Field
         as={Input}
@@ -180,6 +196,7 @@ export const LabelledInput: React.FC<{
         }}
         focusBorderColor="#FF4D00"
         borderColor="gray.400"
+        color="gray.700"
       />
     ) : type === "select" ? (
       // <Flex border="1px solid #E2E8F0" borderRadius="5px" py="10px">
@@ -194,12 +211,13 @@ export const LabelledInput: React.FC<{
         focusBorderColor="#FF4D00"
         border="1px solid"
         borderColor="gray.400"
+        color="gray.700"
         _hover={{
           borderColor: "#FF4D00",
         }}
       >
         {selectOptions?.map((option) => (
-          <option key={option} value={option.toLowerCase()}>
+          <option key={option} value={option}>
             {option}
           </option>
         ))}
@@ -211,28 +229,28 @@ export const LabelledInput: React.FC<{
   </FormControl>
 );
 
-export const FormObserver: React.FC = () => {
-  const { values } = useFormikContext();
+// export const FormObserver: React.FC = () => {
+//   const { values } = useFormikContext();
 
-  useEffect(() => {
-    console.log("FormObserver::values", values);
-  }, [values]);
+//   useEffect(() => {
+//     console.log("FormObserver::values", values);
+//   }, [values]);
 
-  return null;
-};
+//   return null;
+// };
 
-// TODO: Turn this into a hook which accepts a type and a stateSetter
-// which takes in that type and sets it to global formState
-export const FormGlobalStateSetter: React.FC<{
-  /* eslint-disable  @typescript-eslint/no-explicit-any */
-  stateSetter: (...args: any[]) => any;
-}> = ({ stateSetter }) => {
-  const { values } = useFormikContext();
+// // TODO: Turn this into a hook which accepts a type and a stateSetter
+// // which takes in that type and sets it to global formState
+// export const FormGlobalStateSetter: React.FC<{
+//   /* eslint-disable  @typescript-eslint/no-explicit-any */
+//   stateSetter: (...args: any[]) => any;
+// }> = ({ stateSetter }) => {
+//   const { values } = useFormikContext();
 
-  useEffect(() => {
-    // console.log("FormObserver::values", values);
-    stateSetter(values);
-  }, [values]);
+//   useEffect(() => {
+//     // console.log("FormObserver::values", values);
+//     stateSetter(values);
+//   }, [stateSetter, values]);
 
-  return null;
-};
+//   return null;
+// };

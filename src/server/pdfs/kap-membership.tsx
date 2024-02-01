@@ -176,7 +176,7 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
               </View>
               <View style={{ ...styles.rightTextWithBorder, height: "33%" }}>
                 <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                  {kapForm.personalInfo.middleName.toUpperCase()}
+                  {kapForm.personalInfo?.middleName?.toUpperCase() ?? ""}
                 </Text>
               </View>
             </View>
@@ -254,7 +254,8 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
               </View>
               <View style={{ ...styles.rightTextWithBorder, height: "25%" }}>
                 <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                  {kapForm.addressInfo.residentialAddress.addressLine3.toUpperCase()}
+                  {kapForm.addressInfo.residentialAddress?.addressLine3?.toUpperCase() ??
+                    ""}
                 </Text>
               </View>
               <View style={{ flexDirection: "row", height: "25%" }}>
@@ -310,7 +311,7 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
               </View>
               <View style={{ ...styles.rightTextWithBorder, height: "25%" }}>
                 <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                  {kapForm.addressInfo.officeAddress?.addressLine3.toUpperCase() ??
+                  {kapForm.addressInfo.officeAddress?.addressLine3?.toUpperCase() ??
                     ""}
                 </Text>
               </View>
@@ -747,7 +748,7 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
                     style={{ ...styles.rightTextWithBorder, height: "33%" }}
                   >
                     <Text style={{ ...styles.fieldValue, fontSize: 8 }}>
-                      {kapForm.personalInfo.middleName.toUpperCase()}
+                      {kapForm.personalInfo.middleName?.toUpperCase() ?? ""}
                     </Text>
                   </View>
                 </View>

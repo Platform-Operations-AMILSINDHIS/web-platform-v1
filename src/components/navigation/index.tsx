@@ -1,12 +1,14 @@
-import { Box, Button, Flex, Icon, useDisclosure } from "@chakra-ui/react";
-import NavigationDropDown from "./NavigationDropDown";
-import NavigationRegular from "./NavigationRegular";
+import { Box, Flex, useDisclosure } from "@chakra-ui/react";
 import Image from "next/image";
 
 import AmilSindhiLogo from "../../../public/images/amil-sindhis-logo.png";
 import ModalButton from "../buttons/ModalButtons";
 import { useState } from "react";
 import AuthModal from "../authentication/AuthModal";
+import { useUserAtom } from "~/lib/atom";
+import AccountDisplay from "./AccountDisplay";
+import NavigationDropDown from "./NavigationDropDown";
+import NavigationRegular from "./NavigationRegular";
 
 interface NavigationProps {
   navigationItems: {
@@ -27,6 +29,7 @@ const Navigation: React.FC<NavigationProps> = ({
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [displayState, setDisplayState] = useState(false);
+  const [{ user }] = useUserAtom();
 
   const handleModal = (state: boolean) => {
     setDisplayState(state);
@@ -89,24 +92,30 @@ const Navigation: React.FC<NavigationProps> = ({
             );
           })}
         </Flex>
-        <Flex gap={3} color="gray.700">
-          <ModalButton
-            CTASize="sm"
-            CTAlabel="Log in"
-            CTATheme={true}
-            CTAaction={() => handleModal(true)}
-          />
-          <ModalButton
-            CTASize="sm"
-            CTAlabel="Sign up"
-            CTAaction={() => handleModal(false)}
-          />
-        </Flex>
+
+        {user ? (
+          <AccountDisplay user={user} />
+        ) : (
+          <Flex gap={3} color="gray.700">
+            <ModalButton
+              CTASize="sm"
+              CTAlabel="Log in"
+              CTATheme={true}
+              CTAaction={() => handleModal(true)}
+            />
+            <ModalButton
+              CTASize="sm"
+              CTAlabel="Sign up"
+              CTAaction={() => handleModal(false)}
+            />
+          </Flex>
+        )}
       </Flex>
       <AuthModal
         displayState={displayState}
         modalState={isOpen}
         handleModal={onClose}
+        displayFunction={handleModal}
       />
     </>
   );

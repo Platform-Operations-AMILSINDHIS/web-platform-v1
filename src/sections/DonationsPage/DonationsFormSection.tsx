@@ -1,6 +1,6 @@
 import { env } from "~/env.mjs";
 
-import { useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import {
   Flex,
   Box,
@@ -11,6 +11,13 @@ import {
   Spacer,
   Button,
   useToast,
+  InputGroup,
+  InputLeftElement,
+  Input,
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
@@ -21,7 +28,12 @@ import { LabelledInput } from "~/components/forms";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { GrDocument } from "react-icons/gr";
 
+import usePayment from "~/hooks/usePayment";
+
+import { toWords } from "~/utils/helper";
 import { api } from "~/utils/api";
+import UserBlockModal from "~/components/authentication/UserBlockModal";
+import { useUserAtom } from "~/lib/atom";
 
 const DonationsForm: React.FC = () => {
   const toast = useToast();
@@ -32,13 +44,23 @@ const DonationsForm: React.FC = () => {
     api.r2.getPresignedUrl.useMutation();
 
   const [form, setForm] = useState<{
+    amount: number | null;
     donorName: string;
     contactNumber: string;
     email: string;
   }>({
+    amount: null,
     donorName: "",
     contactNumber: "",
     email: "",
+  });
+
+  const { handlePayment, paymentId, isPaying } = usePayment({
+    prefillDetails: {
+      name: form.donorName,
+      email: form.email,
+      contact: form.contactNumber,
+    },
   });
 
   const [panPresignedUrl, setPanPresignedUrl] = useState<string | null>(null);
@@ -142,6 +164,7 @@ const DonationsForm: React.FC = () => {
         const res = await donationsFormMut.mutateAsync({
           formData: {
             ...form,
+            amount: form.amount!,
             panCard: env.NEXT_PUBLIC_R2_ACCESS_URL + "/" + panFilename,
             addressProof: env.NEXT_PUBLIC_R2_ACCESS_URL + "/" + addressFilename,
           },
@@ -193,16 +216,67 @@ const DonationsForm: React.FC = () => {
     uploadedFilesCount,
   ]);
 
+  useEffect(() => {
+    if (paymentId) {
+      void handleSubmit();
+    }
+  }, [paymentId]);
+
   // // Logger
   // useEffect(() => console.log(form), [form]);
 
   return (
     <Flex direction="column" alignItems="center" gap="2rem">
+      <Flex w="40%" mx="auto">
+        {/* <LabelledInput
+          type="chakra-text"
+          label="Donation Amount"
+          onChange={(e) => setForm({ ...form, donorName: e.target.value })}
+        /> */}
+        <FormControl>
+          <FormLabel fontWeight="semibold">Donation Amount</FormLabel>
+          <InputGroup>
+            <InputLeftElement
+              pointerEvents="none"
+              color="gray.300"
+              fontSize="1.2em"
+            >
+              ₹
+            </InputLeftElement>
+            <Input
+              name="donationAmount"
+              type="number"
+              onChange={(e) =>
+                setForm({ ...form, amount: parseInt(e.target.value) })
+              }
+              placeholder="1000"
+              borderColor="gray.400"
+              _hover={{
+                borderColor: "#FF4D00",
+              }}
+              focusBorderColor="#FF4D00"
+            />
+          </InputGroup>
+
+          <FormHelperText>
+            {typeof form.amount === "number" && form.amount > 0 ? (
+              <>{toWords.convert(form.amount)} Rupees Only</>
+            ) : (
+              <>
+                &nbsp;
+                <br />
+              </>
+            )}
+          </FormHelperText>
+        </FormControl>
+      </Flex>
+
       <Grid templateColumns="repeat(3, 1fr)" gap="2rem">
         <GridItem>
           <LabelledInput
             type="chakra-text"
             label="Full Name of the Donor"
+            required
             onChange={(e) => setForm({ ...form, donorName: e.target.value })}
           />
         </GridItem>
@@ -210,6 +284,7 @@ const DonationsForm: React.FC = () => {
           <LabelledInput
             type="chakra-text"
             label="Contact Number"
+            required
             onChange={(e) =>
               setForm({ ...form, contactNumber: e.target.value })
             }
@@ -219,6 +294,7 @@ const DonationsForm: React.FC = () => {
           <LabelledInput
             type="chakra-text"
             label="Email"
+            required
             onChange={(e) => setForm({ ...form, email: e.target.value })}
           />
         </GridItem>
@@ -282,7 +358,21 @@ const DonationsForm: React.FC = () => {
         w="15rem"
         colorScheme="yellow"
         rightIcon={<ArrowForwardIcon />}
-        onClick={() => void handleSubmit()}
+        // onClick={() => void handleSubmit()}
+        onClick={() => {
+          if (!form.amount) {
+            toast({
+              title: "An error occurred.",
+              description: "Please enter a valid donation amount.",
+              status: "error",
+              duration: 9000,
+              isClosable: true,
+            });
+            return;
+          }
+
+          void handlePayment(form.amount * 100, "donation");
+        }}
         isDisabled={
           panPresignedUrl === null ||
           panCardAcceptedFiles.length === 0 ||
@@ -291,32 +381,59 @@ const DonationsForm: React.FC = () => {
           submitDisabled
         }
         isLoading={
+          (isPaying && !paymentId) ||
           (0 < uploadedFilesCount && uploadedFilesCount < 1) ||
           donationsFormMut.isLoading
         }
       >
-        Submit
+        Pay now
       </Button>
     </Flex>
   );
 };
 
 const DonationsFormSection = () => {
-  return (
-    <Flex id="donations-form" direction="column" alignItems="center">
-      <Box mb="4rem" w="40%" textAlign="center">
-        <Heading fontWeight="semibold" fontSize="5xl">
-          Donations Form
-        </Heading>
-        <Spacer h="1rem" />
-        <Text fontSize="lg">
-          Fill out the fields below to complete your personal profile. Make sure
-          to fill all the fields and not miss out any important details.
-        </Text>
-      </Box>
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [displayState, setDisplayState] = useState(false);
+  const [{ user }] = useUserAtom();
 
-      <DonationsForm />
-    </Flex>
+  const handleModal = (state: boolean) => {
+    setDisplayState(state);
+    onOpen();
+  };
+  return (
+    <Box position="relative">
+      {/* <Box
+        display={user ? "none" : ""}
+        left="50%"
+        top="50%"
+        transform="translate(-50%,-50%)"
+        zIndex={2}
+        height={100}
+        position="absolute"
+      >
+        <UserBlockModal />
+      </Box>
+      <Box
+        _hover={user ? {} : { cursor: "not-allowed" }}
+        filter={user ? "" : "blur(2px)"}
+      > */}
+      <Flex id="donations-form" direction="column" alignItems="center">
+        <Box mb="4rem" w="40%" textAlign="center">
+          <Heading fontWeight="semibold" fontSize="5xl">
+            Donations Form
+          </Heading>
+          <Spacer h="1rem" />
+          <Text fontSize="lg">
+            Fill out the fields below to complete your personal profile. Make
+            sure to fill all the fields and not miss out any important details.
+          </Text>
+        </Box>
+
+        <DonationsForm />
+      </Flex>
+    </Box>
+    // </Box>
   );
 };
 

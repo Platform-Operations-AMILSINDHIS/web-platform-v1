@@ -12,3 +12,16 @@ export const SignUpValidationSchema = Yup.object().shape({
     .min(0, "Age must be a positive number")
     .required("Age is required"),
 });
+
+export const LoginValidation = Yup.object().shape({
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  password: Yup.string().required("Enter your password"),
+});
+
+export const RecoveryValidation = Yup.object().shape({
+  email: Yup.string().required("Enter email"),
+  newPassword: Yup.string().required("Enter new Password"),
+  confirmPassword: Yup.string()
+    .required("Confirm new password")
+    .oneOf([Yup.ref("newPassword")], "Passwords don't match"),
+});

@@ -2,18 +2,18 @@ import type { FamilyMember, ProposerInfo } from "~/types/forms/membership";
 
 export interface PersonalInfo {
   firstName: string;
-  middleName: string;
+  middleName?: string;
   lastName: string;
-  dateAndTimeOfBirth: Date;
+  dateAndTimeOfBirth: string;
   placeOfBirth: string;
   mobileNumber: string;
   emailId: string;
   occupation: string;
   incomePerAnnum: number | null;
 
-  gender: "male" | "female" | null;
-  maritalStatus: "single" | "divorcee" | "windower" | "widow" | null;
-  manglik: "yes" | "no" | null;
+  gender: "Male" | "Female" | null;
+  maritalStatus: "Single" | "Divorcee" | "Widower" | "Widow" | null;
+  manglik: "Yes" | "No" | null;
 
   heightFeet: number | null;
   heightInches: number | null;

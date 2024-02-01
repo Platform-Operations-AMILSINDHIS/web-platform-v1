@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { Spacer } from "@chakra-ui/react";
+import { Box, Spacer } from "@chakra-ui/react";
 
 import Layout from "~/components/layout";
 
@@ -22,7 +22,6 @@ const DonationsPage: NextPage = () => {
       <RequirementsSection />
 
       <Spacer h="8rem" />
-
       <DonationsFormSection />
 
       <Spacer h="8rem" />

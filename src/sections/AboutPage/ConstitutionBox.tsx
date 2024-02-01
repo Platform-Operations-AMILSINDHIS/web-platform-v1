@@ -13,9 +13,21 @@ const ConstitutionBox = () => {
     <Grid
       p="4rem"
       borderRadius="20px"
-      bgColor="rgba(255, 192, 31, 0.20)"
       templateColumns="1fr 1fr"
       gap="2rem"
+      position="relative"
+      _before={{
+        content: '""',
+        position: "absolute",
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+        background:
+          "linear-gradient(to bottom, rgba(255, 192, 0, 0.4), rgba(255, 192, 0, 0.4)), url(/images/backgrounds/ajrak_bg_legacy.jpg)",
+        borderRadius: "20px",
+        zIndex: -1,
+      }}
     >
       <GridItem>
         <Text color="#FF4D00" fontWeight="semibold">

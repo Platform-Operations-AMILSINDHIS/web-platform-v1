@@ -1,0 +1,5 @@
+query induShaniWordsQuery {
+  induShaniWords(id: "3Yrx5Pe6LjpWYe5puQo8Vk") {
+    herWords
+  }
+}

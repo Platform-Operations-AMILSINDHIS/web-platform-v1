@@ -1,93 +1,74 @@
-import { Flex, Grid, Box, Text, Spacer, Image } from "@chakra-ui/react";
+import { Flex, Grid, Box, Text, Spacer, Icon } from "@chakra-ui/react";
+import Image from "next/image";
 
-const FoundingMembers = () => {
+import InduShaniImage from "../../../public/images/Presidents/InduShaniCircle.jpg";
+import { BsChatLeftQuoteFill } from "react-icons/bs";
+
+const FoundingMembers = ({
+  induShaniWords,
+  foundingMembers,
+}: {
+  induShaniWords: string;
+  foundingMembers: {
+    name: string;
+    position: string;
+    displayPictureUrl: string;
+  }[];
+}) => {
   return (
     <Box textAlign="center">
       <Text textColor="#FF4D00" fontWeight={600}>
-        Meet Our Founding Members
+        Meet Our Office Bearers
       </Text>
-
       <Spacer h="2rem" />
-
       <Grid templateColumns="repeat(5, 1fr)" gap="1.5rem">
-        {[
-          {
-            image: "https://placehold.jp/297x323.png",
-            role: "President",
-            name: "Fatechand Assudmal Jhangiani",
-            description:
-              "A dedicated leader and visionary who played a pivotal role in establishing the Panchayat.",
-          },
-          {
-            image: "https://placehold.jp/297x323.png",
-            role: "Vice-President",
-            name: "Jagatrai Issardas Shivdasani",
-            description:
-              "An integral part of the founding team, contributing his expertise and leadership.",
-          },
-          {
-            image: "https://placehold.jp/297x323.png",
-            role: "Honorary Secretary",
-            name: "Wadhumal Hukumatrai Alimchandani",
-            description:
-              "The driving force behind the Panchayat's administrative foundation.",
-          },
-          {
-            image: "https://placehold.jp/297x323.png",
-            role: "Joint Secretary",
-            name: "Tahilram Assudmal Gurbaxani",
-            description:
-              "A key member responsible for the Panchayat's early organization and operations.",
-          },
-          {
-            image: "https://placehold.jp/297x323.png",
-            role: "Advocate",
-            name: "Hassasingh H. Advani",
-            description:
-              "A key member responsible for the Panchayat's early organization and operations.",
-          },
-        ].map(({ image, role, name, description }, i) => (
-          <Flex
-            key={i}
-            direction="column"
-            alignItems="baseline"
-            textAlign="left"
-          >
-            <Image alt="" src={image} />
-            <Text mt="0.75rem" fontWeight={500}>
-              {role}
-            </Text>
-            <Text fontWeight={700}>{name}</Text>
-            <Text>{description}</Text>
-          </Flex>
-        ))}
+        {foundingMembers
+          .reverse()
+          .map(({ name, position, displayPictureUrl }, i) => (
+            <Flex
+              key={i}
+              direction="column"
+              alignItems="baseline"
+              textAlign="left"
+            >
+              <Image width={300} height={300} alt="" src={displayPictureUrl} />
+              <Text mt="0.75rem" fontWeight={500}>
+                {position}
+              </Text>
+              <Text fontWeight={700}>{name}</Text>
+              {/* <Text>{description}</Text> */}
+            </Flex>
+          ))}
       </Grid>
-
       <Spacer h="5rem" />
+      <Flex gap={8} align="center" flexDir="column">
+        <Flex position="relative" gap={3} align="center" flexDir="column">
+          <Image width={100} alt="" src={InduShaniImage} />
+          <Icon
+            bottom={10}
+            left={115}
+            color="orange.500"
+            boxSize={8}
+            position="absolute"
+            as={BsChatLeftQuoteFill}
+          />
 
-      {/* Two paragraphs of text here */}
+          <Text fontWeight={600} fontSize="xl">
+            President Speaks
+          </Text>
+        </Flex>
+        <Box mx="auto" maxW="62%" textAlign="center">
+          <Text whiteSpace="pre-wrap">{induShaniWords}</Text>
+        </Box>
+        <Flex flexDir="column" align="center">
+          <Text fontWeight="bold" fontSize="lg">
+            - Dr. Indu Shahani
+          </Text>
+          <Text>President of Khudabadi Amil Panchayat of Bombay</Text>
+        </Flex>
+      </Flex>
 
-      <Box mx="auto" maxW="62%" textAlign="center">
-        <Text>
-          These ten individuals came together with a shared vision of providing
-          assistance to their fellow Amil Sindhis who had faced displacement and
-          adversity. Their dedication and foresight laid the foundation for a
-          charitable trust that would go on to impact countless lives
-          positively.
-        </Text>
-
-        <Spacer h="1rem" />
-
-        <Text>
-          Since its inception, the Panchayat has continued to uphold the values
-          and principles set forth by its founders. It has evolved into a
-          dynamic organization that not only provides crucial support to those
-          in need but also serves as a vital cultural and social hub for the
-          Amil Sindhi community. The legacy of these founding members lives on,
-          as their commitment to service and community building continues to
-          inspire future generations within the Panchayat.
-        </Text>
-      </Box>
+      <Text whiteSpace="pre-wrap">{induShaniWords}</Text>
     </Box>
   );
 };

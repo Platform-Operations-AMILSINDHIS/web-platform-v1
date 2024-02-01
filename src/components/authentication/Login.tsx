@@ -4,13 +4,34 @@ import { LoginValues, loginInitialValues } from "~/hooks/useForm";
 import { LabelledInput } from "../forms";
 import { Form, Formik, FormikHelpers } from "formik";
 import axios from "axios";
+import { LoginValidation } from "~/validations/AuthValidations";
+import { useUserAtom } from "~/lib/atom";
+import type { userAtomBody } from "~/lib/atom";
 
 interface LoginProps {
   setCloseModal: (input: boolean) => void;
+  displayFunction: (input: boolean) => void;
 }
 
-const Login: React.FC<LoginProps> = ({ setCloseModal }) => {
+const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
+  const [{ user }, setUserAtom] = useUserAtom();
   const [submitting, setSubmitting] = useState(false);
+
+  const handleUserAtom = (userObject: userAtomBody) => {
+    setUserAtom({
+      user: {
+        account_name: userObject.account_name,
+        age: userObject.age,
+        auth_id: userObject.auth_id,
+        email_id: userObject.email_id,
+        first_name: userObject.first_name,
+        gender: userObject.gender,
+        last_name: userObject.last_name,
+        user_member: userObject.user_member,
+      },
+    });
+  };
+
   const handleSubmit = async (
     values: LoginValues,
     { setErrors }: FormikHelpers<LoginValues>
@@ -49,12 +70,68 @@ const Login: React.FC<LoginProps> = ({ setCloseModal }) => {
         setSubmitting(false);
         return;
       }
+      // const response = await axios.post("/api/auth/login", {
+      //   email: values.email,
+      //   password: values.password,
+      // });
 
-      const response = await axios.post("/api/auth/login", {
+      // console.log({
+      //   responseStatus: response.status,
+      //   message: "hey",
+      //   data: response.data.userData[0],
+      // });
+
+      // const userHit = response.data.userData[0];
+
+      // const filteredUserData: userAtomBody = {
+      //   auth_id: userHit.auth_id,
+      //   account_name: userHit.account_name,
+      //   age: userHit.age,
+      //   email_id: userHit.email_id,
+      //   first_name: userHit.first_name,
+      //   gender: userHit.gender,
+      //   last_name: userHit.last_name,
+      //   user_member: userHit.Kap_member ? 1 : userHit.Yac_member ? 2 : 0,
+      // };
+
+      const response = await axios.post<{
+        userData: {
+          auth_id: string;
+          account_name: string;
+          age: number;
+          email_id: string;
+          first_name: string;
+          gender: string;
+          last_name: string;
+          Kap_member?: boolean;
+          Yac_member?: boolean;
+        }[];
+      }>("/api/auth/login", {
         email: values.email,
         password: values.password,
       });
-      console.log({ responseStatus: response.status });
+
+      console.log({
+        responseStatus: response.status,
+        message: "hey",
+        data: response.data?.userData[0], // Using optional chaining here
+      });
+
+      const userHit = response.data?.userData[0];
+
+      const filteredUserData: userAtomBody = {
+        auth_id: userHit?.auth_id ?? "",
+        account_name: userHit?.account_name ?? "",
+        age: userHit?.age ?? 0,
+        email_id: userHit?.email_id ?? "",
+        first_name: userHit?.first_name ?? "",
+        gender: userHit?.gender ?? "",
+        last_name: userHit?.last_name ?? "",
+        user_member: userHit?.Kap_member ? 1 : userHit?.Yac_member ? 2 : 0,
+      };
+
+      handleUserAtom(filteredUserData);
+      console.log(user);
       setSubmitting(false);
       setCloseModal(true);
     } catch (error) {
@@ -64,7 +141,11 @@ const Login: React.FC<LoginProps> = ({ setCloseModal }) => {
   };
 
   return (
-    <Formik initialValues={loginInitialValues} onSubmit={handleSubmit}>
+    <Formik
+      validationSchema={LoginValidation}
+      initialValues={loginInitialValues}
+      onSubmit={handleSubmit}
+    >
       <Form>
         <Flex py={5} px={2} gap={6} align="center" flexDir="column">
           <Flex gap={3} align="center" flexDir="column">
@@ -123,8 +204,9 @@ const Login: React.FC<LoginProps> = ({ setCloseModal }) => {
                 color: "white",
                 bg: "#FF4D00",
               }}
+              onClick={() => displayFunction(false)}
             >
-              Create Account
+              New Here ?
             </Button>
           </Flex>
         </Flex>

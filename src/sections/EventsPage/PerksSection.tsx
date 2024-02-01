@@ -33,7 +33,7 @@ const PerksSection: React.FC = () => {
           for you ?
         </Heading>
         <Box w="100%" borderBottom="1px solid #00000045">
-          <Flex mt="1rem" alignItems="center" transform="translateX(-30px)">
+          <Flex alignItems="center" transform="translateX(-30px)">
             {/* <BsFillRocketTakeoffFill
 
               size="2rem"
@@ -45,8 +45,8 @@ const PerksSection: React.FC = () => {
 
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="108"
-              height="108"
+              width="100"
+              height="100"
               viewBox="0 0 108 108"
               fill="none"
             >
@@ -129,7 +129,7 @@ const PerksSection: React.FC = () => {
           <LinkButton
             CTAlabel={
               <Flex alignItems="center" gap="0.5rem">
-                <Box>Go</Box>
+                <Box>KAP & YAC</Box>
                 <ArrowForwardIcon />
               </Flex>
             }

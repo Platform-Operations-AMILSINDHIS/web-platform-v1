@@ -1,6 +1,5 @@
 import { Box, Button, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
 import Image from "next/image";
-import Link from "next/link";
 
 import DonationImage from "../../../public/images/donations-and-memberships-section.png";
 import LinkButton from "~/components/buttons/LinkButton";
