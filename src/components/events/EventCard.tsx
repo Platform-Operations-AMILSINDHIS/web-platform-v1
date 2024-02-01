@@ -26,8 +26,8 @@ const EventCard: React.FC<eventData> = ({ event }) => {
         backgroundSize="cover"
         borderRadius={7}
       />
-      <Flex flexDir="column" mt={3}>
-        <Text mb={-1} color="#FF4D00" fontWeight={600} fontSize="md">
+      <Flex flexDir="column" mt={4}>
+        <Text mt={1} color="gray.500" fontWeight={600} fontSize="small">
           {convertDATE(event?.eventDates as Date)}
         </Text>
         <Text
@@ -35,8 +35,7 @@ const EventCard: React.FC<eventData> = ({ event }) => {
           href={`/events/${event?.sys.id}`}
           transition="all .3s"
           _hover={{
-            color: "purple.500",
-            textDecoration: "underline",
+            color: "orange.500",
           }}
           fontWeight={600}
           fontSize="2xl"
@@ -49,8 +48,12 @@ const EventCard: React.FC<eventData> = ({ event }) => {
               return (
                 <Text
                   fontWeight={500}
-                  border="2px solid"
-                  px={3}
+                  border="1px solid"
+                  borderColor="gray.600"
+                  color="gray.700"
+                  fontSize="small"
+                  px={4}
+                  py={0.5}
                   borderRadius={20}
                   key={index}
                 >
@@ -60,10 +63,11 @@ const EventCard: React.FC<eventData> = ({ event }) => {
             })}
           </Flex>
           <Text
-            pt={0.5}
+            px={4}
+            py={0.5}
+            fontSize="small"
             fontWeight={500}
-            background="rgba(251, 31, 255, 0.40);"
-            px={3}
+            background="orange.200"
             borderRadius={20}
           >
             {event?.eventType ? event.eventType[0] : ""}
