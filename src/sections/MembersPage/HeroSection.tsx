@@ -39,7 +39,7 @@ const HeroSection = () => {
         Sindhis to be a part of our vibrant community!
       </Text>
 
-      <Flex align="flex-start" justify="space-between" my={20} w="full">
+      <Flex align="flex-start" justify="space-between" mt={20} mb={10} w="full">
         <Box w="50%">
           <Image alt="HeroImage-01" src={HeroImage01} />
         </Box>
