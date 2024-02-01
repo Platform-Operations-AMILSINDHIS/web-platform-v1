@@ -1,3 +1,4 @@
+
 import type {
   NextPage,
   GetServerSideProps,
@@ -17,8 +18,6 @@ import ConnectingAndYACSection from "~/sections/AboutPage/ConnectingAndYACSectio
 import CommunityBox from "~/sections/AboutPage/CommunityBox";
 
 import { client } from "~/lib/client";
-
-import type { InduShaniWordsQueryQuery } from "~/lib/__generated/sdk";
 
 export const getServerSideProps: GetServerSideProps<{
   induShaniWords: string;

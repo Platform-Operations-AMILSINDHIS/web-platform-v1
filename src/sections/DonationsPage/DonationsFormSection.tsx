@@ -403,7 +403,7 @@ const DonationsFormSection = () => {
   };
   return (
     <Box position="relative">
-      <Box
+      {/* <Box
         display={user ? "none" : ""}
         left="50%"
         top="50%"
@@ -417,24 +417,23 @@ const DonationsFormSection = () => {
       <Box
         _hover={user ? {} : { cursor: "not-allowed" }}
         filter={user ? "" : "blur(2px)"}
-      >
-        <Flex id="donations-form" direction="column" alignItems="center">
-          <Box mb="4rem" w="40%" textAlign="center">
-            <Heading fontWeight="semibold" fontSize="5xl">
-              Donations Form
-            </Heading>
-            <Spacer h="1rem" />
-            <Text fontSize="lg">
-              Fill out the fields below to complete your personal profile. Make
-              sure to fill all the fields and not miss out any important
-              details.
-            </Text>
-          </Box>
+      > */}
+      <Flex id="donations-form" direction="column" alignItems="center">
+        <Box mb="4rem" w="40%" textAlign="center">
+          <Heading fontWeight="semibold" fontSize="5xl">
+            Donations Form
+          </Heading>
+          <Spacer h="1rem" />
+          <Text fontSize="lg">
+            Fill out the fields below to complete your personal profile. Make
+            sure to fill all the fields and not miss out any important details.
+          </Text>
+        </Box>
 
-          <DonationsForm />
-        </Flex>
-      </Box>
+        <DonationsForm />
+      </Flex>
     </Box>
+    // </Box>
   );
 };
 

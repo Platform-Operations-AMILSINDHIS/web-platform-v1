@@ -1,5 +1,8 @@
-import { Flex, Grid, Box, Text, Spacer, Image } from "@chakra-ui/react";
-import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import { Flex, Grid, Box, Text, Spacer, Icon } from "@chakra-ui/react";
+import Image from "next/image";
+
+import InduShaniImage from "../../../public/images/Presidents/InduShaniCircle.jpg";
+import { BsChatLeftQuoteFill } from "react-icons/bs";
 
 const dummyFoundingMembers = [
   {
@@ -55,9 +58,7 @@ const FoundingMembers = ({
       <Text textColor="#FF4D00" fontWeight={600}>
         Meet Our Office Bearers
       </Text>
-
       <Spacer h="2rem" />
-
       <Grid templateColumns="repeat(5, 1fr)" gap="1.5rem">
         {foundingMembers
           .reverse()
@@ -77,40 +78,35 @@ const FoundingMembers = ({
             </Flex>
           ))}
       </Grid>
-
       <Spacer h="5rem" />
-
-      {/* Two paragraphs of text here */}
-
-      <Box mx="auto" maxW="62%" textAlign="center">
-        {/* <Box>
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "2rem" }}
-            dangerouslySetInnerHTML={{
-              __html: documentToHtmlString({
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                nodeType: "document",
-                content: ,
-                data: {},
-              }),
-            }}
+      <Flex gap={8} align="center" flexDir="column">
+        <Flex position="relative" gap={3} align="center" flexDir="column">
+          <Image width={100} alt="" src={InduShaniImage} />
+          <Icon
+            bottom={10}
+            left={115}
+            color="orange.500"
+            boxSize={8}
+            position="absolute"
+            as={BsChatLeftQuoteFill}
           />
-        </Box> */}
+
+          <Text fontWeight={600} fontSize="xl">
+            President Speaks
+          </Text>
+        </Flex>
+        <Box mx="auto" maxW="62%" textAlign="center">
+          <Text whiteSpace="pre-wrap">{induShaniWords}</Text>
+        </Box>
+        <Flex flexDir="column" align="center">
+          <Text fontWeight="bold" fontSize="lg">
+            - Dr. Indu Shahani
+          </Text>
+          <Text>President of Khudabadi Amil Panchayat of Bombay</Text>
+        </Flex>
+      </Flex>
 
         <Text whiteSpace="pre-wrap">{induShaniWords}</Text>
-
-        {/* <Spacer h="1rem" />
-
-        <Text>
-          Since its inception, the Panchayat has continued to uphold the values
-          and principles set forth by its founders. It has evolved into a
-          dynamic organization that not only provides crucial support to those
-          in need but also serves as a vital cultural and social hub for the
-          Amil Sindhi community. The legacy of these founding members lives on,
-          as their commitment to service and community building continues to
-          inspire future generations within the Panchayat.
-        </Text> */}
       </Box>
     </Box>
   );
