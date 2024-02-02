@@ -1,4 +1,4 @@
-import { Modal, ModalBody, ModalContent } from "@chakra-ui/react";
+import { Modal, ModalBody, ModalContent, ModalOverlay } from "@chakra-ui/react";
 
 interface ModalLayoutProps {
   modalState: boolean;
@@ -12,7 +12,8 @@ const ModalLayout: React.FC<ModalLayoutProps> = ({
   handleModal,
 }) => {
   return (
-    <Modal onClose={handleModal} isOpen={true}>
+    <Modal onClose={handleModal} isOpen={modalState}>
+      <ModalOverlay />
       <ModalContent>
         <ModalBody>{children}</ModalBody>
       </ModalContent>

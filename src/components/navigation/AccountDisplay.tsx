@@ -10,6 +10,7 @@ import {
   PopoverHeader,
   PopoverTrigger,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 import axios from "axios";
 import React from "react";
@@ -17,6 +18,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { MdOutlinePassword, MdOutlineLogout } from "react-icons/md";
 import { FaTrash } from "react-icons/fa6";
 import { useUserAtom, userAtomBody } from "~/lib/atom";
+import DeleteModal from "../authentication/DeleteModal";
 
 interface AccountDisplayProps {
   user: userAtomBody | null;
@@ -25,6 +27,7 @@ interface AccountDisplayProps {
 const AccountOptionsPopover: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const { onClose, isOpen, onOpen } = useDisclosure();
   const [, setUser] = useUserAtom();
   const handleLogout = async () => {
     try {
@@ -74,11 +77,12 @@ const AccountOptionsPopover: React.FC<{ children: React.ReactNode }> = ({
               _hover={{ color: "red.500", cursor: "pointer" }}
               gap={2}
               align="center"
-              onClick={() => (window.location.href = "/recovery")}
+              onClick={() => onOpen()}
             >
               <Icon boxSize={4} as={FaTrash}></Icon>
               <Text>Delete Account</Text>
             </Flex>
+            <DeleteModal handleModal={onClose} modalState={isOpen} />
           </Flex>
         </PopoverBody>
       </PopoverContent>
