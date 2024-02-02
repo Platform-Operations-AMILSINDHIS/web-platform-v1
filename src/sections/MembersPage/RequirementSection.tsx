@@ -12,7 +12,7 @@ const info2 = [
 
 const RequirementSection = () => {
   return (
-    <Flex w="full" align="center" flexDir="column">
+    <Flex id="memberships-forms" w="full" align="center" flexDir="column">
       <Text fontWeight={500} fontSize="3xl">
         Become a member now
       </Text>

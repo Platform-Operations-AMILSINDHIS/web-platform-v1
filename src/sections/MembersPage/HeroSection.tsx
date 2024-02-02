@@ -56,7 +56,14 @@ const HeroSection = () => {
             <Flex gap={3} my={4}>
               <LinkButton
                 CTAlabel="Learn More"
-                CTAlink="/"
+                CTAlink="#"
+                onClick={(e) => {
+                  e.preventDefault();
+
+                  document.querySelector("#memberships-learn-more")?.scrollIntoView({
+                    behavior: "smooth",
+                  });
+                }}
                 size="sm"
                 py={5}
                 px={5}
@@ -69,6 +76,13 @@ const HeroSection = () => {
                   </Flex>
                 }
                 CTAlink="#"
+                onClick={(e) => {
+                  e.preventDefault();
+
+                  document.querySelector("#memberships-forms")?.scrollIntoView({
+                    behavior: "smooth",
+                  });
+                }}
                 CTATheme={false}
                 size="sm"
                 py={5}

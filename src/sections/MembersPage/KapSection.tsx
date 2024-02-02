@@ -10,7 +10,7 @@ import TextDisplay from "~/components/members/TextDisplay";
 
 const KAPSection = () => {
   return (
-    <Flex gap={20} flexDir="column" mb={20}>
+    <Flex id="memberships-learn-more" gap={20} flexDir="column" mb={20}>
       <Flex align="center" justify="space-between" w="full">
         <Box>
           <Image width={550} src={KAPImage01} alt="Image" />
