@@ -1,5 +1,7 @@
-import { env } from "~/env.mjs";
+import axios from "axios";
+import usePayment from "~/hooks/usePayment";
 
+import { env } from "~/env.mjs";
 import { useEffect, useState, useCallback } from "react";
 import {
   Flex,
@@ -20,24 +22,19 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useDropzone } from "react-dropzone";
-import axios from "axios";
 import { createId as cuid } from "@paralleldrive/cuid2";
-
 import { LabelledInput } from "~/components/forms";
-
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { GrDocument } from "react-icons/gr";
-
-import usePayment from "~/hooks/usePayment";
-
 import { toWords } from "~/utils/helper";
+import { useUserAtom } from "~/lib/atom";
 import { api } from "~/utils/api";
 import UserBlockModal from "~/components/authentication/UserBlockModal";
-import { useUserAtom } from "~/lib/atom";
 
 const DonationsForm: React.FC = () => {
   const toast = useToast();
   const [uploadedFilesCount, setUploadedFilesCount] = useState<number>(0);
+  const [{ user }] = useUserAtom();
 
   const donationsFormMut = api.form.donations.useMutation();
   const { mutateAsync: fetchPresignedUrls } =
@@ -228,11 +225,6 @@ const DonationsForm: React.FC = () => {
   return (
     <Flex direction="column" alignItems="center" gap="2rem">
       <Flex w="40%" mx="auto">
-        {/* <LabelledInput
-          type="chakra-text"
-          label="Donation Amount"
-          onChange={(e) => setForm({ ...form, donorName: e.target.value })}
-        /> */}
         <FormControl>
           <FormLabel fontWeight="semibold">Donation Amount</FormLabel>
           <InputGroup>
@@ -397,13 +389,15 @@ const DonationsFormSection = () => {
   const [displayState, setDisplayState] = useState(false);
   const [{ user }] = useUserAtom();
 
+  console.log(user);
+
   const handleModal = (state: boolean) => {
     setDisplayState(state);
     onOpen();
   };
   return (
     <Box position="relative">
-      {/* <Box
+      <Box
         display={user ? "none" : ""}
         left="50%"
         top="50%"
@@ -417,23 +411,24 @@ const DonationsFormSection = () => {
       <Box
         _hover={user ? {} : { cursor: "not-allowed" }}
         filter={user ? "" : "blur(2px)"}
-      > */}
-      <Flex id="donations-form" direction="column" alignItems="center">
-        <Box mb="4rem" w="40%" textAlign="center">
-          <Heading fontWeight="semibold" fontSize="5xl">
-            Donations Form
-          </Heading>
-          <Spacer h="1rem" />
-          <Text fontSize="lg">
-            Fill out the fields below to complete your personal profile. Make
-            sure to fill all the fields and not miss out any important details.
-          </Text>
-        </Box>
+      >
+        <Flex id="donations-form" direction="column" alignItems="center">
+          <Box mb="4rem" w="40%" textAlign="center">
+            <Heading fontWeight="semibold" fontSize="5xl">
+              Donations Form
+            </Heading>
+            <Spacer h="1rem" />
+            <Text fontSize="lg">
+              Fill out the fields below to complete your personal profile. Make
+              sure to fill all the fields and not miss out any important
+              details.
+            </Text>
+          </Box>
 
-        <DonationsForm />
-      </Flex>
+          <DonationsForm />
+        </Flex>
+      </Box>
     </Box>
-    // </Box>
   );
 };
 
