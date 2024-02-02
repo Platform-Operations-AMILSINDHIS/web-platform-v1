@@ -171,11 +171,11 @@ export const LabelledInput: React.FC<{
             variant="outline"
             name={field.name}
             borderRadius="5px"
-          borderColor="gray.400"
-          _hover={{
-            borderColor: "#FF4D00",
-          }}
-          focusBorderColor="#FF4D00"
+            borderColor="gray.400"
+            _hover={{
+              borderColor: "#FF4D00",
+            }}
+            focusBorderColor="#FF4D00"
             onChange={(e) => {
               void setFieldValue(field.name, e.target.value);
             }}
@@ -184,44 +184,53 @@ export const LabelledInput: React.FC<{
         )}
       </Field>
     ) : type === "number" ? (
-      <Field
-        as={Input}
-        type="number"
-        id={camelCase(label)}
-        name={name ?? camelCase(label)}
-        placeholder={placeholder}
-        validate={validate ?? undefined}
-        _hover={{
-          borderColor: "#FF4D00",
-        }}
-        focusBorderColor="#FF4D00"
-        borderColor="gray.400"
-        color="gray.700"
-      />
+      <>
+        <Field
+          as={Input}
+          type="number"
+          id={camelCase(label)}
+          name={name ?? camelCase(label)}
+          placeholder={placeholder}
+          validate={validate ?? undefined}
+          _hover={{
+            borderColor: "#FF4D00",
+          }}
+          focusBorderColor="#FF4D00"
+          borderColor="gray.400"
+          color="gray.700"
+        />
+        <Box py={1} fontWeight={600} fontSize="sm" color="red">
+          <ErrorMessage name={name ?? camelCase(label)} />
+        </Box>
+      </>
     ) : type === "select" ? (
-      // <Flex border="1px solid #E2E8F0" borderRadius="5px" py="10px">
-      <Field
-        as={Select}
-        variant="ghost"
-        name={name ?? camelCase(label)}
-        borderRadius="5px"
-        // onChange={onChange ?? undefined}
-        defaultValue={defaultValue ?? undefined}
-        placeholder={placeholder}
-        focusBorderColor="#FF4D00"
-        border="1px solid"
-        borderColor="gray.400"
-        color="gray.700"
-        _hover={{
-          borderColor: "#FF4D00",
-        }}
-      >
-        {selectOptions?.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </Field>
+      <>
+        <Field
+          as={Select}
+          variant="ghost"
+          name={name ?? camelCase(label)}
+          borderRadius="5px"
+          // onChange={onChange ?? undefined}
+          defaultValue={defaultValue ?? undefined}
+          placeholder={placeholder}
+          focusBorderColor="#FF4D00"
+          border="1px solid"
+          borderColor="gray.400"
+          color="gray.700"
+          _hover={{
+            borderColor: "#FF4D00",
+          }}
+        >
+          {selectOptions?.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </Field>
+        <Box py={1} fontWeight={600} fontSize="sm" color="red">
+          <ErrorMessage name={name ?? camelCase(label)} />
+        </Box>
+      </>
     ) : (
       // </Flex>
       <></>

@@ -237,25 +237,27 @@ const MatrimonyPersonalInformationSection: React.FC = () => {
               templateColumns={["1fr", "repeat(3, 1fr)"]}
             >
               {[
-                { label: "First Name" },
+                { label: "First Name", required: true },
                 { label: "Middle Name" },
-                { label: "Last Name" },
+                { label: "Last Name", required: true },
                 {
                   label: "Date & Time of Birth",
                   name: "dateAndTimeOfBirth",
                   inputType: "datetime",
+                  required: true
                 },
-                { label: "Place of Birth" },
-                { label: "Mobile Number" },
-                { label: "Email ID" },
-                { label: "Occupation" },
-                { label: "Income per Annum", inputType: "text" },
-              ].map(({ label, name, inputType }, i) => (
+                { label: "Place of Birth", required: true },
+                { label: "Mobile Number", required: true },
+                { label: "Email ID", required: true },
+                { label: "Occupation", required: true },
+                { label: "Income per Annum", inputType: "text", required: true },
+              ].map(({ label, name, inputType, required }, i) => (
                 <LabelledInput
                   key={i}
                   label={label}
                   name={name ?? undefined}
                   type={inputType ? (inputType as InputType) : "text"}
+                  required={required}
                 />
               ))}
             </Grid>
@@ -269,24 +271,32 @@ const MatrimonyPersonalInformationSection: React.FC = () => {
                 {
                   label: "Gender",
                   inputType: "select",
+                  placeholder: "Select Gender",
                   selectOptions: ["Male", "Female"],
+                  required: true,
                 },
                 {
                   label: "Marital Status",
                   inputType: "select",
+                  placeholder: "Select Marital Status",
                   selectOptions: ["Single", "Divorcee", "Widower", "Widow"],
+                  required: true,
                 },
                 {
                   label: "Manglik",
                   inputType: "select",
-                  selectOptions: ["Yes", "No"],
+                  placeholder: "Select Manglik",
+                  selectOptions: ["No", "Yes"],
+                  required: true,
                 },
-              ].map(({ label, inputType, selectOptions }, i) => (
+              ].map(({ label, inputType, placeholder, selectOptions, required }, i) => (
                 <LabelledInput
                   key={i}
                   type={inputType ? (inputType as InputType) : "text"}
                   label={label}
+                  placeholder={placeholder}
                   selectOptions={selectOptions}
+                  required={required}
                 />
               ))}
             </Grid>
@@ -300,25 +310,29 @@ const MatrimonyPersonalInformationSection: React.FC = () => {
                 {
                   label: "Height in Feet",
                   name: "heightFeet",
-                  // inputType: "number",
+                  inputType: "number",
+                  required: true,
                 },
                 {
                   label: "Height in Inches",
                   name: "heightInches",
-                  // inputType: "number",
+                  inputType: "number",
+                  required: true,
                 },
                 {
                   label: "Weight (in Kg)",
                   name: "weight",
-                  // inputType: "number",
+                  inputType: "number",
+                  required: true,
                 },
-              ].map(({ label, name }, i) => (
+              ].map(({ label, name, required }, i) => (
                 <LabelledInput
                   key={i}
                   type="text"
                   // type={inputType ? (inputType as InputType) : "text"}
                   label={label}
                   name={name}
+                  required={required}
                 />
               ))}
             </Grid>
