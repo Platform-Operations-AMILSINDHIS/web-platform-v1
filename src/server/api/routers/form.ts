@@ -117,7 +117,8 @@ export const formRouter = createTRPCRouter({
       //   "kap-membership"
       // );
       await sendRawJsonDataWithPDF(
-        "akshat.sabavat@gmail.com",
+        "amilsindhis@gmail.com",
+        // "akshat.sabavat@gmail.com",
         // "somesh.kar@gmail.com",
         formData,
         "kap-membership"
@@ -160,7 +161,8 @@ export const formRouter = createTRPCRouter({
 
       // Send response
       await sendRawJsonDataWithPDF(
-        "akshat.sabavat@gmail.com",
+        "amilsindhis@gmail.com",
+        // "akshat.sabavat@gmail.com",
         // "somesh.kar@gmail.com",
         formData,
         "yac-membership"
@@ -185,7 +187,8 @@ export const formRouter = createTRPCRouter({
       // Send response
       // await sendRawJsonDataOnly("akshat.sabavat@gmail.com", formData);
       // await sendRawJsonDataOnly("somesh.kar@gmail.com", formData);
-      await sendDonationNotificationMail("akshat.sabavat@gmail.com", {
+      // await sendDonationNotificationMail("akshat.sabavat@gmail.com", {
+      await sendDonationNotificationMail("amilsindhis@gmail.com", {
         donorName: formData.donorName,
         email: formData.email,
         amount: formData.amount,
@@ -211,7 +214,8 @@ export const formRouter = createTRPCRouter({
       // Send response
       // await sendRawJsonDataOnly("akshat.sabavat@gmail.com", formData);
       await sendMatrimonyFormNotificationMail(
-        "akshat.sabavat@gmail.com",
+        "amilsindhis@gmail.com",
+        // "akshat.sabavat@gmail.com",
         formData
       );
 
