@@ -14,8 +14,8 @@ import {
 import axios from "axios";
 import React from "react";
 import { FaUserCircle } from "react-icons/fa";
-import { IoMdSettings } from "react-icons/io";
 import { MdOutlinePassword, MdOutlineLogout } from "react-icons/md";
+import { FaTrash } from "react-icons/fa6";
 import { useUserAtom, userAtomBody } from "~/lib/atom";
 
 interface AccountDisplayProps {
@@ -52,10 +52,6 @@ const AccountOptionsPopover: React.FC<{ children: React.ReactNode }> = ({
         <PopoverHeader>Account Options</PopoverHeader>
         <PopoverBody className="shadow-xl" color="gray.600">
           <Flex gap={2} flexDir="column">
-            <Flex _hover={{ cursor: "not-allowed" }} gap={2} align="center">
-              <Icon boxSize={4} as={IoMdSettings}></Icon>
-              <Text color="gray.500">Settings (Coming soon)</Text>
-            </Flex>
             <Flex
               _hover={{ color: "gray.800", cursor: "pointer" }}
               gap={2}
@@ -72,6 +68,16 @@ const AccountOptionsPopover: React.FC<{ children: React.ReactNode }> = ({
             >
               <Icon boxSize={4} as={MdOutlineLogout}></Icon>
               <Text onClick={() => void handleLogout()}>Sign Out</Text>
+            </Flex>
+            <Flex
+              color="red.400"
+              _hover={{ color: "red.500", cursor: "pointer" }}
+              gap={2}
+              align="center"
+              onClick={() => (window.location.href = "/recovery")}
+            >
+              <Icon boxSize={4} as={FaTrash}></Icon>
+              <Text>Delete Account</Text>
             </Flex>
           </Flex>
         </PopoverBody>

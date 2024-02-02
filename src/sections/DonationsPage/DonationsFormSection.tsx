@@ -1,5 +1,7 @@
-import { env } from "~/env.mjs";
+import axios from "axios";
+import usePayment from "~/hooks/usePayment";
 
+import { env } from "~/env.mjs";
 import { useEffect, useState, useCallback } from "react";
 import {
   Flex,
@@ -20,24 +22,19 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useDropzone } from "react-dropzone";
-import axios from "axios";
 import { createId as cuid } from "@paralleldrive/cuid2";
-
 import { LabelledInput } from "~/components/forms";
-
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { GrDocument } from "react-icons/gr";
-
-import usePayment from "~/hooks/usePayment";
-
 import { toWords } from "~/utils/helper";
+import { useUserAtom } from "~/lib/atom";
 import { api } from "~/utils/api";
 import UserBlockModal from "~/components/authentication/UserBlockModal";
-import { useUserAtom } from "~/lib/atom";
 
 const DonationsForm: React.FC = () => {
   const toast = useToast();
   const [uploadedFilesCount, setUploadedFilesCount] = useState<number>(0);
+  const [{ user }] = useUserAtom();
 
   const donationsFormMut = api.form.donations.useMutation();
   const { mutateAsync: fetchPresignedUrls } =
@@ -165,8 +162,8 @@ const DonationsForm: React.FC = () => {
           formData: {
             ...form,
             amount: form.amount!,
-            panCard: env.NEXT_PUBLIC_R2_ACCESS_URL + "/" + encodeURIComponent(panFilename ?? ""),
-            addressProof: env.NEXT_PUBLIC_R2_ACCESS_URL + "/" + encodeURIComponent(addressFilename ?? ""),
+            panCard: env.NEXT_PUBLIC_R2_ACCESS_URL + "/" + panFilename,
+            addressProof: env.NEXT_PUBLIC_R2_ACCESS_URL + "/" + addressFilename,
           },
         });
 
@@ -228,12 +225,7 @@ const DonationsForm: React.FC = () => {
   return (
     <Flex direction="column" alignItems="center" gap="2rem">
       <Flex w="40%" mx="auto">
-        {/* <LabelledInput
-          type="chakra-text"
-          label="Donation Amount"
-          onChange={(e) => setForm({ ...form, donorName: e.target.value })}
-        /> */}
-        <FormControl isRequired>
+        <FormControl>
           <FormLabel fontWeight="semibold">Donation Amount</FormLabel>
           <InputGroup>
             <InputLeftElement
@@ -366,40 +358,6 @@ const DonationsForm: React.FC = () => {
               description: "Please enter a valid donation amount.",
               status: "error",
               duration: 9000,
-              isClosable: true,
-            });
-            return;
-          }
-
-          if (
-            !panFilename?.toLowerCase().endsWith(".jpg") &&
-            !panFilename?.toLowerCase().endsWith(".jpeg") &&
-            !panFilename?.toLowerCase().endsWith(".png") &&
-            !panFilename?.endsWith(".pdf")
-          ) {
-            toast({
-              title: "File Upload Error",
-              description:
-                "Please upload either a JPG, PNG, or PDF of your PAN Card.",
-              status: "error",
-              duration: 5000,
-              isClosable: true,
-            });
-            return;
-          }
-
-          if (
-            !addressFilename?.toLowerCase().endsWith(".jpg") &&
-            !addressFilename?.toLowerCase().endsWith(".jpeg") &&
-            !addressFilename?.toLowerCase().endsWith(".png") &&
-            !addressFilename?.endsWith(".pdf")
-          ) {
-            toast({
-              title: "File Upload Error",
-              description:
-                "Please upload either a JPG, PNG, or PDF of your address proof.",
-              status: "error",
-              duration: 5000,
               isClosable: true,
             });
             return;
