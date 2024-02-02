@@ -120,7 +120,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
         <Flex gap={3}>
           <Button
             isLoading={isLoading}
-            onClick={() => handleConfirmDelete(input)}
+            onClick={() => void handleConfirmDelete(input)}
             _hover={{
               border: "none",
               bg: "red.500",

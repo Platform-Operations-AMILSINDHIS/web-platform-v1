@@ -41,7 +41,9 @@ const HeroSection = () => {
 
       <Flex align="flex-start" justify="space-between" mt={20} mb={10} w="full">
         <Box w="50%">
-          <Image alt="HeroImage-01" src={HeroImage01} />
+          {/* <Image alt="HeroImage-01" src={HeroImage01} /> */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+          <Image alt="HeroImage-01" src={HeroImage01} width={600} height={400} />
         </Box>
         <Flex mt={-5} flexDir="column">
           <Flex flexDir="column">
@@ -91,6 +93,7 @@ const HeroSection = () => {
             </Flex>
           </Flex>
           <Box h="50%">
+            {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
             <Image width={600} alt="HeroImage-02" src={HeroImage02} />
           </Box>
         </Flex>

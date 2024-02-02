@@ -33,36 +33,36 @@ const getLastMembershipNums = async () => {
 
   const allMembershipIds =
     data
-      ?.map((row) => row.membership_id)
+      ?.map((row: {membership_id: string | null;}) => row.membership_id)
       .filter((mId) => typeof mId === "string") || [];
 
   console.log("this is allMembershipIds: ", { allMembershipIds });
 
   const kapMembershipIds = allMembershipIds
-    .filter((id: string) => id.startsWith("K"))
+    .filter((id: string | null) => typeof id === "string" && id.startsWith("K"))
     .sort()
     .reverse();
   const lastKapMembershipIdNum =
     kapMembershipIds.length > 0
-      ? parseInt(kapMembershipIds[0].substring(1))
+      ? parseInt(kapMembershipIds[0]!.substring(1))
       : 0;
 
   const yacMembershipIds = allMembershipIds
-    .filter((id: string) => id.startsWith("Y"))
+    .filter((id: string | null) => typeof id === "string" && id.startsWith("Y"))
     .sort()
     .reverse();
   const lastYacMembershipIdNum =
     yacMembershipIds.length > 0
-      ? parseInt(yacMembershipIds[0].substring(1))
+      ? parseInt(yacMembershipIds[0]!.substring(1))
       : 0;
 
   const patronMembershipIds = allMembershipIds
-    .filter((id: string) => id.startsWith("P"))
+    .filter((id: string | null) => typeof id === "string" && id.startsWith("P"))
     .sort()
     .reverse();
   const lastPatronMembershipIdNum =
     patronMembershipIds.length > 0
-      ? parseInt(patronMembershipIds[0].substring(1))
+      ? parseInt(patronMembershipIds[0]!.substring(1))
       : 0;
 
   return {

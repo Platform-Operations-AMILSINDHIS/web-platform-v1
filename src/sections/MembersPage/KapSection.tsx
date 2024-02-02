@@ -13,6 +13,7 @@ const KAPSection = () => {
     <Flex id="memberships-learn-more" gap={20} flexDir="column" mb={20}>
       <Flex align="center" justify="space-between" w="full">
         <Box>
+          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
           <Image width={550} src={KAPImage01} alt="Image" />
         </Box>
         <Flex gap={1} w={650} flexDir="column">

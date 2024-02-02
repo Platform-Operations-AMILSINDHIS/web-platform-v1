@@ -1,5 +1,5 @@
 import { Flex, Box, Text, Heading, Spacer } from "@chakra-ui/react";
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 
 import Connecting_pic from "../../../public/images/about/YAC.jpg";
 import YAC_pic from "../../../public/images/about/YAC(01).jpg";
@@ -8,7 +8,7 @@ interface TextAndImageBoxProps {
   tag: string;
   title: string;
   content: string;
-  image: any;
+  image: string | StaticImageData;
   direction?: "row" | "row-reverse";
 }
 

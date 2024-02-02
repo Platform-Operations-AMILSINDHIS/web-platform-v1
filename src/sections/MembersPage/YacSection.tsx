@@ -29,6 +29,7 @@ const YacSection = () => {
           </Text>
         </Flex>
         <Box>
+          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
           <Image width={600} src={YacSectionPic01} alt="Image" />
         </Box>
       </Flex>
@@ -43,26 +44,32 @@ const YacSection = () => {
           </Text>
         </Flex>
         <Flex my={5} justify="space-between">
+          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
           <Image alt="yac_illustration" width={400} src={YAC_illustration} />
           <Grid templateColumns="repeat(2, 1fr)" gap={10}>
             <FeatureDisplay
               content="Participate in YAC events, ranging from social initiatives to fun gatherings."
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               icon={YAC_FeatureIcon01}
             />
             <FeatureDisplay
               content="Participate in YAC events, ranging from social initiatives to fun gatherings."
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               icon={YAC_FeatureIcon02}
             />
             <FeatureDisplay
               content="Participate in YAC events, ranging from social initiatives to fun gatherings."
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               icon={YAC_FeatureIcon03}
             />
             <FeatureDisplay
               content="Participate in YAC events, ranging from social initiatives to fun gatherings."
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               icon={YAC_FeatureIcon04}
             />
             <FeatureDisplay
               content="Participate in YAC events, ranging from social initiatives to fun gatherings."
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               icon={YAC_FeatureIcon05}
             />
           </Grid>
