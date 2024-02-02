@@ -45,7 +45,7 @@ export const LabelledInput: React.FC<{
   required,
   selectOptions,
 }) => (
-  <FormControl fontWeight={500}>
+  <FormControl isRequired={required} fontWeight={500}>
     <FormLabel color="gray.700" fontWeight={600}>
       {label}
     </FormLabel>

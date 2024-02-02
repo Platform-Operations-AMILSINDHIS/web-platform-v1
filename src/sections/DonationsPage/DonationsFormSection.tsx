@@ -233,7 +233,7 @@ const DonationsForm: React.FC = () => {
           label="Donation Amount"
           onChange={(e) => setForm({ ...form, donorName: e.target.value })}
         /> */}
-        <FormControl>
+        <FormControl isRequired>
           <FormLabel fontWeight="semibold">Donation Amount</FormLabel>
           <InputGroup>
             <InputLeftElement
@@ -366,6 +366,40 @@ const DonationsForm: React.FC = () => {
               description: "Please enter a valid donation amount.",
               status: "error",
               duration: 9000,
+              isClosable: true,
+            });
+            return;
+          }
+
+          if (
+            !panFilename?.toLowerCase().endsWith(".jpg") &&
+            !panFilename?.toLowerCase().endsWith(".jpeg") &&
+            !panFilename?.toLowerCase().endsWith(".png") &&
+            !panFilename?.endsWith(".pdf")
+          ) {
+            toast({
+              title: "File Upload Error",
+              description:
+                "Please upload either a JPG, PNG, or PDF of your PAN Card.",
+              status: "error",
+              duration: 5000,
+              isClosable: true,
+            });
+            return;
+          }
+
+          if (
+            !addressFilename?.toLowerCase().endsWith(".jpg") &&
+            !addressFilename?.toLowerCase().endsWith(".jpeg") &&
+            !addressFilename?.toLowerCase().endsWith(".png") &&
+            !addressFilename?.endsWith(".pdf")
+          ) {
+            toast({
+              title: "File Upload Error",
+              description:
+                "Please upload either a JPG, PNG, or PDF of your address proof.",
+              status: "error",
+              duration: 5000,
               isClosable: true,
             });
             return;
