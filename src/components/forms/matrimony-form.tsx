@@ -211,7 +211,7 @@ const MatrimonyPersonalInformationSection: React.FC = () => {
   );
 
   return (
-    <>
+    <Box mt={10}>
       <Heading>Personal Information</Heading>
       <Text mt="1.5rem" maxW="2xl" color="#1F2937">
         Fill out the fields below to complete your matrimony profile, make sure
@@ -339,7 +339,7 @@ const MatrimonyPersonalInformationSection: React.FC = () => {
           </Form>
         )}
       </Formik>
-    </>
+    </Box>
   );
 };
 
