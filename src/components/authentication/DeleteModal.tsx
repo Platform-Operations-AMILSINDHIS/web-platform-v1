@@ -14,10 +14,12 @@ import { useUserAtom } from "~/lib/atom";
 interface DeleteModalProps {
   modalState: boolean;
   handleModal: () => void;
+  handleLogout: () => void;
 }
 
 const DeleteModal: React.FC<DeleteModalProps> = ({
   handleModal,
+  handleLogout,
   modalState,
 }) => {
   const [{ user }] = useUserAtom();
@@ -56,7 +58,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
           });
           setIsLoading(false);
           handleModal();
-          window.location.href = "/";
+          handleLogout();
         } else {
           toast({
             title: "Ass",

@@ -56,6 +56,21 @@ const AccountOptionsPopover: React.FC<{ children: React.ReactNode }> = ({
         <PopoverBody className="shadow-xl" color="gray.600">
           <Flex gap={2} flexDir="column">
             <Flex
+              color="red.400"
+              _hover={{ color: "red.500", cursor: "pointer" }}
+              gap={2}
+              align="center"
+              onClick={() => onOpen()}
+            >
+              <Icon boxSize={4} as={FaTrash}></Icon>
+              <Text>Delete Account</Text>
+            </Flex>
+            <DeleteModal
+              handleLogout={handleLogout}
+              handleModal={onClose}
+              modalState={isOpen}
+            />
+            <Flex
               _hover={{ color: "gray.800", cursor: "pointer" }}
               gap={2}
               align="center"
@@ -72,17 +87,6 @@ const AccountOptionsPopover: React.FC<{ children: React.ReactNode }> = ({
               <Icon boxSize={4} as={MdOutlineLogout}></Icon>
               <Text onClick={() => void handleLogout()}>Sign Out</Text>
             </Flex>
-            <Flex
-              color="red.400"
-              _hover={{ color: "red.500", cursor: "pointer" }}
-              gap={2}
-              align="center"
-              onClick={() => onOpen()}
-            >
-              <Icon boxSize={4} as={FaTrash}></Icon>
-              <Text>Delete Account</Text>
-            </Flex>
-            <DeleteModal handleModal={onClose} modalState={isOpen} />
           </Flex>
         </PopoverBody>
       </PopoverContent>

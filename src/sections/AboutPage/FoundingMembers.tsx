@@ -67,8 +67,6 @@ const FoundingMembers = ({
           <Text>President of Khudabadi Amil Panchayat of Bombay</Text>
         </Flex>
       </Flex>
-
-      <Text whiteSpace="pre-wrap">{induShaniWords}</Text>
     </Box>
   );
 };
