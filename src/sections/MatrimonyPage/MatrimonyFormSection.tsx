@@ -25,7 +25,7 @@ const MatrimonyFormSection = () => {
 
   return (
     <Box position="relative">
-      <Box
+      {/* <Box
         display={user ? "none" : ""}
         left="50%"
         top="50%"
@@ -35,10 +35,10 @@ const MatrimonyFormSection = () => {
         position="absolute"
       >
         <UserBlockModal />
-      </Box>
+      </Box> */}
       <Box
-        _hover={user ? {} : { cursor: "not-allowed" }}
-        filter={user ? "" : "blur(2px)"}
+        // _hover={user ? {} : { cursor: "not-allowed" }}
+        // filter={user ? "" : "blur(2px)"}
       >
         <Flex id="matrimony-form" direction="column">
           <Box mb="4rem" w="40%">

@@ -103,15 +103,15 @@ export const matrimonyPersonalInfoSchema = Yup.object().shape({
     .email("Invalid Email Id")
     .required("Email Id is required"),
   occupation: Yup.string().required("Occupation is required"),
-  incomePerAnnum: Yup.number().nullable(),
-  gender: Yup.mixed().oneOf(["Male", "Female"]).nullable(),
+  incomePerAnnum: Yup.number().required("Income Per Annum is required").nullable(),
+  gender: Yup.mixed().oneOf(["Male", "Female"]).required("Gender is required"),
   maritalStatus: Yup.mixed()
     .oneOf(["Single", "Divorcee", "Widower", "Widow"])
-    .nullable(),
-  manglik: Yup.mixed().oneOf(["Yes", "No"]).nullable(),
-  heightFeet: Yup.number().nullable(),
-  heightInches: Yup.number().nullable(),
-  weight: Yup.number().nullable(),
+    .required("Marital Status is required"),
+  manglik: Yup.mixed().oneOf(["Yes", "No"]).required("Selecting a Manglik state is required"),
+  heightFeet: Yup.number().required("Height in Feet is required"),
+  heightInches: Yup.number().required("Height in Inches is required"),
+  weight: Yup.number().required("Weight is required"),
   // qualifications: Yup.array()
   //   .of(Yup.string())
   //   .required("Qualifications are required"),
@@ -124,7 +124,7 @@ export const matrimonyPersonalInfoSchema = Yup.object().shape({
 export const residentialAddressDetailsSchema = Yup.object().shape({
   addressLine1: Yup.string().required("Address Line 1 is required"),
   addressLine2: Yup.string().required("Address Line 2 is required"),
-  addressLine3: Yup.string().required("Address Line 3 is required"),
+  addressLine3: Yup.string(),
   pinCode: Yup.string().required("PIN Code is required"),
 });
 
