@@ -129,18 +129,18 @@ export const residentialAddressDetailsSchema = Yup.object().shape({
 });
 
 export const matrimonySpousePreferencesSchema = Yup.object().shape({
-  working: Yup.boolean().nullable(),
-  dietaryPreference: Yup.mixed().oneOf(["veg", "non-veg"]).nullable(),
+  working: Yup.mixed().oneOf(["Yes", "No"]).required("Working state is required"),
+  dietaryPreference: Yup.mixed().oneOf(["Veg", "Non-veg"]).required("Dietary Preference is required"),
   qualificationRequirements: Yup.string().required(
     "Qualification Requirements are required"
   ),
   complexion: Yup.string().required("Complexion is required"),
-  heightFeet: Yup.number().nullable(),
-  heightInches: Yup.number().nullable(),
-  weight: Yup.number().nullable(),
-  horoscopeMatching: Yup.mixed().oneOf(["yes", "no"]).nullable(),
-  build: Yup.mixed().oneOf(["medium", "slim", "healthy"]).nullable(),
-  siblings: Yup.mixed().oneOf(["yes", "no"]).nullable(),
+  heightFeet: Yup.number().required("Height in Feet is required"),
+  heightInches: Yup.number().required("Height in Inches is required"),
+  weight: Yup.number().required("Weight is required"),
+  horoscopeMatching: Yup.mixed().oneOf(["Yes", "No"]).required("Horoscope matching selection is required"),
+  build: Yup.mixed().oneOf(["Medium", "Slim", "Healthy"]).required("Build selection is required"),
+  siblings: Yup.mixed().oneOf(["Yes", "No"]).required("Siblings selection is required"),
 });
 
 export const matrimonyFormValuesSchema = Yup.object().shape({

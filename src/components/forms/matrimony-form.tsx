@@ -76,6 +76,8 @@ const steps = [
 ];
 
 const matrimonyFormAtom = atom<MatrimonyFormValues>({
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   personalInfo: {
     firstName: "",
     middleName: "",
@@ -87,13 +89,13 @@ const matrimonyFormAtom = atom<MatrimonyFormValues>({
     occupation: "",
     incomePerAnnum: null,
 
-    gender: null,
-    maritalStatus: null,
-    manglik: null,
+    gender: "Male",
+    maritalStatus: "Single",
+    manglik: "No",
 
-    heightFeet: null,
-    heightInches: null,
-    weight: null,
+    heightFeet: 0,
+    heightInches: 0,
+    weight: 0,
 
     qualifications: [], // educational and other sorts of qualifications
     hobbies: "",
@@ -244,13 +246,17 @@ const MatrimonyPersonalInformationSection: React.FC = () => {
                   label: "Date & Time of Birth",
                   name: "dateAndTimeOfBirth",
                   inputType: "datetime",
-                  required: true
+                  required: true,
                 },
                 { label: "Place of Birth", required: true },
                 { label: "Mobile Number", required: true },
                 { label: "Email ID", required: true },
                 { label: "Occupation", required: true },
-                { label: "Income per Annum", inputType: "text", required: true },
+                {
+                  label: "Income per Annum",
+                  inputType: "text",
+                  required: true,
+                },
               ].map(({ label, name, inputType, required }, i) => (
                 <LabelledInput
                   key={i}
@@ -289,16 +295,21 @@ const MatrimonyPersonalInformationSection: React.FC = () => {
                   selectOptions: ["No", "Yes"],
                   required: true,
                 },
-              ].map(({ label, inputType, placeholder, selectOptions, required }, i) => (
-                <LabelledInput
-                  key={i}
-                  type={inputType ? (inputType as InputType) : "text"}
-                  label={label}
-                  placeholder={placeholder}
-                  selectOptions={selectOptions}
-                  required={required}
-                />
-              ))}
+              ].map(
+                (
+                  { label, inputType, placeholder, selectOptions, required },
+                  i
+                ) => (
+                  <LabelledInput
+                    key={i}
+                    type={inputType ? (inputType as InputType) : "text"}
+                    label={label}
+                    placeholder={placeholder}
+                    selectOptions={selectOptions}
+                    required={required}
+                  />
+                )
+              )}
             </Grid>
 
             <Grid
@@ -387,18 +398,24 @@ const MatrimonyAddressDetailsSection: React.FC = () => {
                 {
                   label: "Address Line 1",
                   name: "residentialAddress.addressLine1",
+                  required: true,
                 },
                 {
                   label: "Address Line 2",
                   name: "residentialAddress.addressLine2",
+                  required: true,
                 },
                 {
                   label: "Address Line 3",
                   name: "residentialAddress.addressLine3",
                 },
-                { label: "Pin Code", name: "residentialAddress.pinCode" },
-              ].map(({ label, name }, i) => (
-                <LabelledInput key={i} label={label} />
+                {
+                  label: "Pin Code",
+                  name: "residentialAddress.pinCode",
+                  required: true,
+                },
+              ].map(({ label, name, required }, i) => (
+                <LabelledInput key={i} label={label} required={required} />
               ))}
             </Grid>
             <Spacer h="2rem" />
@@ -562,54 +579,82 @@ const SpousePreferencesSection: React.FC = () => {
                 {
                   label: "Working",
                   inputType: "select",
+                  placeholder: "Select Working State",
                   selectOptions: ["Yes", "No"],
+                  required: true,
                 },
                 {
                   label: "Dietary Preference",
                   inputType: "select",
+                  placeholder: "Select Dietary Preference",
                   selectOptions: ["Veg", "Non-veg"],
+                  required: true,
                 },
-                { label: "Qualification Requirements" },
-                { label: "Complexion" },
+                { label: "Qualification Requirements", required: true },
+                { label: "Complexion", required: true },
                 {
                   label: "Height in Feet",
                   name: "heightFeet",
                   inputType: "number",
+                  required: true,
                 },
                 {
                   label: "Height in Inches",
                   name: "heightInches",
                   inputType: "number",
+                  required: true,
                 },
                 {
                   label: "Weight (in Kg)",
                   name: "weight",
                   inputType: "number",
+                  required: true,
                 },
                 {
                   label: "Horoscope Matching Required",
+                  name: "horoscopeMatching",
                   inputType: "select",
+                  placeholder: "Select Horoscope Matching Required",
                   selectOptions: ["Yes", "No"],
+                  required: true,
                 },
                 {
                   label: "Build",
                   inputType: "select",
+                  placeholder: "Select Build",
                   selectOptions: ["Medium", "Slim", "Healthy"],
+                  required: true,
                 },
                 {
                   label: "Siblings",
                   inputType: "select",
+                  placeholder: "Select Siblings",
                   selectOptions: ["Yes", "No"],
+                  required: true,
                 },
-              ].map(({ label, name, inputType, selectOptions }, i) => (
-                <LabelledInput
-                  key={i}
-                  type={inputType ? (inputType as InputType) : "text"}
-                  label={label}
-                  name={name}
-                  selectOptions={selectOptions}
-                />
-              ))}
+              ].map(
+                (
+                  {
+                    label,
+                    name,
+                    inputType,
+                    placeholder,
+                    selectOptions,
+                    required,
+                  },
+                  i
+                ) => (
+                  <LabelledInput
+                    key={i}
+                    type={inputType ? (inputType as InputType) : "text"}
+                    label={label}
+                    name={name}
+                    selectOptions={selectOptions}
+                    placeholder={placeholder}
+                    required={required}
+                  />
+                )
+              )}
             </Grid>
             <Spacer h="2rem" />
             <Flex w="100%" justifyContent="space-between">
@@ -631,6 +676,7 @@ const SpousePreferencesSection: React.FC = () => {
               >
                 Next
               </Button>
+              {/* <Text>{JSON.stringify(formik.errors)}</Text> */}
             </Flex>
           </Form>
         )}

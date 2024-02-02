@@ -11,13 +11,13 @@ export interface PersonalInfo {
   occupation: string;
   incomePerAnnum: number | null;
 
-  gender: "Male" | "Female" | null;
-  maritalStatus: "Single" | "Divorcee" | "Widower" | "Widow" | null;
-  manglik: "Yes" | "No" | null;
+  gender: "Male" | "Female";
+  maritalStatus: "Single" | "Divorcee" | "Widower" | "Widow";
+  manglik: "Yes" | "No";
 
-  heightFeet: number | null;
-  heightInches: number | null;
-  weight: number | null;
+  heightFeet: number;
+  heightInches: number;
+  weight: number;
 
   qualifications: string[]; // educational and other sorts of qualifications
   hobbies: string;
@@ -32,19 +32,19 @@ export interface ResidentialAddressDetails {
 }
 
 export interface SpousePreferences {
-  working: boolean | null;
-  dietaryPreference: "veg" | "non-veg" | null;
+  working: "Yes" | "No";
+  dietaryPreference: "Veg" | "Non-veg";
 
   qualificationRequirements: string;
   complexion: string;
 
-  heightFeet: number | null;
-  heightInches: number | null;
-  weight: number | null;
+  heightFeet: number;
+  heightInches: number;
+  weight: number;
 
-  horoscopeMatching: "yes" | "no" | null;
-  build: "medium" | "slim" | "healthy" | null;
-  siblings: "yes" | "no" | null;
+  horoscopeMatching: "Yes" | "No";
+  build: "Medium" | "Slim" | "Healthy" ;
+  siblings: "Yes" | "No";
 }
 
 export interface MatrimonyFormValues {
