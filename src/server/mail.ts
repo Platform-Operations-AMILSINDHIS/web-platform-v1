@@ -218,18 +218,24 @@ export const sendDonationNotificationMail = async (
   formData: {
     donorName: string;
     email: string;
+    phone: string;
     amount: number;
+    panCardUrl: string;
+    addressProofUrl: string;
   }
 ) => {
-  const { donorName, email, amount } = formData;
+  const { donorName, email, phone, amount, panCardUrl, addressProofUrl } = formData;
   const subject = `New Donation Received`;
 
   const html = `
     <div style="font-size: 16px;">
       <p>A new donation has been received.</p>
       <p>Donor Name: ${donorName}</p>
+      <p>Phone: ${phone}</p>
       <p>Email: ${email}</p>
       <p>Amount: ${amount}</p>
+      <p>PAN Card: ${panCardUrl}</p>
+      <p>Address Proof: ${addressProofUrl}</p>
     </div>
   `;
 

@@ -191,7 +191,10 @@ export const formRouter = createTRPCRouter({
       await sendDonationNotificationMail("amilsindhis@gmail.com", {
         donorName: formData.donorName,
         email: formData.email,
+        phone: formData.contactNumber,
         amount: formData.amount,
+        panCardUrl: formData.panCard,
+        addressProofUrl: formData.addressProof
       });
 
       // Send confirmation mail

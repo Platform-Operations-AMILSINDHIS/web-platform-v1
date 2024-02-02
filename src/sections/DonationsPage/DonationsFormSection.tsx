@@ -165,8 +165,8 @@ const DonationsForm: React.FC = () => {
           formData: {
             ...form,
             amount: form.amount!,
-            panCard: env.NEXT_PUBLIC_R2_ACCESS_URL + "/" + panFilename,
-            addressProof: env.NEXT_PUBLIC_R2_ACCESS_URL + "/" + addressFilename,
+            panCard: env.NEXT_PUBLIC_R2_ACCESS_URL + "/" + encodeURIComponent(panFilename ?? ""),
+            addressProof: env.NEXT_PUBLIC_R2_ACCESS_URL + "/" + encodeURIComponent(addressFilename ?? ""),
           },
         });
 
