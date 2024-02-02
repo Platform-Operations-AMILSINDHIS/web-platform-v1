@@ -91,6 +91,13 @@ export const formRouter = createTRPCRouter({
           ? `K${(lastKapMembershipIdNum + 1).toString().padStart(5, "0")}`
           : `P${(lastPatronMembershipIdNum + 1).toString().padStart(5, "0")}`;
 
+      const { error } = await supabase
+        .from("general_accounts")
+        .update({ membership_id: membershipId })
+        .eq("email_id", formData.personalInfo.emailId);
+
+      if (error) console.error(error);
+
       // const membershipId = `P${(lastPatronMembershipIdNum + 1)
       //   .toString()
       //   .padStart(5, "0")}`;
@@ -143,6 +150,13 @@ export const formRouter = createTRPCRouter({
       const membershipId = `Y${(lastYacMembershipIdNum + 1)
         .toString()
         .padStart(5, "0")}`;
+
+      const { error } = await supabase
+        .from("general_accounts")
+        .update({ membership_id: membershipId })
+        .eq("email_id", formData.personalInfo.emailId);
+
+      if (error) console.error(error);
 
       // Send response
       await sendRawJsonDataWithPDF(

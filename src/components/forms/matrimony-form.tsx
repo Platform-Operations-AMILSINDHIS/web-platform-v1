@@ -223,7 +223,7 @@ const MatrimonyPersonalInformationSection: React.FC = () => {
         validationSchema={matrimonyPersonalInfoSchema}
         onSubmit={(values, actions) => {
           // console.log({ values });
-          console.log({values})
+          console.log({ values });
           setPersonalInfo(values);
           actions.setSubmitting(false);
           setActiveStep(activeStep + 1);
@@ -318,6 +318,7 @@ const MatrimonyPersonalInformationSection: React.FC = () => {
                   type="text"
                   // type={inputType ? (inputType as InputType) : "text"}
                   label={label}
+                  name={name}
                 />
               ))}
             </Grid>
@@ -586,11 +587,12 @@ const SpousePreferencesSection: React.FC = () => {
                   inputType: "select",
                   selectOptions: ["Yes", "No"],
                 },
-              ].map(({ label, inputType, selectOptions }, i) => (
+              ].map(({ label, name, inputType, selectOptions }, i) => (
                 <LabelledInput
                   key={i}
                   type={inputType ? (inputType as InputType) : "text"}
                   label={label}
+                  name={name}
                   selectOptions={selectOptions}
                 />
               ))}

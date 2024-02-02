@@ -165,7 +165,7 @@ const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
             />
 
             <LabelledInput
-              label="Create a password"
+              label="Enter password"
               name="password"
               placeholder="********"
             />
