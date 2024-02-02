@@ -31,18 +31,9 @@
     },
     {
       "linkTitle": "Upcoming Events",
-      "linkURL": "#",
+      "linkURL": "/events",
       "identifierURLS": ["/events", "/events/catalog"],
-      "subURLs": [
-        {
-          "linkTitle": "About Events",
-          "linkURL": "/events"
-        },
-        {
-          "linkTitle": "Browse Events",
-          "linkURL": "/events/catalog"
-        }
-      ]
+      "subURLs": []
     },
     {
       "linkTitle": "Donations",
