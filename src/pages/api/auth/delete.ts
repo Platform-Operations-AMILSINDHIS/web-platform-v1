@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import supabase from "./auth/supabase";
+import supabase from "./supabase";
 
 interface DeleteHandlerRequest extends NextApiRequest {
   body: {
@@ -23,14 +23,15 @@ const deleteHandler = async (
     const { error: DBError } = await supabase
       .from("general_accounts")
       .delete()
-      .eq("id", 1);
+      .eq("auth_id", user_auth_id);
 
     if (DBError) throw DBError;
 
-    res.status(200).json({ message: "Account has been deleted" });
+    res.status(200).json({ status: true, message: "Account has been deleted" });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: err });
+    res.status(500).json({ status: false, message: err });
+    console.log(err);
   }
 };
 

@@ -1,4 +1,12 @@
-import { Button, Flex, Input, InputGroup, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Input,
+  InputGroup,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
+import axios from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
 import ModalLayout from "~/layouts/ModalLayout";
 import { useUserAtom } from "~/lib/atom";
@@ -13,8 +21,10 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
   modalState,
 }) => {
   const [{ user }] = useUserAtom();
+  const toast = useToast();
   const [input, setInput] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
@@ -25,11 +35,52 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
   };
 
   const handleConfirmDelete = async (input: string) => {
-    setError(false);
-    if (user?.email_id === input) {
-      alert("matched");
-    } else {
-      setError(true);
+    try {
+      setIsLoading(true);
+      setError(false);
+      if (user?.email_id === input) {
+        const response = await axios.post<{ message: string; status: boolean }>(
+          "/api/auth/delete",
+          { user_auth_id: user?.auth_id }
+        );
+
+        const result = response?.data;
+
+        if (result.status) {
+          toast({
+            title: "Account deleted",
+            description: result.message,
+            status: "warning",
+            duration: 5000, // How long the toast will be displayed in milliseconds
+            isClosable: true,
+          });
+          setIsLoading(false);
+          handleModal();
+          window.location.href = "/";
+        } else {
+          toast({
+            title: "Ass",
+            description: result.message,
+            status: "error",
+            duration: 5000, // How long the toast will be displayed in milliseconds
+            isClosable: true,
+          });
+          setIsLoading(false);
+        }
+      } else {
+        setError(true);
+        setIsLoading(false);
+      }
+    } catch (err) {
+      toast({
+        title: "Oops!",
+        description: "Something went wrong",
+        status: "error",
+        duration: 5000, // How long the toast will be displayed in milliseconds
+        isClosable: true,
+      });
+      setIsLoading(false);
+      console.error(err);
     }
   };
 
@@ -68,6 +119,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
         </Flex>
         <Flex gap={3}>
           <Button
+            isLoading={isLoading}
             onClick={() => handleConfirmDelete(input)}
             _hover={{
               border: "none",
