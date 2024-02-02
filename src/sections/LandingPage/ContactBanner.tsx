@@ -1,3 +1,4 @@
+import {useState} from "react"
 import {
   Box,
   Flex,
@@ -15,6 +16,8 @@ interface sectionProps {
 }
 
 const ContactBanner = ({ imageUrl }: sectionProps) => {
+  const [message, setMessage] = useState<string>("")
+
   return (
     <>
       <Spacer h="5rem" />
@@ -72,8 +75,9 @@ const ContactBanner = ({ imageUrl }: sectionProps) => {
                 type="email"
                 placeholder="Send a message..."
                 background="white"
+                onChange={(e) => setMessage(e.target.value)}
               />
-              <Box as="a" href="mailto:amilsindhis@gmail.com">
+              <Box as="a" href={`mailto:amilsindhis@gmail.com?subject=Message%20via%20the%20website&body=${encodeURI(message)}`}>
                 <InputRightAddon
                   background="#1F2937"
                   cursor="pointer"
