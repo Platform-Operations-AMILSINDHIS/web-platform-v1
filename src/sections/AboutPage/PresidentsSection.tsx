@@ -11,11 +11,11 @@ import {
 } from "@chakra-ui/react";
 import Image from "next/image";
 
-import KT_Pic from "../../../public/images/Presidents/Mr._K.T._Shahani.jpg";
-import Late_Dewan_Fatehchand_Asudomal_Jhangiani_pic from "../../../public/images/Presidents/Late_Dewan_Fatehchand_Asudomal_Jhangiani.jpg";
-import Vishni_Malkani_pic from "../../../public/images/Presidents/Mrs._Vishni_Malkani.jpg";
-import Kamla_Hiranand_pic from "../../../public/images/Presidents/Kamla_Hiranand.jpg";
-import Indu_Shahani_pic from "../../../public/images/Presidents/Dr._Indu_Shahani.jpg";
+// import KT_Pic from "../../../public/images/Presidents/Mr._K.T._Shahani.jpg";
+// import Late_Dewan_Fatehchand_Asudomal_Jhangiani_pic from "../../../public/images/Presidents/Late_Dewan_Fatehchand_Asudomal_Jhangiani.jpg";
+// import Vishni_Malkani_pic from "../../../public/images/Presidents/Mrs._Vishni_Malkani.jpg";
+// import Kamla_Hiranand_pic from "../../../public/images/Presidents/Kamla_Hiranand.jpg";
+// import Indu_Shahani_pic from "../../../public/images/Presidents/Dr._Indu_Shahani.jpg";
 
 const PresidentsSection = () => {
   return (
@@ -39,7 +39,7 @@ const PresidentsSection = () => {
       <Flex mx="auto" w="70%" gap="3rem" direction="column" alignItems="center">
         {[
           {
-            image: Late_Dewan_Fatehchand_Asudomal_Jhangiani_pic,
+            // image: Late_Dewan_Fatehchand_Asudomal_Jhangiani_pic,
             name: "Fatehchand Assudomal Jhangiani",
             points: [
               "An esteemed leader whose tenure marked a period of growth and progress for the Panchayat.",
@@ -47,7 +47,7 @@ const PresidentsSection = () => {
             ],
           },
           {
-            image: KT_Pic,
+            // image: KT_Pic,
             name: "Kishinchand T Shahani",
             points: [
               "A prominent figure who continued the legacy of strong leadership within the Panchayat.",
@@ -55,7 +55,7 @@ const PresidentsSection = () => {
             ],
           },
           {
-            image: Vishni_Malkani_pic,
+            // image: Vishni_Malkani_pic,
             name: "Vishni Malkani",
             points: [
               "A compassionate leader who championed the cause of education and empowerment.",
@@ -63,7 +63,7 @@ const PresidentsSection = () => {
             ],
           },
           {
-            image: Kamla_Hiranand_pic,
+            // image: Kamla_Hiranand_pic,
             name: "Kamla Hiranand",
             points: [
               "A trailblazer who played a significant role in advancing gender equality and community welfare.",
@@ -87,14 +87,14 @@ const PresidentsSection = () => {
           //   ],
           // },
           {
-            image: Indu_Shahani_pic,
+            // image: Indu_Shahani_pic,
             name: "Dr. Indu Shahani",
             points: [
               "A respected academic and leader with a strong commitment to education and empowerment.",
               "Driven by a vision of fostering excellence and progress within the community.",
             ],
           },
-        ].map(({ image, name, points }, i) => (
+        ].map(({ name, points }, i) => (
           <Flex
             key={i}
             mx="auto"
@@ -103,7 +103,7 @@ const PresidentsSection = () => {
             justify="space-between"
           >
             <Box>
-              <Image width={250} height={100} alt="car" src={image} />
+              {/* <Image width={250} height={100} alt="car"/> */}
             </Box>
 
             <Box w="60%">

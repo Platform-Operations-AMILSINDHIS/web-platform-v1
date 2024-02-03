@@ -66,7 +66,7 @@ const AccountOptionsPopover: React.FC<{ children: React.ReactNode }> = ({
               <Text>Delete Account</Text>
             </Flex>
             <DeleteModal
-              handleLogout={handleLogout}
+              handleLogout={() => void handleLogout()}
               handleModal={onClose}
               modalState={isOpen}
             />
