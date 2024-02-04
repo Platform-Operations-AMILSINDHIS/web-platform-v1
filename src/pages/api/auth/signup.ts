@@ -18,7 +18,7 @@ const SignUpHandler = async (req: SignUpRequest, res: NextApiResponse) => {
       password,
       phone: phonenumber,
       options: {
-        emailRedirectTo: "https://amil-sindhis-website.vercel.app/",
+        emailRedirectTo: "https://amil-sindhis.somesh.xyz/",
       },
     });
 
