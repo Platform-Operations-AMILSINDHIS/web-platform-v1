@@ -64,8 +64,8 @@ const AboutPage = ({
       <Spacer h="2rem" />
       <FoundingMembers {...{ induShaniWords, foundingMembers }} />
       <Spacer h="8rem" />
-      <PresidentsSection />
-      <Spacer h="8rem" />
+      {/* <PresidentsSection />
+      <Spacer h="8rem" /> */}
       <CommitteesSection />
       <Spacer h="8rem" />
       <ConstitutionBox />

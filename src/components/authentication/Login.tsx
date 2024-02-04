@@ -42,7 +42,7 @@ const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
       const mailValidateResponse = await axios.post<{
         loginValidated: boolean;
         message: string;
-      }>("/api/auth/loginValidation/mail", {
+      }>("/api/auth/loginvalidation/mail", {
         email: values.email,
       });
 
@@ -57,7 +57,7 @@ const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
       const passwordValidateResponse = await axios.post<{
         passwordValidate: boolean;
         password_server_validate_message: string;
-      }>("/api/auth/loginValidation/password", {
+      }>("/api/auth/loginvalidation/password", {
         email: values.email,
         password: values.password,
       });
