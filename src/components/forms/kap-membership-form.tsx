@@ -222,18 +222,19 @@ export const PersonalInformationSection: React.FC = () => {
               templateColumns={["1fr", "repeat(3, 1fr)"]}
             >
               {[
-                { label: "First Name" },
+                { label: "First Name", required: true },
                 { label: "Middle Name" },
-                { label: "Last Name" },
-                { label: "Occupation" },
-                { label: "Date of Birth", inputType: "date" },
-                { label: "Mobile Number" },
-                { label: "Email ID" },
-              ].map(({ label, inputType }, i) => (
+                { label: "Last Name", required: true },
+                { label: "Occupation", required: true },
+                { label: "Date of Birth", inputType: "date", required: true },
+                { label: "Mobile Number", required: true },
+                { label: "Email ID", required: true },
+              ].map(({ label, inputType, required }, i) => (
                 <LabelledInput
                   key={i}
                   label={label}
                   type={inputType ? (inputType as InputType) : "text"}
+                  required={required}
                 />
               ))}
             </Grid>
@@ -244,12 +245,21 @@ export const PersonalInformationSection: React.FC = () => {
               templateColumns={["1fr", "repeat(2, 1fr)"]}
             >
               {[
-                { label: "Maiden Surname", name: "maidenSurname" },
-                { label: "Maiden Name", name: "maidenName" },
-                { label: "Father's name", name: "fathersName" },
-                { label: "Mother's name", name: "mothersName" },
-              ].map(({ label, name }, i) => (
-                <LabelledInput key={i} label={label} name={name ?? label} />
+                {
+                  label: "Maiden Surname",
+                  name: "maidenSurname",
+                  required: true,
+                },
+                { label: "Maiden Name", name: "maidenName", required: true },
+                { label: "Father's name", name: "fathersName", required: true },
+                { label: "Mother's name", name: "mothersName", required: true },
+              ].map(({ label, name, required }, i) => (
+                <LabelledInput
+                  key={i}
+                  label={label}
+                  name={name ?? label}
+                  required={required}
+                />
               ))}
             </Grid>
             <Flex mt="2rem" w="100%" justifyContent="space-between">
@@ -299,18 +309,24 @@ export const AddressDetailsSection: React.FC = () => {
                 {
                   label: "Address Line 1",
                   name: "residentialAddress.addressLine1",
+                  required: true,
                 },
                 {
                   label: "Address Line 2",
                   name: "residentialAddress.addressLine2",
+                  required: true,
                 },
                 {
                   label: "Address Line 3",
                   name: "residentialAddress.addressLine3",
                 },
-                { label: "Pin Code", name: "residentialAddress.pinCode" },
-              ].map(({ label, name }, i) => (
-                <LabelledInput key={i} label={label} name={name ?? label} />
+                {
+                  label: "Pin Code",
+                  name: "residentialAddress.pinCode",
+                  required: true,
+                },
+              ].map(({ label, name, required }, i) => (
+                <LabelledInput key={i} label={label} name={name ?? label} required={required} />
               ))}
             </Grid>
 
@@ -501,11 +517,11 @@ export const ProposerDetailsSection: React.FC = () => {
               templateColumns={["1fr", "repeat(3, 1fr)"]}
             >
               {[
-                { label: "First Name" },
-                { label: "Last Name" },
-                { label: "Mobile Number" },
-              ].map(({ label }, i) => (
-                <LabelledInput key={i} label={label} />
+                { label: "First Name", required: true },
+                { label: "Last Name", required: true },
+                { label: "Mobile Number", required: true },
+              ].map(({ label, required }, i) => (
+                <LabelledInput key={i} label={label} required={required} />
               ))}
             </Grid>
 
@@ -594,10 +610,11 @@ const MembershipDetailsSection: React.FC = () => {
         .mutateAsync(
           { formData: formState, paymentId },
           {
-            onSuccess: ({ membershipId }) => {
+            onSuccess: () => {
               toast({
                 title: "Response recorded successfully",
-                description: `Your membership ID: ${membershipId}`,
+                // description: `Your membership ID: ${membershipId}`,
+                description: "We will get back to you shortly.",
                 status: "success",
                 duration: 90000,
                 isClosable: true,

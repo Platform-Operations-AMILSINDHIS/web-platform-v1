@@ -19,7 +19,8 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
       <Spacer h="1.5rem" />
       <Box position="relative">
         <Box
-          display={user && user.age >= 21 ? "none" : ""}
+          display="none"
+          // display={user && user.age >= 21 ? "none" : ""}
           left="50%"
           top="50%"
           transform="translate(-50%,-95%)"
@@ -55,8 +56,8 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
           )}
         </Box>
         <Box
-          filter={user && user.age >= 21 ? "" : "blur(2px)"}
-          _hover={user && user.age >= 21 ? {} : { cursor: "not-allowed" }}
+          // filter={user && user.age >= 21 ? "" : "blur(2px)"}
+          // _hover={user && user.age >= 21 ? {} : { cursor: "not-allowed" }}
         >
           <KhudabadiAmilPanchayatMembershipForm />
         </Box>

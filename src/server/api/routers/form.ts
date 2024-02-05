@@ -22,6 +22,7 @@ import {
 } from "../../mail";
 
 import supabase from "~/pages/api/auth/supabase";
+import { TRPCClientError } from "@trpc/client";
 
 const getLastMembershipNums = async () => {
   const { data, error } = await supabase
@@ -33,7 +34,7 @@ const getLastMembershipNums = async () => {
 
   const allMembershipIds =
     data
-      ?.map((row: {membership_id: string | null;}) => row.membership_id)
+      ?.map((row: { membership_id: string | null }) => row.membership_id)
       .filter((mId) => typeof mId === "string") || [];
 
   console.log("this is allMembershipIds: ", { allMembershipIds });
@@ -72,6 +73,22 @@ const getLastMembershipNums = async () => {
   };
 };
 
+async function getUserIdByEmail(emailId: string): Promise<string | null> {
+  const { data, error } = await supabase
+    .from('general_accounts')
+    .select('id')
+    .eq('email_id', emailId)
+    .limit(1);
+
+  if (error) {
+    console.error('Error fetching ID:', error);
+    return null;
+  }
+
+  return data?.[0]?.id as string ?? null;
+}
+
+
 export const formRouter = createTRPCRouter({
   kapMembership: publicProcedure
     .input(
@@ -84,19 +101,35 @@ export const formRouter = createTRPCRouter({
       const { formData } = input;
       console.log({ formData });
 
-      const { lastKapMembershipIdNum, lastPatronMembershipIdNum } =
-        await getLastMembershipNums();
-      const membershipId =
-        formData.membershipInfo.membershipType === "life-member"
-          ? `K${(lastKapMembershipIdNum + 1).toString().padStart(5, "0")}`
-          : `P${(lastPatronMembershipIdNum + 1).toString().padStart(5, "0")}`;
+      // KAP Form submission buffer
+      const userId = await getUserIdByEmail(formData.personalInfo.emailId)
+
+      if (!userId) throw new TRPCClientError("Email does not exist in user database")
 
       const { error } = await supabase
-        .from("general_accounts")
-        .update({ membership_id: membershipId })
-        .eq("email_id", formData.personalInfo.emailId);
+        .from("form_buffer")
+        .insert({
+          user_id: userId,
+          formType: "KAP",
+          submission: formData,
+        });
 
       if (error) console.error(error);
+
+      // // Membership ID Logic
+      // const { lastKapMembershipIdNum, lastPatronMembershipIdNum } =
+      //   await getLastMembershipNums();
+      // const membershipId =
+      //   formData.membershipInfo.membershipType === "life-member"
+      //     ? `K${(lastKapMembershipIdNum + 1).toString().padStart(5, "0")}`
+      //     : `P${(lastPatronMembershipIdNum + 1).toString().padStart(5, "0")}`;
+
+      // const { error } = await supabase
+      //   .from("general_accounts")
+      //   .update({ membership_id: membershipId })
+      //   .eq("email_id", formData.personalInfo.emailId);
+
+      // if (error) console.error(error);
 
       // const membershipId = `P${(lastPatronMembershipIdNum + 1)
       //   .toString()
@@ -133,7 +166,7 @@ export const formRouter = createTRPCRouter({
         formName: "Khudabadi Amil Panchayat Membership",
       });
 
-      return { success: true, membershipId };
+      return { success: true };
     }),
   yacMembership: publicProcedure
     .input(
@@ -144,20 +177,35 @@ export const formRouter = createTRPCRouter({
     )
     .mutation(async ({ input }) => {
       const { formData } = input;
-
       console.log({ formData });
 
-      const { lastYacMembershipIdNum } = await getLastMembershipNums();
-      const membershipId = `Y${(lastYacMembershipIdNum + 1)
-        .toString()
-        .padStart(5, "0")}`;
+      // YAC Form submission buffer
+      const userId = await getUserIdByEmail(formData.personalInfo.emailId)
+
+      if (!userId) throw new TRPCClientError("Email does not exist in user database")
 
       const { error } = await supabase
-        .from("general_accounts")
-        .update({ membership_id: membershipId })
-        .eq("email_id", formData.personalInfo.emailId);
+        .from("form_buffer")
+        .insert({
+          user_id: userId,
+          formType: "YAC",
+          submission: formData,
+        });
 
       if (error) console.error(error);
+
+      // // Membership ID Logic
+      // const { lastYacMembershipIdNum } = await getLastMembershipNums();
+      // const membershipId = `Y${(lastYacMembershipIdNum + 1)
+      //   .toString()
+      //   .padStart(5, "0")}`;
+
+      // const { error } = await supabase
+      //   .from("general_accounts")
+      //   .update({ membership_id: membershipId })
+      //   .eq("email_id", formData.personalInfo.emailId);
+
+      // if (error) console.error(error);
 
       // Send response
       await sendRawJsonDataWithPDF(
@@ -174,7 +222,7 @@ export const formRouter = createTRPCRouter({
         formName: "Young Amil Circle Membership",
       });
 
-      return { success: true, membershipId };
+      return { success: true };
     }),
   donations: publicProcedure
     .input(Yup.object({ formData: donationsFormSchema }))
@@ -194,7 +242,7 @@ export const formRouter = createTRPCRouter({
         phone: formData.contactNumber,
         amount: formData.amount,
         panCardUrl: formData.panCard,
-        addressProofUrl: formData.addressProof
+        addressProofUrl: formData.addressProof,
       });
 
       // Send confirmation mail
