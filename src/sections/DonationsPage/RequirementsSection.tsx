@@ -15,8 +15,8 @@ const RequirementsSection = () => {
   return (
     <Grid templateColumns="1fr 1fr" gap="2rem" w="85%" mx="auto">
       <GridItem>
-        <Heading fontWeight={600} fontSize="5xl">
-          Donations Requirements
+        <Heading fontWeight={600} fontSize="55px">
+          Thinking about donating to us ?
         </Heading>
       </GridItem>
       <GridItem>
@@ -30,6 +30,11 @@ const RequirementsSection = () => {
             {
               title: "Payment Methods",
               content: "This is the content for the payment methods section",
+            },
+            {
+              title: "Donation Camps",
+              content:
+                "Donation camps offer opportunities to contribute to various causes, supporting those in need. Health checkup camps prioritise the society's wellness, ensuring that even the ones who face socio-economic constraints, have access to healthcare services. Through educational drives, we aim to empower our community by promoting learning and skill development. ",
             },
           ].map(({ title, content }, i) => (
             <AccordionItem key={i}>

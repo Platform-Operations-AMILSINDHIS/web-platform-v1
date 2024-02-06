@@ -19,9 +19,12 @@ const HeroSection = () => {
           mt: "-0.5rem",
         }}
       >
-        &nbsp;Khudabadi Amil{" "}
+        &nbsp;Khudabadi Amil <Box as="span">Panchayat</Box>
+        &nbsp;
+      </Text>
+      <Text fontSize="6xl" fontWeight="semibold">
         <Box as="span" color="#FF4D00">
-          Panchayat
+          of Bombay
         </Box>
         &nbsp;
       </Text>

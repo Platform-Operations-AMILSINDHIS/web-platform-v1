@@ -75,7 +75,7 @@ const CatalogPage = ({
   });
 
   return (
-    <Layout title="blog catalog">
+    <Layout title="Blog Catalog">
       <HeroSection handleSearch={handleSearch} />
       <FiltersSection
         typeState={typeState}
