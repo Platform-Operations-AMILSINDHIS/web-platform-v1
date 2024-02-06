@@ -1,5 +1,5 @@
 import { Flex, Box, Text, Spacer } from "@chakra-ui/react";
-
+//Hero section here to be updated later
 const HeroSection = () => {
   return (
     <Flex py="2rem" direction="column" w="100%" alignItems="center">
