@@ -28,9 +28,7 @@ const EventsPage = ({
       <Box mb={10}>
         <HeroSection />
         <EventSlider events={events} />
-
         <Spacer h="4rem" />
-
         <PerksSection />
       </Box>
     </Layout>
