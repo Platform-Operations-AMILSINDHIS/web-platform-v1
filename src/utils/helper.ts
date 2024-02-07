@@ -14,6 +14,18 @@ export const convertDATE = (date: Date) => {
   return formattedDate;
 };
 
+export const convertDateV2 = (input: Date) => {
+  const date = new Date(input);
+
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+  const formattedDate = formatter.format(date);
+  return formattedDate;
+};
+
 export const getTimeFromDate = (date: Date) => {
   const inputDate = new Date(date);
 

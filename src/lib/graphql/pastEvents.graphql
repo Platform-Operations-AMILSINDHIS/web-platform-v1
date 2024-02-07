@@ -6,6 +6,12 @@ query pastEventContentTypeQuery {
       pastEventName
       pastEventLocation
       pastEventSearchTags
+      sys {
+        id
+      }
+      pastEventDisplayPicture {
+        url
+      }
       pastEventDate
       pastEventDescription {
         json

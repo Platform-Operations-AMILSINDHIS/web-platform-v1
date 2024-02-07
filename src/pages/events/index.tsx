@@ -1,5 +1,8 @@
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
-import type { EventCollectionQueryQuery } from "~/lib/__generated/sdk";
+import type {
+  EventCollectionQueryQuery,
+  PastEventContentTypeQueryQuery,
+} from "~/lib/__generated/sdk";
 
 import { Spacer } from "@chakra-ui/react";
 
@@ -11,23 +14,29 @@ import PerksSection from "~/sections/EventsPage/PerksSection";
 
 import { client } from "~/lib/client";
 import { Box } from "@chakra-ui/react";
+import PastEventSlider from "~/components/events/PastEventSlider";
 
 export const getServerSideProps: GetServerSideProps<{
   events: EventCollectionQueryQuery;
+  pastEvents: PastEventContentTypeQueryQuery;
 }> = async () => {
   const events = await client.eventCollectionQuery();
-  return { props: { events } };
+  const pastEvents = await client.pastEventContentTypeQuery();
+  return { props: { events, pastEvents } };
 };
 
 const EventsPage = ({
   events,
+  pastEvents,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  console.log(events);
+  console.log({ events, pastEvents });
   return (
     <Layout title="Events">
       <Box mb={10}>
         <HeroSection />
         <EventSlider events={events} />
+        <Spacer h="4rem" />
+        <PastEventSlider pastEvents={pastEvents} />
         <Spacer h="4rem" />
         <PerksSection />
       </Box>
