@@ -96,6 +96,7 @@ type AssetLinkingCollections {
   eventImageSliderCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EventImageSliderCollection
   membersOfTheManagingCommitteeKapCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): MembersOfTheManagingCommitteeKapCollection
   officeBearersCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): OfficeBearersCollection
+  pastEventContentTypeCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): PastEventContentTypeCollection
 }
 
 enum AssetOrder {
@@ -787,6 +788,137 @@ enum OfficeBearersOrder {
 }
 
 """
+Event content model type dedicated only towards past events [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/pastEventContentType)
+"""
+type PastEventContentType implements Entry {
+  contentfulMetadata: ContentfulMetadata!
+  linkedFrom(allowedLocales: [String]): PastEventContentTypeLinkingCollections
+  pastEventDate(locale: String): DateTime
+  pastEventDescription(locale: String): PastEventContentTypePastEventDescription
+  pastEventDisplayPicture(locale: String, preview: Boolean): Asset
+  pastEventLocation(locale: String): String
+  pastEventName(locale: String): String
+  pastEventPicturesCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): AssetCollection
+  pastEventSearchTags(locale: String): [String]
+  pastEventSlug(locale: String): String
+  pastEventType(locale: String): String
+  sys: Sys!
+}
+
+type PastEventContentTypeCollection {
+  items: [PastEventContentType]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+input PastEventContentTypeFilter {
+  AND: [PastEventContentTypeFilter]
+  OR: [PastEventContentTypeFilter]
+  contentfulMetadata: ContentfulMetadataFilter
+  pastEventDate: DateTime
+  pastEventDate_exists: Boolean
+  pastEventDate_gt: DateTime
+  pastEventDate_gte: DateTime
+  pastEventDate_in: [DateTime]
+  pastEventDate_lt: DateTime
+  pastEventDate_lte: DateTime
+  pastEventDate_not: DateTime
+  pastEventDate_not_in: [DateTime]
+  pastEventDescription_contains: String
+  pastEventDescription_exists: Boolean
+  pastEventDescription_not_contains: String
+  pastEventDisplayPicture_exists: Boolean
+  pastEventLocation: String
+  pastEventLocation_contains: String
+  pastEventLocation_exists: Boolean
+  pastEventLocation_in: [String]
+  pastEventLocation_not: String
+  pastEventLocation_not_contains: String
+  pastEventLocation_not_in: [String]
+  pastEventName: String
+  pastEventName_contains: String
+  pastEventName_exists: Boolean
+  pastEventName_in: [String]
+  pastEventName_not: String
+  pastEventName_not_contains: String
+  pastEventName_not_in: [String]
+  pastEventPicturesCollection_exists: Boolean
+  pastEventSearchTags_contains_all: [String]
+  pastEventSearchTags_contains_none: [String]
+  pastEventSearchTags_contains_some: [String]
+  pastEventSearchTags_exists: Boolean
+  pastEventSlug: String
+  pastEventSlug_contains: String
+  pastEventSlug_exists: Boolean
+  pastEventSlug_in: [String]
+  pastEventSlug_not: String
+  pastEventSlug_not_contains: String
+  pastEventSlug_not_in: [String]
+  pastEventType: String
+  pastEventType_contains: String
+  pastEventType_exists: Boolean
+  pastEventType_in: [String]
+  pastEventType_not: String
+  pastEventType_not_contains: String
+  pastEventType_not_in: [String]
+  sys: SysFilter
+}
+
+type PastEventContentTypeLinkingCollections {
+  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+}
+
+enum PastEventContentTypeOrder {
+  pastEventDate_ASC
+  pastEventDate_DESC
+  pastEventLocation_ASC
+  pastEventLocation_DESC
+  pastEventName_ASC
+  pastEventName_DESC
+  pastEventSlug_ASC
+  pastEventSlug_DESC
+  pastEventType_ASC
+  pastEventType_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+type PastEventContentTypePastEventDescription {
+  json: JSON!
+  links: PastEventContentTypePastEventDescriptionLinks!
+}
+
+type PastEventContentTypePastEventDescriptionAssets {
+  block: [Asset]!
+  hyperlink: [Asset]!
+}
+
+type PastEventContentTypePastEventDescriptionEntries {
+  block: [Entry]!
+  hyperlink: [Entry]!
+  inline: [Entry]!
+}
+
+type PastEventContentTypePastEventDescriptionLinks {
+  assets: PastEventContentTypePastEventDescriptionAssets!
+  entries: PastEventContentTypePastEventDescriptionEntries!
+  resources: PastEventContentTypePastEventDescriptionResources!
+}
+
+type PastEventContentTypePastEventDescriptionResources {
+  block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
+}
+
+"""
 The 'Quality' type represents quality as whole numeric values between `1` and `100`.
 """
 scalar Quality
@@ -808,6 +940,8 @@ type Query {
   membersOfTheManagingCommitteeKapCollection(limit: Int = 100, locale: String, order: [MembersOfTheManagingCommitteeKapOrder], preview: Boolean, skip: Int = 0, where: MembersOfTheManagingCommitteeKapFilter): MembersOfTheManagingCommitteeKapCollection
   officeBearers(id: String!, locale: String, preview: Boolean): OfficeBearers
   officeBearersCollection(limit: Int = 100, locale: String, order: [OfficeBearersOrder], preview: Boolean, skip: Int = 0, where: OfficeBearersFilter): OfficeBearersCollection
+  pastEventContentType(id: String!, locale: String, preview: Boolean): PastEventContentType
+  pastEventContentTypeCollection(limit: Int = 100, locale: String, order: [PastEventContentTypeOrder], preview: Boolean, skip: Int = 0, where: PastEventContentTypeFilter): PastEventContentTypeCollection
 }
 
 type ResourceLink {

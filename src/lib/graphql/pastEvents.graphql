@@ -1,0 +1,20 @@
+query pastEventContentTypeQuery {
+  pastEventContentTypeCollection {
+    items {
+      pastEventType
+      pastEventSlug
+      pastEventName
+      pastEventLocation
+      pastEventSearchTags
+      pastEventDate
+      pastEventDescription {
+        json
+      }
+      pastEventPicturesCollection {
+        items {
+          url
+        }
+      }
+    }
+  }
+}
