@@ -1,0 +1,21 @@
+query pastEventDetail($id: String!) {
+  pastEventContentType(id: $id) {
+    pastEventType
+    pastEventSlug
+    pastEventName
+    pastEventLocation
+    pastEventSearchTags
+    pastEventDisplayPicture {
+      url
+    }
+    pastEventDate
+    pastEventDescription {
+      json
+    }
+    pastEventPicturesCollection {
+      items {
+        url
+      }
+    }
+  }
+}

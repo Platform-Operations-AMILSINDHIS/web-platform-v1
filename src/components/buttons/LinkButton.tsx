@@ -4,7 +4,7 @@ import { Button } from "@chakra-ui/react";
 import { btnThemeDark, btnThemeLight } from "./BtnThemes";
 
 interface LinkButtonProps {
-  CTAlink: string;
+  CTAlink?: string;
   CTAlabel: string | ReactNode;
   CTATheme?: boolean;
   py?: number | string;
@@ -24,6 +24,7 @@ const LinkButton: React.FC<LinkButtonProps> = ({
 }) => {
   return (
     <Button
+      _hover={{ cursor: "pointer" }}
       style={CTATheme ? btnThemeLight : btnThemeDark}
       fontWeight={600}
       py={py ?? 7}

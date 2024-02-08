@@ -1,4 +1,3 @@
-
 import type {
   NextPage,
   GetServerSideProps,
@@ -18,6 +17,7 @@ import ConnectingAndYACSection from "~/sections/AboutPage/ConnectingAndYACSectio
 import CommunityBox from "~/sections/AboutPage/CommunityBox";
 
 import { client } from "~/lib/client";
+import ManagingCommunitySection from "~/sections/AboutPage/ManagingCommunitySection";
 
 export const getServerSideProps: GetServerSideProps<{
   induShaniWords: string;
@@ -26,19 +26,33 @@ export const getServerSideProps: GetServerSideProps<{
     position: string;
     displayPictureUrl: string;
   }[];
+  otherMembers: {
+    memberName: string;
+    memberPosition: string;
+    displayPictureUrl: string;
+  }[];
 }> = async () => {
   const iswQ = await client.induShaniWordsQuery();
   const foundingMembersQ = await client.officeBearersQuery();
+  const otherMembers = await client.membersOfTheManagingCommitteeKapQuery();
 
-  console.log({
-    induShaniWords: iswQ.induShaniWords?.herWords,
-    foundingMembers:
-      foundingMembersQ.officeBearersCollection?.items.map((ob) => ({
-        name: ob?.officeBearerName ?? "",
-        position: ob?.officeBearerPosition ?? "",
-        displayPictureUrl: ob?.displayPicture?.url ?? "",
-      })) ?? [],
-  });
+  // console.log({
+  //   induShaniWords: iswQ.induShaniWords?.herWords,
+  //   foundingMembers:
+  //     foundingMembersQ.officeBearersCollection?.items.map((ob) => ({
+  //       name: ob?.officeBearerName ?? "",
+  //       position: ob?.officeBearerPosition ?? "",
+  //       displayPictureUrl: ob?.displayPicture?.url ?? "",
+  //     })) ?? [],
+  //   otherMembers:
+  //     otherMembers.membersOfTheManagingCommitteeKapCollection?.items.map(
+  //       (ob) => ({
+  //         name: ob?.mkapName ?? "",
+  //         position: ob?.mkapPosition ?? "",
+  //         displayPictureUrl: ob?.mkapDisplayPicture ?? "",
+  //       })
+  //     ),
+  // });
   return {
     props: {
       induShaniWords: iswQ.induShaniWords?.herWords ?? "",
@@ -48,6 +62,14 @@ export const getServerSideProps: GetServerSideProps<{
           position: ob?.officeBearerPosition ?? "",
           displayPictureUrl: ob?.displayPicture?.url ?? "",
         })) ?? [],
+      otherMembers:
+        otherMembers.membersOfTheManagingCommitteeKapCollection?.items.map(
+          (ob) => ({
+            memberName: ob?.mkapName ?? "",
+            memberPosition: ob?.mkapPosition ?? "",
+            displayPictureUrl: ob?.mkapDisplayPicture?.url ?? "",
+          })
+        ) ?? [],
     },
   };
 };
@@ -55,6 +77,7 @@ export const getServerSideProps: GetServerSideProps<{
 const AboutPage = ({
   induShaniWords,
   foundingMembers,
+  otherMembers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <Layout title="Home">
@@ -73,6 +96,8 @@ const AboutPage = ({
       <ConnectingAndYACSection />
       <Spacer h="8rem" />
       <CommunityBox />
+      <Spacer h="8rem" />
+      <ManagingCommunitySection otherMembers={otherMembers} />
       <Spacer h="8rem" />
     </Layout>
   );

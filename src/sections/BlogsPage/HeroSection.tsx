@@ -6,7 +6,7 @@ const HeroSection = () => {
       <div className="mx-auto max-w-screen-lg text-center text-[#1F2937]">
         {/* Hero */}
         <div
-          className={`${satoshi.variable} mt-16 font-heading text-3xl font-semibold leading-normal md:text-7xl`}
+          className={`${satoshi.variable}  mt-10 font-heading text-3xl font-semibold leading-normal md:text-7xl`}
         >
           Amil Blogs, <span className="text-[#FF4D00]">Samachar &</span>{" "}
           Publications all in{" "}
