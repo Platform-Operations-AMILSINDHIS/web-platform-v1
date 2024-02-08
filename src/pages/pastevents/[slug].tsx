@@ -1,6 +1,7 @@
-import { Button, Divider, Flex, Text } from "@chakra-ui/react";
+import { Divider, Flex, Text, useDisclosure } from "@chakra-ui/react";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import LinkButton from "~/components/buttons/LinkButton";
+import ModalGallery from "~/components/events/ModalGallery";
 import Layout from "~/components/layout";
 import { type PastEventDetailQuery } from "~/lib/__generated/sdk";
 import { client } from "~/lib/client";
@@ -18,6 +19,7 @@ export const getServerSideProps: GetServerSideProps<{
 const PastEventDetailPage = ({
   pastEvent: { pastEventContentType },
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Layout
       title={
@@ -53,7 +55,23 @@ const PastEventDetailPage = ({
               fontWeight={600}
             >{`${pastEventContentType?.pastEventName}`}</Text>
           </Flex>
-          <LinkButton CTAlabel="View Gallery" CTATheme={false} px={8} py={6} />
+          <LinkButton
+            onClick={() => onOpen()}
+            CTAlabel="View Gallery"
+            CTATheme={false}
+            px={8}
+            py={6}
+          />
+          <ModalGallery
+            eventName={pastEventContentType?.pastEventName}
+            galleryPictures={
+              pastEventContentType?.pastEventPicturesCollection?.items as
+                | Array<{ url?: string }>
+                | undefined
+            }
+            handleModal={onClose}
+            modalState={isOpen}
+          />
         </Flex>
 
         <Flex mt={8} flexDir="column">
