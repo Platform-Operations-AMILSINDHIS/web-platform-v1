@@ -6,11 +6,11 @@ import {
   GridItem,
   Image,
   Text,
-  color,
+  useDisclosure,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import ModalLayout from "~/layouts/ModalLayout";
-import LinkButton from "../buttons/LinkButton";
+import ImageViewModal from "./ImageViewModal";
 
 interface ModalGalleryProps {
   modalState: boolean;
@@ -25,6 +25,14 @@ const ModalGallery: React.FC<ModalGalleryProps> = ({
   galleryPictures,
   eventName,
 }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [viewImage, setViewImage] = useState<string | undefined>("");
+
+  const handleViewModal = (url: string | undefined) => {
+    setViewImage(url);
+    onOpen();
+  };
+
   return (
     <ModalLayout handleModal={handleModal} modalState={modalState}>
       <Text
@@ -36,7 +44,12 @@ const ModalGallery: React.FC<ModalGalleryProps> = ({
         <Grid gridTemplateColumns="repeat(2,1fr)" gap={2}>
           {galleryPictures?.map((picture, index) => {
             return (
-              <GridItem key={index}>
+              <GridItem
+                onClick={() => {
+                  handleViewModal(picture.url);
+                }}
+                key={index}
+              >
                 <Image
                   boxShadow="rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;"
                   borderRadius={10}
@@ -49,6 +62,11 @@ const ModalGallery: React.FC<ModalGalleryProps> = ({
             );
           })}
         </Grid>
+        <ImageViewModal
+          url={viewImage}
+          handleModal={onClose}
+          modalState={isOpen}
+        />
         <Flex mt={5} mb={3}>
           <Button
             onClick={handleModal}
