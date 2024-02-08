@@ -15,6 +15,7 @@ import PerksSection from "~/sections/EventsPage/PerksSection";
 import { client } from "~/lib/client";
 import { Box } from "@chakra-ui/react";
 import PastEventSlider from "~/components/events/PastEventSlider";
+import EventTypesSection from "~/sections/EventsPage/EventTypesSection";
 
 export const getServerSideProps: GetServerSideProps<{
   events: EventCollectionQueryQuery;
@@ -34,9 +35,13 @@ const EventsPage = ({
     <Layout title="Events">
       <Box mb={10}>
         <HeroSection />
+        <Spacer h="4rem" />
         <EventSlider events={events} />
         <Spacer h="4rem" />
+
         <PastEventSlider pastEvents={pastEvents} />
+        <Spacer h="4rem" />
+        <EventTypesSection />
         <Spacer h="4rem" />
         <PerksSection />
       </Box>
