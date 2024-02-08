@@ -1731,6 +1731,7 @@ export type PastEventDetailQueryVariables = Exact<{
 export type PastEventDetailQuery = {
   __typename?: "Query";
   pastEventContentType?: {
+    eventTitle: string | undefined;
     __typename?: "PastEventContentType";
     pastEventType?: string | null;
     pastEventSlug?: string | null;
