@@ -41,7 +41,7 @@ const WhatSection = ({ imageUrl }: sectionProps) => {
 
           <Flex flexDir="column" maxW="600px">
             <Heading color="white" fontWeight="bold" fontSize="7xl">
-              What are <span style={{ color: "#FFCF54" }}>we&nbsp;?</span>
+              Who are <span style={{ color: "#FFCF54" }}>we&nbsp;?</span>
             </Heading>
             <Text
               mt="0.5rem"
