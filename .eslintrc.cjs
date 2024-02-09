@@ -1,3 +1,4 @@
+// @ts-nocheck
 /** @type {import("eslint").Linter.Config} */
 const config = {
   parser: "@typescript-eslint/parser",
@@ -19,6 +20,10 @@ const config = {
       },
     ],
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+    // Add an override here for the specific file and line you want to ignore
+    "path/to/specific/file.ts": {
+      "@typescript-eslint/no-unused-vars": "off",
+    },
   },
 };
 

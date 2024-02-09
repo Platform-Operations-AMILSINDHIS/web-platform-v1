@@ -29,7 +29,7 @@ const PastEventCard: React.FC<PastEventCardProps> = ({ pastEvent }) => {
       />
       <Flex flexDir="column" mt={4}>
         <Text mt={1} color="gray.500" fontWeight={600} fontSize="small">
-          {convertDateV2(pastEvent?.pastEventDate)}
+          {convertDateV2(pastEvent?.pastEventDate as Date)}
         </Text>
         <Text
           as="a"

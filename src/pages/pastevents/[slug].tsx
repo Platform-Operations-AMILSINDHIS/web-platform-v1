@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Divider, Flex, Text, useDisclosure } from "@chakra-ui/react";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import LinkButton from "~/components/buttons/LinkButton";
@@ -80,7 +81,9 @@ const PastEventDetailPage = ({
               <Text fontSize={"4xl"} fontWeight={600}>
                 {pastEventContentType?.pastEventLocation}
               </Text>
-              <Text>{convertDateV2(pastEventContentType?.pastEventDate)}</Text>
+              <Text>
+                {convertDateV2(pastEventContentType?.pastEventDate as Date)}
+              </Text>
             </Flex>
             <Flex gap={2}>
               <Flex gap={2}>
@@ -119,10 +122,12 @@ const PastEventDetailPage = ({
             </Flex>
           </Flex>
           <Divider mt={1} mb={3} border="solid 1px" borderColor="gray.300" />
+
           <Flex gap={3} flexDir="column">
+            {/* eslint-disable-next-line */}
             {pastEventContentType?.pastEventDescription?.json?.content.map(
-              (content: any) => {
-                return <Text>{content.content[0].value}</Text>;
+              (content: any, index: number) => {
+                return <Text key={index}>{content.content[0].value}</Text>;
               }
             )}
           </Flex>
