@@ -153,8 +153,8 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
   // useEffect(() => console.log(JSON.stringify(formState, null, 2)), [formState]);
 
   return (
-    <>
-      <Stepper index={activeStep} colorScheme="orange">
+    <Box my={10}>
+      <Stepper mb={3} index={activeStep} colorScheme="orange">
         {steps.map(({ title, description }, index) => (
           <Step key={index}>
             <StepIndicator>
@@ -188,7 +188,7 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
       ))}
 
       <Spacer h="2rem" />
-    </>
+    </Box>
   );
 };
 
@@ -198,7 +198,7 @@ export const PersonalInformationSection: React.FC = () => {
 
   return (
     <>
-      <Heading>Personal Information</Heading>
+      <Heading>Khudabadi Amil Panchayat Application Form</Heading>
       <Text mt="1.5rem" maxW="2xl" color="#1F2937">
         Fill out the fields below to complete your personal profile, make sure
         to fill all the fields and not miss out on any important details.
@@ -326,7 +326,12 @@ export const AddressDetailsSection: React.FC = () => {
                   required: true,
                 },
               ].map(({ label, name, required }, i) => (
-                <LabelledInput key={i} label={label} name={name ?? label} required={required} />
+                <LabelledInput
+                  key={i}
+                  label={label}
+                  name={name ?? label}
+                  required={required}
+                />
               ))}
             </Grid>
 

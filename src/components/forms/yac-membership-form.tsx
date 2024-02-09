@@ -3,11 +3,6 @@ import {
   Heading,
   Text,
   Grid,
-  FormControl,
-  FormLabel,
-  Input,
-  FormErrorMessage,
-  FormHelperText,
   Button,
   Flex,
   Spacer,
@@ -24,7 +19,6 @@ import {
   StepStatus,
   StepTitle,
   Stepper,
-  useSteps,
   useToast,
   Tag,
 } from "@chakra-ui/react";
@@ -39,17 +33,12 @@ import { LabelledInput, camelCase } from "./index";
 
 import type {
   YACMembershipFormValues,
-  PersonalInfo,
   FamilyMember,
-  AddressInfo,
-  ProposerInfo,
 } from "~/types/forms/membership";
 
 import {
   personalInfoSchema,
-  familyMemberSchema,
   addressInfoSchema,
-  kapMembershipInfoSchema,
   proposerInfoSchema,
 } from "~/utils/schemas";
 
@@ -159,8 +148,8 @@ const YoungAmilCircleMembershipForm: React.FC = () => {
   useEffect(() => console.log(JSON.stringify(formState, null, 2)), [formState]);
 
   return (
-    <>
-      <Stepper index={activeStep} colorScheme="orange">
+    <Box my={10}>
+      <Stepper mb={3} index={activeStep} colorScheme="orange">
         {steps.map(({ title, description }, index) => (
           <Step key={index}>
             <StepIndicator>
@@ -193,7 +182,7 @@ const YoungAmilCircleMembershipForm: React.FC = () => {
       ))}
 
       <Spacer h="2rem" />
-    </>
+    </Box>
   );
 };
 
@@ -203,7 +192,7 @@ export const PersonalInformationSection: React.FC = () => {
 
   return (
     <>
-      <Heading>Personal Information</Heading>
+      <Heading>Young Amil Circle Application Form</Heading>
       <Text mt="1.5rem" maxW="2xl" color="#1F2937">
         Fill out the fields below to complete your personal profile, make sure
         to fill all the fields and not miss out on any important details.
@@ -573,9 +562,7 @@ export const ProposerDetailsSection: React.FC = () => {
 
           setIsPaying(true);
 
-          void handlePayment(100000, "kap_membership").catch(
-            console.error
-          );
+          void handlePayment(100000, "kap_membership").catch(console.error);
         }}
       >
         {(formik) => (

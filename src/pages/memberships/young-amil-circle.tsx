@@ -10,18 +10,13 @@ import { useUserAtom } from "~/lib/atom";
 const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
   const [{ user }] = useUserAtom();
 
-  console.log({ user });
+  console.log(user?.age);
 
   return (
     <Layout title="KAP Membership Form">
-      <Spacer h="1.5rem" />
-      <Text fontSize="2xl" fontWeight={600} w="full" textAlign="center">
-        YAC Application Form
-      </Text>
-      <Spacer h="1.5rem" />
       <Box position="relative">
         <Box
-          display={user && user.age >= 16 ? "none" : ""}
+          display={user ? (user.age <= 16 || user.age >= 30 ? "" : "none") : ""}
           left="50%"
           top="50%"
           transform="translate(-50%,-95%)"
@@ -62,15 +57,28 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
                   </Flex>
                 </Flex>
               </>
-            ) : null
+            ) : (
+              <></>
+            )
           ) : (
-            // <></>
             <UserBlockModal />
           )}
         </Box>
         <Box
-          filter={user && user.age >= 16 ? "" : "blur(2px)"}
-          _hover={user && user.age >= 16 ? {} : { cursor: "not-allowed" }}
+          filter={
+            user
+              ? user.age <= 16 || user.age >= 30
+                ? "blur(2px)"
+                : ""
+              : "blur(2px)"
+          }
+          _hover={
+            user
+              ? user.age <= 16 || user.age >= 30
+                ? { cursor: "not-allowed" }
+                : {}
+              : { cursor: "not-allowed" }
+          }
         >
           <YoungAmilCircleMembershipForm />
         </Box>

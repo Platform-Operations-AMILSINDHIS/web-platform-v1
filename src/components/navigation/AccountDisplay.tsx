@@ -36,7 +36,6 @@ const AccountOptionsPopover: React.FC<{ children: React.ReactNode }> = ({
         errorMessage: string;
       }>("/api/auth/logout");
       if (response.data.responseFlag === 1) {
-        window.location.href = "/";
         setUser({ user: null });
       } else {
         console.log("Logout failed", response.data.errorMessage);

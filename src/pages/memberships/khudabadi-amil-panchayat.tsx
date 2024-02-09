@@ -12,11 +12,6 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
 
   return (
     <Layout title="KAP Membership Form">
-      <Spacer h="1.5rem" />
-      <Text fontSize="2xl" fontWeight={600} w="full" textAlign="center">
-        KAP Application Form
-      </Text>
-      <Spacer h="1.5rem" />
       <Box position="relative">
         <Box
           display={user && user.age >= 21 ? "none" : ""}
