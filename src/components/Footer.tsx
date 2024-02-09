@@ -12,6 +12,7 @@ import {
 } from "react-icons/bs";
 
 import AmilSindhiLogo from "../../public/images/amil-sindhis-logo.png";
+import FooterLogo from "../../public/images/Footer/FooterLogo.svg";
 import Image from "next/image";
 
 const socialLinks = [
@@ -66,13 +67,7 @@ const Footer = () => {
       <Flex w="full" flexDir="column" align="center" justify="center">
         <Flex mb={10} w="full" justify="space-between">
           <Flex align="center" gap={3} flexDir="column">
-            <Image
-              src={AmilSindhiLogo}
-              width={200}
-              height={200}
-              alt="NGO_Logo"
-            />
-
+            <Image src={FooterLogo} width={140} height={140} alt="NGO_Logo" />
             <Flex gap={5}>
               {socialLinks.map(({ ICON, url }, index) => {
                 return (
@@ -83,7 +78,7 @@ const Footer = () => {
               })}
             </Flex>
           </Flex>
-          <Flex gap="70px">
+          <Flex gap="50px">
             {FooterConstants.map((footerDiv, index) => {
               return (
                 <Flex gap={7} flexDir="column" key={index}>
