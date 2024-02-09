@@ -14,19 +14,12 @@ import { useUserAtom } from "~/lib/atom";
 import MatrimonyForm from "~/components/forms/matrimony-form";
 
 const MatrimonyFormSection = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [displayState, setDisplayState] = useState(false);
   const [{ user }] = useUserAtom();
-
-  const handleModal = (state: boolean) => {
-    setDisplayState(state);
-    onOpen();
-  };
-
+  console.log(user);
   return (
     <Box position="relative">
-      {/* <Box
-        display={user ? "none" : ""}
+      <Box
+        display={user && user.membership_id != "" ? "none" : ""}
         left="50%"
         top="50%"
         transform="translate(-50%,-50%)"
@@ -34,11 +27,48 @@ const MatrimonyFormSection = () => {
         height={100}
         position="absolute"
       >
-        <UserBlockModal />
-      </Box> */}
+        {user ? (
+          user.membership_id === "" ? (
+            <Flex
+              boxShadow="rgba(0, 0, 0, 0.24) 0px 3px 8px;"
+              border="1px solid"
+              borderColor="gray.200"
+              padding={5}
+              borderRadius={20}
+              bg={"white"}
+              justify="center"
+              align="center"
+              h={250}
+              w={500}
+            >
+              <Flex gap={2} px={10} align="center" flexDir="column">
+                <Text fontWeight={600} textAlign="center" fontSize="xl">
+                  Must be a member
+                </Text>
+                <Text textAlign="center">
+                  You need to be a KAP member or a YAC member above the age of
+                  18 to access matrimony services
+                </Text>
+              </Flex>
+            </Flex>
+          ) : (
+            <></>
+          )
+        ) : (
+          <UserBlockModal />
+        )}
+      </Box>
       <Box
-        // _hover={user ? {} : { cursor: "not-allowed" }}
-        // filter={user ? "" : "blur(2px)"}
+        _hover={
+          user
+            ? user.membership_id === ""
+              ? { cursor: "not-allowed" }
+              : {}
+            : { cursor: "not-allowed" }
+        }
+        filter={
+          user ? (user.membership_id === "" ? "blur(2px)" : "") : "blur(2px)"
+        }
       >
         <Flex id="matrimony-form" direction="column">
           <Box mb="4rem" w="40%">

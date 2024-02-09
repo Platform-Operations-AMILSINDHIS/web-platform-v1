@@ -9,6 +9,7 @@ export interface userAtomBody {
   account_name: string;
   gender: string;
   user_member: number;
+  membership_id: string;
   age: number;
 }
 
