@@ -224,7 +224,7 @@ const DonationsForm: React.FC = () => {
 
   return (
     <Flex direction="column" alignItems="center" gap="2rem">
-      <Flex w="40%" mx="auto">
+      <Flex w={["90%", "40%"]} mx="auto">
         <FormControl>
           <FormLabel fontWeight="semibold">Donation Amount</FormLabel>
           <InputGroup>
@@ -263,7 +263,7 @@ const DonationsForm: React.FC = () => {
         </FormControl>
       </Flex>
 
-      <Grid templateColumns="repeat(3, 1fr)" gap="2rem">
+      <Grid templateColumns={["1fr", "repeat(3, 1fr)"]} gap="2rem">
         <GridItem>
           <LabelledInput
             type="chakra-text"
@@ -292,7 +292,7 @@ const DonationsForm: React.FC = () => {
         </GridItem>
       </Grid>
 
-      <Grid templateColumns="1fr 1fr" gap="2rem">
+      <Grid templateColumns={["1fr", "1fr 1fr"]} gap="2rem">
         <GridItem>
           <Text>Copy of PAN Card (Upload)</Text>
           <Spacer h="1rem" />
@@ -411,7 +411,7 @@ const DonationsFormSection = () => {
         filter={user ? "" : "blur(2px)"}
       > */}
       <Flex id="donations-form" direction="column" alignItems="center">
-        <Box mb="4rem" w="40%" textAlign="center">
+        <Box mb="4rem" w={["90%", "40%"]} textAlign="center">
           <Heading fontWeight="semibold" fontSize="5xl">
             Donations Form
           </Heading>

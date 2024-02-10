@@ -16,7 +16,7 @@ const TypesSection = () => {
         Types of Donations
       </Heading>
 
-      <Grid w="60%" templateColumns="1fr 1fr" gap="1rem">
+      <Grid w="60%" templateColumns={["1fr", "1fr 1fr"]} gap="1rem">
         <GridItem
           as={Box}
           p="1rem"

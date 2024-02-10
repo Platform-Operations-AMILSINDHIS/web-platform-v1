@@ -13,9 +13,9 @@ import {
 
 const RequirementsSection = () => {
   return (
-    <Grid templateColumns="1fr 1fr" gap="2rem" w="85%" mx="auto">
+    <Grid templateColumns={["1fr", "1fr 1fr"]} gap="2rem" w="85%" mx="auto">
       <GridItem>
-        <Heading fontWeight={600} fontSize="55px">
+        <Heading fontWeight={600} fontSize={["40px", "55px"]}>
           Thinking about donating to us ?
         </Heading>
       </GridItem>

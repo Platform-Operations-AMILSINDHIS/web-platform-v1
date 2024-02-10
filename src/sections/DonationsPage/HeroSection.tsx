@@ -26,7 +26,7 @@ const HeroSection = () => {
         </p>
       </div>
       <Flex w="100%" justify="center">
-        <Flex gap="2.5rem">
+        <Flex gap={["1rem", "2.5rem"]}>
           <LinkButton
             CTAlink="/donations#types-of-donations"
             CTAlabel="Learn More"
