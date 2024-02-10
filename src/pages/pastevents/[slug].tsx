@@ -24,8 +24,8 @@ const PastEventDetailPage = ({
   return (
     <Layout
       title={
-        pastEventContentType?.eventTitle
-          ? pastEventContentType?.eventTitle
+        pastEventContentType?.pastEventName
+          ? pastEventContentType?.pastEventName
           : "Event Details"
       }
     >
