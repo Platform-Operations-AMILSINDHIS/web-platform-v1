@@ -52,8 +52,8 @@ const EventTypesSection = () => {
   const [selected, setSelected] = useState<number>(0);
   return (
     <Flex
-      flexDir="row-reverse"
-      gap={40}
+      flexDir={["column-reverse", "row-reverse"]}
+      gap={[10, 40]}
       justify="center"
       align="center"
       w="full"

@@ -19,13 +19,13 @@ import { BiSolidShareAlt } from "react-icons/bi";
 
 const PerksSection: React.FC = () => {
   return (
-    <Grid mt={10} templateColumns="1fr 1fr" gap="3rem" position="relative">
+    <Grid mt={10} templateColumns={["1fr", "1fr 1fr"]} gap="3rem" position="relative">
       <GridItem>
         <Text color="#FF4D00" fontSize="lg" fontWeight="semibold">
           Your perks
         </Text>
         <Spacer h="0.4rem" />
-        <Heading color="#00162B" fontSize="7xl">
+        <Heading color="#00162B" fontSize={["5xl", "7xl"]}>
           What&apos;s{" "}
           <Text as="span" color="#FF4D00">
             in store
@@ -119,7 +119,7 @@ const PerksSection: React.FC = () => {
           development.
         </Text>
         <Spacer h="2rem" />
-        <Flex gap="1.5rem">
+        <Flex direction={["column", "row"]} gap="1.5rem">
           <LinkButton
             CTAlink="#"
             CTAlabel="Learn about connecting"
@@ -143,7 +143,7 @@ const PerksSection: React.FC = () => {
         <Spacer h="4rem" />
       </GridItem>
 
-      <GridItem position="absolute" bottom="-40px" right="0">
+      <GridItem display={["none", "block"]} position="absolute" bottom="-40px" right="0">
         <Box
           px="2.5rem"
           h="570px"

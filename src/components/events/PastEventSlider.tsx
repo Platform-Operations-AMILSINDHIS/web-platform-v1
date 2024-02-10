@@ -18,7 +18,7 @@ const PastEventSlider: React.FC<PastEventSliderProps> = ({ pastEvents }) => {
       <Text fontSize="xl" fontWeight={600}>
         Previously Conducted Events
       </Text>
-      <Flex width="full" gap={10} align="center">
+      <Flex direction={["column", "row"]} width="full" gap={10} align="center">
         {pastEventData?.map((item, index) => {
           return (
             <PastEventCard
