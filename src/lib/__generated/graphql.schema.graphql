@@ -942,6 +942,8 @@ type Query {
   officeBearersCollection(limit: Int = 100, locale: String, order: [OfficeBearersOrder], preview: Boolean, skip: Int = 0, where: OfficeBearersFilter): OfficeBearersCollection
   pastEventContentType(id: String!, locale: String, preview: Boolean): PastEventContentType
   pastEventContentTypeCollection(limit: Int = 100, locale: String, order: [PastEventContentTypeOrder], preview: Boolean, skip: Int = 0, where: PastEventContentTypeFilter): PastEventContentTypeCollection
+  termsAndCondition(id: String!, locale: String, preview: Boolean): TermsAndCondition
+  termsAndConditionCollection(limit: Int = 100, locale: String, order: [TermsAndConditionOrder], preview: Boolean, skip: Int = 0, where: TermsAndConditionFilter): TermsAndConditionCollection
 }
 
 type ResourceLink {
@@ -998,6 +1000,109 @@ input SysFilter {
   publishedVersion_lte: Float
   publishedVersion_not: Float
   publishedVersion_not_in: [Float]
+}
+
+"""
+T&C and Privacy Policy for the site
+ [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/termsAndCondition)
+"""
+type TermsAndCondition implements Entry {
+  contentfulMetadata: ContentfulMetadata!
+  linkedFrom(allowedLocales: [String]): TermsAndConditionLinkingCollections
+  privacyPolicyContent(locale: String): TermsAndConditionPrivacyPolicyContent
+  sys: Sys!
+  tCContent(locale: String): TermsAndConditionTCContent
+}
+
+type TermsAndConditionCollection {
+  items: [TermsAndCondition]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+input TermsAndConditionFilter {
+  AND: [TermsAndConditionFilter]
+  OR: [TermsAndConditionFilter]
+  contentfulMetadata: ContentfulMetadataFilter
+  privacyPolicyContent_contains: String
+  privacyPolicyContent_exists: Boolean
+  privacyPolicyContent_not_contains: String
+  sys: SysFilter
+  tCContent_contains: String
+  tCContent_exists: Boolean
+  tCContent_not_contains: String
+}
+
+type TermsAndConditionLinkingCollections {
+  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+}
+
+enum TermsAndConditionOrder {
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+type TermsAndConditionPrivacyPolicyContent {
+  json: JSON!
+  links: TermsAndConditionPrivacyPolicyContentLinks!
+}
+
+type TermsAndConditionPrivacyPolicyContentAssets {
+  block: [Asset]!
+  hyperlink: [Asset]!
+}
+
+type TermsAndConditionPrivacyPolicyContentEntries {
+  block: [Entry]!
+  hyperlink: [Entry]!
+  inline: [Entry]!
+}
+
+type TermsAndConditionPrivacyPolicyContentLinks {
+  assets: TermsAndConditionPrivacyPolicyContentAssets!
+  entries: TermsAndConditionPrivacyPolicyContentEntries!
+  resources: TermsAndConditionPrivacyPolicyContentResources!
+}
+
+type TermsAndConditionPrivacyPolicyContentResources {
+  block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
+}
+
+type TermsAndConditionTCContent {
+  json: JSON!
+  links: TermsAndConditionTCContentLinks!
+}
+
+type TermsAndConditionTCContentAssets {
+  block: [Asset]!
+  hyperlink: [Asset]!
+}
+
+type TermsAndConditionTCContentEntries {
+  block: [Entry]!
+  hyperlink: [Entry]!
+  inline: [Entry]!
+}
+
+type TermsAndConditionTCContentLinks {
+  assets: TermsAndConditionTCContentAssets!
+  entries: TermsAndConditionTCContentEntries!
+  resources: TermsAndConditionTCContentResources!
+}
+
+type TermsAndConditionTCContentResources {
+  block: [ResourceLink!]!
+  hyperlink: [ResourceLink!]!
+  inline: [ResourceLink!]!
 }
 
 interface _Node {

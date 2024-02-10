@@ -1376,6 +1376,8 @@ export type Query = {
   officeBearersCollection?: Maybe<OfficeBearersCollection>;
   pastEventContentType?: Maybe<PastEventContentType>;
   pastEventContentTypeCollection?: Maybe<PastEventContentTypeCollection>;
+  termsAndCondition?: Maybe<TermsAndCondition>;
+  termsAndConditionCollection?: Maybe<TermsAndConditionCollection>;
 };
 
 export type Query_NodeArgs = {
@@ -1513,6 +1515,21 @@ export type QueryPastEventContentTypeCollectionArgs = {
   where?: InputMaybe<PastEventContentTypeFilter>;
 };
 
+export type QueryTermsAndConditionArgs = {
+  id: Scalars["String"]["input"];
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+  preview?: InputMaybe<Scalars["Boolean"]["input"]>;
+};
+
+export type QueryTermsAndConditionCollectionArgs = {
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+  order?: InputMaybe<Array<InputMaybe<TermsAndConditionOrder>>>;
+  preview?: InputMaybe<Scalars["Boolean"]["input"]>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  where?: InputMaybe<TermsAndConditionFilter>;
+};
+
 export type ResourceLink = {
   __typename?: "ResourceLink";
   sys: ResourceSys;
@@ -1580,6 +1597,153 @@ export type SysFilter = {
   publishedVersion_not_in?: InputMaybe<
     Array<InputMaybe<Scalars["Float"]["input"]>>
   >;
+};
+
+/**
+ * T&C and Privacy Policy for the site
+ *  [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/termsAndCondition)
+ */
+export type TermsAndCondition = Entry & {
+  __typename?: "TermsAndCondition";
+  contentfulMetadata: ContentfulMetadata;
+  linkedFrom?: Maybe<TermsAndConditionLinkingCollections>;
+  privacyPolicyContent?: Maybe<TermsAndConditionPrivacyPolicyContent>;
+  sys: Sys;
+  tCContent?: Maybe<TermsAndConditionTcContent>;
+};
+
+/**
+ * T&C and Privacy Policy for the site
+ *  [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/termsAndCondition)
+ */
+export type TermsAndConditionLinkedFromArgs = {
+  allowedLocales?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+};
+
+/**
+ * T&C and Privacy Policy for the site
+ *  [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/termsAndCondition)
+ */
+export type TermsAndConditionPrivacyPolicyContentArgs = {
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+/**
+ * T&C and Privacy Policy for the site
+ *  [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/termsAndCondition)
+ */
+export type TermsAndConditionTcContentArgs = {
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export type TermsAndConditionCollection = {
+  __typename?: "TermsAndConditionCollection";
+  items: Array<Maybe<TermsAndCondition>>;
+  limit: Scalars["Int"]["output"];
+  skip: Scalars["Int"]["output"];
+  total: Scalars["Int"]["output"];
+};
+
+export type TermsAndConditionFilter = {
+  AND?: InputMaybe<Array<InputMaybe<TermsAndConditionFilter>>>;
+  OR?: InputMaybe<Array<InputMaybe<TermsAndConditionFilter>>>;
+  contentfulMetadata?: InputMaybe<ContentfulMetadataFilter>;
+  privacyPolicyContent_contains?: InputMaybe<Scalars["String"]["input"]>;
+  privacyPolicyContent_exists?: InputMaybe<Scalars["Boolean"]["input"]>;
+  privacyPolicyContent_not_contains?: InputMaybe<Scalars["String"]["input"]>;
+  sys?: InputMaybe<SysFilter>;
+  tCContent_contains?: InputMaybe<Scalars["String"]["input"]>;
+  tCContent_exists?: InputMaybe<Scalars["Boolean"]["input"]>;
+  tCContent_not_contains?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export type TermsAndConditionLinkingCollections = {
+  __typename?: "TermsAndConditionLinkingCollections";
+  entryCollection?: Maybe<EntryCollection>;
+};
+
+export type TermsAndConditionLinkingCollectionsEntryCollectionArgs = {
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+  preview?: InputMaybe<Scalars["Boolean"]["input"]>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+export enum TermsAndConditionOrder {
+  SysFirstPublishedAtAsc = "sys_firstPublishedAt_ASC",
+  SysFirstPublishedAtDesc = "sys_firstPublishedAt_DESC",
+  SysIdAsc = "sys_id_ASC",
+  SysIdDesc = "sys_id_DESC",
+  SysPublishedAtAsc = "sys_publishedAt_ASC",
+  SysPublishedAtDesc = "sys_publishedAt_DESC",
+  SysPublishedVersionAsc = "sys_publishedVersion_ASC",
+  SysPublishedVersionDesc = "sys_publishedVersion_DESC",
+}
+
+export type TermsAndConditionPrivacyPolicyContent = {
+  __typename?: "TermsAndConditionPrivacyPolicyContent";
+  json: Scalars["JSON"]["output"];
+  links: TermsAndConditionPrivacyPolicyContentLinks;
+};
+
+export type TermsAndConditionPrivacyPolicyContentAssets = {
+  __typename?: "TermsAndConditionPrivacyPolicyContentAssets";
+  block: Array<Maybe<Asset>>;
+  hyperlink: Array<Maybe<Asset>>;
+};
+
+export type TermsAndConditionPrivacyPolicyContentEntries = {
+  __typename?: "TermsAndConditionPrivacyPolicyContentEntries";
+  block: Array<Maybe<Entry>>;
+  hyperlink: Array<Maybe<Entry>>;
+  inline: Array<Maybe<Entry>>;
+};
+
+export type TermsAndConditionPrivacyPolicyContentLinks = {
+  __typename?: "TermsAndConditionPrivacyPolicyContentLinks";
+  assets: TermsAndConditionPrivacyPolicyContentAssets;
+  entries: TermsAndConditionPrivacyPolicyContentEntries;
+  resources: TermsAndConditionPrivacyPolicyContentResources;
+};
+
+export type TermsAndConditionPrivacyPolicyContentResources = {
+  __typename?: "TermsAndConditionPrivacyPolicyContentResources";
+  block: Array<ResourceLink>;
+  hyperlink: Array<ResourceLink>;
+  inline: Array<ResourceLink>;
+};
+
+export type TermsAndConditionTcContent = {
+  __typename?: "TermsAndConditionTCContent";
+  json: Scalars["JSON"]["output"];
+  links: TermsAndConditionTcContentLinks;
+};
+
+export type TermsAndConditionTcContentAssets = {
+  __typename?: "TermsAndConditionTCContentAssets";
+  block: Array<Maybe<Asset>>;
+  hyperlink: Array<Maybe<Asset>>;
+};
+
+export type TermsAndConditionTcContentEntries = {
+  __typename?: "TermsAndConditionTCContentEntries";
+  block: Array<Maybe<Entry>>;
+  hyperlink: Array<Maybe<Entry>>;
+  inline: Array<Maybe<Entry>>;
+};
+
+export type TermsAndConditionTcContentLinks = {
+  __typename?: "TermsAndConditionTCContentLinks";
+  assets: TermsAndConditionTcContentAssets;
+  entries: TermsAndConditionTcContentEntries;
+  resources: TermsAndConditionTcContentResources;
+};
+
+export type TermsAndConditionTcContentResources = {
+  __typename?: "TermsAndConditionTCContentResources";
+  block: Array<ResourceLink>;
+  hyperlink: Array<ResourceLink>;
+  inline: Array<ResourceLink>;
 };
 
 export type _Node = {
@@ -1731,7 +1895,6 @@ export type PastEventDetailQueryVariables = Exact<{
 export type PastEventDetailQuery = {
   __typename?: "Query";
   pastEventContentType?: {
-    eventTitle: string | undefined;
     __typename?: "PastEventContentType";
     pastEventType?: string | null;
     pastEventSlug?: string | null;

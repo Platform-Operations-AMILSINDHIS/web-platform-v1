@@ -1,0 +1,12 @@
+query {
+  termsAndConditionCollection {
+    items {
+      tCContent {
+        json
+      }
+      privacyPolicyContent {
+        json
+      }
+    }
+  }
+}
