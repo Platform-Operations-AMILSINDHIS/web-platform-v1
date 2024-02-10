@@ -15,11 +15,11 @@ interface sectionProps {
 
 const OfferingsSection = ({ picturesArray }: sectionProps) => {
   return (
-    <Grid position="relative" templateColumns="repeat(4, 1fr)" gap="3rem">
-      <Box transform="rotate(3deg)" left={"25%"} top={-12} position="absolute">
+    <Grid position="relative" templateColumns={["1fr", "repeat(4, 1fr)"]} gap="3rem">
+      <Box display={["none", "block"]} transform="rotate(3deg)" left={"25%"} top={-12} position="absolute">
         <Image src={ArrowImage} alt="arrow" width={240} height={240} />
       </Box>
-      <Flex gridColumn="span 2" flexDir="column" align="baseline" gap="0.7rem">
+      <Flex gridRow={["span 2", "auto"]} gridColumn={["auto", "span 2"]} flexDir="column" align="baseline" gap="0.7rem">
         <Flex flexDir="column" gap="0.4rem">
           <Text fontWeight={500} color="#FF4D00">
             Offerings
@@ -45,7 +45,10 @@ const OfferingsSection = ({ picturesArray }: sectionProps) => {
               p="20px"
               flexDir="column-reverse"
               backgroundImage={image}
-              objectFit="fill"
+              // objectFit="fill"
+              backgroundSize="cover"
+              backgroundRepeat="no-repeat"
+              backgroundPosition="center"
               borderRadius="15px"
               boxShadow="0px 4px 0px 0px rgba(0, 0, 0, 0.19);"
             >

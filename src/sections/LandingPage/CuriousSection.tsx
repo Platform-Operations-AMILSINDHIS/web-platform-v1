@@ -20,12 +20,12 @@ const CuriousSection = ({ events }: { events: EventCollectionQueryQuery }) => {
       <Spacer h="8rem" />
       {/* Curious about our events section */}
       <Box>
-        <Grid templateColumns="repeat(2, 1fr)" gap="3rem">
+        <Grid templateColumns={["1fr", "repeat(2, 1fr)"]} gap="3rem">
           <Flex flexDir="column" align="baseline" gap="0.5rem">
             <Text color="#FF4D00" fontWeight={500}>
               Sindhi events & Occasions
             </Text>
-            <Heading fontSize="6xl">
+            <Heading fontSize={["5xl", "6xl"]}>
               Curious about <br /> our{" "}
               <span style={{ color: "#FF4D00" }}>events ?</span>
             </Heading>

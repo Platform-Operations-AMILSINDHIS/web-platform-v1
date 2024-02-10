@@ -20,12 +20,12 @@ const DonationsSection = ({ imageUrl }: sectionProps) => {
             Donations & Memberships
           </Text>
           <Spacer h="0.3rem" />
-          <Heading fontSize="6xl" fontWeight={700}>
+          <Heading fontSize={["5xl", "6xl"]} fontWeight={700}>
             Donations & <span style={{ color: "#FF4D00" }}>Memberships</span>
           </Heading>
         </Box>
 
-        <Flex align="center" justify={"space-between"}>
+        <Flex direction={["column", "row"]} align="center" justify={"space-between"}>
           <Box>
             <Image
               alt="donation pic"
@@ -35,18 +35,18 @@ const DonationsSection = ({ imageUrl }: sectionProps) => {
             />
           </Box>
           <Box>
-            <Text fontSize="18px" lineHeight="30px">
+            <Text mx={["1rem", 0]} fontSize="18px" lineHeight="30px">
               By donating today, you are helping us provide essential aid to
               those in need during challenging times.
             </Text>
             &nbsp;
-            <Text fontSize="18px" lineHeight="30px">
+            <Text mx={["1rem", 0]} fontSize="18px" lineHeight="30px">
               Your contribution can have a significant impact on our
               community&apos;s well-being and cultural preservation. Together,
               let&apos;s build a stronger and sustainable community.
             </Text>
             <Spacer h="2rem" />
-            <Flex gap="1rem">
+            <Flex direction={["column", "row"]} gap="1rem">
               <LinkButton
                 CTAlabel="Donate Now"
                 CTATheme={false}

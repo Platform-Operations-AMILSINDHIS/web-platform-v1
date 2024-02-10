@@ -36,7 +36,7 @@ const WhatSection = ({ imageUrl }: sectionProps) => {
             zIndex: -1,
           }}
         />
-        <Flex gap={20} align={"center"}>
+        <Flex direction={["column", "row"]} px={[10, 0]} gap={20} align={"center"}>
           <Image width={550} height={0} alt="" src={imageUrl} />
 
           <Flex flexDir="column" maxW="600px">
@@ -64,7 +64,7 @@ const WhatSection = ({ imageUrl }: sectionProps) => {
               rightIcon={<FaArrowCircleRight />}
               h="3rem"
               mt="2rem"
-              w="40%"
+              w={["80%", "40%"]}
               colorScheme="yellow"
             >
               Connecting Amils

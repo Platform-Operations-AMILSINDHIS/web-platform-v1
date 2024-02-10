@@ -24,8 +24,8 @@ const ContactBanner = ({ imageUrl }: sectionProps) => {
       <Box
         maxW="1350px"
         mx="auto"
-        py="5rem"
-        px="9rem"
+        py={["3rem", "5rem"]}
+        px={["3rem", "9rem"]}
         // background="linear-gradient(90deg, #FFBE1E 0%, #FF4D00 68.8%)"
         borderRadius="20px"
         boxShadow="2px 4px 0px 3px rgba(0, 0, 0, 0.74);"
@@ -49,9 +49,9 @@ const ContactBanner = ({ imageUrl }: sectionProps) => {
             borderRadius: "20px",
           }}
         />
-        <Flex align={"flex-start"} justify="space-between">
+        <Flex direction={["column", "row"]} align={"flex-start"} justify="space-between">
           <Flex flexDir="column" color="white">
-            <Heading fontSize="6xl" fontWeight={800}>
+            <Heading fontSize={["4xl", "6xl"]} fontWeight={800}>
               Have a question&nbsp;?
               <br />
               feel free to ask
@@ -61,9 +61,9 @@ const ContactBanner = ({ imageUrl }: sectionProps) => {
           <Flex gap={5} flexDir="column" h="100%">
             <Text
               color="white"
-              maxW={580}
+              maxW={["80%", 580]}
               mt="1rem"
-              fontSize="lg"
+              fontSize={["md", "lg"]}
               fontWeight={400}
             >
               Drop us an email & we&apos;ll get back to you with the <br />{" "}
@@ -71,7 +71,7 @@ const ContactBanner = ({ imageUrl }: sectionProps) => {
             </Text>
             <InputGroup>
               <Input
-                width={380}
+                width={["90%", 380]}
                 type="email"
                 placeholder="Send a message..."
                 background="white"

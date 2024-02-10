@@ -16,7 +16,7 @@ const EventSlider: React.FC<EventData> = ({ events }) => {
       <Text fontSize="xl" fontWeight={600}>
         Upcoming Events
       </Text>
-      <Flex width="full" gap={10} align="center">
+      <Flex direction={["column", "row"]} mx={[2, 0]} width="full" gap={10} align="center">
         {eventData?.map((item, key) => {
           return <EventCard key={key} event={item} />;
         })}
