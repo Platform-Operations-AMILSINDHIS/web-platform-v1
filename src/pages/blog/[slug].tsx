@@ -30,6 +30,7 @@ export const getServerSideProps: GetServerSideProps<{
 const BlogPostPage = ({
   post: { blogContentType },
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  console.log(blogContentType);
   return (
     <Layout
       title={
@@ -37,7 +38,7 @@ const BlogPostPage = ({
       }
       blogPostPage
     >
-      <Box maxW="950px" mx="auto">
+      <Box mb={10} maxW="950px" mx="auto">
         {/* <pre>{JSON.stringify(blogContentType, null, 2)}</pre> */}
 
         {/* Tags */}

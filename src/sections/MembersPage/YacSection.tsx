@@ -14,7 +14,12 @@ import YAC_FeatureIcon05 from "../../../public/images/membership/YAC_icon05.svg"
 const YacSection = () => {
   return (
     <Flex gap={10} my={20} flexDir="column">
-      <Flex gap={[5, 0]} direction={["column-reverse", "row"]} align="center" w="full">
+      <Flex
+        gap={[5, 0]}
+        direction={["column-reverse", "row"]}
+        align="center"
+        w="full"
+      >
         <Flex gap={1} w={["90%", 650]} flexDir="column">
           <Text color="orange.500" fontWeight={600}>
             Young Amil Circle
@@ -55,22 +60,22 @@ const YacSection = () => {
               icon={YAC_FeatureIcon01}
             />
             <FeatureDisplay
-              content="Participate in YAC events, ranging from social initiatives to fun gatherings."
+              content="Networking opportunities with both YAC and KAP members."
               // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               icon={YAC_FeatureIcon02}
             />
             <FeatureDisplay
-              content="Participate in YAC events, ranging from social initiatives to fun gatherings."
+              content="Free access to the monthly newsletter - Amil Samachar."
               // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               icon={YAC_FeatureIcon03}
             />
             <FeatureDisplay
-              content="Participate in YAC events, ranging from social initiatives to fun gatherings."
+              content="Participation in various youth-led initiatives, such as the Campus Ambassador Program of YAC."
               // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               icon={YAC_FeatureIcon04}
             />
             <FeatureDisplay
-              content="Participate in YAC events, ranging from social initiatives to fun gatherings."
+              content="Felicitation with a certificate based on the contribution made towards the community"
               // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               icon={YAC_FeatureIcon05}
             />

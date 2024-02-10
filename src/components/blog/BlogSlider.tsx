@@ -66,27 +66,27 @@ const BlogSlider: React.FC<BlogPostSliderProps> = ({ blogPosts, blogType }) => {
       >
         {filteredBlogPosts?.length && filteredBlogPosts?.length >= 1 ? (
           filteredBlogPosts.map((post, i) => (
-            <Link key={i} href={`/blog/${post?.sys.id}`}>
-              <SwiperSlide>
-                <Box>
-                  <BlogPostThumb
-                    key={i}
-                    orientation="vertical"
-                    post={{
-                      title: post?.blogTitle ?? "",
-                      author: post?.author ?? "",
-                      date: new Date(post?.dateOfBlog) ?? new Date(),
-                      excerpt: truncate(post?.excerpt ?? "", {
-                        length: 100,
-                      }),
-                      tags: post?.blogTags,
-                      image: post?.blogDisplayPicture?.url ?? "",
-                      type: post?.blogType[0] ?? null,
-                    }}
-                  />
-                </Box>
-              </SwiperSlide>
-            </Link>
+            <SwiperSlide key={i}>
+              <Box
+                onClick={() => (window.location.href = `/blog/${post?.sys.id}`)}
+              >
+                <BlogPostThumb
+                  key={i}
+                  orientation="vertical"
+                  post={{
+                    title: post?.blogTitle ?? "",
+                    author: post?.author ?? "",
+                    date: new Date(post?.dateOfBlog) ?? new Date(),
+                    excerpt: truncate(post?.excerpt ?? "", {
+                      length: 100,
+                    }),
+                    tags: post?.blogTags,
+                    image: post?.blogDisplayPicture?.url ?? "",
+                    type: post?.blogType[0] ?? null,
+                  }}
+                />
+              </Box>
+            </SwiperSlide>
           ))
         ) : (
           <Box>Nothing here bro</Box>

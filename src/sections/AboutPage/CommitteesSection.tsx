@@ -67,7 +67,7 @@ const ComitteesSection = () => {
             {
               title: "Young Amil Circle (YAC)",
               content:
-                "The youth of YAC take on themselves to elevate the society in a holistic manner. From protecting the environment by Beach CleanUp drives to ensuring that the underprivileged are taken care of by Clothes Donation drives and other related initiatives, the YAC team has alwaya at the forefront of making a difference in the society.",
+                "The youth of YAC take on themselves to elevate the society in a holistic manner. From protecting the environment by Beach CleanUp drives to ensuring that the underprivileged are taken care of by Clothes Donation drives and other related initiatives, the YAC team has always at the forefront of making a difference in the society.",
             },
             {
               title: "Social Calendar",

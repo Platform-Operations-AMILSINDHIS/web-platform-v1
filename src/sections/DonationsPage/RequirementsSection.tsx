@@ -29,7 +29,8 @@ const RequirementsSection = () => {
             },
             {
               title: "Payment Methods",
-              content: "This is the content for the payment methods section",
+              content:
+                "Payment can be processed using UPI, Credit Card, Debit Card and Net Banking",
             },
             {
               title: "Donation Camps",

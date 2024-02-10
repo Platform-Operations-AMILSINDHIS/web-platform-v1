@@ -6,5 +6,11 @@ interface TCPPModalProps {
 }
 
 const TCPPModal: React.FC<TCPPModalProps> = ({ handleModal, modalState }) => {
-  return <ModalLayout></ModalLayout>;
+  return (
+    <ModalLayout modalState={modalState} handleModal={handleModal}>
+      hi
+    </ModalLayout>
+  );
 };
+
+export default TCPPModal;
