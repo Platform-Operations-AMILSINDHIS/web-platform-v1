@@ -13,6 +13,8 @@ import {
 
 import FooterLogo from "../../public/images/Footer/FooterLogo.svg";
 import Image, { type StaticImageData } from "next/image";
+import { GetServerSideProps } from "next";
+import { EventCollectionQueryQuery } from "~/lib/__generated/sdk";
 
 const socialLinks = [
   {

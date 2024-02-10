@@ -14,7 +14,7 @@ const ManagingCommunitySection: React.FC<ManagingCommunitySectionProps> = ({
   return (
     <Flex gap={10} align="center" flexDir="column">
       <Text textAlign="center" textColor="#FF4D00" fontWeight={600}>
-        Meet Our Office Bearers
+        Meet Our KAP Managing Committee
       </Text>
       <Grid gridTemplateColumns="repeat(4,1fr)" gap="4.5rem" rowGap={10}>
         {otherMembers?.map((member, index) => {

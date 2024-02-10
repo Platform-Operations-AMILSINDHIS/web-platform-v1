@@ -16,11 +16,11 @@ const EventCard: React.FC<eventData> = ({ event }) => {
       cursor="pointer"
       color="#1F2937"
       flexDir="column"
-      maxW={["100%", 380]}
+      onClick={() => (window.location.href = `/events/${event?.sys.id}`)}
     >
       <Box
         boxShadow="4px 4px 4px 0px rgba(0, 0, 0, 0.36);"
-        maxW={["95%", 380]}
+        width={380}
         height={210}
         background={`url(${event?.eventDisplayImage?.url ?? ""})`}
         backgroundPosition="center"

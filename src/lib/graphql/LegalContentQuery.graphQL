@@ -1,0 +1,12 @@
+query LegalContentQuery {
+  termsAndConditionCollection {
+    items {
+      tCContent {
+        json
+      }
+      privacyPolicyContent {
+        json
+      }
+    }
+  }
+}

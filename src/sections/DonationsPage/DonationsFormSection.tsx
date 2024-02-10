@@ -29,12 +29,10 @@ import { GrDocument } from "react-icons/gr";
 import { toWords } from "~/utils/helper";
 import { useUserAtom } from "~/lib/atom";
 import { api } from "~/utils/api";
-import UserBlockModal from "~/components/authentication/UserBlockModal";
 
 const DonationsForm: React.FC = () => {
   const toast = useToast();
   const [uploadedFilesCount, setUploadedFilesCount] = useState<number>(0);
-  const [{ user }] = useUserAtom();
 
   const donationsFormMut = api.form.donations.useMutation();
   const { mutateAsync: fetchPresignedUrls } =
@@ -219,9 +217,6 @@ const DonationsForm: React.FC = () => {
     }
   }, [paymentId]);
 
-  // // Logger
-  // useEffect(() => console.log(form), [form]);
-
   return (
     <Flex direction="column" alignItems="center" gap="2rem">
       <Flex w={["90%", "40%"]} mx="auto">
@@ -350,7 +345,6 @@ const DonationsForm: React.FC = () => {
         w="15rem"
         colorScheme="yellow"
         rightIcon={<ArrowForwardIcon />}
-        // onClick={() => void handleSubmit()}
         onClick={() => {
           if (!form.amount) {
             toast({
@@ -385,31 +379,8 @@ const DonationsForm: React.FC = () => {
 };
 
 const DonationsFormSection = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [displayState, setDisplayState] = useState(false);
-  const [{ user }] = useUserAtom();
-
-  const handleModal = (state: boolean) => {
-    setDisplayState(state);
-    onOpen();
-  };
   return (
     <Box position="relative">
-      {/* <Box
-        display={user ? "none" : ""}
-        left="50%"
-        top="50%"
-        transform="translate(-50%,-50%)"
-        zIndex={2}
-        height={100}
-        position="absolute"
-      >
-        <UserBlockModal />
-      </Box>
-      <Box
-        _hover={user ? {} : { cursor: "not-allowed" }}
-        filter={user ? "" : "blur(2px)"}
-      > */}
       <Flex id="donations-form" direction="column" alignItems="center">
         <Box mb="4rem" w={["90%", "40%"]} textAlign="center">
           <Heading fontWeight="semibold" fontSize="5xl">
@@ -425,7 +396,6 @@ const DonationsFormSection = () => {
         <DonationsForm />
       </Flex>
     </Box>
-    // </Box>
   );
 };
 

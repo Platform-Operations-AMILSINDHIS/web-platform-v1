@@ -17,12 +17,12 @@ const LegacyBox = () => {
       </Flex>
 
       <Text maxW={550}>
-        The Khudabadi Amil Panchayat of Bombay has a storied history that
-        reflects a legacy of unwavering service and a commitment to nurturing a
-        vibrant Amil Sindhi community. Founded on the 24th of February, 1952, by
-        a group of ten visionary individuals, the Panchayat emerged as a beacon
-        of hope for underprivileged Sindhis who were displaced from their
-        homeland.
+        From Khudabad to Mumbai, the journey of the Amils has been
+        ever-evolving. After the partition of India in 1947, pioneering Amils
+        came together in Mumbai to form the Khudabadi Amil Panchayat in 1952 to
+        preserve the community's identity and heritage. Over the years, the
+        Panchayat has engaged in socio-economic activities, supporting the ones
+        in need through housing, financial aid, and educational assistance.
       </Text>
     </Flex>
   );
