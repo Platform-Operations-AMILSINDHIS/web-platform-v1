@@ -16,7 +16,7 @@ const RequirementSection = () => {
       <Text fontWeight={500} fontSize="3xl">
         Become a member now
       </Text>
-      <Flex py={5} mx={20} gap={8}>
+      <Flex direction={["column", "row"]} py={5} mx={[0, 20]} gap={8}>
         <InformationBox
           modalDisplayState={true}
           URL="/memberships/khudabadi-amil-panchayat"

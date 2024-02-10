@@ -1,4 +1,4 @@
-import { Flex, Box, Text, Spacer } from "@chakra-ui/react";
+import { Flex, Box, Text, Spacer, useMediaQuery } from "@chakra-ui/react";
 import Image from "next/image";
 
 import HeroImage01 from "../../../public/images/membership/HeroImage01.svg";
@@ -7,15 +7,19 @@ import LinkButton from "~/components/buttons/LinkButton";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 
 const HeroSection = () => {
+  const [isSmallerThan800] = useMediaQuery('(max-width: 800px)')
+
   return (
     <Flex py="2rem" direction="column" w="100%" alignItems="center">
       <Text fontSize="2xl" fontWeight="semibold" textColor="#1F293780">
         We need you
       </Text>
       <Text
-        fontSize="7xl"
+        fontSize={["5xl", "7xl"]}
         fontWeight="semibold"
-        _after={{
+        textAlign="center"
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        _after={isSmallerThan800 ? {} : {
           content: '""',
           display: "block",
           width: "100%",
@@ -39,13 +43,13 @@ const HeroSection = () => {
         Sindhis to be a part of our vibrant community!
       </Text>
 
-      <Flex align="flex-start" justify="space-between" mt={20} mb={10} w="full">
-        <Box w="50%">
+      <Flex direction={["column", "row"]} align="flex-start" justify="space-between" mt={20} mb={10} w="full">
+        <Box display={["none", "block"]} w="50%">
           {/* <Image alt="HeroImage-01" src={HeroImage01} /> */}
           {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
           <Image alt="HeroImage-01" src={HeroImage01} width={600} height={400} />
         </Box>
-        <Flex mt={-5} flexDir="column">
+        <Flex mt={[5, -5]} flexDir={["column-reverse", "column"]}>
           <Flex flexDir="column">
             <Text fontWeight={500} fontSize="5xl">
               Join us today

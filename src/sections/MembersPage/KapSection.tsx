@@ -11,19 +11,19 @@ import TextDisplay from "~/components/members/TextDisplay";
 const KAPSection = () => {
   return (
     <Flex id="memberships-learn-more" gap={20} flexDir="column" mb={20}>
-      <Flex align="center" justify="space-between" w="full">
-        <Box>
+      <Flex direction={["column", "row"]} align="center" justify="space-between" w="full">
+        <Box transform={["translateX(-10px)", ""]}>
           {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
           <Image width={550} src={KAPImage01} alt="Image" />
         </Box>
-        <Flex gap={1} w={650} flexDir="column">
+        <Flex mt={[5, 0]} gap={1} w={["90%", 650]} flexDir="column">
           <Text color="orange.500" fontWeight={600}>
             Khudabadi Amil Panchayat
           </Text>
           <Text fontWeight={500} fontSize="4xl">
             Joining The KAP Community
           </Text>
-          <Text fontSize="lg" w={500}>
+          <Text fontSize="lg" w={["95%", 500]}>
             Becoming a KAP member will not only provide you with opportunities
             for networking within your community but also for giving back to
             your society by taking up various initiatives for a cause.
@@ -35,13 +35,13 @@ const KAPSection = () => {
           <Text fontWeight={500} fontSize={"3xl"}>
             Offerings from KAP
           </Text>
-          <Text textAlign="center" w={450}>
+          <Text textAlign="center" w={["90%", 450]}>
             As an official member of KAP, you will have posses various benefits
             like
           </Text>
         </Flex>
         <Flex gap={10} flexDir="column" mt={8}>
-          <Flex gap={10}>
+          <Flex direction={["column", "row"]} gap={10}>
             <TextDisplay
               content="Attending the AGM and connecting with fellow community members from all walks of life"
               icon={FaPeopleGroup}
