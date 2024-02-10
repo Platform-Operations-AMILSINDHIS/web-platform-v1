@@ -16,6 +16,7 @@ const EventCard: React.FC<eventData> = ({ event }) => {
       cursor="pointer"
       color="#1F2937"
       flexDir="column"
+      onClick={() => (window.location.href = `/events/${event?.sys.id}`)}
     >
       <Box
         boxShadow="4px 4px 4px 0px rgba(0, 0, 0, 0.36);"

@@ -17,6 +17,9 @@ const PastEventCard: React.FC<PastEventCardProps> = ({ pastEvent }) => {
       cursor="pointer"
       color="#1F2937"
       flexDir="column"
+      onClick={() =>
+        (window.location.href = `/pastevents/${pastEvent?.sys.id}`)
+      }
     >
       <Image
         boxShadow="4px 4px 4px 0px rgba(0, 0, 0, 0.36);"
