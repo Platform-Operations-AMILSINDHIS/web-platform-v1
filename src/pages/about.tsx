@@ -18,6 +18,7 @@ import CommunityBox from "~/sections/AboutPage/CommunityBox";
 
 import { client } from "~/lib/client";
 import ManagingCommunitySection from "~/sections/AboutPage/ManagingCommunitySection";
+import ManagingCommunityYACSection from "~/sections/AboutPage/ManagingCommunityYACSection";
 
 export const getServerSideProps: GetServerSideProps<{
   induShaniWords: string;
@@ -31,10 +32,16 @@ export const getServerSideProps: GetServerSideProps<{
     memberPosition: string;
     displayPictureUrl: string;
   }[];
+  yacMembers: {
+    yacMemberName: string;
+    yacMemberPosition: string;
+    yacDisplayPictureUrl: string;
+  }[];
 }> = async () => {
   const iswQ = await client.induShaniWordsQuery();
   const foundingMembersQ = await client.officeBearersQuery();
   const otherMembers = await client.membersOfTheManagingCommitteeKapQuery();
+  const yacMembers = await client.membersOfTheManagingCommitteeYacQuery();
 
   // console.log({
   //   induShaniWords: iswQ.induShaniWords?.herWords,
@@ -70,6 +77,14 @@ export const getServerSideProps: GetServerSideProps<{
             displayPictureUrl: ob?.mkapDisplayPicture?.url ?? "",
           })
         ) ?? [],
+      yacMembers:
+        yacMembers.membersOfYoungAmilPanchayatCommunityCollection?.items.map(
+          (ob) => ({
+            yacMemberName: ob?.myacName ?? "",
+            yacMemberPosition: ob?.myacPosition ?? "",
+            yacDisplayPictureUrl: ob?.myacDisplayPicture?.url ?? "",
+          })
+        ) ?? [],
     },
   };
 };
@@ -78,6 +93,7 @@ const AboutPage = ({
   induShaniWords,
   foundingMembers,
   otherMembers,
+  yacMembers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <Layout title="Home">
@@ -98,6 +114,8 @@ const AboutPage = ({
       <CommunityBox />
       <Spacer h="8rem" />
       <ManagingCommunitySection otherMembers={otherMembers} />
+      <Spacer h="8rem" />
+      <ManagingCommunityYACSection yacMembers={yacMembers} />
       <Spacer h="8rem" />
     </Layout>
   );

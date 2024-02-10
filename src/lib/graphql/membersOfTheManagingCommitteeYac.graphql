@@ -1,0 +1,11 @@
+query membersOfTheManagingCommitteeYacQuery {
+  membersOfYoungAmilPanchayatCommunityCollection {
+    items {
+      myacName
+      myacPosition
+      myacDisplayPicture {
+        url
+      }
+    }
+  }
+}
