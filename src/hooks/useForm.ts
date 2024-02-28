@@ -5,6 +5,11 @@ export interface LoginValues {
   password: string;
 }
 
+export interface AdminLoginValues {
+  email: string;
+  password: string;
+}
+
 export interface SignupValues extends LoginValues {
   phonenumber: string;
 }
@@ -39,6 +44,11 @@ export const initialValues: Values = {
 };
 
 export const loginInitialValues: LoginValues = {
+  email: "",
+  password: "",
+};
+
+export const adminInitialLoginValues: AdminLoginValues = {
   email: "",
   password: "",
 };

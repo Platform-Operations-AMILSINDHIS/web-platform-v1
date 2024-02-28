@@ -18,6 +18,11 @@ export const LoginValidation = Yup.object().shape({
   password: Yup.string().required("Enter your password"),
 });
 
+export const AdminLoginValidation = Yup.object().shape({
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  password: Yup.string().required("Enter your password"),
+});
+
 export const RecoveryValidation = Yup.object().shape({
   email: Yup.string().required("Enter email"),
   newPassword: Yup.string().required("Enter new Password"),
