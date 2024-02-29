@@ -13,11 +13,28 @@ export interface userAtomBody {
   age: number;
 }
 
+export interface adminAtomBody {
+  id: string;
+  admin_username: string;
+  admin_password: string;
+  admin_email: string;
+}
+
 export interface userAtomState {
   user: userAtomBody | null;
+}
+
+export interface adminAtomState {
+  admin: adminAtomBody | null;
 }
 
 export const userAtom = atomWithStorage<userAtomState>("userAtomState", {
   user: null,
 });
+
+export const adminAtom = atomWithStorage<adminAtomState>("adminAtomState", {
+  admin: null,
+});
+
 export const useUserAtom = () => useAtom(userAtom);
+export const useAdminAtom = () => useAtom(adminAtom);
