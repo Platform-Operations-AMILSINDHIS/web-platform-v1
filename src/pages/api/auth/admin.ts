@@ -1,8 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import supabase from "./supabase";
-import React from "react";
-import { error } from "console";
-import { adminAtomBody } from "~/lib/atom";
 
 interface AdminLoginHandlerRequest extends NextApiRequest {
   body: {
@@ -26,18 +23,28 @@ const AdminLoginHandler = async (
 
     if (adminData && adminData?.length > 0) {
       if (adminData[0].admin_password != password) {
-        res
-          .status(200)
-          .json({ authenticated: false, authMessage: "Invalid Password" });
+        res.status(200).json({
+          authenticated: false,
+          message: "Invalid Password",
+          type: "password",
+        });
+      } else {
+        res.status(200).json({ authenticated: true, message: "", type: "" });
       }
-      res.status(200).json({ loginValidated: true, message: "" });
     } else {
-      res
-        .status(200)
-        .json({ loginValidated: false, message: "Account does not exist" });
+      res.status(200).json({
+        authenticated: false,
+        message: "Account does not exist",
+        type: "email",
+      });
     }
   } catch (err) {
     console.log(err);
+    res.status(500).json({
+      authenticated: false,
+      message: "Internal Server Error",
+      type: "server",
+    });
   }
 };
 

@@ -1,4 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
+import axios from "axios";
+import { FormikHelpers } from "formik";
 import { useState } from "react";
 import Admin from "~/components/authentication/Admin";
 
@@ -20,8 +22,36 @@ const AdminAuthPage = () => {
     });
   };
 
-  const handleSubmit = (values: AdminLoginValues) => {
-    console.log(values);
+  const handleSubmit = async (
+    values: AdminLoginValues,
+    { setErrors }: FormikHelpers<AdminLoginValues>
+  ) => {
+    try {
+      setSubmitting(true);
+      const adminAuthResponse = await axios.post<{
+        authenticated: boolean;
+        message: string;
+        type: string;
+      }>("/api/auth/admin", {
+        email: values.email,
+        password: values.password,
+      });
+
+      const { authenticated, message, type } = adminAuthResponse.data;
+      console.log(adminAuthResponse.data);
+      if (!authenticated) {
+        type === "email"
+          ? setErrors({ email: message })
+          : type === "password"
+          ? setErrors({ password: message })
+          : {};
+        setSubmitting(false);
+      } else {
+        console.log(values);
+      }
+    } catch {
+      alert("something went wrong");
+    }
   };
 
   return (

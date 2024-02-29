@@ -1,6 +1,6 @@
 import { Button, Checkbox, Flex, Icon, Text } from "@chakra-ui/react";
 import { AiFillLock } from "react-icons/ai";
-import { Form, Formik } from "formik";
+import { Form, Formik, FormikHelpers } from "formik";
 import { LabelledInput } from "../forms";
 import { AdminLoginValidation } from "~/validations/AuthValidations";
 
@@ -9,7 +9,10 @@ import { AdminLoginValues, adminInitialLoginValues } from "~/hooks/useForm";
 import { adminAtomBody } from "~/lib/atom";
 
 interface AdminProps {
-  handleSubmit: (values: AdminLoginValues) => void;
+  handleSubmit: (
+    values: AdminLoginValues,
+    formikHelper: FormikHelpers<AdminLoginValues>
+  ) => void;
   submitting: boolean;
 }
 
