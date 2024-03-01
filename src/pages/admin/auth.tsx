@@ -8,7 +8,7 @@ import { AdminLoginValues, adminInitialLoginValues } from "~/hooks/useForm";
 import { adminAtomBody, useAdminAtom } from "~/lib/atom";
 
 const AdminAuthPage = () => {
-  const [{ admin }, setAdminAtom] = useAdminAtom();
+  const [{}, setAdminAtom] = useAdminAtom();
   const [submitting, setSubmitting] = useState(false);
 
   const handleAdminAtom = (adminObject: adminAtomBody) => {
@@ -29,6 +29,7 @@ const AdminAuthPage = () => {
     try {
       setSubmitting(true);
       const adminAuthResponse = await axios.post<{
+        adminData: adminAtomBody;
         authenticated: boolean;
         message: string;
         type: string;
@@ -37,7 +38,8 @@ const AdminAuthPage = () => {
         password: values.password,
       });
 
-      const { authenticated, message, type } = adminAuthResponse.data;
+      const { authenticated, message, type, adminData } =
+        adminAuthResponse.data;
       console.log(adminAuthResponse.data);
       if (!authenticated) {
         type === "email"
@@ -47,7 +49,10 @@ const AdminAuthPage = () => {
           : {};
         setSubmitting(false);
       } else {
-        console.log(values);
+        setSubmitting(false);
+        console.log("signed In");
+        handleAdminAtom(adminData);
+        window.location.href = "/admin";
       }
     } catch {
       alert("something went wrong");

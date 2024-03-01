@@ -24,15 +24,22 @@ const AdminLoginHandler = async (
     if (adminData && adminData?.length > 0) {
       if (adminData[0].admin_password != password) {
         res.status(200).json({
+          adminData: null,
           authenticated: false,
           message: "Invalid Password",
           type: "password",
         });
       } else {
-        res.status(200).json({ authenticated: true, message: "", type: "" });
+        res.status(200).json({
+          adminData: adminData,
+          authenticated: true,
+          message: "",
+          type: "",
+        });
       }
     } else {
       res.status(200).json({
+        adminData: null,
         authenticated: false,
         message: "Account does not exist",
         type: "email",
@@ -41,6 +48,7 @@ const AdminLoginHandler = async (
   } catch (err) {
     console.log(err);
     res.status(500).json({
+      adminData: null,
       authenticated: false,
       message: "Internal Server Error",
       type: "server",
