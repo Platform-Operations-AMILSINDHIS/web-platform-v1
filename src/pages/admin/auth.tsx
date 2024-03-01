@@ -5,22 +5,11 @@ import { useState } from "react";
 import Admin from "~/components/authentication/Admin";
 
 import { AdminLoginValues, adminInitialLoginValues } from "~/hooks/useForm";
-import { adminAtomBody, useAdminAtom } from "~/lib/atom";
+import { adminAtomBody, adminAtomState, useAdminAtom } from "~/lib/atom";
 
 const AdminAuthPage = () => {
   const [{}, setAdminAtom] = useAdminAtom();
   const [submitting, setSubmitting] = useState(false);
-
-  const handleAdminAtom = (adminObject: adminAtomBody) => {
-    setAdminAtom({
-      admin: {
-        id: adminObject.id,
-        admin_email: adminObject.admin_email,
-        admin_password: adminObject.admin_password,
-        admin_username: adminObject.admin_username,
-      },
-    });
-  };
 
   const handleSubmit = async (
     values: AdminLoginValues,
@@ -29,7 +18,7 @@ const AdminAuthPage = () => {
     try {
       setSubmitting(true);
       const adminAuthResponse = await axios.post<{
-        adminData: adminAtomBody;
+        adminData: adminAtomBody[];
         authenticated: boolean;
         message: string;
         type: string;
@@ -51,7 +40,14 @@ const AdminAuthPage = () => {
       } else {
         setSubmitting(false);
         console.log("signed In");
-        handleAdminAtom(adminData);
+        console.log(adminData[0]);
+        setAdminAtom({
+          admin: {
+            id: adminData[0]?.id,
+            admin_email: adminData[0]?.admin_email,
+            admin_username: adminData[0]?.admin_username,
+          },
+        });
         window.location.href = "/admin";
       }
     } catch {

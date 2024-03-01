@@ -14,10 +14,9 @@ export interface userAtomBody {
 }
 
 export interface adminAtomBody {
-  id: string;
-  admin_username: string;
-  admin_password: string;
-  admin_email: string;
+  id: string | null | undefined;
+  admin_username: string | null | undefined;
+  admin_email: string | null | undefined;
 }
 
 export interface userAtomState {
