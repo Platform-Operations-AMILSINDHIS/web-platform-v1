@@ -9,6 +9,7 @@ const AdminPage = () => {
   return (
     <AdminPageLayout adminUsername={admin?.admin_username as string}>
       <Box>SMD</Box>
+      <Button onClick={handleFetch}>Hi</Button>
     </AdminPageLayout>
   );
 };

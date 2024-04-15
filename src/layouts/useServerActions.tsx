@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { api } from "~/utils/api";
 
 const useServerActions = () => {
+  const [membershipBufferData, setMembershipBufferData] = useState<any[]>([]);
   const { refetch: fetchAllResponses } =
     api.formBuffer.fetchMembershipBuffer.useQuery(undefined, {
       enabled: false,
@@ -8,7 +10,7 @@ const useServerActions = () => {
 
   const handleFetch = async () => {
     const data = await fetchAllResponses();
-    console.log({ data });
+    console.log(data.data);
   };
 
   return { handleFetch };
