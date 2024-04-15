@@ -5,11 +5,13 @@ import { useAdminAtom } from "~/lib/atom";
 
 const AdminPage = () => {
   const [{ admin }] = useAdminAtom();
-  const { handleFetch } = useServerActions();
+  const { handleMemberBufferFetch, handleMatrimonyBufferFetch } =
+    useServerActions();
   return (
     <AdminPageLayout adminUsername={admin?.admin_username as string}>
       <Box>SMD</Box>
-      <Button onClick={handleFetch}>Hi</Button>
+      <Button onClick={handleMemberBufferFetch}>Hi</Button>
+      <Button onClick={handleMatrimonyBufferFetch}>The</Button>
     </AdminPageLayout>
   );
 };
