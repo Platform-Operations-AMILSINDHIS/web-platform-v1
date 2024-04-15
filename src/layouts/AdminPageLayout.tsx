@@ -2,12 +2,16 @@ import { Flex, Text } from "@chakra-ui/react";
 
 interface AdminPageLayoutProps {
   children: React.ReactNode;
+  adminUsername: string | undefined;
 }
 
-const AdminPageLayout: React.FC<AdminPageLayoutProps> = ({ children }) => {
+const AdminPageLayout: React.FC<AdminPageLayoutProps> = ({
+  children,
+  adminUsername,
+}) => {
   return (
     <Flex>
-      <Text>Hi there Layout here for yall</Text>
+      <Text>Hey there, {adminUsername ?? ""}</Text>
       {children}
     </Flex>
   );
