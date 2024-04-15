@@ -31,7 +31,7 @@ export const userAtom = atomWithStorage<userAtomState>("userAtomState", {
   user: null,
 });
 
-export const adminAtom = atom<adminAtomState>({
+export const adminAtom = atomWithStorage<adminAtomState>("adminAtomState", {
   admin: null,
 });
 

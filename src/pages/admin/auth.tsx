@@ -8,7 +8,7 @@ import { AdminLoginValues, adminInitialLoginValues } from "~/hooks/useForm";
 import { adminAtomBody, adminAtomState, useAdminAtom } from "~/lib/atom";
 
 const AdminAuthPage = () => {
-  const [{}, setAdminAtom] = useAdminAtom();
+  const [{ admin }, setAdminAtom] = useAdminAtom();
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (
@@ -41,13 +41,14 @@ const AdminAuthPage = () => {
         setSubmitting(false);
         console.log("signed In");
         console.log(adminData[0]);
-        setAdminAtom({
+        await setAdminAtom({
           admin: {
             id: adminData[0]?.id,
             admin_email: adminData[0]?.admin_email,
             admin_username: adminData[0]?.admin_username,
           },
         });
+        console.log(admin);
         window.location.href = "/admin";
       }
     } catch {
