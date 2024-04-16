@@ -1,4 +1,4 @@
-import { Button, Flex, Spinner } from "@chakra-ui/react";
+import { Box, Button, Flex, Spinner } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import BufferSearch from "~/components/admin/BufferSearch";
 import DropDown from "~/components/admin/DropDown";
@@ -10,13 +10,15 @@ import { useAdminAtom } from "~/lib/atom";
 
 const AdminPage = () => {
   const [{ admin }] = useAdminAtom();
-  const [isLoadingMemBuf, setIsLoadingMemBuf] = useState<boolean>(false);
-
   const {
     handleMemberBufferFetch,
     handleMatrimonyBufferFetch,
     membershipBufferData,
   } = useServerActions();
+
+  const [isLoadingMemBuf, setIsLoadingMemBuf] = useState<boolean>(false);
+  const [isSelected, setIsSelected] = useState<string>("Memberships");
+
   useEffect(() => {
     handleMemberBufferFetch();
   }, []);
@@ -30,15 +32,21 @@ const AdminPage = () => {
   console.log(membershipBufferData);
   return (
     <AdminPageLayout adminUsername={admin?.admin_username as string}>
-      <Flex w="full" mb={8}>
+      <Flex justify="space-between" align="center" w="full" mb={8}>
         <BufferSearch />
-        <DropDown MenuItems={["Memberships", "Matrimony"]} />
+        <DropDown
+          isSelected={isSelected}
+          setIsSelected={setIsSelected}
+          MenuItems={["Memberships", "Matrimony"]}
+        />
       </Flex>
-      {membershipBufferData && membershipBufferData.length > 0 ? (
-        <MembershipBufferTable membershipBufferData={membershipBufferData} />
-      ) : (
-        <Spinner />
-      )}
+      <Box>
+        {membershipBufferData && membershipBufferData.length > 0 ? (
+          <MembershipBufferTable membershipBufferData={membershipBufferData} />
+        ) : (
+          <Spinner />
+        )}
+      </Box>
     </AdminPageLayout>
   );
 };
