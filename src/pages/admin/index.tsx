@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Spinner } from "@chakra-ui/react";
+import { Box, Button, Flex, Spinner, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import BufferSearch from "~/components/admin/BufferSearch";
 import DropDown from "~/components/admin/DropDown";
@@ -40,13 +40,19 @@ const AdminPage = () => {
           MenuItems={["Memberships", "Matrimony"]}
         />
       </Flex>
-      <Box>
-        {membershipBufferData && membershipBufferData.length > 0 ? (
-          <MembershipBufferTable membershipBufferData={membershipBufferData} />
-        ) : (
-          <Spinner />
-        )}
-      </Box>
+      {isSelected === "Memberships" ? (
+        <Box>
+          {membershipBufferData && membershipBufferData.length > 0 ? (
+            <MembershipBufferTable
+              membershipBufferData={membershipBufferData}
+            />
+          ) : (
+            <Spinner />
+          )}
+        </Box>
+      ) : (
+        <Text>Some other Table</Text>
+      )}
     </AdminPageLayout>
   );
 };
