@@ -10,8 +10,8 @@ const AdminPageLayout: React.FC<AdminPageLayoutProps> = ({
   adminUsername,
 }) => {
   return (
-    <Flex h="100vh" w="full">
-      <Flex p={5} flexDir="column">
+    <Flex justify="center" h="100vh" w="full">
+      <Flex gap={5} p={5} flexDir="column">
         <Flex justify="space-between" align="center" w="full">
           <Text fontWeight={600} fontSize="xx-large">
             Hey there,{" "}
@@ -34,7 +34,7 @@ const AdminPageLayout: React.FC<AdminPageLayoutProps> = ({
             </Button>
           </Flex>
         </Flex>
-        <Box>{children}</Box>
+        <Box mt={3}>{children}</Box>
       </Flex>
     </Flex>
   );

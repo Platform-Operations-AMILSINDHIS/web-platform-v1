@@ -1,5 +1,6 @@
-import { Button, Spinner } from "@chakra-ui/react";
+import { Button, Flex, Spinner } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import BufferSearch from "~/components/admin/BufferSearch";
 import MembershipBufferTable from "~/components/admin/MembershipBufferTable";
 import AdminPageLayout from "~/layouts/AdminPageLayout";
 import useServerActions from "~/layouts/useServerActions";
@@ -27,6 +28,9 @@ const AdminPage = () => {
   console.log(membershipBufferData);
   return (
     <AdminPageLayout adminUsername={admin?.admin_username as string}>
+      <Flex mb={8}>
+        <BufferSearch />
+      </Flex>
       {membershipBufferData && membershipBufferData.length > 0 ? (
         <MembershipBufferTable membershipBufferData={membershipBufferData} />
       ) : (
