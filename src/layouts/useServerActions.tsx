@@ -1,8 +1,18 @@
 import { useState } from "react";
+import {
+  KAPMembershipFormValues,
+  YACMembershipFormValues,
+} from "~/types/forms/membership";
 import { api } from "~/utils/api";
 
 const useServerActions = () => {
-  const [membershipBufferData, setMembershipBufferData] = useState<any[]>([]);
+  const [membershipBufferData, setMembershipBufferData] = useState<
+    KAPMembershipFormValues[] | YACMembershipFormValues[]
+  >([]);
+  const [matrimonyBufferData, setMatrimonyBufferData] = useState<any[]>([]);
+
+  const [isLoadingMemBuf, setIsLoadingMemBuf] = useState<boolean>(false);
+
   const { refetch: fetchAllMemberResponses } =
     api.formBuffer.fetchMembershipBuffer.useQuery(undefined, {
       enabled: false,
@@ -13,8 +23,11 @@ const useServerActions = () => {
     });
 
   const handleMemberBufferFetch = async () => {
+    setIsLoadingMemBuf(true);
     const data = await fetchAllMemberResponses();
-    console.log(data.data);
+    await setMembershipBufferData([...(data.data ?? [])]);
+    console.log(membershipBufferData);
+    setIsLoadingMemBuf(false);
   };
 
   const handleMatrimonyBufferFetch = async () => {
@@ -22,7 +35,11 @@ const useServerActions = () => {
     console.log(data?.data);
   };
 
-  return { handleMemberBufferFetch, handleMatrimonyBufferFetch };
+  return {
+    handleMemberBufferFetch,
+    handleMatrimonyBufferFetch,
+    isLoadingMemBuf,
+  };
 };
 
 export default useServerActions;
