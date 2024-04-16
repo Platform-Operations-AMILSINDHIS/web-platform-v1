@@ -24,7 +24,7 @@ const AdminPage = () => {
   }, []);
 
   useEffect(() => {
-    if (membershipBufferData.length > 0) {
+    if (membershipBufferData && membershipBufferData.length > 0) {
       setIsLoadingMemBuf(false);
     }
   }, [membershipBufferData]);
@@ -42,12 +42,12 @@ const AdminPage = () => {
       </Flex>
       {isSelected === "Memberships" ? (
         <Box>
-          {membershipBufferData && membershipBufferData.length > 0 ? (
+          {isLoadingMemBuf ? (
+            <Spinner />
+          ) : (
             <MembershipBufferTable
               membershipBufferData={membershipBufferData}
             />
-          ) : (
-            <Spinner />
           )}
         </Box>
       ) : (
