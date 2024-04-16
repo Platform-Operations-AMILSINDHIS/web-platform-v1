@@ -15,11 +15,7 @@ const TableLayout: React.FC<TableLayoutProps> = ({
         <Thead>
           <Tr>
             {tableHeaders.map((column_name, index) => {
-              return (
-                <Th px={10} key={index}>
-                  {column_name}
-                </Th>
-              );
+              return <Th key={index}>{column_name}</Th>;
             })}
           </Tr>
         </Thead>

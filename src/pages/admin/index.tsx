@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Button, Spinner } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import MembershipBufferTable from "~/components/admin/MembershipBufferTable";
 import AdminPageLayout from "~/layouts/AdminPageLayout";
@@ -27,7 +27,11 @@ const AdminPage = () => {
   console.log(membershipBufferData);
   return (
     <AdminPageLayout adminUsername={admin?.admin_username as string}>
-      <MembershipBufferTable />
+      {membershipBufferData && membershipBufferData.length > 0 ? (
+        <MembershipBufferTable membershipBufferData={membershipBufferData} />
+      ) : (
+        <Spinner />
+      )}
     </AdminPageLayout>
   );
 };

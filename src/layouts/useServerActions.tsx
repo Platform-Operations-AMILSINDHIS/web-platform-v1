@@ -3,11 +3,12 @@ import {
   KAPMembershipFormValues,
   YACMembershipFormValues,
 } from "~/types/forms/membership";
+import { MembershipBufferDataType } from "~/types/tables/membershipBuffer";
 import { api } from "~/utils/api";
 
 const useServerActions = () => {
   const [membershipBufferData, setMembershipBufferData] = useState<
-    KAPMembershipFormValues[] | YACMembershipFormValues[]
+    MembershipBufferDataType[]
   >([]);
   const [matrimonyBufferData, setMatrimonyBufferData] = useState<any[]>([]);
 
