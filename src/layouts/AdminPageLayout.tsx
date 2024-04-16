@@ -12,7 +12,6 @@ const AdminPageLayout: React.FC<AdminPageLayoutProps> = ({
 }) => {
   return (
     <Flex h="100vh" w="full">
-      <SideBarNav />
       <Flex p={5} flexDir="column">
         <Text fontWeight={600} fontSize="xx-large">
           Hey there,{" "}
