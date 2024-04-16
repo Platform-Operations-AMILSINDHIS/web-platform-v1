@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MembershipBufferDataType } from "~/types/tables/membershipBuffer";
+import { MembershipBufferDataType } from "~/types/tables/dataBuffer";
 import { api } from "~/utils/api";
 
 const useServerActions = () => {

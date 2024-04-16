@@ -1,10 +1,6 @@
 import { Button, Td, Tr } from "@chakra-ui/react";
 import TableLayout from "~/layouts/TableLayout";
-import {
-  KAPMembershipFormValues,
-  YACMembershipFormValues,
-} from "~/types/forms/membership";
-import { MembershipBufferDataType } from "~/types/tables/membershipBuffer";
+import { MembershipBufferDataType } from "~/types/tables/dataBuffer";
 import { formatCreatedTime } from "~/utils/helper";
 import { formMembershipBufferDataTableHeaders } from "~/utils/tableHeaders";
 
