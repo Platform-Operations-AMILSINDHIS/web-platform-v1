@@ -17,7 +17,7 @@ const MembershipBufferTable: React.FC<MembershipBufferTableProps> = ({
         return (
           <Tr fontSize="sm" key={index}>
             <Td>{index + 1}</Td>
-            <Td>{`${buffer?.user_id.substring(0, 25)}...`}</Td>
+            <Td>{`${buffer?.user_id.substring(0, 20)}...`}</Td>
             <Td>{buffer?.formType}</Td>
             <Td>{formatCreatedTime(buffer?.created_at)}</Td>
             <Td>{`${buffer?.submission.personalInfo.firstName} ${buffer?.submission.personalInfo.lastName}`}</Td>

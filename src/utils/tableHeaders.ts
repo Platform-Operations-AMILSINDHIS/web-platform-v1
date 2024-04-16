@@ -9,4 +9,18 @@ const formMembershipBufferDataTableHeaders = [
   "",
 ];
 
-export { formMembershipBufferDataTableHeaders };
+const formMatrimonyBufferDataTableHeaders = [
+  "Sno.",
+  "User ID",
+  "Type",
+  "Registered At",
+  "Name",
+  "Email ID",
+  "Mobile no.",
+  "",
+];
+
+export {
+  formMembershipBufferDataTableHeaders,
+  formMatrimonyBufferDataTableHeaders,
+};
