@@ -6,7 +6,7 @@ const formMembershipBufferDataTableHeaders = [
   "Name",
   "Email ID",
   "Mobile no.",
-  "Actions",
+  "",
 ];
 
 export { formMembershipBufferDataTableHeaders };

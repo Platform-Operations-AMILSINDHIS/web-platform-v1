@@ -6,6 +6,7 @@ const useServerActions = () => {
   const [membershipBufferData, setMembershipBufferData] = useState<
     MembershipBufferDataType[]
   >([]);
+
   const [matrimonyBufferData, setMatrimonyBufferData] = useState<any[]>([]);
 
   const { refetch: fetchAllMemberResponses } =

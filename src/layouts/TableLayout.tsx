@@ -10,8 +10,8 @@ const TableLayout: React.FC<TableLayoutProps> = ({
   tableHeaders,
 }) => {
   return (
-    <TableContainer mt={5}>
-      <Table>
+    <TableContainer mt={5} overflowX="auto">
+      <Table width="100%" minWidth="unset">
         <Thead>
           <Tr>
             {tableHeaders.map((column_name, index) => {
