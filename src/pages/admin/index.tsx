@@ -10,8 +10,6 @@ const AdminPage = () => {
   return (
     <AdminPageLayout adminUsername={admin?.admin_username as string}>
       <Box>SMD</Box>
-      <Button onClick={handleMemberBufferFetch}>Hi</Button>
-      <Button onClick={handleMatrimonyBufferFetch}>The</Button>
     </AdminPageLayout>
   );
 };
