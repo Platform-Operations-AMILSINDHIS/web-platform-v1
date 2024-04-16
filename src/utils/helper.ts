@@ -69,3 +69,17 @@ export const createId = init({
 export const toWords = new ToWords({
   localeCode: "en-IN",
 });
+
+export const formatCreatedTime = (dateString: string) => {
+  const date = new Date(dateString);
+  const readableDate = date.toLocaleDateString("en-us", {
+    timeZone: "UTC",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  return readableDate;
+};

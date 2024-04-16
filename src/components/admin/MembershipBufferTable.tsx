@@ -5,6 +5,7 @@ import {
   YACMembershipFormValues,
 } from "~/types/forms/membership";
 import { MembershipBufferDataType } from "~/types/tables/membershipBuffer";
+import { formatCreatedTime } from "~/utils/helper";
 import { formMembershipBufferDataTableHeaders } from "~/utils/tableHeaders";
 
 interface MembershipBufferTableProps {
@@ -22,7 +23,7 @@ const MembershipBufferTable: React.FC<MembershipBufferTableProps> = ({
             <Td>{index + 1}</Td>
             <Td>{buffer?.user_id}</Td>
             <Td>{buffer?.formType}</Td>
-            <Td>{buffer?.created_at}</Td>
+            <Td>{formatCreatedTime(buffer?.created_at)}</Td>
             <Td>{`${buffer?.submission.personalInfo.firstName} ${buffer?.submission.personalInfo.lastName}`}</Td>
             <Td>{buffer?.submission.personalInfo.emailId}</Td>
             <Td>{buffer?.submission.personalInfo.mobileNumber}</Td>
