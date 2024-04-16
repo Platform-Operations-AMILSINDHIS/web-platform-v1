@@ -1,8 +1,4 @@
-import { useEffect, useState } from "react";
-import {
-  KAPMembershipFormValues,
-  YACMembershipFormValues,
-} from "~/types/forms/membership";
+import { useState } from "react";
 import { MembershipBufferDataType } from "~/types/tables/membershipBuffer";
 import { api } from "~/utils/api";
 
