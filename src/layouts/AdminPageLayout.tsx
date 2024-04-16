@@ -1,5 +1,4 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
-import SideBarNav from "~/components/admin/SideBarNav";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 
 interface AdminPageLayoutProps {
   children: React.ReactNode;
@@ -13,16 +12,28 @@ const AdminPageLayout: React.FC<AdminPageLayoutProps> = ({
   return (
     <Flex h="100vh" w="full">
       <Flex p={5} flexDir="column">
-        <Text fontWeight={600} fontSize="xx-large">
-          Hey there,{" "}
-          <span
-            style={{
-              color: "#FF4D00",
-            }}
-          >
-            {adminUsername ?? ""}
-          </span>
-        </Text>
+        <Flex justify="space-between" align="center" w="full">
+          <Text fontWeight={600} fontSize="xx-large">
+            Hey there,{" "}
+            <span
+              style={{
+                color: "#FF4D00",
+              }}
+            >
+              {adminUsername ?? ""}
+            </span>
+          </Text>
+          <Flex gap={3}>
+            <Button color="white" bg="#FF4D00" variant="none">
+              {" "}
+              Manage Access
+            </Button>
+            <Button color="#FF4D00" variant="none">
+              {" "}
+              Sign Out
+            </Button>
+          </Flex>
+        </Flex>
         <Box>{children}</Box>
       </Flex>
     </Flex>
