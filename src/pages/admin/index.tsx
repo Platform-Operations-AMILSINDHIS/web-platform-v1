@@ -35,7 +35,7 @@ const AdminPage = () => {
 
   useEffect(() => {
     if (matrimonyBufferData && matrimonyBufferData.length > 0) {
-      setIsLoadingMemBuf(false);
+      setIsLoadingMatBuf(false);
     }
   }, [matrimonyBufferData]);
 
