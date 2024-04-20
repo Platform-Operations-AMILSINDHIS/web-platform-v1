@@ -29,6 +29,9 @@ const MembershipBufferTable: React.FC<MembershipBufferTableProps> = ({
                 color="gray.500"
                 variant="none"
                 size="small"
+                onClick={() => {
+                  window.location.href = `/admin/${buffer?.user_id}`;
+                }}
               >
                 View Profile
               </Button>

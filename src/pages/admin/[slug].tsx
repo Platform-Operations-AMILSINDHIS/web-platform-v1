@@ -1,9 +1,12 @@
-import { useRouter } from "next/router";
-import Layout from "~/components/layout";
+import { Text } from "@chakra-ui/react";
+import ProfileViewLayout from "~/layouts/ProfileViewLayout";
 
 const SlugPage = () => {
-  const router = useRouter();
-  return <Layout>ewe</Layout>;
+  return (
+    <ProfileViewLayout>
+      <Text>Hi there welcome</Text>
+    </ProfileViewLayout>
+  );
 };
 
 export default SlugPage;
