@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { KAPMembershipPDF } from "~/server/pdfs/kap-membership";
 import { KAPMembershipFormValues } from "~/types/forms/membership";
 import dynamic from "next/dynamic";
