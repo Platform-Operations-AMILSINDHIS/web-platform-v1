@@ -5,7 +5,8 @@ import { useState } from "react";
 import Admin from "~/components/authentication/Admin";
 
 import { AdminLoginValues, adminInitialLoginValues } from "~/hooks/useForm";
-import { adminAtomBody, adminAtomState, useAdminAtom } from "~/lib/atom";
+import { useAdminAtom } from "~/lib/atom";
+import { adminAtomBody } from "~/types/atoms/admin";
 
 const AdminAuthPage = () => {
   const [{ admin }, setAdminAtom] = useAdminAtom();

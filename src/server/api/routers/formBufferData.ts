@@ -1,6 +1,9 @@
 import supabase from "~/pages/api/auth/supabase";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
+import * as Yup from "yup";
+import { string, z } from "zod";
+
 const formBufferData = createTRPCRouter({
   fetchMembershipBuffer: publicProcedure.query(async () => {
     try {
@@ -47,6 +50,27 @@ const formBufferData = createTRPCRouter({
       throw new Error("Failed to fetch form buffer data");
     }
   }),
+
+  fetchUserMembershipSubmission: publicProcedure
+    .input(Yup.object({ user_id: Yup.string() }))
+    .query(async (input) => {
+      try {
+        const user_id = input.input.user_id;
+        const { data: userFormSubmission, error: fetchSubmissionError } =
+          await supabase
+            .from("form_buffer")
+            .select("submission")
+            .eq("user_id", user_id);
+
+        if (fetchSubmissionError) throw fetchSubmissionError;
+
+        return {
+          DB_submission_response: userFormSubmission,
+        };
+      } catch (err) {
+        console.log(err);
+      }
+    }),
 });
 
 export default formBufferData;
