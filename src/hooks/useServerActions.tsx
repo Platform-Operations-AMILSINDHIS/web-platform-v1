@@ -13,9 +13,11 @@ const useServerActions = () => {
   const [matrimonyBufferData, setMatrimonyBufferData] = useState<
     MatrimonyBufferDataType[]
   >([]);
-
   const [userMembershipSubmission, setUserMembershipSubission] =
     useState<KAPMembershipFormPDFValues>();
+
+  const fetchUserSubmissionMut =
+    api.formBuffer.fetchUserMembershipSubmission.useMutation();
 
   const { refetch: fetchAllMemberResponses } =
     api.formBuffer.fetchMembershipBuffer.useQuery(undefined, {
@@ -36,9 +38,18 @@ const useServerActions = () => {
     await setMatrimonyBufferData([...(data.data ?? [])]);
   };
 
+  const handleFetchUserSubmission = async (user_id: string) => {
+    const data = await fetchUserSubmissionMut.mutateAsync({
+      user_id: user_id,
+    });
+    const response = await data?.DB_submission_response;
+    console.log({ response });
+  };
+
   return {
     handleMemberBufferFetch,
     handleMatrimonyBufferFetch,
+    handleFetchUserSubmission,
     membershipBufferData,
     matrimonyBufferData,
   };
