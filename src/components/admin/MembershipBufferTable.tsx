@@ -30,7 +30,7 @@ const MembershipBufferTable: React.FC<MembershipBufferTableProps> = ({
                 variant="none"
                 size="small"
                 onClick={() => {
-                  window.location.href = `/admin/${buffer?.user_id}`;
+                  window.location.href = `/admin/${buffer?.user_id}.${buffer?.formType}`;
                 }}
               >
                 View Profile
