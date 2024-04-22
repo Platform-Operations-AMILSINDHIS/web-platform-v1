@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { KAPMembershipFormPDFValues } from "~/types/pdfs/kap-membership";
 import {
   MatrimonyBufferDataType,
   MembershipBufferDataType,
@@ -12,6 +13,9 @@ const useServerActions = () => {
   const [matrimonyBufferData, setMatrimonyBufferData] = useState<
     MatrimonyBufferDataType[]
   >([]);
+
+  const [userMembershipSubmission, setUserMembershipSubission] =
+    useState<KAPMembershipFormPDFValues>();
 
   const { refetch: fetchAllMemberResponses } =
     api.formBuffer.fetchMembershipBuffer.useQuery(undefined, {

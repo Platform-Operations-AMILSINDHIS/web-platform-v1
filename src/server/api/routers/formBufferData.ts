@@ -53,9 +53,9 @@ const formBufferData = createTRPCRouter({
 
   fetchUserMembershipSubmission: publicProcedure
     .input(Yup.object({ user_id: Yup.string() }))
-    .query(async (input) => {
+    .mutation(async ({ input }) => {
       try {
-        const user_id = input.input.user_id;
+        const { user_id } = input;
         const { data: userFormSubmission, error: fetchSubmissionError } =
           await supabase
             .from("form_buffer")
