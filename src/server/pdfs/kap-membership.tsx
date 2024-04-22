@@ -9,6 +9,7 @@ import {
 } from "@react-pdf/renderer";
 
 import type { KAPMembershipFormValues } from "~/types/forms/membership";
+import { formatDate, formatPDFAge, formatPDFDate } from "~/utils/helper";
 
 interface KAPMembershipFormPDFProps {
   membershipNumber: string;
@@ -365,8 +366,7 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
             <View style={{ ...styles.rightTextWithBorder, width: "15%" }}>
               <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
                 {/* To be fixed later  */}
-                {/* {kapForm?.personalInfo?.dateOfBirth.toLocaleDateString("en")} */}
-                Date will be here soon
+                {formatPDFDate(kapForm?.personalInfo?.dateOfBirth)}
               </Text>
             </View>
             <View
@@ -381,13 +381,7 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
             </View>
             <View style={{ ...styles.rightTextWithBorder, width: "15%" }}>
               <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                {/* To be fixed later  */}
-                {/* {Math.floor(
-                  (new Date().getTime() -
-                    kapForm.personalInfo.dateOfBirth.getTime()) /
-                    (1000 * 60 * 60 * 24 * 365)
-                )} */}
-                Time will be here soon
+                {formatPDFAge(kapForm?.personalInfo?.dateOfBirth)}
               </Text>
             </View>
           </View>

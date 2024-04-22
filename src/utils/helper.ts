@@ -83,3 +83,32 @@ export const formatCreatedTime = (dateString: string) => {
 
   return readableDate;
 };
+
+export const formatPDFDate = (dateString: Date) => {
+  const date = new Date(dateString); // Parse the date string
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Add leading zero for single-digit months
+  const day = String(date.getDate()).padStart(2, "0"); // Add leading zero for single-digit days
+
+  return `${day}/${month}/${year}`;
+};
+
+export const formatPDFAge = (dateString: Date) => {
+  const today = new Date();
+  const birthDate = new Date(dateString);
+  const birthYear = birthDate.getFullYear();
+  const birthMonth = birthDate.getMonth();
+  const birthDay = birthDate.getDate();
+
+  let age = today.getFullYear() - birthYear;
+
+  // Adjust age if birthday hasn't happened this year yet
+  if (
+    today.getMonth() < birthMonth ||
+    (today.getMonth() === birthMonth && today.getDate() < birthDay)
+  ) {
+    age--;
+  }
+
+  return age;
+};
