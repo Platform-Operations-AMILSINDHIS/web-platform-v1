@@ -38,12 +38,16 @@ const useServerActions = () => {
     await setMatrimonyBufferData([...(data.data ?? [])]);
   };
 
-  const handleFetchUserSubmission = async (user_id: string) => {
+  const handleFetchUserSubmission = async (
+    user_id: string,
+    formType: string
+  ) => {
     const data = await fetchUserSubmissionMut.mutateAsync({
       user_id: user_id,
+      formType: formType,
     });
     const response = await data?.DB_submission_response;
-    console.log({ response });
+    return response;
   };
 
   return {
