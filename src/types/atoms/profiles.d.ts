@@ -1,10 +1,10 @@
-interface profileBody {
+interface profileAtomBody {
   user_id: string | null | undefined;
   formType: string | null | undefined;
 }
 
-interface profileState {
-  selected_profile: profileBody | null;
+interface profileAtomState {
+  selected_profile: profileAtomBody | null;
 }
 
-export { profileBody, profileBody };
+export { profileAtomBody, profileAtomState };

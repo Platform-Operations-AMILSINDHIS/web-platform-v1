@@ -1,5 +1,6 @@
 import { Button, Td, Tr } from "@chakra-ui/react";
 import TableLayout from "~/layouts/TableLayout";
+import { useProfileAtom } from "~/lib/atom";
 import { MembershipBufferDataType } from "~/types/tables/dataBuffer";
 import { formatCreatedTime } from "~/utils/helper";
 import { formMembershipBufferDataTableHeaders } from "~/utils/tableHeaders";
@@ -11,6 +12,7 @@ interface MembershipBufferTableProps {
 const MembershipBufferTable: React.FC<MembershipBufferTableProps> = ({
   membershipBufferData,
 }) => {
+  const [, setProfileAtom] = useProfileAtom();
   return (
     <TableLayout tableHeaders={formMembershipBufferDataTableHeaders}>
       {membershipBufferData.map((buffer, index) => {
@@ -31,6 +33,12 @@ const MembershipBufferTable: React.FC<MembershipBufferTableProps> = ({
                 size="small"
                 onClick={() => {
                   window.location.href = `/admin/${buffer?.user_id}.${buffer?.formType}`;
+                  setProfileAtom({
+                    selected_profile: {
+                      user_id: buffer?.user_id as string,
+                      formType: buffer?.formType as string,
+                    },
+                  });
                 }}
               >
                 View Profile
