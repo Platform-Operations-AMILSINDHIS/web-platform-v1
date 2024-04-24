@@ -2,6 +2,7 @@ import supabase from "~/pages/api/auth/supabase";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 import * as Yup from "yup";
+import { sendDescisionMail } from "~/server/mail";
 
 const formBufferData = createTRPCRouter({
   fetchMembershipBuffer: publicProcedure.query(async () => {
@@ -73,14 +74,26 @@ const formBufferData = createTRPCRouter({
     }),
 
   rejectUserApplication: publicProcedure
-    .input(Yup.object({ user_id: Yup.string() }))
+    .input(
+      Yup.object({
+        user_id: Yup.string(),
+        formType: Yup.string(),
+        to: Yup.string(),
+      })
+    )
     .mutation(async ({ input }) => {
       try {
-        const user_id = input.user_id;
+        const { user_id, formType, to } = input;
         const { data: RemoveRowResponse, error: RemoveRowResponseError } =
           await supabase.from("form_buffer").delete().eq("user_id", user_id);
 
         if (RemoveRowResponseError) throw RemoveRowResponseError;
+
+        await sendDescisionMail({
+          formType: formType ?? "",
+          descision: false,
+          to: to ?? "",
+        });
 
         return {
           DB_response: RemoveRowResponse,
