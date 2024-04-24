@@ -102,6 +102,33 @@ const formBufferData = createTRPCRouter({
         console.log(err);
       }
     }),
+
+  acceptUserApplication: publicProcedure
+    .input(
+      Yup.object({
+        user_id: Yup.string(),
+        formType: Yup.string(),
+        to: Yup.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      try {
+        const { formType, to, user_id } = input;
+        const { data, error } = await supabase
+          .from("general_accounts")
+          .select(`${formType}_member`);
+
+        if (error) throw error;
+
+        return {
+          server_response: data,
+          user_id,
+          to,
+        };
+      } catch (err) {
+        console.log(err);
+      }
+    }),
 });
 
 export default formBufferData;
