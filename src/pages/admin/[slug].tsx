@@ -45,7 +45,7 @@ const SlugPage = () => {
     <>
       {submissionValues ? (
         <ProfileViewLayout submission={submissionValues}>
-          <Text>Hi there welcome</Text>
+          <Text>Hi</Text>
         </ProfileViewLayout>
       ) : (
         <Spinner />

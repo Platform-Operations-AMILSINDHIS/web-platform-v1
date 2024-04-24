@@ -23,6 +23,7 @@ const ProfileViewLayout: React.FC<ProfileViewLayoutProps> = ({
         <PDFViewer width="100%" height="100%">
           <KAPMembershipPDF membershipNumber="#12345" kapForm={submission} />
         </PDFViewer>
+        {children}
       </Box>
     </Flex>
   );
