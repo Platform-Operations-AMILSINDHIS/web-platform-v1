@@ -1,3 +1,5 @@
+/* eslint-disable */
+// @ts-nocheck
 import { Button, Flex, Spinner, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";

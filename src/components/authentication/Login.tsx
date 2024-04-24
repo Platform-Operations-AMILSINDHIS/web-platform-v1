@@ -6,7 +6,7 @@ import { Form, Formik, FormikHelpers } from "formik";
 import axios from "axios";
 import { LoginValidation } from "~/validations/AuthValidations";
 import { useUserAtom } from "~/lib/atom";
-import type { userAtomBody } from "~/lib/atom";
+import { userAtomBody } from "~/types/atoms/users";
 
 interface LoginProps {
   setCloseModal: (input: boolean) => void;

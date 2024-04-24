@@ -34,12 +34,14 @@ const useServerActions = () => {
 
   const handleMemberBufferFetch = async () => {
     const data = await fetchAllMemberResponses();
-    await setMembershipBufferData([...(data.data ?? [])]);
+    setMembershipBufferData(data.data ?? []);
   };
 
   const handleMatrimonyBufferFetch = async () => {
     const data = await fetchAllMatrimonyResponses();
-    await setMatrimonyBufferData([...(data.data ?? [])]);
+    if (data.data && data.data.length > 0) {
+      setMatrimonyBufferData(data.data);
+    }
   };
 
   const handleFetchUserSubmission = async (
@@ -50,7 +52,7 @@ const useServerActions = () => {
       user_id: user_id,
       formType: formType,
     });
-    const response = await data?.DB_submission_response;
+    const response = data?.DB_submission_response;
     return response;
   };
 

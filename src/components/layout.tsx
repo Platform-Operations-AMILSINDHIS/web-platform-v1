@@ -1,11 +1,11 @@
 import Head from "next/head";
-import Navigation from "./navigation";
 
 import { satoshi } from "../utils/fonts";
 import { Box, Flex } from "@chakra-ui/react";
 import { navigation } from "../constants/LandingConstants.json";
 import { useRouter } from "next/router";
 import Footer from "./Footer";
+import Navigation from "./Navigation";
 
 const Layout: React.FC<{
   title?: string;

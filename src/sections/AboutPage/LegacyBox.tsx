@@ -20,7 +20,7 @@ const LegacyBox = () => {
         From Khudabad to Mumbai, the journey of the Amils has been
         ever-evolving. After the partition of India in 1947, pioneering Amils
         came together in Mumbai to form the Khudabadi Amil Panchayat in 1952 to
-        preserve the community's identity and heritage. Over the years, the
+        preserve the community&apos;s identity and heritage. Over the years, the
         Panchayat has engaged in socio-economic activities, supporting the ones
         in need through housing, financial aid, and educational assistance.
       </Text>

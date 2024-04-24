@@ -1,6 +1,6 @@
 import { Flex, Box, Text, Grid } from "@chakra-ui/react";
 
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import FeatureDisplay from "~/components/members/FeatureDisplay";
 
 import YacSectionPic01 from "../../../public/images/membership/KAPImage02.svg";
@@ -51,7 +51,11 @@ const YacSection = () => {
         <Flex my={5} justify="space-between">
           {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
           <Box display={["none", "block"]}>
-            <Image alt="yac_illustration" width={400} src={YAC_illustration} />
+            <Image
+              alt="yac_illustration"
+              width={400}
+              src={YAC_illustration as StaticImageData}
+            />
           </Box>
           <Grid templateColumns={["1fr", "repeat(2, 1fr)"]} gap={10}>
             <FeatureDisplay

@@ -4,19 +4,61 @@ import { Form, Formik, FormikHelpers } from "formik";
 import { LabelledInput } from "../forms";
 import { AdminLoginValidation } from "~/validations/AuthValidations";
 
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import { AdminLoginValues, adminInitialLoginValues } from "~/hooks/useForm";
-import { adminAtomBody } from "~/lib/atom";
+import { useAdminAtom } from "~/lib/atom";
+import type { adminAtomBody } from "~/types/atoms/admin";
 
-interface AdminProps {
-  handleSubmit: (
+const Admin: React.FC = () => {
+  const [{ admin }, setAdminAtom] = useAdminAtom();
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (
     values: AdminLoginValues,
-    formikHelper: FormikHelpers<AdminLoginValues>
-  ) => void;
-  submitting: boolean;
-}
+    { setErrors }: FormikHelpers<AdminLoginValues>
+  ) => {
+    try {
+      setSubmitting(true);
+      const adminAuthResponse = await axios.post<{
+        adminData: adminAtomBody[];
+        authenticated: boolean;
+        message: string;
+        type: string;
+      }>("/api/auth/admin", {
+        email: values.email,
+        password: values.password,
+      });
 
-const Admin: React.FC<AdminProps> = ({ handleSubmit, submitting }) => {
+      const { authenticated, message, type, adminData } =
+        adminAuthResponse.data;
+      console.log(adminAuthResponse.data);
+      if (!authenticated) {
+        type === "email"
+          ? setErrors({ email: message })
+          : type === "password"
+          ? setErrors({ password: message })
+          : {};
+        setSubmitting(false);
+      } else {
+        setSubmitting(false);
+        console.log("signed In");
+        console.log(adminData[0]);
+        setAdminAtom({
+          admin: {
+            id: adminData[0]?.id,
+            admin_email: adminData[0]?.admin_email,
+            admin_username: adminData[0]?.admin_username,
+          },
+        });
+        console.log(admin);
+        window.location.href = "/admin";
+      }
+    } catch {
+      alert("something went wrong");
+    }
+  };
+
   return (
     <Formik
       validationSchema={AdminLoginValidation}

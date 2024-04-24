@@ -3,6 +3,10 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 
 import * as Yup from "yup";
 import { sendDescisionMail } from "~/server/mail";
+import {
+  MatrimonyBufferDataType,
+  MembershipBufferDataType,
+} from "~/types/tables/dataBuffer";
 
 const formBufferData = createTRPCRouter({
   fetchMembershipBuffer: publicProcedure.query(async () => {
@@ -17,13 +21,10 @@ const formBufferData = createTRPCRouter({
 
       if (formMembershipBufferDataError) throw formMembershipBufferDataError;
 
-      return formMembershipBufferData; // Return the fetched data
-    } catch (error: any) {
+      return formMembershipBufferData as MembershipBufferDataType[]; // Return the fetched data
+    } catch (err) {
       // Handle errors here
-      console.error(
-        "Error fetching membership form buffer data:",
-        error.message
-      );
+      console.error("Error fetching membership form buffer data:", err);
       throw new Error("Failed to fetch form buffer data");
     }
   }),
@@ -31,22 +32,19 @@ const formBufferData = createTRPCRouter({
   fetchMatrimonyBuffer: publicProcedure.query(async () => {
     try {
       const {
-        data: formMembershipBufferData,
-        error: formMembershipBufferDataError,
+        data: formMatrimonyBufferData,
+        error: formMatrimonyBufferDataError,
       } = await supabase
         .from("form_buffer")
         .select("*")
         .in("formType", ["MATRIMONY"]);
 
-      if (formMembershipBufferDataError) throw formMembershipBufferDataError;
+      if (formMatrimonyBufferDataError) throw formMatrimonyBufferDataError;
 
-      return formMembershipBufferData; // Return the fetched data
-    } catch (error: any) {
+      return formMatrimonyBufferData as MatrimonyBufferDataType[]; // Return the fetched data
+    } catch (err) {
       // Handle errors here
-      console.error(
-        "Error fetching membership form buffer data:",
-        error.message
-      );
+      console.error("Error fetching membership form buffer data:", err);
       throw new Error("Failed to fetch form buffer data");
     }
   }),

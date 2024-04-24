@@ -17,7 +17,8 @@ import React from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { MdOutlinePassword, MdOutlineLogout } from "react-icons/md";
 import { FaTrash } from "react-icons/fa6";
-import { useUserAtom, userAtomBody } from "~/lib/atom";
+import { useUserAtom } from "~/lib/atom";
+import type { userAtomBody } from "~/types/atoms/users";
 import DeleteModal from "../authentication/DeleteModal";
 
 interface AccountDisplayProps {

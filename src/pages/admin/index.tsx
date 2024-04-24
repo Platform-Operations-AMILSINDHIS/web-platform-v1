@@ -23,8 +23,12 @@ const AdminPage = () => {
   const [isSelected, setIsSelected] = useState<string>("Memberships");
 
   useEffect(() => {
-    handleMemberBufferFetch();
-    handleMatrimonyBufferFetch();
+    async function f() {
+      await handleMemberBufferFetch();
+      await handleMatrimonyBufferFetch();
+    }
+
+    f().catch(console.error);
   }, []);
 
   useEffect(() => {
@@ -41,7 +45,7 @@ const AdminPage = () => {
 
   console.log(membershipBufferData);
   return (
-    <AdminPageLayout adminUsername={admin?.admin_username as string}>
+    <AdminPageLayout adminUsername={admin?.admin_username ?? ""}>
       <Flex justify="space-between" align="center" w="full" mb={8}>
         <BufferSearch />
         <DropDown

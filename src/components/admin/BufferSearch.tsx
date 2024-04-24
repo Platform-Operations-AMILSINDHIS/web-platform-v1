@@ -11,9 +11,9 @@ import {
 import { BiSearch } from "react-icons/bi";
 import { PiCommand } from "react-icons/pi";
 
-interface BufferSearchProps {}
+// interface BufferSearchProps {}
 
-const BufferSearch: React.FC<BufferSearchProps> = ({}) => {
+const BufferSearch: React.FC = ({}) => {
   return (
     <InputGroup maxW={400}>
       <InputLeftElement>

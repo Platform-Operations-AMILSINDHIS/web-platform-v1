@@ -22,7 +22,10 @@ const AdminLoginHandler = async (
     if (authError) throw authError;
 
     if (adminData && adminData?.length > 0) {
-      if (adminData[0].admin_password != password) {
+      if (
+        (adminData[0] as { admin_password: string })?.admin_password ??
+        "" !== password
+      ) {
         res.status(200).json({
           adminData: null,
           authenticated: false,

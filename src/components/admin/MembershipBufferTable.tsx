@@ -35,8 +35,8 @@ const MembershipBufferTable: React.FC<MembershipBufferTableProps> = ({
                   window.location.href = `/admin/${buffer?.user_id}.${buffer?.formType}`;
                   setProfileAtom({
                     selected_profile: {
-                      user_id: buffer?.user_id as string,
-                      formType: buffer?.formType as string,
+                      user_id: buffer?.user_id,
+                      formType: buffer?.formType,
                     },
                   });
                 }}

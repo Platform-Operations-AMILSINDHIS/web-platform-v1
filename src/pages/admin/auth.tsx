@@ -9,54 +9,6 @@ import { useAdminAtom } from "~/lib/atom";
 import { adminAtomBody } from "~/types/atoms/admin";
 
 const AdminAuthPage = () => {
-  const [{ admin }, setAdminAtom] = useAdminAtom();
-  const [submitting, setSubmitting] = useState(false);
-
-  const handleSubmit = async (
-    values: AdminLoginValues,
-    { setErrors }: FormikHelpers<AdminLoginValues>
-  ) => {
-    try {
-      setSubmitting(true);
-      const adminAuthResponse = await axios.post<{
-        adminData: adminAtomBody[];
-        authenticated: boolean;
-        message: string;
-        type: string;
-      }>("/api/auth/admin", {
-        email: values.email,
-        password: values.password,
-      });
-
-      const { authenticated, message, type, adminData } =
-        adminAuthResponse.data;
-      console.log(adminAuthResponse.data);
-      if (!authenticated) {
-        type === "email"
-          ? setErrors({ email: message })
-          : type === "password"
-          ? setErrors({ password: message })
-          : {};
-        setSubmitting(false);
-      } else {
-        setSubmitting(false);
-        console.log("signed In");
-        console.log(adminData[0]);
-        await setAdminAtom({
-          admin: {
-            id: adminData[0]?.id,
-            admin_email: adminData[0]?.admin_email,
-            admin_username: adminData[0]?.admin_username,
-          },
-        });
-        console.log(admin);
-        window.location.href = "/admin";
-      }
-    } catch {
-      alert("something went wrong");
-    }
-  };
-
   return (
     <Flex h="100vh" w="100vw" justify="center" align="center">
       <Box
@@ -66,7 +18,7 @@ const AdminAuthPage = () => {
         borderColor="gray.200"
         w={500}
       >
-        <Admin handleSubmit={handleSubmit} submitting={submitting} />
+        <Admin />
       </Box>
     </Flex>
   );
