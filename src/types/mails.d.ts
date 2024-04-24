@@ -21,6 +21,7 @@ export interface ConfirmationMailType {
 export interface DecisionMailType {
   to: string;
   descision: boolean;
+  formType: string;
 }
 
 export interface DonationFormConfirmationMailType {
