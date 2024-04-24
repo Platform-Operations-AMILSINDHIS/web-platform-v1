@@ -18,6 +18,11 @@ export interface ConfirmationMailType {
   formName: string;
 }
 
+export interface DecisionMailType {
+  to: string;
+  descision: boolean;
+}
+
 export interface DonationFormConfirmationMailType {
   amount: number;
   donorName: string;
