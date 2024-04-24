@@ -1,6 +1,7 @@
-import { Spinner, Text } from "@chakra-ui/react";
+import { Button, Flex, Spinner, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import LinkButton from "~/components/buttons/LinkButton";
 import useServerActions from "~/hooks/useServerActions";
 import ProfileViewLayout from "~/layouts/ProfileViewLayout";
 import { useProfileAtom } from "~/lib/atom";
@@ -45,7 +46,10 @@ const SlugPage = () => {
     <>
       {submissionValues ? (
         <ProfileViewLayout submission={submissionValues}>
-          <Text>Hi</Text>
+          <Flex gap={3} my={5}>
+            <LinkButton py={3} CTAlabel="Reject" />
+            <LinkButton py={3} CTATheme={false} CTAlabel="Approve" />
+          </Flex>
         </ProfileViewLayout>
       ) : (
         <Spinner />
