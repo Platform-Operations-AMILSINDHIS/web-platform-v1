@@ -22,6 +22,7 @@ export interface DecisionMailType {
   to: string;
   descision: boolean;
   formType: string;
+  membershipID?: string;
 }
 
 export interface DonationFormConfirmationMailType {

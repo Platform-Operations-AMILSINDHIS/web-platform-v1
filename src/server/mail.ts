@@ -4,6 +4,7 @@ import { env } from "~/env.mjs";
 
 import type {
   ConfirmationMailType,
+  DecisionMailType,
   DonationFormConfirmationMailType,
   RSVPMailType,
   SendMailType,
@@ -148,6 +149,34 @@ export const sendFormConfirmationMail = async ({
   await sendMail({ to, subject, html });
 };
 
+export const sendDescisionMail = async ({
+  descision,
+  formType,
+  to,
+  membershipID,
+}: DecisionMailType) => {
+  const subject = `${formType} Application Descision`;
+  let html = ``;
+
+  if (descision) {
+    html = `
+    <div style="font-size: 16px;">
+      <p>Congratulations on being Accepted into our community as a honarary ${formType} member</p>
+      <p> ${formType} Membership ID: ${membershipID ?? ""}</p>
+    </div>
+  `;
+  } else {
+    html = `
+    <div style="font-size: 16px;">
+      <p>After carefully reviewing your application with ${formType} community. We regret to inform you that we would not be</p>
+      <p>able to grant you a ${formType} Membership. We understand this may be dejecting but this in no way defines your ability and charecter</p>
+    </div>
+  `;
+  }
+
+  await sendMail({ html, subject, to });
+};
+
 // export const sendDonationFormConfirmationMail = async ({
 //   amount,
 //   contactNumber,
@@ -224,7 +253,8 @@ export const sendDonationNotificationMail = async (
     addressProofUrl: string;
   }
 ) => {
-  const { donorName, email, phone, amount, panCardUrl, addressProofUrl } = formData;
+  const { donorName, email, phone, amount, panCardUrl, addressProofUrl } =
+    formData;
   const subject = `New Donation Received`;
 
   const html = `
