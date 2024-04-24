@@ -2,7 +2,6 @@ import supabase from "~/pages/api/auth/supabase";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 import * as Yup from "yup";
-import { string, z } from "zod";
 
 const formBufferData = createTRPCRouter({
   fetchMembershipBuffer: publicProcedure.query(async () => {
@@ -67,6 +66,24 @@ const formBufferData = createTRPCRouter({
 
         return {
           DB_submission_response: userFormSubmission,
+        };
+      } catch (err) {
+        console.log(err);
+      }
+    }),
+
+  rejectUserApplication: publicProcedure
+    .input(Yup.object({ user_id: Yup.string() }))
+    .mutation(async ({ input }) => {
+      try {
+        const user_id = input.user_id;
+        const { data: RemoveRowResponse, error: RemoveRowResponseError } =
+          await supabase.from("form_buffer").delete().eq("user_id", user_id);
+
+        if (RemoveRowResponseError) throw RemoveRowResponseError;
+
+        return {
+          DB_response: RemoveRowResponse,
         };
       } catch (err) {
         console.log(err);
