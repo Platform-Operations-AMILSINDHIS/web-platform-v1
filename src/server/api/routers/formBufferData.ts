@@ -114,11 +114,19 @@ const formBufferData = createTRPCRouter({
     .mutation(async ({ input }) => {
       try {
         const { formType, to, user_id } = input;
+        const memberProperty = `${formType}_member`;
         const { data, error } = await supabase
           .from("general_accounts")
-          .select(`${formType}_member`);
+          .update({ [memberProperty]: true, membership_id: "ID00:XYZ" })
+          .eq("id", user_id);
 
         if (error) throw error;
+
+        await sendDescisionMail({
+          formType: formType ?? "",
+          descision: true,
+          to: to ?? "",
+        });
 
         return {
           server_response: data,

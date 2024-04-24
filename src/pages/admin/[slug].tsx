@@ -9,17 +9,14 @@ import { KAPMembershipFormValues } from "~/types/forms/membership";
 
 const SlugPage = () => {
   const [{ selected_profile }] = useProfileAtom();
-  const { handleFetchUserSubmission } = useServerActions();
+  const { handleFetchUserSubmission, handleAcceptingUserApplication } =
+    useServerActions();
 
   const [submissionValues, setSubmissionValues] =
     useState<KAPMembershipFormValues>();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [slugValue, setSlugValue] = useState<string[]>([]);
 
   useEffect(() => {
     const handleSlug = async () => {
-      setLoading(true);
-
       const response = await handleFetchUserSubmission(
         selected_profile?.user_id ?? "",
         selected_profile?.formType ?? ""
@@ -35,12 +32,19 @@ const SlugPage = () => {
           membershipInfo: user_submission?.membershipInfo,
         };
         setSubmissionValues(submission_data);
-        setLoading(false);
       }
     };
 
     handleSlug();
   }, [selected_profile]);
+
+  const handleApp = async (submissionValues: KAPMembershipFormValues) => {
+    handleAcceptingUserApplication(
+      selected_profile?.formType ?? "",
+      submissionValues.personalInfo.emailId,
+      selected_profile?.user_id ?? ""
+    );
+  };
 
   return (
     <>
@@ -48,7 +52,12 @@ const SlugPage = () => {
         <ProfileViewLayout submission={submissionValues}>
           <Flex gap={3} my={5}>
             <LinkButton py={3} CTAlabel="Reject" />
-            <LinkButton py={3} CTATheme={false} CTAlabel="Approve" />
+            <LinkButton
+              onClick={() => handleApp(submissionValues)}
+              py={3}
+              CTATheme={false}
+              CTAlabel="Approve"
+            />
           </Flex>
         </ProfileViewLayout>
       ) : (

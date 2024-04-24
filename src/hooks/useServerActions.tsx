@@ -1,4 +1,5 @@
 import { useState } from "react";
+// import { sendDescisionMail } from "~/server/mail";
 import { KAPMembershipFormPDFValues } from "~/types/pdfs/kap-membership";
 import {
   MatrimonyBufferDataType,
@@ -59,11 +60,13 @@ const useServerActions = () => {
     user_id: string
   ) => {
     const data = await acceptUserApplicationMut.mutateAsync({
-      formType,
+      formType: formType,
       to,
-      user_id,
+      user_id: user_id,
     });
-    console.log(data);
+
+    console.log(user_id);
+    console.log(data?.user_id);
   };
 
   return {
