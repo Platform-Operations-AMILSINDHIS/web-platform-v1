@@ -1,12 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
-import axios from "axios";
-import { FormikHelpers } from "formik";
-import { useState } from "react";
 import Admin from "~/components/authentication/Admin";
-
-import { AdminLoginValues, adminInitialLoginValues } from "~/hooks/useForm";
-import { useAdminAtom } from "~/lib/atom";
-import { adminAtomBody } from "~/types/atoms/admin";
 
 const AdminAuthPage = () => {
   return (

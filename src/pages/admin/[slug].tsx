@@ -1,12 +1,12 @@
 /* eslint-disable */
 // @ts-nocheck
-import { Button, Flex, Spinner, Text } from "@chakra-ui/react";
-import { useRouter } from "next/router";
+import { Flex, Spinner } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import LinkButton from "~/components/buttons/LinkButton";
 import useServerActions from "~/hooks/useServerActions";
 import ProfileViewLayout from "~/layouts/ProfileViewLayout";
 import { useProfileAtom } from "~/lib/atom";
+import { MatrimonyFormValues } from "~/types/forms/matrimony";
 import { KAPMembershipFormValues } from "~/types/forms/membership";
 
 const SlugPage = () => {
@@ -14,30 +14,44 @@ const SlugPage = () => {
   const { handleFetchUserSubmission, handleAcceptingUserApplication } =
     useServerActions();
 
-  const [submissionValues, setSubmissionValues] =
-    useState<KAPMembershipFormValues>();
+  const [submissionValues, setSubmissionValues] = useState<
+    KAPMembershipFormValues | MatrimonyFormValues
+  >();
 
   useEffect(() => {
-    const handleSlug = async () => {
+    const handleSubmissionSlug = async () => {
       const response = await handleFetchUserSubmission(
         selected_profile?.user_id ?? "",
         selected_profile?.formType ?? ""
       );
 
       if (response && response.length > 0) {
-        const user_submission = await response[0]?.submission;
-        const submission_data = {
-          personalInfo: user_submission?.personalInfo,
-          addressInfo: user_submission?.addressInfo,
-          familyMembers: user_submission?.familyMembers,
-          proposerInfo: user_submission?.proposerInfo,
-          membershipInfo: user_submission?.membershipInfo,
-        };
-        setSubmissionValues(submission_data);
+        if (["KAP", "YAC"].includes(selected_profile?.formType)) {
+          const user_submission = await response[0]?.submission;
+          const submission_data = {
+            personalInfo: user_submission?.personalInfo,
+            addressInfo: user_submission?.addressInfo,
+            familyMembers: user_submission?.familyMembers,
+            proposerInfo: user_submission?.proposerInfo,
+            membershipInfo: user_submission?.membershipInfo,
+          };
+          setSubmissionValues(submission_data);
+        } else {
+          const user_matrimony_submission = await response[0]?.submission;
+          const matrimony_submission_data = {
+            personalInfo: user_matrimony_submission?.personalInfo,
+            familyMembers: user_matrimony_submission?.familyMembers,
+            residentialAddressDetails:
+              user_matrimony_submission?.residentialAddressDetail,
+            spousePreferences: user_matrimony_submission?.spousePreferences,
+            proposerInfo: user_matrimony_submission?.proposerInfo,
+          };
+          setSubmissionValues(matrimony_submission_data);
+        }
       }
     };
 
-    handleSlug();
+    handleSubmissionSlug();
   }, [selected_profile]);
 
   const handleApp = async (submissionValues: KAPMembershipFormValues) => {
@@ -48,22 +62,33 @@ const SlugPage = () => {
     );
   };
 
+  console.log({
+    selected_profile,
+    submissionValues,
+  });
+
   return (
     <>
-      {submissionValues ? (
-        <ProfileViewLayout submission={submissionValues}>
-          <Flex gap={3} my={5}>
-            <LinkButton py={3} CTAlabel="Reject" />
-            <LinkButton
-              onClick={() => handleApp(submissionValues)}
-              py={3}
-              CTATheme={false}
-              CTAlabel="Approve"
-            />
-          </Flex>
-        </ProfileViewLayout>
+      {["KAP", "YAC"].includes(selected_profile?.formType) ? (
+        <>
+          {submissionValues ? (
+            <ProfileViewLayout submission={submissionValues}>
+              <Flex gap={3} my={5}>
+                <LinkButton py={3} CTAlabel="Reject" />
+                <LinkButton
+                  onClick={() => handleApp(submissionValues)}
+                  py={3}
+                  CTATheme={false}
+                  CTAlabel="Approve"
+                />
+              </Flex>
+            </ProfileViewLayout>
+          ) : (
+            <Spinner />
+          )}
+        </>
       ) : (
-        <Spinner />
+        <>Marraige</>
       )}
     </>
   );
