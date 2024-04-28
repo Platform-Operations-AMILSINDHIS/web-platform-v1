@@ -1,9 +1,10 @@
 /* eslint-disable */
 // @ts-nocheck
-import { Flex, Spinner } from "@chakra-ui/react";
+import { Flex, Spinner, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import LinkButton from "~/components/buttons/LinkButton";
 import useServerActions from "~/hooks/useServerActions";
+import MatrimonyProfileViewLayout from "~/layouts/MatrimonyProfileViewLayout";
 import ProfileViewLayout from "~/layouts/ProfileViewLayout";
 import { useProfileAtom } from "~/lib/atom";
 import { MatrimonyFormValues } from "~/types/forms/matrimony";
@@ -88,7 +89,9 @@ const SlugPage = () => {
           )}
         </>
       ) : (
-        <>Marraige</>
+        <MatrimonyProfileViewLayout submission={submissionValues}>
+          <Text>Hi</Text>
+        </MatrimonyProfileViewLayout>
       )}
     </>
   );
