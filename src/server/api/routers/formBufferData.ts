@@ -135,6 +135,26 @@ const formBufferData = createTRPCRouter({
         console.log(err);
       }
     }),
+
+  fetchApplicantAge: publicProcedure
+    .input(Yup.object({ user_id: Yup.string() }))
+    .mutation(async ({ input }) => {
+      try {
+        const { user_id } = input;
+        const { data: applicantAge, error: ErrorFetchingAge } = await supabase
+          .from("general_accounts")
+          .select("age")
+          .eq("id", user_id);
+
+        if (ErrorFetchingAge) throw ErrorFetchingAge;
+
+        return {
+          DB_response: applicantAge,
+        };
+      } catch (err) {
+        console.log(`Error while fetching user_age: ${err}`);
+      }
+    }),
 });
 
 export default formBufferData;
