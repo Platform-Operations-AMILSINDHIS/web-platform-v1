@@ -2,6 +2,7 @@
 // @ts-nocheck
 import { Flex, Spinner, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import MatrimonyProfileDetails from "~/components/admin/MatrimonyProfileDetails";
 import LinkButton from "~/components/buttons/LinkButton";
 import useServerActions from "~/hooks/useServerActions";
 import MatrimonyProfileViewLayout from "~/layouts/MatrimonyProfileViewLayout";
@@ -90,7 +91,7 @@ const SlugPage = () => {
         </>
       ) : (
         <MatrimonyProfileViewLayout submission={submissionValues}>
-          <Text>Hi</Text>
+          <MatrimonyProfileDetails />
         </MatrimonyProfileViewLayout>
       )}
     </>
