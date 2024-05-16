@@ -10,7 +10,7 @@ const MatrimonyProfileView: React.FC<MatrimonyProfileViewProps> = ({
 }) => {
   console.log(submission);
   return (
-    <Flex flexDir="column">
+    <Flex gap={5} flexDir="column">
       <Flex flexDir="column">
         <Text textDecoration="underline" fontSize={"2xl"} fontWeight={"bold"}>
           Personal Details
@@ -24,6 +24,33 @@ const MatrimonyProfileView: React.FC<MatrimonyProfileViewProps> = ({
                   <Text>{submission?.personalInfo[keyName]}</Text>
                 </Flex>
               </GridItem>
+            );
+          })}
+        </Grid>
+      </Flex>
+
+      <Flex flexDir="column">
+        <Text textDecoration="underline" fontSize={"2xl"} fontWeight={"bold"}>
+          Family Members
+        </Text>
+        <Grid mt={2} rowGap={1.5} templateColumns="repeat(3,1fr)">
+          {submission.familyMembers?.map((familyMember, index) => {
+            return (
+              <Flex key={index}>
+                <Flex>
+                  <Text>{index}</Text>
+                  <Flex>
+                    {Object.keys(familyMember).map((keyName, index) => {
+                      return (
+                        <Flex gap={2} key={index}>
+                          <Text fontWeight={500}>{keyName} :</Text>
+                          <Text>{submission?.personalInfo[keyName]}</Text>
+                        </Flex>
+                      );
+                    })}
+                  </Flex>
+                </Flex>
+              </Flex>
             );
           })}
         </Grid>

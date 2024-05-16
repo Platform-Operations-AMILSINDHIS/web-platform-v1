@@ -3,6 +3,8 @@ export interface FamilyMember {
   relationship?: string;
   occupation?: string;
   age?: number | null;
+
+  [key: string]: string | number | null;
 }
 
 export interface PersonalInfo {
