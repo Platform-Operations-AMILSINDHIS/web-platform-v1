@@ -14,8 +14,6 @@ const useServerActions = () => {
   const [matrimonyBufferData, setMatrimonyBufferData] = useState<
     MatrimonyBufferDataType[]
   >([]);
-  const [userMembershipSubmission, setUserMembershipSubission] =
-    useState<KAPMembershipFormPDFValues>();
 
   const fetchUserSubmissionMut =
     api.formBuffer.fetchUserMembershipSubmission.useMutation();
