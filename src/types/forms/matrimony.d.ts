@@ -22,6 +22,8 @@ export interface PersonalInfo {
   qualifications: string[]; // educational and other sorts of qualifications
   hobbies: string;
   complexionAndFeatures: string;
+
+  [key: string]: string | number | null;
 }
 
 export interface ResidentialAddressDetails {
@@ -43,7 +45,7 @@ export interface SpousePreferences {
   weight: number;
 
   horoscopeMatching: "Yes" | "No";
-  build: "Medium" | "Slim" | "Healthy" ;
+  build: "Medium" | "Slim" | "Healthy";
   siblings: "Yes" | "No";
 }
 
