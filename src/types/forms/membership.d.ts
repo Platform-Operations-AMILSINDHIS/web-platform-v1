@@ -45,6 +45,8 @@ export interface ProposerInfo {
   firstName: string;
   lastName: string;
   mobileNumber: string;
+
+  [key: string]: string | number | null;
 }
 
 export interface KAPMembershipFormValues {

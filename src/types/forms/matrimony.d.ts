@@ -31,6 +31,8 @@ export interface ResidentialAddressDetails {
   addressLine2: string;
   addressLine3: string;
   pinCode: string;
+
+  [key: string]: string | number | null;
 }
 
 export interface SpousePreferences {
@@ -47,6 +49,8 @@ export interface SpousePreferences {
   horoscopeMatching: "Yes" | "No";
   build: "Medium" | "Slim" | "Healthy";
   siblings: "Yes" | "No";
+
+  [key: string]: string | number | null;
 }
 
 export interface MatrimonyFormValues {
