@@ -13,7 +13,10 @@ const MatrimonyProfileView: React.FC<MatrimonyProfileViewProps> = ({
   submission,
   user_id,
 }) => {
-  const { handleAcceptingUserMatrimonyApplication } = useServerActions();
+  const {
+    handleAcceptingUserMatrimonyApplication,
+    handleRejectingUserMatrimonyApplication,
+  } = useServerActions();
   return (
     <>
       {" "}
@@ -38,7 +41,11 @@ const MatrimonyProfileView: React.FC<MatrimonyProfileViewProps> = ({
           >
             Approve Applicant
           </Button>
-          <Button style={btnThemeLight} size="md">
+          <Button
+            onClick={() => handleRejectingUserMatrimonyApplication(user_id)}
+            style={btnThemeLight}
+            size="md"
+          >
             Reject Applicant
           </Button>
         </Flex>
