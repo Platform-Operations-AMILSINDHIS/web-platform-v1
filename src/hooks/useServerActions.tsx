@@ -100,6 +100,7 @@ const useServerActions = () => {
     handleFetchUserSubmission,
     handleAcceptingUserApplication,
     handleAcceptingUserMatrimonyApplication,
+    handleRejectingUserMatrimonyApplication,
     membershipBufferData,
     matrimonyBufferData,
   };
