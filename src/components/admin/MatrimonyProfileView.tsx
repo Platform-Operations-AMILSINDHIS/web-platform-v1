@@ -11,9 +11,14 @@ const MatrimonyProfileView: React.FC<MatrimonyProfileViewProps> = ({
 }) => {
   console.log(submission);
   return (
-    <Flex gap={5} flexDir="column">
-      <Flex flexDir="column">
-        <Text textDecoration="underline" fontSize={"2xl"} fontWeight={"bold"}>
+    <Flex mt={5} gap={8} flexDir="column">
+      <Flex
+        p={3}
+        borderRadius={10}
+        boxShadow="rgba(0, 0, 0, 0.24) 0px 3px 8px"
+        flexDir="column"
+      >
+        <Text color="#FF4D00" fontSize={"2xl"} fontWeight={"bold"}>
           Personal Details
         </Text>
         <Grid mt={2} rowGap={1.5} templateColumns="repeat(3,1fr)">
@@ -30,8 +35,13 @@ const MatrimonyProfileView: React.FC<MatrimonyProfileViewProps> = ({
         </Grid>
       </Flex>
 
-      <Flex flexDir="column">
-        <Text textDecoration="underline" fontSize={"2xl"} fontWeight={"bold"}>
+      <Flex
+        p={3}
+        borderRadius={10}
+        boxShadow="rgba(0, 0, 0, 0.24) 0px 3px 8px"
+        flexDir="column"
+      >
+        <Text color="#FF4D00" fontSize={"2xl"} fontWeight={"bold"}>
           Family Members
         </Text>
         {submission?.familyMembers && submission?.familyMembers.length > 0 ? (
@@ -87,8 +97,13 @@ const MatrimonyProfileView: React.FC<MatrimonyProfileViewProps> = ({
         </Grid>
       </Flex> */}
 
-      <Flex flexDir="column">
-        <Text textDecoration="underline" fontSize={"2xl"} fontWeight={"bold"}>
+      <Flex
+        p={3}
+        borderRadius={10}
+        boxShadow="rgba(0, 0, 0, 0.24) 0px 3px 8px"
+        flexDir="column"
+      >
+        <Text color="#FF4D00" fontSize={"2xl"} fontWeight={"bold"}>
           Proposer Details
         </Text>
         <Grid mt={2} rowGap={1.5} templateColumns="repeat(3,1fr)">
@@ -105,8 +120,13 @@ const MatrimonyProfileView: React.FC<MatrimonyProfileViewProps> = ({
         </Grid>
       </Flex>
 
-      <Flex flexDir="column">
-        <Text textDecoration="underline" fontSize={"2xl"} fontWeight={"bold"}>
+      <Flex
+        p={3}
+        borderRadius={10}
+        boxShadow="rgba(0, 0, 0, 0.24) 0px 3px 8px"
+        flexDir="column"
+      >
+        <Text color="#FF4D00" fontSize={"2xl"} fontWeight={"bold"}>
           Spouse Preferences
         </Text>
         <Grid mt={2} rowGap={1.5} templateColumns="repeat(3,1fr)">

@@ -1,4 +1,5 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { btnThemeDark, btnThemeLight } from "~/components/buttons/BtnThemes";
 import { MatrimonyFormValues } from "~/types/forms/matrimony";
 
 interface MatrimonyProfileViewLayoutProps {
@@ -25,10 +26,10 @@ const MatrimonyProfileViewLayout: React.FC<MatrimonyProfileViewLayoutProps> = ({
             >{`${submission?.personalInfo?.occupation}, ${submission?.personalInfo?.placeOfBirth}`}</Text>
           </Flex>
           <Flex gap={3}>
-            <Button color="white" bg="green.400" size="sm">
+            <Button style={btnThemeDark} size="md">
               Approve Applicant
             </Button>
-            <Button bg="red.400" size="sm">
+            <Button style={btnThemeLight} size="md">
               Reject Applicant
             </Button>
           </Flex>
