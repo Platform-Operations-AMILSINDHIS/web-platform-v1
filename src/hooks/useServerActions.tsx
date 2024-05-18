@@ -22,12 +22,20 @@ const useServerActions = () => {
   const acceptUserMatrimonyApplicationMut =
     api.formBuffer.acceptUserMatrimonyApplication.useMutation();
 
+  const rejectUserMatrimonyApplicationMut =
+    api.formBuffer.rejectUserMatrimonyApplication.useMutation();
+
   const { refetch: fetchAllMemberResponses } =
     api.formBuffer.fetchMembershipBuffer.useQuery(undefined, {
       enabled: false,
     });
   const { refetch: fetchAllMatrimonyResponses } =
     api.formBuffer.fetchMatrimonyBuffer.useQuery(undefined, {
+      enabled: false,
+    });
+
+  const { refetch: fetchApprovedMatrimonyApplications } =
+    api.formBuffer.fetchApprovedMatrimonyApplicants.useQuery(undefined, {
       enabled: false,
     });
 
@@ -72,6 +80,14 @@ const useServerActions = () => {
 
   const handleAcceptingUserMatrimonyApplication = async (user_id: string) => {
     const data = await acceptUserMatrimonyApplicationMut.mutateAsync({
+      user_id: user_id,
+    });
+
+    console.log(data);
+  };
+
+  const handleRejectingUserMatrimonyApplication = async (user_id: string) => {
+    const data = await rejectUserMatrimonyApplicationMut.mutateAsync({
       user_id: user_id,
     });
 
