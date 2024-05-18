@@ -49,6 +49,26 @@ const formBufferData = createTRPCRouter({
     }
   }),
 
+  fetchApprovedMatrimonyApplicants: publicProcedure.query(async () => {
+    try {
+      const {
+        data: approvedMatrimonyApplicants,
+        error: approvedMatrimonyApplicantsFetchError,
+      } = await supabase.from("matrimony_profiles").select("*");
+
+      if (approvedMatrimonyApplicantsFetchError)
+        throw approvedMatrimonyApplicantsFetchError;
+
+      return {
+        matrimonyApplicantsApproved: approvedMatrimonyApplicants,
+      };
+    } catch (err) {
+      console.log(
+        `Error while fetching approved matrimony applicants : ${err}`
+      );
+    }
+  }),
+
   fetchUserMembershipSubmission: publicProcedure
     .input(Yup.object({ user_id: Yup.string(), formType: Yup.string() }))
     .mutation(async ({ input }) => {
