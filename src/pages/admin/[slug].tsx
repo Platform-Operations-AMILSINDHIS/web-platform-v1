@@ -91,7 +91,10 @@ const SlugPage = () => {
           )}
         </>
       ) : (
-        <MatrimonyProfileContainer submission={submissionValues} />
+        <MatrimonyProfileContainer
+          user_id={selected_profile?.user_id}
+          submission={submissionValues}
+        />
       )}
     </>
   );

@@ -179,6 +179,27 @@ const formBufferData = createTRPCRouter({
         console.log(`Error while updating matrimony profile table: ${err}`);
       }
     }),
+
+  rejectUserMatrimonyApplication: publicProcedure
+    .input(Yup.object({ user_id: Yup.string() }))
+    .mutation(async ({ input }) => {
+      try {
+        const user_id = input.user_id;
+
+        const { error: DeletionError } = await supabase
+          .from("matrimony_profiles")
+          .delete()
+          .eq("user_id", user_id);
+
+        if (DeletionError) throw DeletionError;
+
+        return {
+          message: "Applicant rejected",
+        };
+      } catch (err) {
+        console.log(`Error while deleting matrimony buffer data : ${err}`);
+      }
+    }),
 });
 
 export default formBufferData;

@@ -5,16 +5,18 @@ import MatrimonyProfileView from "./MatrimonyProfileView";
 
 interface MatrimonyProfileContainerProps {
   submission: MatrimonyFormValues;
+  user_id: string;
 }
 
 const MatrimonyProfileContainer: React.FC<MatrimonyProfileContainerProps> = ({
   submission,
+  user_id,
 }) => {
   return (
     <>
       {submission ? (
-        <MatrimonyProfileViewLayout submission={submission}>
-          <MatrimonyProfileView submission={submission} />
+        <MatrimonyProfileViewLayout>
+          <MatrimonyProfileView user_id={user_id} submission={submission} />
         </MatrimonyProfileViewLayout>
       ) : (
         <Spinner />
