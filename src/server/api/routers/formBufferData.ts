@@ -155,6 +155,30 @@ const formBufferData = createTRPCRouter({
         console.log(`Error while fetching user_age: ${err}`);
       }
     }),
+
+  acceptUserMatrimonyApplication: publicProcedure
+    .input(Yup.object({ user_id: Yup.string() }))
+    .mutation(async ({ input }) => {
+      try {
+        const user_id = input.user_id;
+
+        const {
+          data: matrimonyDataUpdatedRows,
+          error: matrimonyDataUploadError,
+        } = await supabase
+          .from("matrimony_profiles")
+          .insert([{ user_id: user_id }])
+          .select();
+
+        if (matrimonyDataUploadError) throw Error;
+
+        return {
+          new_rows: matrimonyDataUpdatedRows,
+        };
+      } catch (err) {
+        console.log(`Error while updating matrimony profile table: ${err}`);
+      }
+    }),
 });
 
 export default formBufferData;
