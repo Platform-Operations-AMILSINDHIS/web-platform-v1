@@ -174,6 +174,8 @@ export const sendDescisionMail = async ({
   `;
   }
 
+  console.log({ descision, formType, to, membershipID, html });
+
   await sendMail({ html, subject, to });
 };
 

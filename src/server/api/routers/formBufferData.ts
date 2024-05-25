@@ -8,6 +8,8 @@ import {
   MembershipBufferDataType,
 } from "~/types/tables/dataBuffer";
 
+import { uniq, filter } from "lodash";
+
 const formBufferData = createTRPCRouter({
   fetchMembershipBuffer: publicProcedure.query(async () => {
     try {
@@ -17,7 +19,8 @@ const formBufferData = createTRPCRouter({
       } = await supabase
         .from("form_buffer")
         .select("*")
-        .in("formType", ["KAP", "YAC"]);
+        .in("formType", ["KAP", "YAC"])
+        .eq("status", "PENDING");
 
       if (formMembershipBufferDataError) throw formMembershipBufferDataError;
 
@@ -133,16 +136,55 @@ const formBufferData = createTRPCRouter({
       try {
         const { formType, to, user_id } = input;
         const memberProperty = `${formType}_member`;
+
+        // TODO: Generate ID here, use in next step
+
+        const { data: membershipIdData, error: membershipIdFetchError } =
+          await supabase.from("general_accounts").select("membership_id");
+
+        if (membershipIdFetchError) throw membershipIdFetchError;
+
+        const membershipIds = membershipIdData.map(
+          (m: { membership_id: string }) => m.membership_id
+        );
+
+        const membershipIdUniqueData = filter(
+          uniq(membershipIds),
+          (v) => v !== null
+        );
+
+        if (formType === "KAP") {
+        } else {
+        }
+
+        console.log({ membershipIdUniqueData });
+
+        return {
+          server_response: {},
+          user_id,
+          to,
+        };
+
+        const membershipId = memberProperty;
+
         const { data, error } = await supabase
           .from("general_accounts")
-          .update({ [memberProperty]: true, membership_id: "ID00:XYZ" })
+          .update({ [memberProperty]: true, membership_id: membershipId })
           .eq("id", user_id);
 
         if (error) throw error;
 
+        const { data: _, error: formBufferError } = await supabase
+          .from("form_buffer")
+          .update({ status: "APPROVED" })
+          .eq("user_id", user_id)
+          .eq("formType", formType);
+
+        if (formBufferError) throw error;
+
         await sendDescisionMail({
-          formType: formType ?? "",
           descision: true,
+          formType: formType ?? "",
           to: to ?? "",
         });
 
