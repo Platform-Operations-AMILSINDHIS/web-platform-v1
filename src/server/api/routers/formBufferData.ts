@@ -40,7 +40,8 @@ const formBufferData = createTRPCRouter({
       } = await supabase
         .from("form_buffer")
         .select("*")
-        .in("formType", ["MATRIMONY"]);
+        .in("formType", ["MATRIMONY"])
+        .eq("status", "APPROVED");
 
       if (formMatrimonyBufferDataError) throw formMatrimonyBufferDataError;
 

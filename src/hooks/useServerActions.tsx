@@ -42,6 +42,7 @@ const useServerActions = () => {
   const handleMemberBufferFetch = async () => {
     const data = await fetchAllMemberResponses();
     setMembershipBufferData(data.data ?? []);
+    console.log(membershipBufferData);
   };
 
   const handleMatrimonyBufferFetch = async () => {
