@@ -8,8 +8,6 @@ import {
   MembershipBufferDataType,
 } from "~/types/tables/dataBuffer";
 
-import { uniq, filter } from "lodash";
-
 const formBufferData = createTRPCRouter({
   fetchMembershipBuffer: publicProcedure.query(async () => {
     try {
@@ -131,46 +129,17 @@ const formBufferData = createTRPCRouter({
         user_id: Yup.string(),
         formType: Yup.string(),
         to: Yup.string(),
+        membership_id: Yup.string(),
       })
     )
     .mutation(async ({ input }) => {
       try {
-        const { formType, to, user_id } = input;
+        const { formType, to, user_id, membership_id } = input;
         const memberProperty = `${formType}_member`;
-
-        // TODO: Generate ID here, use in next step
-
-        const { data: membershipIdData, error: membershipIdFetchError } =
-          await supabase.from("general_accounts").select("membership_id");
-
-        if (membershipIdFetchError) throw membershipIdFetchError;
-
-        const membershipIds = membershipIdData.map(
-          (m: { membership_id: string }) => m.membership_id
-        );
-
-        const membershipIdUniqueData = filter(
-          uniq(membershipIds),
-          (v) => v !== null
-        );
-
-        if (formType === "KAP") {
-        } else {
-        }
-
-        console.log({ membershipIdUniqueData });
-
-        return {
-          server_response: {},
-          user_id,
-          to,
-        };
-
-        const membershipId = memberProperty;
 
         const { data, error } = await supabase
           .from("general_accounts")
-          .update({ [memberProperty]: true, membership_id: membershipId })
+          .update({ [memberProperty]: true, membership_id: membership_id })
           .eq("id", user_id);
 
         if (error) throw error;
