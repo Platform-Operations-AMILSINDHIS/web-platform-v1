@@ -34,6 +34,31 @@ const actions = createTRPCRouter({
         throw err; // Re-throw for handling at the call site
       }
     }),
+
+  generateMatrimonyID: publicProcedure.mutation(async () => {
+    try {
+      // Fetch all unique IDs
+      const { data, error } = await supabase
+        .from("matrimony_profiles")
+        .select("matrimony_id");
+
+      if (error) throw error;
+
+      // Filter IDs with matching prefix
+      const matchingIds = data?.filter((id) => {
+        const regex = new RegExp(`^MAT#([0-9]{4})`); // Match prefix followed by 4 digits
+        return regex.test(id.toString());
+      });
+
+      // Generate sequence number
+      const count = matchingIds?.length || 0; // Handle potential empty array
+      const suffix = (count + 1).toString().padStart(4, "0");
+
+      return "MAT#" + suffix;
+    } catch (err) {
+      console.log(err);
+    }
+  }),
 });
 
 export default actions;

@@ -74,7 +74,6 @@ const useServerActions = () => {
     const generatedMembershipID = await generateMembershipID.mutateAsync({
       formType: formType,
     });
-    console.log(generatedMembershipID);
     const data = await acceptUserApplicationMut.mutateAsync({
       membership_id: generatedMembershipID,
       formType: formType,
