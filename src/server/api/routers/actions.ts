@@ -35,3 +35,5 @@ const actions = createTRPCRouter({
       }
     }),
 });
+
+export default actions;

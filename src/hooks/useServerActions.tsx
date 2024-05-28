@@ -13,6 +13,8 @@ const useServerActions = () => {
     MatrimonyBufferDataType[]
   >([]);
 
+  const generateMembershipID = api.actions.generateMembershipID.useMutation();
+
   const fetchUserSubmissionMut =
     api.formBuffer.fetchUserMembershipSubmission.useMutation();
 
@@ -69,7 +71,12 @@ const useServerActions = () => {
     to: string,
     user_id: string
   ) => {
+    const generatedMembershipID = await generateMembershipID.mutateAsync({
+      formType: formType,
+    });
+    console.log(generatedMembershipID);
     const data = await acceptUserApplicationMut.mutateAsync({
+      membership_id: generatedMembershipID,
       formType: formType,
       to,
       user_id: user_id,
