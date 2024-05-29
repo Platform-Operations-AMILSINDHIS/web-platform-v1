@@ -22,6 +22,9 @@ const useServerActions = () => {
   const acceptUserApplicationMut =
     api.formBuffer.acceptUserApplication.useMutation();
 
+  const rejectUserApplicationMut =
+    api.formBuffer.rejectUserApplication.useMutation();
+
   const acceptUserMatrimonyApplicationMut =
     api.formBuffer.acceptUserMatrimonyApplication.useMutation();
 
@@ -70,38 +73,86 @@ const useServerActions = () => {
   const handleAcceptingUserApplication = async (
     formType: string,
     to: string,
-    user_id: string
+    user_id: string,
+    setIsGeneratingID: (state: boolean) => void,
+    setIsSendingMail: (state: boolean) => void,
+    setIsApprovingApplication: (state: boolean) => void
   ) => {
+    setIsApprovingApplication(true);
+    setIsGeneratingID(true);
     const generatedMembershipID = await generateMembershipID.mutateAsync({
       formType: formType,
     });
+    setIsGeneratingID(false);
+    setIsSendingMail(true);
     const data = await acceptUserApplicationMut.mutateAsync({
       membership_id: generatedMembershipID,
       formType: formType,
       to,
       user_id: user_id,
     });
-
-    console.log(user_id);
-    console.log(data?.user_id);
+    setIsSendingMail(false);
+    setIsApprovingApplication(false);
+    window.location.href = "/admin";
   };
 
-  const handleAcceptingUserMatrimonyApplication = async (user_id: string) => {
+  const handleRejectingUserApplication = async (
+    formType: string,
+    to: string,
+    user_id: string,
+    setIsSendingMail: (state: boolean) => void,
+    setIsRejectingApplication: (state: boolean) => void
+  ) => {
+    setIsRejectingApplication(true);
+    setIsSendingMail(true);
+    const data = await rejectUserApplicationMut.mutateAsync({
+      formType: formType,
+      to,
+      user_id: user_id,
+    });
+    setIsSendingMail(false);
+    setIsRejectingApplication(false);
+    window.location.href = "/admin";
+  };
+
+  const handleAcceptingUserMatrimonyApplication = async (
+    user_id: string,
+    to: string,
+    setIsGeneratingID: (state: boolean) => void,
+    setIsSendingMail: (state: boolean) => void,
+    setIsApprovingApplication: (state: boolean) => void
+  ) => {
+    setIsApprovingApplication(true);
+    setIsGeneratingID(true);
     const generatedMatrimonyID = await generateMatrimonyID.mutateAsync();
-    console.log(generatedMatrimonyID);
+    setIsGeneratingID(false);
+    setIsSendingMail(true);
     const data = await acceptUserMatrimonyApplicationMut.mutateAsync({
+      to: to,
       matrimony_id: generatedMatrimonyID,
       user_id: user_id,
     });
-
+    setIsSendingMail(false);
+    setIsApprovingApplication(false);
+    window.location.href = "/admin";
     console.log(data);
   };
 
-  const handleRejectingUserMatrimonyApplication = async (user_id: string) => {
+  const handleRejectingUserMatrimonyApplication = async (
+    to: string,
+    user_id: string,
+    setIsSendingMail: (state: boolean) => void,
+    setIsRejectingApplication: (state: boolean) => void
+  ) => {
+    setIsRejectingApplication(true);
+    setIsSendingMail(true);
     const data = await rejectUserMatrimonyApplicationMut.mutateAsync({
       user_id: user_id,
     });
 
+    setIsSendingMail(false);
+    setIsRejectingApplication(false);
+    window.location.href = "/admin";
     console.log(data);
   };
 
@@ -110,6 +161,7 @@ const useServerActions = () => {
     handleMatrimonyBufferFetch,
     handleFetchUserSubmission,
     handleAcceptingUserApplication,
+    handleRejectingUserApplication,
     handleAcceptingUserMatrimonyApplication,
     handleRejectingUserMatrimonyApplication,
     membershipBufferData,

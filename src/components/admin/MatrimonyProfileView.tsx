@@ -1,8 +1,9 @@
-import { Button, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
+import { Button, Flex, Grid, GridItem, Spinner, Text } from "@chakra-ui/react";
 import { MatrimonyFormValues } from "~/types/forms/matrimony";
 import { camelCaseToSpaces } from "~/utils/helper";
 import { btnThemeDark, btnThemeLight } from "../buttons/BtnThemes";
 import useServerActions from "~/hooks/useServerActions";
+import { useState } from "react";
 
 interface MatrimonyProfileViewProps {
   submission: MatrimonyFormValues;
@@ -17,6 +18,14 @@ const MatrimonyProfileView: React.FC<MatrimonyProfileViewProps> = ({
     handleAcceptingUserMatrimonyApplication,
     handleRejectingUserMatrimonyApplication,
   } = useServerActions();
+
+  const [isGeneratingID, setIsGeneratingID] = useState<boolean>(false);
+  const [isSendingMail, setIsSendingMail] = useState<boolean>(false);
+  const [isApprovingApplication, setIsApprovingApplication] =
+    useState<boolean>(false);
+  const [isRejectingApplication, setIsRejectingApplication] =
+    useState<boolean>(false);
+
   return (
     <>
       {" "}
@@ -34,19 +43,49 @@ const MatrimonyProfileView: React.FC<MatrimonyProfileViewProps> = ({
         <Flex gap={3}>
           <Button
             onClick={() => {
-              handleAcceptingUserMatrimonyApplication(user_id);
+              handleAcceptingUserMatrimonyApplication(
+                user_id,
+                submission?.personalInfo.emailId,
+                setIsGeneratingID,
+                setIsSendingMail,
+                setIsApprovingApplication
+              );
             }}
             style={btnThemeDark}
             size="md"
           >
-            Approve Applicant
+            {isApprovingApplication ? (
+              <Flex gap={2} align={"center"}>
+                <Spinner />{" "}
+                {isGeneratingID
+                  ? `Generating ID`
+                  : isSendingMail
+                  ? `Sending Mail`
+                  : `Loading`}
+              </Flex>
+            ) : (
+              <Text> Approve Applicant</Text>
+            )}
           </Button>
           <Button
-            onClick={() => handleRejectingUserMatrimonyApplication(user_id)}
+            onClick={() =>
+              handleRejectingUserMatrimonyApplication(
+                submission?.personalInfo.emailId,
+                user_id,
+                setIsSendingMail,
+                setIsRejectingApplication
+              )
+            }
             style={btnThemeLight}
             size="md"
           >
-            Reject Applicant
+            {isRejectingApplication ? (
+              <Flex gap={2} align={"center"}>
+                <Spinner /> {isSendingMail ? `Sending Mail` : `Loading`}
+              </Flex>
+            ) : (
+              <Text>Reject</Text>
+            )}
           </Button>
         </Flex>
       </Flex>

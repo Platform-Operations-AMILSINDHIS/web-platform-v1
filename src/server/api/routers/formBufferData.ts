@@ -2,7 +2,7 @@ import supabase from "~/pages/api/auth/supabase";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 import * as Yup from "yup";
-import { sendDescisionMail } from "~/server/mail";
+import { sendDescisionMail, sendMatrimonyDescisionMail } from "~/server/mail";
 import {
   MatrimonyBufferDataType,
   MembershipBufferDataType,
@@ -56,7 +56,10 @@ const formBufferData = createTRPCRouter({
       const {
         data: approvedMatrimonyApplicants,
         error: approvedMatrimonyApplicantsFetchError,
-      } = await supabase.from("matrimony_profiles").select("*");
+      } = await supabase
+        .from("matrimony_profiles")
+        .select("*")
+        .eq("status", "APPROVED");
 
       if (approvedMatrimonyApplicantsFetchError)
         throw approvedMatrimonyApplicantsFetchError;
@@ -104,10 +107,13 @@ const formBufferData = createTRPCRouter({
     .mutation(async ({ input }) => {
       try {
         const { user_id, formType, to } = input;
-        const { data: RemoveRowResponse, error: RemoveRowResponseError } =
-          await supabase.from("form_buffer").delete().eq("user_id", user_id);
+        const { data: _, error: formBufferError } = await supabase
+          .from("form_buffer")
+          .update({ status: "REJECTED" })
+          .eq("user_id", user_id)
+          .eq("formType", formType);
 
-        if (RemoveRowResponseError) throw RemoveRowResponseError;
+        if (formBufferError) throw formBufferError;
 
         await sendDescisionMail({
           formType: formType ?? "",
@@ -116,7 +122,7 @@ const formBufferData = createTRPCRouter({
         });
 
         return {
-          DB_response: RemoveRowResponse,
+          status: "Application Rejected",
         };
       } catch (err) {
         console.log(err);
@@ -190,10 +196,16 @@ const formBufferData = createTRPCRouter({
     }),
 
   acceptUserMatrimonyApplication: publicProcedure
-    .input(Yup.object({ user_id: Yup.string(), matrimony_id: Yup.string() }))
+    .input(
+      Yup.object({
+        user_id: Yup.string(),
+        matrimony_id: Yup.string(),
+        to: Yup.string(),
+      })
+    )
     .mutation(async ({ input }) => {
       try {
-        const { matrimony_id, user_id } = input;
+        const { matrimony_id, user_id, to } = input;
 
         const { data: _, error: formBufferError } = await supabase
           .from("form_buffer")
@@ -202,17 +214,20 @@ const formBufferData = createTRPCRouter({
 
         if (formBufferError) throw formBufferError;
 
-        const {
-          data: matrimonyDataUpdatedRows,
-          error: matrimonyDataUploadError,
-        } = await supabase
+        const { error: matrimonyDataUploadError } = await supabase
           .from("matrimony_profiles")
           .insert([{ user_id: user_id, matrimony_id: matrimony_id as string }]);
 
         if (matrimonyDataUploadError) throw Error;
 
+        await sendMatrimonyDescisionMail({
+          descision: true,
+          to: to as string,
+          matrimonyID: matrimony_id as string,
+        });
+
         return {
-          new_rows: matrimonyDataUpdatedRows,
+          status: true,
         };
       } catch (err) {
         console.log(`Error while updating matrimony profile table: ${err}`);
@@ -220,17 +235,30 @@ const formBufferData = createTRPCRouter({
     }),
 
   rejectUserMatrimonyApplication: publicProcedure
-    .input(Yup.object({ user_id: Yup.string() }))
+    .input(
+      Yup.object({
+        user_id: Yup.string(),
+        to: Yup.string(),
+        formType: Yup.string(),
+      })
+    )
     .mutation(async ({ input }) => {
       try {
-        const user_id = input.user_id;
+        const { user_id, formType, to } = input;
 
-        const { error: DeletionError } = await supabase
-          .from("matrimony_profiles")
-          .delete()
-          .eq("user_id", user_id);
+        const { data: _, error: formBufferError } = await supabase
+          .from("form_buffer")
+          .update({ status: "REJECTED" })
+          .eq("user_id", user_id)
+          .eq("formType", "MATRIMONY");
 
-        if (DeletionError) throw DeletionError;
+        if (formBufferError) throw formBufferError;
+
+        await sendDescisionMail({
+          descision: false,
+          formType: formType ?? "",
+          to: to ?? "",
+        });
 
         return {
           message: "Applicant rejected",

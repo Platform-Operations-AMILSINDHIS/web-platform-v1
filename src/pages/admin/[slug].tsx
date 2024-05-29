@@ -12,12 +12,22 @@ import { KAPMembershipFormValues } from "~/types/forms/membership";
 
 const SlugPage = () => {
   const [{ selected_profile }] = useProfileAtom();
-  const { handleFetchUserSubmission, handleAcceptingUserApplication } =
-    useServerActions();
+  const {
+    handleFetchUserSubmission,
+    handleAcceptingUserApplication,
+    handleRejectingUserApplication,
+  } = useServerActions();
 
   const [submissionValues, setSubmissionValues] = useState<
     KAPMembershipFormValues | MatrimonyFormValues
   >();
+
+  const [isGeneratingID, setIsGeneratingID] = useState<boolean>(false);
+  const [isSendingMail, setIsSendingMail] = useState<boolean>(false);
+  const [isApprovingApplication, setIsApprovingApplication] =
+    useState<boolean>(false);
+  const [isRejectingApplication, setIsRejectingApplication] =
+    useState<boolean>(false);
 
   useEffect(() => {
     const handleSubmissionSlug = async () => {
@@ -59,7 +69,21 @@ const SlugPage = () => {
     handleAcceptingUserApplication(
       selected_profile?.formType ?? "",
       submissionValues.personalInfo.emailId,
-      selected_profile?.user_id ?? ""
+      selected_profile?.user_id ?? "",
+      setIsGeneratingID,
+      setIsSendingMail,
+      setIsApprovingApplication
+    );
+  };
+
+  const handleReject = async (submissionValues: KAPMembershipFormValues) => {
+    handleRejectingUserApplication(
+      selected_profile?.formType ?? "",
+      submissionValues.personalInfo.emailId,
+      selected_profile?.user_id ?? "",
+      setIsGeneratingID,
+      setIsSendingMail,
+      setIsApprovingApplication
     );
   };
 
@@ -75,12 +99,29 @@ const SlugPage = () => {
           {submissionValues ? (
             <ProfileViewLayout submission={submissionValues}>
               <Flex gap={3} my={5}>
-                <LinkButton py={3} CTAlabel="Reject" />
+                <LinkButton
+                  onClick={() => handleReject(submissionValues)}
+                  py={3}
+                  CTAlabel="Reject"
+                />
                 <LinkButton
                   onClick={() => handleApp(submissionValues)}
                   py={3}
                   CTATheme={false}
-                  CTAlabel="Approve"
+                  CTAlabel={
+                    isApprovingApplication ? (
+                      <Flex gap={2} align={"center"}>
+                        <Spinner />{" "}
+                        {isGeneratingID
+                          ? `Generating ID`
+                          : isSendingMail
+                          ? `Sending Mail`
+                          : `Loading`}
+                      </Flex>
+                    ) : (
+                      <Text>Approve</Text>
+                    )
+                  }
                 />
               </Flex>
             </ProfileViewLayout>
