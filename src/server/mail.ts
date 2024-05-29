@@ -6,6 +6,7 @@ import type {
   ConfirmationMailType,
   DecisionMailType,
   DonationFormConfirmationMailType,
+  MatrimonyDecisionMailType,
   RSVPMailType,
   SendMailType,
 } from "~/types/mails";
@@ -175,6 +176,35 @@ export const sendDescisionMail = async ({
   }
 
   console.log({ descision, formType, to, membershipID, html });
+
+  await sendMail({ html, subject, to });
+};
+
+export const sendMatrimonyDescisionMail = async ({
+  descision,
+  to,
+  matrimonyID,
+}: MatrimonyDecisionMailType) => {
+  const subject = `Matrimony Application Descision`;
+  let html = ``;
+
+  if (descision) {
+    html = `
+    <div style="font-size: 16px;">
+      <p>Your Matrimony application has been approved by the community, We hope you find your perfect match. Below is your matrimony ID</p>
+      <p> Matrimony ID: ${matrimonyID ?? ""}</p>
+    </div>
+  `;
+  } else {
+    html = `
+    <div style="font-size: 16px;">
+      <p>After carefully reviewing your application with the community. We regret to inform you that we would not be</p>
+      <p>able to grant you a Matrimony ID. We understand this may be dejecting but this in no way defines your ability and charecter</p>
+    </div>
+  `;
+  }
+
+  console.log({ descision, to, html });
 
   await sendMail({ html, subject, to });
 };
