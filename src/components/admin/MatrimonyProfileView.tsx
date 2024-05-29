@@ -26,6 +26,8 @@ const MatrimonyProfileView: React.FC<MatrimonyProfileViewProps> = ({
   const [isRejectingApplication, setIsRejectingApplication] =
     useState<boolean>(false);
 
+  console.log(submission);
+
   return (
     <>
       {" "}
@@ -123,29 +125,29 @@ const MatrimonyProfileView: React.FC<MatrimonyProfileViewProps> = ({
             Family Members
           </Text>
           {submission?.familyMembers && submission?.familyMembers.length > 0 ? (
-            <Grid mt={2} rowGap={1.5} templateColumns="repeat(3,1fr)">
+            <Flex justify="center" flexDir="column">
               {submission.familyMembers?.map((familyMember, index) => {
                 return (
                   <Flex key={index}>
-                    <Flex>
-                      <Text>{index}</Text>
-                      <Flex>
-                        {Object.keys(familyMember).map((keyName, index) => {
-                          return (
-                            <Flex gap={2} key={index}>
-                              <Text fontWeight={500}>
-                                {camelCaseToSpaces(keyName)} :
-                              </Text>
-                              <Text>{submission?.personalInfo[keyName]}</Text>
-                            </Flex>
-                          );
-                        })}
-                      </Flex>
-                    </Flex>
+                    <Grid templateColumns="repeat(4,2fr)" columnGap={20}>
+                      {Object.keys(familyMember).map((keyName, index) => {
+                        return (
+                          <Flex gap={2} key={index}>
+                            <Text
+                              fontWeight={500}
+                              style={{ textAlign: "right" }}
+                            >
+                              {camelCaseToSpaces(keyName)} :
+                            </Text>
+                            <Text>{familyMember[keyName]}</Text>
+                          </Flex>
+                        );
+                      })}
+                    </Grid>
                   </Flex>
                 );
               })}
-            </Grid>
+            </Flex>
           ) : (
             <Text>None Added, to profile</Text>
           )}
@@ -154,26 +156,26 @@ const MatrimonyProfileView: React.FC<MatrimonyProfileViewProps> = ({
         {/* Check DB call for retrieving address data */}
 
         {/* <Flex flexDir="column">
-        <Text textDecoration="underline" fontSize={"2xl"} fontWeight={"bold"}>
-          Resedential Address
-        </Text>
-        <Grid mt={2} rowGap={1.5} templateColumns="repeat(3,1fr)">
-          {Object.keys(submission.residentialAddressDetails).map(
-            (keyName, index) => {
-              return (
-                <GridItem key={index}>
-                  <Flex gap={2}>
-                    <Text fontWeight={500}>{keyName} :</Text>
-                    <Text>
-                      {submission?.residentialAddressDetails[keyName]}
-                    </Text>
-                  </Flex>
-                </GridItem>
-              );
-            }
-          )}
-        </Grid>
-      </Flex> */}
+          <Text textDecoration="underline" fontSize={"2xl"} fontWeight={"bold"}>
+            Resedential Address
+          </Text>
+          <Grid mt={2} rowGap={1.5} templateColumns="repeat(3,1fr)">
+            {Object.keys(submission?.residentialAddressDetails).map(
+              (keyName, index) => {
+                return (
+                  <GridItem key={index}>
+                    <Flex gap={2}>
+                      <Text fontWeight={500}>{keyName} :</Text>
+                      <Text>
+                        {submission?.residentialAddressDetails[keyName]}
+                      </Text>
+                    </Flex>
+                  </GridItem>
+                );
+              }
+            )}
+          </Grid>
+        </Flex> */}
 
         <Flex
           p={3}

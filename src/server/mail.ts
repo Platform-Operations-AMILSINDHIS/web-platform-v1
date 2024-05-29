@@ -171,6 +171,7 @@ export const sendDescisionMail = async ({
     <div style="font-size: 16px;">
       <p>After carefully reviewing your application with ${formType} community. We regret to inform you that we would not be</p>
       <p>able to grant you a ${formType} Membership. We understand this may be dejecting but this in no way defines your ability and charecter</p>
+      <p>Your payment will be refunded in 7 to 8 working days.</p>
     </div>
   `;
   }

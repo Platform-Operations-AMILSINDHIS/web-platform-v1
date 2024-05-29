@@ -75,19 +75,18 @@ const getLastMembershipNums = async () => {
 
 async function getUserIdByEmail(emailId: string): Promise<string | null> {
   const { data, error } = await supabase
-    .from('general_accounts')
-    .select('id')
-    .eq('email_id', emailId)
+    .from("general_accounts")
+    .select("id")
+    .eq("email_id", emailId)
     .limit(1);
 
   if (error) {
-    console.error('Error fetching ID:', error);
+    console.error("Error fetching ID:", error);
     return null;
   }
 
-  return data?.[0]?.id as string ?? null;
+  return (data?.[0]?.id as string) ?? null;
 }
-
 
 export const formRouter = createTRPCRouter({
   kapMembership: publicProcedure
@@ -102,17 +101,16 @@ export const formRouter = createTRPCRouter({
       console.log({ formData });
 
       // KAP Form submission buffer
-      const userId = await getUserIdByEmail(formData.personalInfo.emailId)
+      const userId = await getUserIdByEmail(formData.personalInfo.emailId);
 
-      if (!userId) throw new TRPCClientError("Email does not exist in user database")
+      if (!userId)
+        throw new TRPCClientError("Email does not exist in user database");
 
-      const { error } = await supabase
-        .from("form_buffer")
-        .insert({
-          user_id: userId,
-          formType: "KAP",
-          submission: formData,
-        });
+      const { error } = await supabase.from("form_buffer").insert({
+        user_id: userId,
+        formType: "KAP",
+        submission: formData,
+      });
 
       if (error) console.error(error);
 
@@ -180,17 +178,16 @@ export const formRouter = createTRPCRouter({
       console.log({ formData });
 
       // YAC Form submission buffer
-      const userId = await getUserIdByEmail(formData.personalInfo.emailId)
+      const userId = await getUserIdByEmail(formData.personalInfo.emailId);
 
-      if (!userId) throw new TRPCClientError("Email does not exist in user database")
+      if (!userId)
+        throw new TRPCClientError("Email does not exist in user database");
 
-      const { error } = await supabase
-        .from("form_buffer")
-        .insert({
-          user_id: userId,
-          formType: "YAC",
-          submission: formData,
-        });
+      const { error } = await supabase.from("form_buffer").insert({
+        user_id: userId,
+        formType: "YAC",
+        submission: formData,
+      });
 
       if (error) console.error(error);
 
@@ -260,7 +257,17 @@ export const formRouter = createTRPCRouter({
       // .mutation(({ input }) => {
       const { formData } = input;
 
+      const userId = await getUserIdByEmail(formData.personalInfo.emailId);
+
       console.log({ formData });
+
+      const { error: BufferError } = await supabase.from("form_buffer").insert({
+        user_id: userId,
+        formType: "MATRIMONY",
+        submission: formData,
+      });
+
+      if (BufferError) throw BufferError;
 
       // Send response
       // await sendRawJsonDataOnly("akshat.sabavat@gmail.com", formData);

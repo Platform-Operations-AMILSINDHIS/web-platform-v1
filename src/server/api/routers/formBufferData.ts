@@ -43,7 +43,7 @@ const formBufferData = createTRPCRouter({
 
       if (formMatrimonyBufferDataError) throw formMatrimonyBufferDataError;
 
-      return formMatrimonyBufferData as MatrimonyBufferDataType[]; // Return the fetched data
+      return formMatrimonyBufferData; // Return the fetched data
     } catch (err) {
       // Handle errors here
       console.error("Error fetching membership form buffer data:", err);

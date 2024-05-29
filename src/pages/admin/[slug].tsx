@@ -83,7 +83,7 @@ const SlugPage = () => {
       selected_profile?.user_id ?? "",
       setIsGeneratingID,
       setIsSendingMail,
-      setIsApprovingApplication
+      setIsRejectingApplication
     );
   };
 
