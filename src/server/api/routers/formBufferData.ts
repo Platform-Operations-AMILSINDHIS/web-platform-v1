@@ -39,7 +39,7 @@ const formBufferData = createTRPCRouter({
         .from("form_buffer")
         .select("*")
         .in("formType", ["MATRIMONY"])
-        .eq("status", "APPROVED");
+        .eq("status", "PENDING");
 
       if (formMatrimonyBufferDataError) throw formMatrimonyBufferDataError;
 
@@ -190,18 +190,24 @@ const formBufferData = createTRPCRouter({
     }),
 
   acceptUserMatrimonyApplication: publicProcedure
-    .input(Yup.object({ user_id: Yup.string() }))
+    .input(Yup.object({ user_id: Yup.string(), matrimony_id: Yup.string() }))
     .mutation(async ({ input }) => {
       try {
-        const user_id = input.user_id;
+        const { matrimony_id, user_id } = input;
+
+        const { data: _, error: formBufferError } = await supabase
+          .from("form_buffer")
+          .update({ status: "APPROVED" })
+          .eq("user_id", user_id);
+
+        if (formBufferError) throw formBufferError;
 
         const {
           data: matrimonyDataUpdatedRows,
           error: matrimonyDataUploadError,
         } = await supabase
           .from("matrimony_profiles")
-          .insert([{ user_id: user_id }])
-          .select();
+          .insert([{ user_id: user_id, matrimony_id: matrimony_id as string }]);
 
         if (matrimonyDataUploadError) throw Error;
 

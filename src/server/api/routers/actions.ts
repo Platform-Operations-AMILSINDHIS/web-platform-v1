@@ -37,6 +37,7 @@ const actions = createTRPCRouter({
 
   generateMatrimonyID: publicProcedure.mutation(async () => {
     try {
+      const prefix = "MAT#";
       // Fetch all unique IDs
       const { data, error } = await supabase
         .from("matrimony_profiles")
@@ -46,7 +47,7 @@ const actions = createTRPCRouter({
 
       // Filter IDs with matching prefix
       const matchingIds = data?.filter((id) => {
-        const regex = new RegExp(`^MAT#([0-9]{4})`); // Match prefix followed by 4 digits
+        const regex = new RegExp(`^${prefix}([0-9]{4})`); // Match prefix followed by 4 digits
         return regex.test(id.toString());
       });
 
@@ -54,7 +55,7 @@ const actions = createTRPCRouter({
       const count = matchingIds?.length || 0; // Handle potential empty array
       const suffix = (count + 1).toString().padStart(4, "0");
 
-      return "MAT#" + suffix;
+      return prefix + suffix;
     } catch (err) {
       console.log(err);
     }
