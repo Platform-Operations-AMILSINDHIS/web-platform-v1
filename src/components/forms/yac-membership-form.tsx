@@ -228,7 +228,7 @@ export const PersonalInformationSection: React.FC<YACFormSectionProps> = ({
                   label={label}
                   type={inputType ? (inputType as InputType) : "text"}
                   required={required}
-                  isDisabled={user ? (user.KAP_member ? true : false) : true} // parameter to prevent interaction with first form phase
+                  isDisabled={user ? (user.YAC_member ? true : false) : true} // parameter to prevent interaction with first form phase
                 />
               ))}
             </Grid>
@@ -253,7 +253,7 @@ export const PersonalInformationSection: React.FC<YACFormSectionProps> = ({
                   label={label}
                   name={name ?? label}
                   required={required}
-                  isDisabled={user ? (user.KAP_member ? true : false) : true} // parameter to prevent interaction with first form phase
+                  isDisabled={user ? (user.YAC_member ? true : false) : true} // parameter to prevent interaction with first form phase
                 />
               ))}
             </Grid>
