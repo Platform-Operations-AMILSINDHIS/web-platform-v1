@@ -78,11 +78,12 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
             </Flex>
           )} */}
         </Box>
-        <Box
-          filter={user && user.age >= 21 ? "" : "blur(2px)"}
-          _hover={user && user.age >= 21 ? {} : { cursor: "not-allowed" }}
-        >
-          <KhudabadiAmilPanchayatMembershipForm />
+        <Box h="50vh">
+          {user && user.age >= 21 ? (
+            <KhudabadiAmilPanchayatMembershipForm />
+          ) : (
+            <></>
+          )}
         </Box>
       </Box>
       <Spacer h="5rem" />
