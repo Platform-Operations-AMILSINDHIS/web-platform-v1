@@ -118,9 +118,21 @@ const Footer = () => {
               style={{
                 color: "#FF4D00",
                 textDecoration: "underline",
+                cursor: "pointer",
               }}
             >
               Privacy Policy
+            </span>{" "}
+            |{" "}
+            <span
+              onClick={handleSetRPModal}
+              style={{
+                color: "#FF4D00",
+                textDecoration: "underline",
+                cursor: "pointer",
+              }}
+            >
+              Refund Policy
             </span>{" "}
           </Text>
         </Flex>
