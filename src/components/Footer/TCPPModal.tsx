@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import ModalLayout from "~/layouts/ModalLayout";
 
 interface TCPPModalProps {
@@ -15,11 +16,12 @@ const TCPPModal: React.FC<TCPPModalProps> = ({
 }) => {
   return (
     <ModalLayout
+      modalSize="3xl"
       modalHeader={modalTitle}
       modalState={modalState}
       handleModal={handleModal}
     >
-      {modalText}
+      <Box dangerouslySetInnerHTML={{ __html: modalText }} />
     </ModalLayout>
   );
 };

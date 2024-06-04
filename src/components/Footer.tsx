@@ -103,6 +103,7 @@ const Footer = () => {
           <Text>
             All Rights Reserved |{" "}
             <span
+              onClick={handleSetTCModal}
               style={{
                 color: "#FF4D00",
                 textDecoration: "underline",
@@ -113,6 +114,7 @@ const Footer = () => {
             </span>{" "}
             |{" "}
             <span
+              onClick={handleSetPPModal}
               style={{
                 color: "#FF4D00",
                 textDecoration: "underline",

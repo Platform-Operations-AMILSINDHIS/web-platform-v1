@@ -69,4 +69,4 @@ const footerTCPPModalContent = [
   },
 ];
 
-export { socialLinks, contactLinks };
+export { socialLinks, contactLinks, footerTCPPModalContent };

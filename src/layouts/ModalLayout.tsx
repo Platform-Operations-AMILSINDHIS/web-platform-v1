@@ -9,6 +9,7 @@ import {
 interface ModalLayoutProps {
   modalState: boolean;
   modalHeader?: string;
+  modalSize?: string;
   children: React.ReactNode;
   handleModal: () => void;
 }
@@ -17,10 +18,11 @@ const ModalLayout: React.FC<ModalLayoutProps> = ({
   modalState,
   modalHeader,
   children,
+  modalSize,
   handleModal,
 }) => {
   return (
-    <Modal onClose={handleModal} isOpen={modalState}>
+    <Modal size={modalSize} onClose={handleModal} isOpen={modalState}>
       <ModalOverlay />
       <ModalContent>
         {modalHeader ? <ModalHeader>{modalHeader}</ModalHeader> : <></>}
