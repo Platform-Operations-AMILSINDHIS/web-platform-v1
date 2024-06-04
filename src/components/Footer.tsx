@@ -11,8 +11,10 @@ import { FooterConstants } from "../constants/LandingConstants.json";
 import FooterLogo from "../../public/images/Footer/FooterLogo.svg";
 import Image, { type StaticImageData } from "next/image";
 import { contactLinks, socialLinks } from "~/constants/LandingConstants";
+import TCPPModal from "./Footer/TCPPModal";
 
 const Footer = () => {
+  const { onOpen, onClose, isOpen } = useDisclosure();
   return (
     <Box
       pt="65px"
@@ -22,6 +24,7 @@ const Footer = () => {
       w="full"
       as="footer"
     >
+      <TCPPModal handleModal={onClose} modalState={isOpen} />
       <Flex w="full" flexDir="column" align="center" justify="center">
         <Flex mb={10} w="full" justify="space-between">
           <Flex align="center" gap={3} flexDir="column">
@@ -83,7 +86,7 @@ const Footer = () => {
         <Divider />
         <Flex color="gray.300" w="full" justify="space-between" my={5}>
           <Text>Copyright © 2023 Amil Sindhi</Text>
-          <Text>
+          <Text onClick={onOpen}>
             All Rights Reserved |{" "}
             <span
               style={{
