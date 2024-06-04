@@ -33,7 +33,12 @@ const Footer = () => {
       w="full"
       as="footer"
     >
-      <TCPPModal handleModal={onClose} modalState={isOpen} />
+      <TCPPModal
+        modalText={modalText}
+        modalTitle={modalTitle}
+        handleModal={onClose}
+        modalState={isOpen}
+      />
       <Flex w="full" flexDir="column" align="center" justify="center">
         <Flex mb={10} w="full" justify="space-between">
           <Flex align="center" gap={3} flexDir="column">
