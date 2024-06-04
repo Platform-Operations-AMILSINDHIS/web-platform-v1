@@ -70,7 +70,8 @@ const Footer = () => {
                           color="gray.400"
                           key={index}
                           as="a"
-                          href={navItem.LinkUrl}
+                          /* tslint:disable-next-line */
+                          href={(navItem as { LinkUrl: string }).LinkUrl}
                         >
                           {navItem.LinkLabel}
                         </Text>
@@ -88,7 +89,7 @@ const Footer = () => {
                 return (
                   <Flex gap={3} align="flex-start" key={index}>
                     <Icon boxSize={5} as={ICON} />
-                    <Text w={250} color="gray.400">
+                    <Text w={350} color="gray.400">
                       {LinkLabel}
                     </Text>
                   </Flex>
