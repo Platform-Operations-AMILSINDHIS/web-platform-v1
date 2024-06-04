@@ -16,7 +16,13 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
     <Layout title="KAP Membership Form">
       <Box position="relative">
         <Box
-          display={user ? (user.age <= 16 || user.age >= 30 ? "" : "none") : ""}
+          display={
+            user
+              ? (user.age <= 16 || user.age >= 30) && user.YAC_member != true
+                ? ""
+                : "none"
+              : ""
+          }
           left="50%"
           top="50%"
           transform="translate(-50%,-95%)"
@@ -25,7 +31,7 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
           position="absolute"
         >
           {user ? (
-            user.age <= 16 || user.age >= 30 ? (
+            (user.age <= 16 || user.age >= 30) && user.YAC_member != true ? (
               <>
                 <Flex
                   boxShadow="rgba(0, 0, 0, 0.24) 0px 3px 8px;"
@@ -40,19 +46,27 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
                   w={500}
                 >
                   <Flex gap={2} px={10} align="center" flexDir="column">
-                    <Text fontWeight={600} textAlign="center" fontSize="xl">
-                      Age Requirement not met
-                    </Text>
+                    {user.YAC_member ? (
+                      <Text>Membership Completed</Text>
+                    ) : (
+                      <Text>Age Requirement not met</Text>
+                    )}
                     {user.age > 30 ? (
                       <Text textAlign="center">
                         You need to be below 30 years of age to be eligible for
                         YAC member application
                       </Text>
-                    ) : (
+                    ) : user.age < 16 ? (
                       <Text textAlign="center">
                         You need to be atleast 16 years of age to be eligible
                         for YAC member application
                       </Text>
+                    ) : user.YAC_member ? (
+                      <Text textAlign="center">
+                        {`You are already a registered YAC member, Your YAC ID is ${user.membership_id} `}
+                      </Text>
+                    ) : (
+                      <Text></Text>
                     )}
                   </Flex>
                 </Flex>
@@ -80,7 +94,7 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
               : { cursor: "not-allowed" }
           }
         >
-          <YoungAmilCircleMembershipForm />
+          <YoungAmilCircleMembershipForm user={user} />
         </Box>
       </Box>
       <Spacer h="5rem" />

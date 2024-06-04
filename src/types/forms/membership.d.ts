@@ -69,3 +69,9 @@ export interface KAPFormSectionProps {
 }
 export interface KhudabadiAmilPanchayatMembershipFormProps
   extends KAPFormSectionProps {}
+
+export interface YACFormSectionProps {
+  user: userAtomBody;
+}
+export interface YoungAmilCircleMembershipFormProps
+  extends KAPFormSectionProps {}

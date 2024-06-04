@@ -34,6 +34,8 @@ import { LabelledInput, camelCase } from "./index";
 import type {
   YACMembershipFormValues,
   FamilyMember,
+  YACFormSectionProps,
+  YoungAmilCircleMembershipFormProps,
 } from "~/types/forms/membership";
 
 import {
@@ -42,13 +44,7 @@ import {
   proposerInfoSchema,
 } from "~/utils/schemas";
 
-import {
-  // PersonalInformationSection,
-  // AddressDetailsSection,
-  // FamilyMemberDetailsSection,
-  // ProposerDetailsSection,
-  type InputType,
-} from "./kap-membership-form";
+import { type InputType } from "./kap-membership-form";
 
 import usePayment from "~/hooks/usePayment";
 
@@ -131,7 +127,9 @@ const proposerInfoAtom = focusAtom(yacFormAtom, (optic) =>
 
 const activeStepAtom = atom<number>(1);
 
-const YoungAmilCircleMembershipForm: React.FC = () => {
+const YoungAmilCircleMembershipForm: React.FC<
+  YoungAmilCircleMembershipFormProps
+> = ({ user }) => {
   // const toast = useToast();
 
   // const { activeStep, setActiveStep } = useSteps({
@@ -178,7 +176,7 @@ const YoungAmilCircleMembershipForm: React.FC = () => {
         FamilyMemberDetailsSection,
         ProposerDetailsSection,
       ].map((FormSection, i) => (
-        <>{activeStep === i + 1 && <FormSection key={i} />}</>
+        <>{activeStep === i + 1 && <FormSection user={user} key={i} />}</>
       ))}
 
       <Spacer h="2rem" />
@@ -186,7 +184,9 @@ const YoungAmilCircleMembershipForm: React.FC = () => {
   );
 };
 
-export const PersonalInformationSection: React.FC = () => {
+export const PersonalInformationSection: React.FC<YACFormSectionProps> = ({
+  user,
+}) => {
   const [activeStep, setActiveStep] = useAtom(activeStepAtom);
   const [personalInfo, setPersonalInfo] = useAtom(personalInfoAtom);
 
@@ -202,7 +202,6 @@ export const PersonalInformationSection: React.FC = () => {
         initialValues={personalInfo}
         validationSchema={personalInfoSchema}
         onSubmit={(values, actions) => {
-          // console.log({ values });
           setPersonalInfo(values);
           actions.setSubmitting(false);
           setActiveStep(activeStep + 1);
@@ -229,6 +228,7 @@ export const PersonalInformationSection: React.FC = () => {
                   label={label}
                   type={inputType ? (inputType as InputType) : "text"}
                   required={required}
+                  isDisabled={user ? (user.KAP_member ? true : false) : true} // parameter to prevent interaction with first form phase
                 />
               ))}
             </Grid>
@@ -253,6 +253,7 @@ export const PersonalInformationSection: React.FC = () => {
                   label={label}
                   name={name ?? label}
                   required={required}
+                  isDisabled={user ? (user.KAP_member ? true : false) : true} // parameter to prevent interaction with first form phase
                 />
               ))}
             </Grid>

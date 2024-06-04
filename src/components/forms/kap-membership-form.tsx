@@ -19,7 +19,6 @@ import {
   StepStatus,
   StepTitle,
   Stepper,
-  useSteps,
   useToast,
   Tag,
 } from "@chakra-ui/react";
