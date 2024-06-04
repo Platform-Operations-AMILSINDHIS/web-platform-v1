@@ -9,6 +9,7 @@ import { useUserAtom } from "~/lib/atom";
 
 const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
   const [{ user }] = useUserAtom();
+  console.log({ user });
 
   return (
     <Layout title="KAP Membership Form">

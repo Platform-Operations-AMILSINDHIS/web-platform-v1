@@ -28,7 +28,8 @@ const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
         first_name: userObject.first_name,
         gender: userObject.gender,
         last_name: userObject.last_name,
-        user_member: userObject.user_member,
+        KAP_member: userObject.KAP_member,
+        YAC_member: userObject.YAC_member,
       },
     });
   };
@@ -82,8 +83,8 @@ const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
           membership_id: string;
           gender: string;
           last_name: string;
-          Kap_member?: boolean;
-          Yac_member?: boolean;
+          KAP_member: boolean;
+          YAC_member: boolean;
         }[];
       }>("/api/auth/login", {
         email: values.email,
@@ -107,7 +108,8 @@ const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
         first_name: userHit?.first_name ?? "",
         gender: userHit?.gender ?? "",
         last_name: userHit?.last_name ?? "",
-        user_member: userHit?.Kap_member ? 1 : userHit?.Yac_member ? 2 : 0,
+        KAP_member: userHit?.KAP_member ?? false,
+        YAC_member: userHit?.YAC_member ?? false,
       };
 
       handleUserAtom(filteredUserData);
