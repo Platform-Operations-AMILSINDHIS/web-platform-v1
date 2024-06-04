@@ -1,5 +1,6 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import ModalLayout from "~/layouts/ModalLayout";
+import ModalButton from "../buttons/ModalButtons";
 
 interface TCPPModalProps {
   modalState: boolean;
@@ -16,12 +17,15 @@ const TCPPModal: React.FC<TCPPModalProps> = ({
 }) => {
   return (
     <ModalLayout
-      modalSize="3xl"
+      modalSize="5xl"
       modalHeader={modalTitle}
       modalState={modalState}
       handleModal={handleModal}
     >
-      <Box dangerouslySetInnerHTML={{ __html: modalText }} />
+      <Flex align="flex-start" p={5} flexDir="column" gap={5}>
+        <Box dangerouslySetInnerHTML={{ __html: modalText }} />
+        <ModalButton CTAlabel="Close" CTAaction={handleModal} />
+      </Flex>
     </ModalLayout>
   );
 };
