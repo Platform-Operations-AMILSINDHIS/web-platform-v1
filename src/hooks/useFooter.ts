@@ -1,12 +1,19 @@
 import { useState } from "react";
 
-const useFooter = () => {
+interface useFooterProps {
+  modalHandler: () => void;
+}
+
+const useFooter = ({ modalHandler }: useFooterProps) => {
   const [modalText, setModalText] = useState<string>("");
   const [modalTitle, setModalTitle] = useState<string>("");
-  const handleSetTCModal = (modalTitle, modalText) => {};
-  const handleSetPPModal = (modalTitle, modalText) => {};
-  const handleSetRPModal = (modalTitle, modalText) => {};
+  const handleSetTCModal = () => {};
+  const handleSetPPModal = () => {};
+  const handleSetRPModal = () => {};
   return {
+    handleSetPPModal,
+    handleSetTCModal,
+    handleSetRPModal,
     modalTitle,
     modalText,
   };

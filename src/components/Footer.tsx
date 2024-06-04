@@ -12,12 +12,17 @@ import FooterLogo from "../../public/images/Footer/FooterLogo.svg";
 import Image, { type StaticImageData } from "next/image";
 import { contactLinks, socialLinks } from "~/constants/LandingConstants";
 import TCPPModal from "./Footer/TCPPModal";
-import { useState } from "react";
+import useFooter from "~/hooks/useFooter";
 
 const Footer = () => {
   const { onOpen, onClose, isOpen } = useDisclosure();
-  const [modalText, setModalText] = useState<string>("");
-  const [modalTitle, setModalTitle] = useState<string>("");
+  const {
+    handleSetPPModal,
+    handleSetRPModal,
+    handleSetTCModal,
+    modalText,
+    modalTitle,
+  } = useFooter({ modalHandler: onOpen });
 
   return (
     <Box
@@ -93,7 +98,6 @@ const Footer = () => {
           <Text>
             All Rights Reserved |{" "}
             <span
-              onClick={onOpen}
               style={{
                 color: "#FF4D00",
                 textDecoration: "underline",
