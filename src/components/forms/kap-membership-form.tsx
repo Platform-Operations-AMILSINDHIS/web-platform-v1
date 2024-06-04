@@ -35,13 +35,13 @@ import { LabelledInput, camelCase } from "./index";
 import type {
   KAPMembershipFormValues,
   FamilyMember,
+  KhudabadiAmilPanchayatMembershipFormProps,
+  KAPFormSectionProps,
 } from "~/types/forms/membership";
 
 import {
   personalInfoSchema,
-  familyMemberSchema,
   addressInfoSchema,
-  kapMembershipInfoSchema,
   proposerInfoSchema,
 } from "~/utils/schemas";
 
@@ -145,7 +145,9 @@ const membershipInfoAtom = focusAtom(kapFormAtom, (optic) =>
 
 const activeStepAtom = atom<number>(1);
 
-const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
+const KhudabadiAmilPanchayatMembershipForm: React.FC<
+  KhudabadiAmilPanchayatMembershipFormProps
+> = ({ user }) => {
   const [activeStep] = useAtom(activeStepAtom);
 
   // Logger
@@ -184,7 +186,7 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
         ProposerDetailsSection,
         MembershipDetailsSection,
       ].map((FormSection, i) => (
-        <>{activeStep === i + 1 && <FormSection key={i} />}</>
+        <>{activeStep === i + 1 && <FormSection user={user} key={i} />}</>
       ))}
 
       <Spacer h="2rem" />
@@ -192,7 +194,9 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC = () => {
   );
 };
 
-export const PersonalInformationSection: React.FC = () => {
+export const PersonalInformationSection: React.FC<KAPFormSectionProps> = ({
+  user,
+}) => {
   const [activeStep, setActiveStep] = useAtom(activeStepAtom);
   const [personalInfo, setPersonalInfo] = useAtom(personalInfoAtom);
 
@@ -235,6 +239,7 @@ export const PersonalInformationSection: React.FC = () => {
                   label={label}
                   type={inputType ? (inputType as InputType) : "text"}
                   required={required}
+                  isDisabled={user ? (user.KAP_member ? true : false) : true} // parameter to prevent interaction with first form phase
                 />
               ))}
             </Grid>
@@ -259,6 +264,7 @@ export const PersonalInformationSection: React.FC = () => {
                   label={label}
                   name={name ?? label}
                   required={required}
+                  isDisabled={user ? (user.KAP_member ? true : false) : true} // parameter to prevent interaction with first form phase
                 />
               ))}
             </Grid>

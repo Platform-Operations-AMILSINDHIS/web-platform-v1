@@ -63,3 +63,9 @@ export interface YACMembershipFormValues {
   familyMembers?: FamilyMember[];
   proposerInfo: ProposerInfo;
 }
+
+export interface KAPFormSectionProps {
+  user: userAtomBody;
+}
+export interface KhudabadiAmilPanchayatMembershipFormProps
+  extends KAPFormSectionProps {}

@@ -34,6 +34,7 @@ export const LabelledInput: React.FC<{
   defaultValue?: string;
   required?: boolean;
   selectOptions?: string[];
+  isDisabled?: boolean;
 }> = ({
   label,
   placeholder,
@@ -44,8 +45,9 @@ export const LabelledInput: React.FC<{
   defaultValue,
   required,
   selectOptions,
+  isDisabled,
 }) => (
-  <FormControl isRequired={required} fontWeight={500}>
+  <FormControl isDisabled={isDisabled} isRequired={required} fontWeight={500}>
     <FormLabel color="gray.700" fontWeight={600}>
       {label}
     </FormLabel>
