@@ -12,9 +12,13 @@ import FooterLogo from "../../public/images/Footer/FooterLogo.svg";
 import Image, { type StaticImageData } from "next/image";
 import { contactLinks, socialLinks } from "~/constants/LandingConstants";
 import TCPPModal from "./Footer/TCPPModal";
+import { useState } from "react";
 
 const Footer = () => {
   const { onOpen, onClose, isOpen } = useDisclosure();
+  const [modalText, setModalText] = useState<string>("");
+  const [modalTitle, setModalTitle] = useState<string>("");
+
   return (
     <Box
       pt="65px"
@@ -86,12 +90,14 @@ const Footer = () => {
         <Divider />
         <Flex color="gray.300" w="full" justify="space-between" my={5}>
           <Text>Copyright © 2023 Amil Sindhi</Text>
-          <Text onClick={onOpen}>
+          <Text>
             All Rights Reserved |{" "}
             <span
+              onClick={onOpen}
               style={{
                 color: "#FF4D00",
                 textDecoration: "underline",
+                cursor: "pointer",
               }}
             >
               Terms and Conditions
