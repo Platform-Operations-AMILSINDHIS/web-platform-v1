@@ -1,5 +1,4 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { MatrimonyFormValues } from "~/types/forms/matrimony";
 
 interface MatrimonyProfileViewLayoutProps {
   children: React.ReactNode;

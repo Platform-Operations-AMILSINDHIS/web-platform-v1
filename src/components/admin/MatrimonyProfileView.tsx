@@ -155,8 +155,13 @@ const MatrimonyProfileView: React.FC<MatrimonyProfileViewProps> = ({
 
         {/* Check DB call for retrieving address data */}
 
-        {/* <Flex flexDir="column">
-          <Text textDecoration="underline" fontSize={"2xl"} fontWeight={"bold"}>
+        <Flex
+          p={3}
+          borderRadius={10}
+          boxShadow="rgba(0, 0, 0, 0.24) 0px 3px 8px"
+          flexDir="column"
+        >
+          <Text color="#FF4D00" fontSize={"2xl"} fontWeight={"bold"}>
             Resedential Address
           </Text>
           <Grid mt={2} rowGap={1.5} templateColumns="repeat(3,1fr)">
@@ -165,7 +170,9 @@ const MatrimonyProfileView: React.FC<MatrimonyProfileViewProps> = ({
                 return (
                   <GridItem key={index}>
                     <Flex gap={2}>
-                      <Text fontWeight={500}>{keyName} :</Text>
+                      <Text fontWeight={500}>
+                        {camelCaseToSpaces(keyName)} :
+                      </Text>
                       <Text>
                         {submission?.residentialAddressDetails[keyName]}
                       </Text>
@@ -175,7 +182,7 @@ const MatrimonyProfileView: React.FC<MatrimonyProfileViewProps> = ({
               }
             )}
           </Grid>
-        </Flex> */}
+        </Flex>
 
         <Flex
           p={3}

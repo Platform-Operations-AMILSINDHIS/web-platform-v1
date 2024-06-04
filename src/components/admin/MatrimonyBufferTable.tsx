@@ -13,6 +13,7 @@ const MatrimonyBufferTable: React.FC<MatrimonyBufferTableProps> = ({
   matrimonyBufferData,
 }) => {
   const [, setProfileAtom] = useProfileAtom();
+  console.log(matrimonyBufferData);
   return (
     <TableLayout tableHeaders={formMembershipBufferDataTableHeaders}>
       {matrimonyBufferData.map((buffer, index) => {

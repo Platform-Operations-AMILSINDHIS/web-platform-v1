@@ -53,7 +53,7 @@ const SlugPage = () => {
             personalInfo: user_matrimony_submission?.personalInfo,
             familyMembers: user_matrimony_submission?.familyMembers,
             residentialAddressDetails:
-              user_matrimony_submission?.residentialAddressDetail,
+              user_matrimony_submission?.residentialAddressDetails,
             spousePreferences: user_matrimony_submission?.spousePreferences,
             proposerInfo: user_matrimony_submission?.proposerInfo,
           };

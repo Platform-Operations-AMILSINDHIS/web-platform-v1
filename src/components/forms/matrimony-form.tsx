@@ -255,7 +255,6 @@ const MatrimonyPersonalInformationSection: React.FC = () => {
                 {
                   label: "Income per Annum",
                   inputType: "text",
-                  required: true,
                 },
               ].map(({ label, name, inputType, required }, i) => (
                 <LabelledInput
