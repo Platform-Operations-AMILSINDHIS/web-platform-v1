@@ -1,59 +1,16 @@
-import { Box, Divider, Flex, Icon, Spacer, Text } from "@chakra-ui/react";
-import { BsTelephone } from "react-icons/bs";
-import { CiLocationOn } from "react-icons/ci";
-import { AiOutlineMail } from "react-icons/ai";
-import { FooterConstants } from "../constants/LandingConstants.json";
 import {
-  BsFacebook,
-  BsTwitter,
-  BsInstagram,
-  BsLinkedin,
-  BsYoutube,
-} from "react-icons/bs";
+  Box,
+  Divider,
+  Flex,
+  Icon,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { FooterConstants } from "../constants/LandingConstants.json";
 
 import FooterLogo from "../../public/images/Footer/FooterLogo.svg";
 import Image, { type StaticImageData } from "next/image";
-import { GetServerSideProps } from "next";
-import { EventCollectionQueryQuery } from "~/lib/__generated/sdk";
-
-const socialLinks = [
-  {
-    ICON: BsFacebook,
-    url: "",
-  },
-  {
-    ICON: BsTwitter,
-    url: "https://twitter.com/amilsindhis?t=AqSLK-YMEZevOcieUMwcvw&s=09",
-  },
-  {
-    ICON: BsInstagram,
-    url: "https://instagram.com/kapofbombay?igshid=MzNlNGNkZWQ4Mg==",
-  },
-  {
-    ICON: BsLinkedin,
-    url: "https://www.linkedin.com/in/the-khudabadi-amil-panchayat-of-bombay-836830251",
-  },
-  {
-    ICON: BsYoutube,
-    url: "https://youtube.com/@thekhudabadiamilpanchayato3151",
-  },
-];
-
-const contactLinks = [
-  {
-    ICON: AiOutlineMail,
-    LinkLabel: "amilsindhis@gmail.com",
-  },
-  {
-    ICON: BsTelephone,
-    LinkLabel: "(+91) 9820081700",
-  },
-  {
-    ICON: CiLocationOn,
-    LinkLabel:
-      "1 A, Sindhu House,1st Floor, Nanabhai Lane, Fort, Mumbai, Maharashtra 400001",
-  },
-];
+import { contactLinks, socialLinks } from "~/constants/LandingConstants";
 
 const Footer = () => {
   return (
