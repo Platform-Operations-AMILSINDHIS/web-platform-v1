@@ -267,6 +267,34 @@ const formBufferData = createTRPCRouter({
         console.log(`Error while deleting matrimony buffer data : ${err}`);
       }
     }),
+
+  verifyMatrimonyApplicant: publicProcedure
+    .input(Yup.object({ user_id: Yup.string() }))
+    .mutation(async ({ input }) => {
+      try {
+        const { user_id } = input;
+
+        const { data: fetchedData, error: fetchError } = await supabase
+          .from("form_buffer")
+          .select("*")
+          .eq("user_id", user_id)
+          .eq("formType", "MATRIMONY");
+
+        if (fetchError) throw fetchError;
+
+        if (fetchedData.length > 0) {
+          return {
+            user_verification: true,
+            user_matData: fetchedData,
+          };
+        } else {
+          return {
+            user_verification: false,
+            user_matData: null,
+          };
+        }
+      } catch (err) {}
+    }),
 });
 
 export default formBufferData;
