@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { MatrimonySubmissionVerificationServerResponse } from "~/types/api";
 import {
   MatrimonyBufferDataType,
   MembershipBufferDataType,
@@ -159,12 +160,14 @@ const useServerActions = () => {
     console.log(data);
   };
 
-  const handleUserMatrimonyVerification = async (user_id: string) => {
+  const handleUserMatrimonyVerification = async (
+    user_id: string
+  ): Promise<MatrimonySubmissionVerificationServerResponse> => {
     const data = await verifyUserMatrimonyApplicationMut.mutateAsync({
       user_id: user_id,
     });
 
-    console.log(data);
+    return data as MatrimonySubmissionVerificationServerResponse;
   };
 
   return {
