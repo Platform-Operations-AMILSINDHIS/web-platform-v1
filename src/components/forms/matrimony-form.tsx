@@ -29,16 +29,10 @@ import { ArrowBackIcon, ArrowForwardIcon, DeleteIcon } from "@chakra-ui/icons";
 
 import { LabelledInput, camelCase } from "./index";
 
-import type {
-  MatrimonyFormValues,
-  PersonalInfo,
-  ResidentialAddressDetails,
-  SpousePreferences,
-} from "~/types/forms/matrimony";
+import type { MatrimonyFormValues } from "~/types/forms/matrimony";
 
 import {
   matrimonyPersonalInfoSchema,
-  familyMemberSchema,
   residentialAddressDetailsSchema,
   matrimonySpousePreferencesSchema,
   proposerInfoSchema,
@@ -363,7 +357,6 @@ const MatrimonyPersonalInformationSection: React.FC<
                 <LabelledInput
                   key={i}
                   type="text"
-                  // type={inputType ? (inputType as InputType) : "text"}
                   label={label}
                   name={name}
                   required={required}
@@ -382,7 +375,6 @@ const MatrimonyPersonalInformationSection: React.FC<
                 rightIcon={<ArrowForwardIcon />}
                 size="lg"
                 onClick={() => console.log({ errors: formik.errors })}
-                // disabled={!formik.isValid || !formik.dirty}  // Updated condition
               >
                 Next
               </Button>
