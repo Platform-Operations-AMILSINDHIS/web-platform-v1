@@ -42,7 +42,6 @@ import type {
   FamilyMember,
   MatrimonyFormProps,
   MatrimonyFormSectionProps,
-  ProposerInfo,
 } from "~/types/forms/membership";
 
 import { Formik, Form } from "formik";
