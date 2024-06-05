@@ -160,7 +160,7 @@ const useServerActions = () => {
     console.log(data);
   };
 
-  const handleUserMatrimonyVerification = async (
+  const handleUserMatrimonySubmissionVerification = async (
     user_id: string
   ): Promise<MatrimonySubmissionVerificationServerResponse> => {
     const data = await verifyUserMatrimonyApplicationMut.mutateAsync({
@@ -178,7 +178,7 @@ const useServerActions = () => {
     handleRejectingUserApplication,
     handleAcceptingUserMatrimonyApplication,
     handleRejectingUserMatrimonyApplication,
-    handleUserMatrimonyVerification,
+    handleUserMatrimonySubmissionVerification,
     membershipBufferData,
     matrimonyBufferData,
   };
