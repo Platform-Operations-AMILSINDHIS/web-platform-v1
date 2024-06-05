@@ -66,7 +66,7 @@ const MatrimonyProfileView: React.FC<MatrimonyProfileViewProps> = ({
                   : `Loading`}
               </Flex>
             ) : (
-              <Text> Approve Applicant</Text>
+              <Text>Approve Applicant</Text>
             )}
           </Button>
           <Button

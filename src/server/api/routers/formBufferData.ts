@@ -3,10 +3,7 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 
 import * as Yup from "yup";
 import { sendDescisionMail, sendMatrimonyDescisionMail } from "~/server/mail";
-import {
-  MatrimonyBufferDataType,
-  MembershipBufferDataType,
-} from "~/types/tables/dataBuffer";
+import { MembershipBufferDataType } from "~/types/tables/dataBuffer";
 
 const formBufferData = createTRPCRouter({
   fetchMembershipBuffer: publicProcedure.query(async () => {

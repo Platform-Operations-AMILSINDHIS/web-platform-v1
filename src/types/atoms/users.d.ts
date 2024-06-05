@@ -1,5 +1,6 @@
 interface userAtomBody {
   auth_id: string;
+  id: string;
   email_id: string;
   first_name: string;
   last_name: string;

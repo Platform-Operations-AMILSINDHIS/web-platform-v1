@@ -23,6 +23,7 @@ const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
         account_name: userObject.account_name,
         age: userObject.age,
         auth_id: userObject.auth_id,
+        id: userObject.id,
         membership_id: userObject.membership_id,
         email_id: userObject.email_id,
         first_name: userObject.first_name,
@@ -76,6 +77,7 @@ const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
       const response = await axios.post<{
         userData: {
           auth_id: string;
+          id: string;
           account_name: string;
           age: number;
           email_id: string;
@@ -101,6 +103,7 @@ const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
 
       const filteredUserData: userAtomBody = {
         auth_id: userHit?.auth_id ?? "",
+        id: userHit?.id ?? "",
         account_name: userHit?.account_name ?? "",
         membership_id: userHit?.membership_id ?? "",
         age: userHit?.age ?? 0,

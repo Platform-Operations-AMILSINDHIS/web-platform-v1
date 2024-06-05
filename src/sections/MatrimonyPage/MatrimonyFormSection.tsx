@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   useDisclosure,
   Box,
@@ -12,10 +12,22 @@ import UserBlockModal from "~/components/authentication/UserBlockModal";
 import { useUserAtom } from "~/lib/atom";
 
 import MatrimonyForm from "~/components/forms/matrimony-form";
+import useServerActions from "~/hooks/useServerActions";
 
 const MatrimonyFormSection = () => {
   const [{ user }] = useUserAtom();
+  const { handleUserMatrimonyVerification } = useServerActions();
+
   console.log(user);
+
+  useEffect(() => {
+    if (user && user.id) {
+      const data = handleUserMatrimonyVerification(user?.id ?? "");
+      console.log(data);
+    } else {
+      console.log("Loading");
+    }
+  }, [user]);
   return (
     <Box position="relative">
       <Box
