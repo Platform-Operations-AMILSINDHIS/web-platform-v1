@@ -75,3 +75,10 @@ export interface YACFormSectionProps {
 }
 export interface YoungAmilCircleMembershipFormProps
   extends KAPFormSectionProps {}
+
+export interface MatrimonyFormSectionProps {
+  user: userAtomBody;
+  submissionVerification?: boolean;
+}
+
+export interface MatrimonyFormProps extends MatrimonyFormSectionProps {}

@@ -133,7 +133,10 @@ const MatrimonyFormSection = () => {
             </Text>
           </Box>
 
-          <MatrimonyForm />
+          <MatrimonyForm
+            submissionVerification={submissionVerified}
+            user={user}
+          />
         </Flex>
       </Box>
     </Box>

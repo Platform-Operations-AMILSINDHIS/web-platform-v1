@@ -211,7 +211,6 @@ export const PersonalInformationSection: React.FC<KAPFormSectionProps> = ({
         initialValues={personalInfo}
         validationSchema={personalInfoSchema}
         onSubmit={(values, actions) => {
-          // console.log({ values });
           setPersonalInfo(values);
           actions.setSubmitting(false);
           setActiveStep(activeStep + 1);

@@ -44,7 +44,12 @@ import {
   proposerInfoSchema,
 } from "~/utils/schemas";
 
-import type { FamilyMember, ProposerInfo } from "~/types/forms/membership";
+import type {
+  FamilyMember,
+  MatrimonyFormProps,
+  MatrimonyFormSectionProps,
+  ProposerInfo,
+} from "~/types/forms/membership";
 
 import { Formik, Form } from "formik";
 import type { InputType } from "./kap-membership-form";
@@ -156,7 +161,10 @@ const proposerInfoAtom = focusAtom(matrimonyFormAtom, (optic) =>
 
 const activeStepAtom = atom<number>(1);
 
-const MatrimonyForm: React.FC = () => {
+const MatrimonyForm: React.FC<MatrimonyFormProps> = ({
+  user,
+  submissionVerification,
+}) => {
   const [activeStep] = useAtom(activeStepAtom);
 
   // Logger
@@ -195,7 +203,15 @@ const MatrimonyForm: React.FC = () => {
         SpousePreferencesSection,
         ProposerDetailsSection,
       ].map((FormSection, i) => (
-        <>{activeStep === i + 1 && <FormSection key={i} />}</>
+        <>
+          {activeStep === i + 1 && (
+            <FormSection
+              user={user}
+              submissionVerification={submissionVerification}
+              key={i}
+            />
+          )}
+        </>
       ))}
 
       <Spacer h="2rem" />
@@ -203,7 +219,9 @@ const MatrimonyForm: React.FC = () => {
   );
 };
 
-const MatrimonyPersonalInformationSection: React.FC = () => {
+const MatrimonyPersonalInformationSection: React.FC<
+  MatrimonyFormSectionProps
+> = ({ user, submissionVerification }) => {
   const [activeStep, setActiveStep] = useAtom(activeStepAtom);
   const [personalInfo, setPersonalInfo] = useAtom(personalInfoAtom);
 
@@ -262,6 +280,9 @@ const MatrimonyPersonalInformationSection: React.FC = () => {
                   label={label}
                   name={name ?? undefined}
                   type={inputType ? (inputType as InputType) : "text"}
+                  isDisabled={
+                    user ? (submissionVerification ? true : false) : false
+                  }
                   required={required}
                 />
               ))}
@@ -306,6 +327,9 @@ const MatrimonyPersonalInformationSection: React.FC = () => {
                     placeholder={placeholder}
                     selectOptions={selectOptions}
                     required={required}
+                    isDisabled={
+                      user ? (submissionVerification ? true : false) : false
+                    }
                   />
                 )
               )}
@@ -343,6 +367,9 @@ const MatrimonyPersonalInformationSection: React.FC = () => {
                   label={label}
                   name={name}
                   required={required}
+                  isDisabled={
+                    user ? (submissionVerification ? true : false) : false
+                  }
                 />
               ))}
             </Grid>
