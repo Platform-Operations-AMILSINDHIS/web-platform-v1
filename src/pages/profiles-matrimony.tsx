@@ -1,4 +1,4 @@
-import { Flex, Text, useDisclosure } from "@chakra-ui/react";
+import { Flex, Spinner, Text, useDisclosure } from "@chakra-ui/react";
 import { FormikHelpers } from "formik";
 import { useEffect, useState } from "react";
 import { MatrimonyLoginValues } from "~/hooks/useForm";
@@ -55,7 +55,6 @@ const ProfilePage = () => {
 
   useEffect(() => {
     fetchProfiles();
-    console.log({ matrimonyProfiles });
   }, [matrimonyProfiles, isLoggedIn]);
 
   return (
@@ -71,6 +70,21 @@ const ProfilePage = () => {
           <Text fontSize={"2xl"} color="gray.600" fontWeight={600}>
             Matrimony Profiles
           </Text>
+          {matrimonyProfiles.length > 0 ? (
+            <Flex>
+              {matrimonyProfiles
+                .filter((e) => e.user_id !== user?.id)
+                .map((profile, index) => {
+                  return (
+                    <Text key={index}>
+                      {profile.submission.personalInfo.firstName}
+                    </Text>
+                  );
+                })}
+            </Flex>
+          ) : (
+            <Spinner />
+          )}
         </Flex>
       ) : (
         <></>
