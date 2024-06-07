@@ -1,7 +1,12 @@
 import { Text } from "@chakra-ui/react";
+import ProfilesViewLayout from "~/layouts/ProfilesViewLayout";
 
 const ProfilePage = () => {
-  return <Text>Hi, Welcome to profile page</Text>;
+  return (
+    <ProfilesViewLayout>
+      <Text>Hi, Welcome to profile page</Text>
+    </ProfilesViewLayout>
+  );
 };
 
 export default ProfilePage;
