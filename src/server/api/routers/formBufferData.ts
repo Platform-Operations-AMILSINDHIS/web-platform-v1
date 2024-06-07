@@ -54,16 +54,15 @@ const formBufferData = createTRPCRouter({
         data: approvedMatrimonyApplicants,
         error: approvedMatrimonyApplicantsFetchError,
       } = await supabase
-        .from("matrimony_profiles")
+        .from("form_buffer")
         .select("*")
-        .eq("status", "APPROVED");
+        .eq("status", "APPROVED")
+        .eq("formType", "MATRIMONY");
 
       if (approvedMatrimonyApplicantsFetchError)
         throw approvedMatrimonyApplicantsFetchError;
 
-      return {
-        matrimonyApplicantsApproved: approvedMatrimonyApplicants,
-      };
+      return approvedMatrimonyApplicants;
     } catch (err) {
       console.log(
         `Error while fetching approved matrimony applicants : ${err}`

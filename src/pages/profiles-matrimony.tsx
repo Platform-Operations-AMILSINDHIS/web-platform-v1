@@ -1,12 +1,13 @@
 import { Flex, Text, useDisclosure } from "@chakra-ui/react";
 import { FormikHelpers } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MatrimonyLoginValues } from "~/hooks/useForm";
 import { useUserAtom } from "~/lib/atom";
 
 import useServerActions from "~/hooks/useServerActions";
 import ProfilesViewLayout from "~/layouts/ProfilesViewLayout";
 import MatrimonyAuthModal from "~/components/authentication/MatrimonyAuthModal";
+import { MatrimonyProfilesFetchResponse } from "~/types/api";
 
 const ProfilePage = () => {
   const [{ user }] = useUserAtom();
@@ -14,10 +15,16 @@ const ProfilePage = () => {
   const { isOpen: isOpenAuth } = useDisclosure();
   const { isOpen: isOpenSelection } = useDisclosure();
 
-  const { handleMatrimonyLogin } = useServerActions();
+  const { handleMatrimonyLogin, handleMatrimonyProfilesFetch } =
+    useServerActions();
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  const [matrimoyID, setMatrimonyID] = useState<string>("");
+  const [matrimonyProfiles, setMatrimonyProfiles] = useState<
+    MatrimonyProfilesFetchResponse[]
+  >([]);
 
   const handleFormSubmit = async (
     values: MatrimonyLoginValues,
@@ -34,9 +41,22 @@ const ProfilePage = () => {
       setIsSubmitting(false);
       return;
     }
+    setMatrimonyID(values.matrimony_id);
     setIsSubmitting(false);
     setIsLoggedIn(true);
   };
+
+  const fetchProfiles = async () => {
+    const data = await handleMatrimonyProfilesFetch();
+    if (data.length > 0 && isLoggedIn) {
+      setMatrimonyProfiles(data);
+    }
+  };
+
+  useEffect(() => {
+    fetchProfiles();
+    console.log({ matrimonyProfiles });
+  }, [matrimonyProfiles, isLoggedIn]);
 
   return (
     <ProfilesViewLayout>

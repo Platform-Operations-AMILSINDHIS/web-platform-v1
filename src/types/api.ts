@@ -20,3 +20,12 @@ export interface MatrimonyLoginResponse {
   loggedIn: boolean;
   message: string;
 }
+
+export interface MatrimonyProfilesFetchResponse {
+  created_at: string;
+  formType: string;
+  id: number;
+  status: string;
+  submission: MatrimonyFormValues;
+  user_id: string;
+}
