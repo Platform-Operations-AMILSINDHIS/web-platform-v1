@@ -11,3 +11,7 @@ export interface MatrimonySubmissionVerificationServerResponse {
     user_id: string;
   }[];
 }
+
+export interface MatrimonySubmissionApprovalVerificationResponse {
+  status: boolean;
+}

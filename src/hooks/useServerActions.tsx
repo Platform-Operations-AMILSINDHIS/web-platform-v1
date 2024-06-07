@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { MatrimonySubmissionVerificationServerResponse } from "~/types/api";
+import {
+  MatrimonySubmissionApprovalVerificationResponse,
+  MatrimonySubmissionVerificationServerResponse,
+} from "~/types/api";
 import {
   MatrimonyBufferDataType,
   MembershipBufferDataType,
@@ -34,6 +37,9 @@ const useServerActions = () => {
 
   const verifyUserMatrimonyApplicationMut =
     api.formBuffer.verifyMatrimonyApplicant.useMutation();
+
+  const verifyIfApprovedUserMatrimonyApplicationMut =
+    api.matrimonyProfiles.verifyIfApproved.useMutation();
 
   const { refetch: fetchAllMemberResponses } =
     api.formBuffer.fetchMembershipBuffer.useQuery(undefined, {
@@ -170,6 +176,16 @@ const useServerActions = () => {
     return data as MatrimonySubmissionVerificationServerResponse;
   };
 
+  const handleUserMatrimonyApprovalVerification = async (
+    user_id: string
+  ): Promise<MatrimonySubmissionApprovalVerificationResponse> => {
+    const data = await verifyIfApprovedUserMatrimonyApplicationMut.mutateAsync({
+      user_id: user_id,
+    });
+
+    return data as MatrimonySubmissionApprovalVerificationResponse;
+  };
+
   return {
     handleMemberBufferFetch,
     handleMatrimonyBufferFetch,
@@ -179,6 +195,7 @@ const useServerActions = () => {
     handleAcceptingUserMatrimonyApplication,
     handleRejectingUserMatrimonyApplication,
     handleUserMatrimonySubmissionVerification,
+    handleUserMatrimonyApprovalVerification,
     membershipBufferData,
     matrimonyBufferData,
   };
