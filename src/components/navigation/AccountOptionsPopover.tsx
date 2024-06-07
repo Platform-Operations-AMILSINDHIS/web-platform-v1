@@ -1,6 +1,7 @@
 import DeleteModal from "../authentication/DeleteModal";
 
 import { MdOutlinePassword, MdOutlineLogout } from "react-icons/md";
+import { PiFilesFill } from "react-icons/pi";
 import { FaTrash } from "react-icons/fa6";
 import { useUserAtom } from "~/lib/atom";
 import axios from "axios";
@@ -18,7 +19,11 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-const AccountOptionsPopover: React.FC<{ children: React.ReactNode }> = ({
+interface AccountOptionsPopoverProps {
+  children: React.ReactNode;
+}
+
+const AccountOptionsPopover: React.FC<AccountOptionsPopoverProps> = ({
   children,
 }) => {
   const { onClose, isOpen, onOpen } = useDisclosure();
@@ -72,6 +77,16 @@ const AccountOptionsPopover: React.FC<{ children: React.ReactNode }> = ({
               <Icon boxSize={4} as={MdOutlinePassword}></Icon>
               <Text>Reset Password</Text>
             </Flex>
+            <Flex
+              _hover={{ color: "gray.800", cursor: "pointer" }}
+              gap={2}
+              align="center"
+              onClick={() => (window.location.href = "/profiles-matrimony")}
+            >
+              <Icon boxSize={4} as={PiFilesFill}></Icon>
+              <Text>Matrimony Profiles</Text>
+            </Flex>
+
             <Flex
               _hover={{ color: "gray.800", cursor: "pointer" }}
               gap={2}
