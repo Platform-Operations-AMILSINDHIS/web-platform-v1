@@ -4,7 +4,7 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 import * as Yup from "yup";
 
 const matrimonyProfiles = createTRPCRouter({
-  verifyMatID: publicProcedure
+  verifyIfApproved: publicProcedure
     .input(Yup.object({ user_id: Yup.string() }))
     .mutation(async ({ input }) => {
       try {
