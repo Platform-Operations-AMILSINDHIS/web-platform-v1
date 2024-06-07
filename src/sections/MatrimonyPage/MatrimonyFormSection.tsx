@@ -1,25 +1,72 @@
-import { useState } from "react";
-import {
-  useDisclosure,
-  Box,
-  Flex,
-  Heading,
-  Spacer,
-  Text,
-} from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { Box, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
 
 import UserBlockModal from "~/components/authentication/UserBlockModal";
 import { useUserAtom } from "~/lib/atom";
 
 import MatrimonyForm from "~/components/forms/matrimony-form";
+import useServerActions from "~/hooks/useServerActions";
 
 const MatrimonyFormSection = () => {
   const [{ user }] = useUserAtom();
-  console.log(user);
+  const {
+    handleUserMatrimonySubmissionVerification,
+    handleUserMatrimonyApprovalVerification,
+  } = useServerActions();
+
+  const [submissionVerified, setSubmissionVerified] = useState<boolean>(false);
+  const [noPending, setNoPending] = useState<boolean>(false);
+  const [approved, setApproved] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const SendSubmissionVerificationQueryToServer = async (user_id: string) => {
+    const response_data = await handleUserMatrimonySubmissionVerification(
+      user_id
+    );
+    const response_result = response_data?.user_verification;
+    console.log({ response_result });
+    response_result
+      ? setSubmissionVerified(response_result)
+      : setNoPending(true);
+
+    if (noPending) {
+      const approval_verification_response =
+        await handleUserMatrimonyApprovalVerification(user_id);
+      const approval_verification_result =
+        approval_verification_response?.status;
+
+      if (approval_verification_result) {
+        setApproved(true);
+      }
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (user && user.id) {
+      SendSubmissionVerificationQueryToServer(user.id);
+      console.log({ noPending, submissionVerified, approved });
+    } else {
+      setLoading(false);
+      console.log("Loading");
+    }
+  }, [user, noPending, approved]);
+
+  if (loading) {
+    return <Text>Loading...</Text>;
+  }
+
   return (
     <Box position="relative">
       <Box
-        display={user && user.membership_id != "" ? "none" : ""}
+        display={
+          user &&
+          user.membership_id === "" &&
+          submissionVerified === true &&
+          approved === true
+            ? "none"
+            : ""
+        }
         left="50%"
         top="50%"
         transform="translate(-50%,-50%)"
@@ -28,7 +75,9 @@ const MatrimonyFormSection = () => {
         position="absolute"
       >
         {user ? (
-          user.membership_id === "" ? (
+          user.membership_id === "" ||
+          submissionVerified === true ||
+          approved === true ? (
             <Flex
               boxShadow="rgba(0, 0, 0, 0.24) 0px 3px 8px;"
               border="1px solid"
@@ -42,18 +91,59 @@ const MatrimonyFormSection = () => {
               w={500}
             >
               <Flex gap={2} px={10} align="center" flexDir="column">
-                <Text fontWeight={600} textAlign="center" fontSize="xl">
-                  Must be a member
-                </Text>
-                <Text textAlign="center">
-                  You need to be a KAP member or a YAC member above the age of
-                  18 to access matrimony services
-                </Text>
+                {user.membership_id === "" ? (
+                  <>
+                    <Text fontWeight={600} textAlign="center" fontSize="xl">
+                      Must be a member
+                    </Text>
+                    <Text textAlign="center">
+                      You need to be a KAP member or a YAC member above the age
+                      of 18 to access matrimony services
+                    </Text>
+                  </>
+                ) : submissionVerified ? (
+                  <>
+                    <Text fontWeight={600} textAlign="center" fontSize="xl">
+                      Form Successfully Submitted
+                    </Text>
+                    <Text textAlign="center">
+                      Please wait, till your matrimony form has been reviewed by
+                      our community, In case of any queries please reach out to{" "}
+                      <span
+                        style={{
+                          color: "#FF4D00",
+                        }}
+                      >
+                        info@amilsindhis.org
+                      </span>
+                    </Text>
+                  </>
+                ) : approved ? (
+                  <>
+                    <Text fontWeight={600} textAlign="center" fontSize="xl">
+                      Application Approved !
+                    </Text>
+                    <Text textAlign="center">
+                      Congratulations on your application being approved, you
+                      can head over to
+                      <span
+                        style={{
+                          color: "#FF4D00",
+                          marginInline: "5px",
+                        }}
+                      >
+                        https://amilsindhis.org/matches
+                      </span>{" "}
+                      to request information on any particular individual's
+                      profile that suits you
+                    </Text>
+                  </>
+                ) : (
+                  <></>
+                )}
               </Flex>
             </Flex>
-          ) : (
-            <></>
-          )
+          ) : null
         ) : (
           <UserBlockModal />
         )}
@@ -67,7 +157,11 @@ const MatrimonyFormSection = () => {
             : { cursor: "not-allowed" }
         }
         filter={
-          user ? (user.membership_id === "" ? "blur(2px)" : "") : "blur(2px)"
+          user
+            ? user.membership_id === "" || submissionVerified || approved
+              ? "blur(2px)"
+              : ""
+            : "blur(2px)"
         }
       >
         <Flex id="matrimony-form" direction="column">
@@ -83,7 +177,11 @@ const MatrimonyFormSection = () => {
             </Text>
           </Box>
 
-          <MatrimonyForm />
+          <MatrimonyForm
+            submissionVerification={submissionVerified}
+            user={user}
+            approved={true}
+          />
         </Flex>
       </Box>
     </Box>

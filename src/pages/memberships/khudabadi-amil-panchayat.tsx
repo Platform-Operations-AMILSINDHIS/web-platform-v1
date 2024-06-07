@@ -9,12 +9,15 @@ import { useUserAtom } from "~/lib/atom";
 
 const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
   const [{ user }] = useUserAtom();
+  console.log({ user });
 
   return (
     <Layout title="KAP Membership Form">
       <Box position="relative">
         <Box
-          display={user && user.age >= 21 ? "none" : ""}
+          display={
+            user && user.age >= 21 && user.KAP_member != true ? "none" : ""
+          }
           left="50%"
           top="50%"
           transform="translate(-50%,-95%)"
@@ -23,7 +26,7 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
           position="absolute"
         >
           {user ? (
-            user.age >= 21 ? (
+            user.age >= 21 && user.KAP_member != true ? (
               <></>
             ) : (
               <Flex
@@ -39,13 +42,21 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
                 w={500}
               >
                 <Flex gap={2} px={10} align="center" flexDir="column">
-                  <Text fontWeight={600} textAlign="center" fontSize="xl">
-                    Age Requirement not met
-                  </Text>
-                  <Text textAlign="center">
-                    You need to be atleast 21 years of age to be eligible for
-                    KAP member application
-                  </Text>
+                  {user.KAP_member ? (
+                    <Text>Membership Completed</Text>
+                  ) : (
+                    <Text>Age Requirement not met</Text>
+                  )}
+                  {user.KAP_member ? (
+                    <Text textAlign="center">
+                      {`You are already a registered KAP member, Your KAP ID is ${user.membership_id} `}
+                    </Text>
+                  ) : (
+                    <Text textAlign="center">
+                      You need to be atleast 21 years of age to be eligible for
+                      KAP member application
+                    </Text>
+                  )}
                 </Flex>
               </Flex>
             )
@@ -78,10 +89,16 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
           )} */}
         </Box>
         <Box
-          filter={user && user.age >= 21 ? "" : "blur(2px)"}
-          _hover={user && user.age >= 21 ? {} : { cursor: "not-allowed" }}
+          filter={
+            user && user.age >= 21 && user.KAP_member != true ? "" : "blur(2px)"
+          }
+          _hover={
+            user && user.age >= 21 && user.KAP_member != true
+              ? {}
+              : { cursor: "not-allowed" }
+          }
         >
-          <KhudabadiAmilPanchayatMembershipForm />
+          <KhudabadiAmilPanchayatMembershipForm user={user} />
         </Box>
       </Box>
       <Spacer h="5rem" />

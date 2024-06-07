@@ -5,6 +5,8 @@ import { r2Router } from "~/server/api/routers/r2-router";
 
 import { createTRPCRouter } from "~/server/api/trpc";
 import formBufferData from "./routers/formBufferData";
+import actions from "./routers/actions";
+import matrimonyProfiles from "./routers/matrimonyProfiles";
 
 /**
  * This is the primary router for your server.
@@ -17,6 +19,8 @@ export const appRouter = createTRPCRouter({
   event: eventRouter,
   r2: r2Router,
   formBuffer: formBufferData,
+  actions: actions,
+  matrimonyProfiles: matrimonyProfiles,
 });
 
 // export type definition of API

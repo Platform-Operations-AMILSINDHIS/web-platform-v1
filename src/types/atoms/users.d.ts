@@ -1,13 +1,15 @@
 interface userAtomBody {
   auth_id: string;
+  id: string;
   email_id: string;
   first_name: string;
   last_name: string;
   account_name: string;
   gender: string;
-  user_member: number;
   membership_id: string;
   age: number;
+  KAP_member: boolean;
+  YAC_member: boolean;
 }
 
 interface userAtomState {

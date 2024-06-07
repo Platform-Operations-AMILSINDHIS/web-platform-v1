@@ -1,5 +1,6 @@
 import { init } from "@paralleldrive/cuid2";
 import { ToWords } from "to-words";
+import supabase from "~/pages/api/auth/supabase";
 
 export const convertDATE = (date: Date) => {
   const inputDate = new Date(date);
@@ -111,4 +112,10 @@ export const formatPDFAge = (dateString: Date) => {
   }
 
   return age;
+};
+
+export const camelCaseToSpaces = (str: string) => {
+  return str.replace(/([A-Z])/g, " $1").replace(/^./, function (str) {
+    return str.toUpperCase();
+  });
 };

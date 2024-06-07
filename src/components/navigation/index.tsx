@@ -1,17 +1,16 @@
 import { Box, Flex, useDisclosure } from "@chakra-ui/react";
+import { useState } from "react";
+import { useUserAtom } from "~/lib/atom";
+
 import Image from "next/image";
 
 import AmilSindhiLogo from "../../../public/images/amil-sindhis-logo.png";
-import ModalButton from "../buttons/ModalButtons";
-import { useState } from "react";
-import AuthModal from "../authentication/AuthModal";
-import { useUserAtom } from "~/lib/atom";
-// import AccountDisplay from "./AccountDisplay";
-// import NavigationDropDown from "./NavigationDropDown";
-// import NavigationRegular from "./NavigationRegular";
+
 import AccountDisplay from "./AccountDisplay";
 import NavigationDropDown from "./NavigationDropDown";
 import NavigationRegular from "./NavigationRegular";
+import AuthModal from "../authentication/AuthModal";
+import ModalButton from "../buttons/ModalButtons";
 
 interface NavigationProps {
   navigationItems: {
@@ -24,11 +23,13 @@ interface NavigationProps {
     }[];
   }[];
   userLocation: string;
+  matrimonyAccess?: boolean;
 }
 
 const Navigation: React.FC<NavigationProps> = ({
   navigationItems,
   userLocation,
+  matrimonyAccess,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [displayState, setDisplayState] = useState(false);
@@ -97,7 +98,7 @@ const Navigation: React.FC<NavigationProps> = ({
         </Flex>
 
         {user ? (
-          <AccountDisplay user={user} />
+          <AccountDisplay matrimonyAccess={matrimonyAccess} user={user} />
         ) : (
           <Flex gap={3} color="gray.700">
             <ModalButton

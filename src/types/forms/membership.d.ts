@@ -3,6 +3,8 @@ export interface FamilyMember {
   relationship?: string;
   occupation?: string;
   age?: number | null;
+
+  [key: string]: string | number | null;
 }
 
 export interface PersonalInfo {
@@ -43,6 +45,8 @@ export interface ProposerInfo {
   firstName: string;
   lastName: string;
   mobileNumber: string;
+
+  [key: string]: string | number | null;
 }
 
 export interface KAPMembershipFormValues {
@@ -59,3 +63,23 @@ export interface YACMembershipFormValues {
   familyMembers?: FamilyMember[];
   proposerInfo: ProposerInfo;
 }
+
+export interface KAPFormSectionProps {
+  user: userAtomBody;
+}
+export interface KhudabadiAmilPanchayatMembershipFormProps
+  extends KAPFormSectionProps {}
+
+export interface YACFormSectionProps {
+  user: userAtomBody;
+}
+export interface YoungAmilCircleMembershipFormProps
+  extends KAPFormSectionProps {}
+
+export interface MatrimonyFormSectionProps {
+  user: userAtomBody;
+  submissionVerification?: boolean;
+  approved?: boolean;
+}
+
+export interface MatrimonyFormProps extends MatrimonyFormSectionProps {}

@@ -29,22 +29,20 @@ import { ArrowBackIcon, ArrowForwardIcon, DeleteIcon } from "@chakra-ui/icons";
 
 import { LabelledInput, camelCase } from "./index";
 
-import type {
-  MatrimonyFormValues,
-  PersonalInfo,
-  ResidentialAddressDetails,
-  SpousePreferences,
-} from "~/types/forms/matrimony";
+import type { MatrimonyFormValues } from "~/types/forms/matrimony";
 
 import {
   matrimonyPersonalInfoSchema,
-  familyMemberSchema,
   residentialAddressDetailsSchema,
   matrimonySpousePreferencesSchema,
   proposerInfoSchema,
 } from "~/utils/schemas";
 
-import type { FamilyMember, ProposerInfo } from "~/types/forms/membership";
+import type {
+  FamilyMember,
+  MatrimonyFormProps,
+  MatrimonyFormSectionProps,
+} from "~/types/forms/membership";
 
 import { Formik, Form } from "formik";
 import type { InputType } from "./kap-membership-form";
@@ -156,12 +154,12 @@ const proposerInfoAtom = focusAtom(matrimonyFormAtom, (optic) =>
 
 const activeStepAtom = atom<number>(1);
 
-const MatrimonyForm: React.FC = () => {
+const MatrimonyForm: React.FC<MatrimonyFormProps> = ({
+  user,
+  submissionVerification,
+  approved,
+}) => {
   const [activeStep] = useAtom(activeStepAtom);
-
-  // Logger
-  // const [formState] = useAtom(matrimonyFormAtom);
-  // useEffect(() => console.log(JSON.stringify(formState, null, 2)), [formState]);
 
   return (
     <>
@@ -195,7 +193,16 @@ const MatrimonyForm: React.FC = () => {
         SpousePreferencesSection,
         ProposerDetailsSection,
       ].map((FormSection, i) => (
-        <>{activeStep === i + 1 && <FormSection key={i} />}</>
+        <>
+          {activeStep === i + 1 && (
+            <FormSection
+              user={user}
+              submissionVerification={submissionVerification}
+              approved={approved}
+              key={i}
+            />
+          )}
+        </>
       ))}
 
       <Spacer h="2rem" />
@@ -203,7 +210,9 @@ const MatrimonyForm: React.FC = () => {
   );
 };
 
-const MatrimonyPersonalInformationSection: React.FC = () => {
+const MatrimonyPersonalInformationSection: React.FC<
+  MatrimonyFormSectionProps
+> = ({ user, submissionVerification, approved }) => {
   const [activeStep, setActiveStep] = useAtom(activeStepAtom);
   const [personalInfo, setPersonalInfo] = useAtom(personalInfoAtom);
 
@@ -224,7 +233,6 @@ const MatrimonyPersonalInformationSection: React.FC = () => {
         initialValues={personalInfo}
         validationSchema={matrimonyPersonalInfoSchema}
         onSubmit={(values, actions) => {
-          // console.log({ values });
           console.log({ values });
           setPersonalInfo(values);
           actions.setSubmitting(false);
@@ -255,7 +263,6 @@ const MatrimonyPersonalInformationSection: React.FC = () => {
                 {
                   label: "Income per Annum",
                   inputType: "text",
-                  required: true,
                 },
               ].map(({ label, name, inputType, required }, i) => (
                 <LabelledInput
@@ -263,6 +270,15 @@ const MatrimonyPersonalInformationSection: React.FC = () => {
                   label={label}
                   name={name ?? undefined}
                   type={inputType ? (inputType as InputType) : "text"}
+                  isDisabled={
+                    user
+                      ? submissionVerification
+                        ? true
+                        : approved
+                        ? true
+                        : false
+                      : false
+                  }
                   required={required}
                 />
               ))}
@@ -307,6 +323,15 @@ const MatrimonyPersonalInformationSection: React.FC = () => {
                     placeholder={placeholder}
                     selectOptions={selectOptions}
                     required={required}
+                    isDisabled={
+                      user
+                        ? submissionVerification
+                          ? true
+                          : approved
+                          ? true
+                          : false
+                        : false
+                    }
                   />
                 )
               )}
@@ -340,10 +365,18 @@ const MatrimonyPersonalInformationSection: React.FC = () => {
                 <LabelledInput
                   key={i}
                   type="text"
-                  // type={inputType ? (inputType as InputType) : "text"}
                   label={label}
                   name={name}
                   required={required}
+                  isDisabled={
+                    user
+                      ? submissionVerification
+                        ? true
+                        : approved
+                        ? true
+                        : false
+                      : false
+                  }
                 />
               ))}
             </Grid>
@@ -356,7 +389,6 @@ const MatrimonyPersonalInformationSection: React.FC = () => {
                 rightIcon={<ArrowForwardIcon />}
                 size="lg"
                 onClick={() => console.log({ errors: formik.errors })}
-                // disabled={!formik.isValid || !formik.dirty}  // Updated condition
               >
                 Next
               </Button>

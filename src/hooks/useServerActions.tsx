@@ -1,6 +1,8 @@
 import { useState } from "react";
-// import { sendDescisionMail } from "~/server/mail";
-import { KAPMembershipFormPDFValues } from "~/types/pdfs/kap-membership";
+import {
+  MatrimonySubmissionApprovalVerificationResponse,
+  MatrimonySubmissionVerificationServerResponse,
+} from "~/types/api";
 import {
   MatrimonyBufferDataType,
   MembershipBufferDataType,
@@ -14,14 +16,30 @@ const useServerActions = () => {
   const [matrimonyBufferData, setMatrimonyBufferData] = useState<
     MatrimonyBufferDataType[]
   >([]);
-  const [userMembershipSubmission, setUserMembershipSubission] =
-    useState<KAPMembershipFormPDFValues>();
+
+  const generateMembershipID = api.actions.generateMembershipID.useMutation();
+  const generateMatrimonyID = api.actions.generateMatrimonyID.useMutation();
 
   const fetchUserSubmissionMut =
     api.formBuffer.fetchUserMembershipSubmission.useMutation();
 
   const acceptUserApplicationMut =
     api.formBuffer.acceptUserApplication.useMutation();
+
+  const rejectUserApplicationMut =
+    api.formBuffer.rejectUserApplication.useMutation();
+
+  const acceptUserMatrimonyApplicationMut =
+    api.formBuffer.acceptUserMatrimonyApplication.useMutation();
+
+  const rejectUserMatrimonyApplicationMut =
+    api.formBuffer.rejectUserMatrimonyApplication.useMutation();
+
+  const verifyUserMatrimonyApplicationMut =
+    api.formBuffer.verifyMatrimonyApplicant.useMutation();
+
+  const verifyIfApprovedUserMatrimonyApplicationMut =
+    api.matrimonyProfiles.verifyIfApproved.useMutation();
 
   const { refetch: fetchAllMemberResponses } =
     api.formBuffer.fetchMembershipBuffer.useQuery(undefined, {
@@ -32,9 +50,15 @@ const useServerActions = () => {
       enabled: false,
     });
 
+  const { refetch: fetchApprovedMatrimonyApplications } =
+    api.formBuffer.fetchApprovedMatrimonyApplicants.useQuery(undefined, {
+      enabled: false,
+    });
+
   const handleMemberBufferFetch = async () => {
     const data = await fetchAllMemberResponses();
     setMembershipBufferData(data.data ?? []);
+    console.log(membershipBufferData);
   };
 
   const handleMatrimonyBufferFetch = async () => {
@@ -59,16 +83,107 @@ const useServerActions = () => {
   const handleAcceptingUserApplication = async (
     formType: string,
     to: string,
-    user_id: string
+    user_id: string,
+    setIsGeneratingID: (state: boolean) => void,
+    setIsSendingMail: (state: boolean) => void,
+    setIsApprovingApplication: (state: boolean) => void
   ) => {
+    setIsApprovingApplication(true);
+    setIsGeneratingID(true);
+    const generatedMembershipID = await generateMembershipID.mutateAsync({
+      formType: formType,
+    });
+    setIsGeneratingID(false);
+    setIsSendingMail(true);
     const data = await acceptUserApplicationMut.mutateAsync({
+      membership_id: generatedMembershipID,
       formType: formType,
       to,
       user_id: user_id,
     });
+    setIsSendingMail(false);
+    setIsApprovingApplication(false);
+    window.location.href = "/admin";
+  };
 
-    console.log(user_id);
-    console.log(data?.user_id);
+  const handleRejectingUserApplication = async (
+    formType: string,
+    to: string,
+    user_id: string,
+    setIsSendingMail: (state: boolean) => void,
+    setIsRejectingApplication: (state: boolean) => void
+  ) => {
+    setIsRejectingApplication(true);
+    setIsSendingMail(true);
+    const data = await rejectUserApplicationMut.mutateAsync({
+      formType: formType,
+      to,
+      user_id: user_id,
+    });
+    setIsSendingMail(false);
+    setIsRejectingApplication(false);
+    window.location.href = "/admin";
+  };
+
+  const handleAcceptingUserMatrimonyApplication = async (
+    user_id: string,
+    to: string,
+    setIsGeneratingID: (state: boolean) => void,
+    setIsSendingMail: (state: boolean) => void,
+    setIsApprovingApplication: (state: boolean) => void
+  ) => {
+    setIsApprovingApplication(true);
+    setIsGeneratingID(true);
+    const generatedMatrimonyID = await generateMatrimonyID.mutateAsync();
+    setIsGeneratingID(false);
+    setIsSendingMail(true);
+    const data = await acceptUserMatrimonyApplicationMut.mutateAsync({
+      to: to,
+      matrimony_id: generatedMatrimonyID,
+      user_id: user_id,
+    });
+    setIsSendingMail(false);
+    setIsApprovingApplication(false);
+    window.location.href = "/admin";
+    console.log(data);
+  };
+
+  const handleRejectingUserMatrimonyApplication = async (
+    to: string,
+    user_id: string,
+    setIsSendingMail: (state: boolean) => void,
+    setIsRejectingApplication: (state: boolean) => void
+  ) => {
+    setIsRejectingApplication(true);
+    setIsSendingMail(true);
+    const data = await rejectUserMatrimonyApplicationMut.mutateAsync({
+      user_id: user_id,
+    });
+
+    setIsSendingMail(false);
+    setIsRejectingApplication(false);
+    window.location.href = "/admin";
+    console.log(data);
+  };
+
+  const handleUserMatrimonySubmissionVerification = async (
+    user_id: string
+  ): Promise<MatrimonySubmissionVerificationServerResponse> => {
+    const data = await verifyUserMatrimonyApplicationMut.mutateAsync({
+      user_id: user_id,
+    });
+
+    return data as MatrimonySubmissionVerificationServerResponse;
+  };
+
+  const handleUserMatrimonyApprovalVerification = async (
+    user_id: string
+  ): Promise<MatrimonySubmissionApprovalVerificationResponse> => {
+    const data = await verifyIfApprovedUserMatrimonyApplicationMut.mutateAsync({
+      user_id: user_id,
+    });
+
+    return data as MatrimonySubmissionApprovalVerificationResponse;
   };
 
   return {
@@ -76,6 +191,11 @@ const useServerActions = () => {
     handleMatrimonyBufferFetch,
     handleFetchUserSubmission,
     handleAcceptingUserApplication,
+    handleRejectingUserApplication,
+    handleAcceptingUserMatrimonyApplication,
+    handleRejectingUserMatrimonyApplication,
+    handleUserMatrimonySubmissionVerification,
+    handleUserMatrimonyApprovalVerification,
     membershipBufferData,
     matrimonyBufferData,
   };
