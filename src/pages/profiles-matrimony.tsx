@@ -1,11 +1,12 @@
 import { Flex, Text, useDisclosure } from "@chakra-ui/react";
 import { FormikHelpers } from "formik";
 import { useState } from "react";
-import MatrimonyAuthModal from "~/components/authentication/MatrimonyAuthModal";
 import { MatrimonyLoginValues } from "~/hooks/useForm";
+import { useUserAtom } from "~/lib/atom";
+
 import useServerActions from "~/hooks/useServerActions";
 import ProfilesViewLayout from "~/layouts/ProfilesViewLayout";
-import { useUserAtom } from "~/lib/atom";
+import MatrimonyAuthModal from "~/components/authentication/MatrimonyAuthModal";
 
 const ProfilePage = () => {
   const [{ user }] = useUserAtom();
