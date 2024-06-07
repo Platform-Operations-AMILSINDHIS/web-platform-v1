@@ -32,16 +32,17 @@ const matrimonyProfiles = createTRPCRouter({
     }),
 
   login: publicProcedure
-    .input(Yup.object({ matrimony_id: Yup.string() }))
+    .input(Yup.object({ matrimony_id: Yup.string(), user_id: Yup.string() }))
     .mutation(async ({ input }) => {
       try {
-        const { matrimony_id } = input;
+        const { matrimony_id, user_id } = input;
 
         const { data: loggedInProfile, error: ErrorInLoggingIn } =
           await supabase
             .from("matrimony_profiles")
             .select("*")
-            .eq("matrimony_id", matrimony_id);
+            .eq("matrimony_id", matrimony_id)
+            .eq("user_id", user_id);
 
         if (ErrorInLoggingIn) throw ErrorInLoggingIn;
 

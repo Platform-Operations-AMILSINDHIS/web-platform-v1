@@ -190,10 +190,12 @@ const useServerActions = () => {
   };
 
   const handleMatrimonyLogin = async (
-    matrimony_id: string
+    matrimony_id: string,
+    user_id: string
   ): Promise<MatrimonyLoginResponse> => {
     const data = await matrimonyLoginMut.mutateAsync({
       matrimony_id: matrimony_id,
+      user_id: user_id,
     });
 
     return data as MatrimonyLoginResponse;

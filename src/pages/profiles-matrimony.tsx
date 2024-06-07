@@ -1,12 +1,15 @@
-import { Text, useDisclosure } from "@chakra-ui/react";
+import { Flex, Text, useDisclosure } from "@chakra-ui/react";
 import { FormikHelpers } from "formik";
 import { useState } from "react";
 import MatrimonyAuthModal from "~/components/authentication/MatrimonyAuthModal";
 import { MatrimonyLoginValues } from "~/hooks/useForm";
 import useServerActions from "~/hooks/useServerActions";
 import ProfilesViewLayout from "~/layouts/ProfilesViewLayout";
+import { useUserAtom } from "~/lib/atom";
 
 const ProfilePage = () => {
+  const [{ user }] = useUserAtom();
+
   const { isOpen: isOpenAuth } = useDisclosure();
   const { isOpen: isOpenSelection } = useDisclosure();
 
@@ -21,7 +24,8 @@ const ProfilePage = () => {
   ) => {
     setIsSubmitting(true);
     const { loggedIn, message } = await handleMatrimonyLogin(
-      values.matrimony_id
+      values.matrimony_id,
+      user?.id ?? ""
     );
 
     if (!loggedIn) {
@@ -41,7 +45,15 @@ const ProfilePage = () => {
         modalState={!isLoggedIn}
         handleModal={() => {}}
       />
-      {isLoggedIn ? <Text>Hi, Welcome to profile page</Text> : <></>}
+      {isLoggedIn ? (
+        <Flex flexDir="column">
+          <Text fontSize={"2xl"} color="gray.600" fontWeight={600}>
+            Matrimony Profiles
+          </Text>
+        </Flex>
+      ) : (
+        <></>
+      )}
     </ProfilesViewLayout>
   );
 };
