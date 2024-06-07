@@ -1,21 +1,27 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
-import { matrimonyLoginInitialValues } from "~/hooks/useForm";
+import {
+  MatrimonyLoginValues,
+  matrimonyLoginInitialValues,
+} from "~/hooks/useForm";
 import { MatrimonyLoginValidation } from "~/validations/AuthValidations";
 import { LabelledInput } from "../forms";
 import { useState } from "react";
 
-const MatrimonyLogin = () => {
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const handleSubmit = () => {
-    console.log("Submitted");
-  };
+interface MatrimonyLoginProps {
+  isSubmitting: boolean;
+  handleFormSubmit: (values: MatrimonyLoginValues) => void;
+}
 
+const MatrimonyLogin: React.FC<MatrimonyLoginProps> = ({
+  isSubmitting,
+  handleFormSubmit,
+}) => {
   return (
     <Formik
       validationSchema={MatrimonyLoginValidation}
       initialValues={matrimonyLoginInitialValues}
-      onSubmit={handleSubmit}
+      onSubmit={handleFormSubmit}
     >
       <Form>
         <Flex py={5} px={2} gap={6} align="center" flexDir="column">
@@ -30,6 +36,7 @@ const MatrimonyLogin = () => {
           </Flex>
           <Flex w="full" flexDir="column">
             <LabelledInput
+              onChange={(e) => console.log(e.target.value)}
               label="Enter your Matrimony ID"
               name="matrimony_id"
               placeholder="MAT#XYZ"
