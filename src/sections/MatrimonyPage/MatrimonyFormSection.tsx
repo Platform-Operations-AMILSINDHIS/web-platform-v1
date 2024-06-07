@@ -12,21 +12,25 @@ const MatrimonyFormSection = () => {
   const { handleUserMatrimonySubmissionVerification } = useServerActions();
 
   const [submissionVerified, setSubmissionVerified] = useState<boolean>(false);
+  const [noPending, setNoPending] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
   const SendSubmissionVerificationQueryToServer = async (user_id: string) => {
     const response_data = await handleUserMatrimonySubmissionVerification(
       user_id
     );
-    const response_result = response_data.user_verification;
-    console.log(response_result);
-    setSubmissionVerified(response_result);
+    const response_result = response_data?.user_verification;
+    console.log({ response_result });
+    response_result
+      ? setSubmissionVerified(response_result)
+      : setNoPending(true);
     setLoading(false);
   };
 
   useEffect(() => {
     if (user && user.id) {
       SendSubmissionVerificationQueryToServer(user.id);
+      console.log({ noPending, submissionVerified });
     } else {
       setLoading(false);
       console.log("Loading");
