@@ -30,6 +30,36 @@ const matrimonyProfiles = createTRPCRouter({
         console.log(err);
       }
     }),
+
+  login: publicProcedure
+    .input(Yup.object({ matrimony_id: Yup.string() }))
+    .mutation(async ({ input }) => {
+      try {
+        const { matrimony_id } = input;
+
+        const { data: loggedInProfile, error: ErrorInLoggingIn } =
+          await supabase
+            .from("matrimony_profiles")
+            .select("*")
+            .eq("matrimony_id", matrimony_id);
+
+        if (ErrorInLoggingIn) throw ErrorInLoggingIn;
+
+        if (loggedInProfile.length > 0) {
+          return {
+            loggedIn: true,
+            message: "",
+          };
+        } else {
+          return {
+            loggedIn: false,
+            message: "Invalid credentials or Account does not exist",
+          };
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }),
 });
 
 export default matrimonyProfiles;

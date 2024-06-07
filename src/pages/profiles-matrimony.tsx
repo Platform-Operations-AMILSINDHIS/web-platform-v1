@@ -12,7 +12,7 @@ const ProfilePage = () => {
   return (
     <ProfilesViewLayout>
       <MatrimonyAuthModal modalState={true} handleModal={() => {}} />
-      <Text>Hi, Welcome to profile page</Text>
+      {isLoggedIn ? <Text>Hi, Welcome to profile page</Text> : <></>}
     </ProfilesViewLayout>
   );
 };
