@@ -19,7 +19,7 @@ export interface PersonalInfo {
   heightInches: number;
   weight: number;
 
-  qualifications: string[]; // educational and other sorts of qualifications
+  qualifications: string; // educational and other sorts of qualifications
   hobbies: string;
   complexionAndFeatures: string;
 

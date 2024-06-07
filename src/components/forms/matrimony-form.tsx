@@ -160,10 +160,6 @@ const MatrimonyForm: React.FC<MatrimonyFormProps> = ({
 }) => {
   const [activeStep] = useAtom(activeStepAtom);
 
-  // Logger
-  // const [formState] = useAtom(matrimonyFormAtom);
-  // useEffect(() => console.log(JSON.stringify(formState, null, 2)), [formState]);
-
   return (
     <>
       <Stepper index={activeStep} colorScheme="orange">

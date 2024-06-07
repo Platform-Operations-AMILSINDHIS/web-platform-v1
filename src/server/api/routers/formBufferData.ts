@@ -275,7 +275,8 @@ const formBufferData = createTRPCRouter({
           .from("form_buffer")
           .select("*")
           .eq("user_id", user_id)
-          .eq("formType", "MATRIMONY");
+          .eq("formType", "MATRIMONY")
+          .eq("Status", "PENDING");
 
         if (fetchError) throw fetchError;
 
