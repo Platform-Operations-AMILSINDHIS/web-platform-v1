@@ -1,13 +1,17 @@
 import { Modal, ModalBody, ModalContent, ModalOverlay } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import MatrimonyLogin from "./MatrimonyLogin";
 import { MatrimonyLoginValues } from "~/hooks/useForm";
+import { FormikHelpers } from "formik";
 
 interface MatrimonyAuthModalProps {
   modalState: boolean;
   isSubmitting: boolean;
   handleModal: () => void;
-  handleFormSubmit: (values: MatrimonyLoginValues) => void;
+  handleFormSubmit: (
+    values: MatrimonyLoginValues,
+    setErrors: FormikHelpers<MatrimonyLoginValues>
+  ) => void;
 }
 
 const MatrimonyAuthModal: React.FC<MatrimonyAuthModalProps> = ({

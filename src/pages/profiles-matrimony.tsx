@@ -1,5 +1,6 @@
 import { Text, useDisclosure } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { FormikHelpers } from "formik";
+import { useState } from "react";
 import MatrimonyAuthModal from "~/components/authentication/MatrimonyAuthModal";
 import { MatrimonyLoginValues } from "~/hooks/useForm";
 import useServerActions from "~/hooks/useServerActions";
@@ -14,8 +15,22 @@ const ProfilePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const handleFormSubmit = (values: MatrimonyLoginValues) => {
-    console.log("Submitted", { values });
+  const handleFormSubmit = async (
+    values: MatrimonyLoginValues,
+    { setErrors }: FormikHelpers<MatrimonyLoginValues>
+  ) => {
+    setIsSubmitting(true);
+    const { loggedIn, message } = await handleMatrimonyLogin(
+      values.matrimony_id
+    );
+
+    if (!loggedIn) {
+      setErrors({ matrimony_id: message });
+      setIsSubmitting(false);
+      return;
+    }
+    setIsSubmitting(false);
+    setIsLoggedIn(true);
   };
 
   return (
@@ -23,7 +38,7 @@ const ProfilePage = () => {
       <MatrimonyAuthModal
         handleFormSubmit={handleFormSubmit}
         isSubmitting={isSubmitting}
-        modalState={true}
+        modalState={!isLoggedIn}
         handleModal={() => {}}
       />
       {isLoggedIn ? <Text>Hi, Welcome to profile page</Text> : <></>}

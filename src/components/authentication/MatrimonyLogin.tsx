@@ -1,16 +1,18 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
-import { Form, Formik } from "formik";
+import { Form, Formik, FormikHelpers } from "formik";
 import {
   MatrimonyLoginValues,
   matrimonyLoginInitialValues,
 } from "~/hooks/useForm";
 import { MatrimonyLoginValidation } from "~/validations/AuthValidations";
 import { LabelledInput } from "../forms";
-import { useState } from "react";
 
 interface MatrimonyLoginProps {
   isSubmitting: boolean;
-  handleFormSubmit: (values: MatrimonyLoginValues) => void;
+  handleFormSubmit: (
+    values: MatrimonyLoginValues,
+    setErrors: FormikHelpers<MatrimonyLoginValues>
+  ) => void;
 }
 
 const MatrimonyLogin: React.FC<MatrimonyLoginProps> = ({
