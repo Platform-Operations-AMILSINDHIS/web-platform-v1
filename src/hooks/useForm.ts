@@ -5,6 +5,10 @@ export interface LoginValues {
   password: string;
 }
 
+export interface MatrimonyLoginValues {
+  matrimony_id: string;
+}
+
 export interface AdminLoginValues {
   email: string;
   password: string;
@@ -46,6 +50,10 @@ export const initialValues: Values = {
 export const loginInitialValues: LoginValues = {
   email: "",
   password: "",
+};
+
+export const matrimonyLoginInitialValues: MatrimonyLoginValues = {
+  matrimony_id: "",
 };
 
 export const adminInitialLoginValues: AdminLoginValues = {

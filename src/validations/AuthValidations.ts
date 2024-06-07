@@ -23,6 +23,10 @@ export const AdminLoginValidation = Yup.object().shape({
   password: Yup.string().required("Enter your password"),
 });
 
+export const MatrimonyLoginValidation = Yup.object().shape({
+  matrimony_id: Yup.string().required("Please Enter your assigned matrimoy ID"),
+});
+
 export const RecoveryValidation = Yup.object().shape({
   email: Yup.string().required("Enter email"),
   newPassword: Yup.string().required("Enter new Password"),
