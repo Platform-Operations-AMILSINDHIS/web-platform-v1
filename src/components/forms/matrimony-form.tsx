@@ -157,6 +157,7 @@ const activeStepAtom = atom<number>(1);
 const MatrimonyForm: React.FC<MatrimonyFormProps> = ({
   user,
   submissionVerification,
+  approved,
 }) => {
   const [activeStep] = useAtom(activeStepAtom);
 
@@ -197,6 +198,7 @@ const MatrimonyForm: React.FC<MatrimonyFormProps> = ({
             <FormSection
               user={user}
               submissionVerification={submissionVerification}
+              approved={approved}
               key={i}
             />
           )}
@@ -210,7 +212,7 @@ const MatrimonyForm: React.FC<MatrimonyFormProps> = ({
 
 const MatrimonyPersonalInformationSection: React.FC<
   MatrimonyFormSectionProps
-> = ({ user, submissionVerification }) => {
+> = ({ user, submissionVerification, approved }) => {
   const [activeStep, setActiveStep] = useAtom(activeStepAtom);
   const [personalInfo, setPersonalInfo] = useAtom(personalInfoAtom);
 
@@ -231,7 +233,6 @@ const MatrimonyPersonalInformationSection: React.FC<
         initialValues={personalInfo}
         validationSchema={matrimonyPersonalInfoSchema}
         onSubmit={(values, actions) => {
-          // console.log({ values });
           console.log({ values });
           setPersonalInfo(values);
           actions.setSubmitting(false);
@@ -270,7 +271,13 @@ const MatrimonyPersonalInformationSection: React.FC<
                   name={name ?? undefined}
                   type={inputType ? (inputType as InputType) : "text"}
                   isDisabled={
-                    user ? (submissionVerification ? true : false) : false
+                    user
+                      ? submissionVerification
+                        ? true
+                        : approved
+                        ? true
+                        : false
+                      : false
                   }
                   required={required}
                 />
@@ -317,7 +324,13 @@ const MatrimonyPersonalInformationSection: React.FC<
                     selectOptions={selectOptions}
                     required={required}
                     isDisabled={
-                      user ? (submissionVerification ? true : false) : false
+                      user
+                        ? submissionVerification
+                          ? true
+                          : approved
+                          ? true
+                          : false
+                        : false
                     }
                   />
                 )
@@ -356,7 +369,13 @@ const MatrimonyPersonalInformationSection: React.FC<
                   name={name}
                   required={required}
                   isDisabled={
-                    user ? (submissionVerification ? true : false) : false
+                    user
+                      ? submissionVerification
+                        ? true
+                        : approved
+                        ? true
+                        : false
+                      : false
                   }
                 />
               ))}

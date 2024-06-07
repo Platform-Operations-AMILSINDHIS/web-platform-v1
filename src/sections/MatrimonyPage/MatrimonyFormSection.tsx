@@ -9,10 +9,14 @@ import useServerActions from "~/hooks/useServerActions";
 
 const MatrimonyFormSection = () => {
   const [{ user }] = useUserAtom();
-  const { handleUserMatrimonySubmissionVerification } = useServerActions();
+  const {
+    handleUserMatrimonySubmissionVerification,
+    handleUserMatrimonyApprovalVerification,
+  } = useServerActions();
 
   const [submissionVerified, setSubmissionVerified] = useState<boolean>(false);
   const [noPending, setNoPending] = useState<boolean>(false);
+  const [approved, setApproved] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
   const SendSubmissionVerificationQueryToServer = async (user_id: string) => {
@@ -24,18 +28,29 @@ const MatrimonyFormSection = () => {
     response_result
       ? setSubmissionVerified(response_result)
       : setNoPending(true);
+
+    if (noPending) {
+      const approval_verification_response =
+        await handleUserMatrimonyApprovalVerification(user_id);
+      const approval_verification_result =
+        approval_verification_response?.status;
+
+      if (approval_verification_result) {
+        setApproved(true);
+      }
+    }
     setLoading(false);
   };
 
   useEffect(() => {
     if (user && user.id) {
       SendSubmissionVerificationQueryToServer(user.id);
-      console.log({ noPending, submissionVerified });
+      console.log({ noPending, submissionVerified, approved });
     } else {
       setLoading(false);
       console.log("Loading");
     }
-  }, [user]);
+  }, [user, noPending, approved]);
 
   if (loading) {
     return <Text>Loading...</Text>;
@@ -45,7 +60,10 @@ const MatrimonyFormSection = () => {
     <Box position="relative">
       <Box
         display={
-          user && user.membership_id === "" && submissionVerified === true
+          user &&
+          user.membership_id === "" &&
+          submissionVerified === true &&
+          approved === true
             ? "none"
             : ""
         }
@@ -57,7 +75,9 @@ const MatrimonyFormSection = () => {
         position="absolute"
       >
         {user ? (
-          user.membership_id === "" || submissionVerified === true ? (
+          user.membership_id === "" ||
+          submissionVerified === true ||
+          approved === true ? (
             <Flex
               boxShadow="rgba(0, 0, 0, 0.24) 0px 3px 8px;"
               border="1px solid"
@@ -98,6 +118,26 @@ const MatrimonyFormSection = () => {
                       </span>
                     </Text>
                   </>
+                ) : approved ? (
+                  <>
+                    <Text fontWeight={600} textAlign="center" fontSize="xl">
+                      Application Approved !
+                    </Text>
+                    <Text textAlign="center">
+                      Congratulations on your application being approved, you
+                      can head over to
+                      <span
+                        style={{
+                          color: "#FF4D00",
+                          marginInline: "5px",
+                        }}
+                      >
+                        https://amilsindhis.org/matches
+                      </span>{" "}
+                      to request information on any particular individual's
+                      profile that suits you
+                    </Text>
+                  </>
                 ) : (
                   <></>
                 )}
@@ -118,7 +158,7 @@ const MatrimonyFormSection = () => {
         }
         filter={
           user
-            ? user.membership_id === "" || submissionVerified
+            ? user.membership_id === "" || submissionVerified || approved
               ? "blur(2px)"
               : ""
             : "blur(2px)"
@@ -140,6 +180,7 @@ const MatrimonyFormSection = () => {
           <MatrimonyForm
             submissionVerification={submissionVerified}
             user={user}
+            approved={true}
           />
         </Flex>
       </Box>

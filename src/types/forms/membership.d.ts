@@ -79,6 +79,7 @@ export interface YoungAmilCircleMembershipFormProps
 export interface MatrimonyFormSectionProps {
   user: userAtomBody;
   submissionVerification?: boolean;
+  approved?: boolean;
 }
 
 export interface MatrimonyFormProps extends MatrimonyFormSectionProps {}
