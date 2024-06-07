@@ -15,3 +15,8 @@ export interface MatrimonySubmissionVerificationServerResponse {
 export interface MatrimonySubmissionApprovalVerificationResponse {
   status: boolean;
 }
+
+export interface MatrimonyLoginResponse {
+  loggedIn: boolean;
+  message: string;
+}
