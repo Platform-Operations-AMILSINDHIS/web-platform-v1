@@ -30,22 +30,26 @@ const MatrimonyApplicationSelectionModal: React.FC<
   user,
 }) => {
   const [selectedOption, setSelectedOption] = useState<string>("");
+  const [profileMatID, setProfileMatID] = useState<string | undefined>("");
+  const [fetchStatus, setFetchStatus] = useState<boolean>(false);
 
   const handleSelectChange = async (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const selectedValue = event.target.value;
     setSelectedOption(selectedValue);
-    const { matrimony_id, message, status } = await handleMatrimonyIDFetch(
-      event.target.value
-    );
-    console.log(
-      "Selected option:",
-      selectedOption,
-      message,
-      matrimony_id,
-      status
-    );
+    const notty = await handleMatrimonyIDFetch(event.target.value);
+
+    if (notty === undefined) {
+      setProfileMatID(undefined);
+      console.log(profileMatID);
+      setFetchStatus(false);
+    } else {
+      setProfileMatID(notty.matrimony_id ?? "");
+      console.log(profileMatID);
+      setFetchStatus(notty.status);
+    }
+    console.log("Selected option:", selectedOption, notty);
   };
 
   return (
@@ -60,9 +64,26 @@ const MatrimonyApplicationSelectionModal: React.FC<
           team will get back to you in 3 to 4 days
         </Text>
         <Flex w="full" justify="center">
-          <Flex px={2} borderRadius={5} bg="gray.300" gap={2} align="center">
-            <Text fontWeight={500}>{matrimonyID}</Text>
-            <Icon as={TbArrowsJoin} />
+          <Flex
+            transition="all 0.2s"
+            px={2}
+            borderRadius={5}
+            bg={
+              fetchStatus && profileMatID !== undefined
+                ? "green.300"
+                : "gray.300"
+            }
+            gap={2}
+            align="center"
+          >
+            <Text
+              transition="all 0.2s"
+              fontWeight={fetchStatus && profileMatID !== undefined ? 600 : 500}
+            >
+              {matrimonyID}
+            </Text>
+            <Icon transition="all 0.2s" as={TbArrowsJoin} />
+            <Text fontWeight={600}>{profileMatID}</Text>
           </Flex>
         </Flex>
         <Select
@@ -72,9 +93,6 @@ const MatrimonyApplicationSelectionModal: React.FC<
           onChange={handleSelectChange}
           placeholder="Select Profile"
         >
-          {/* <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option> */}
           {matrimonyProfiles
             .filter((e) => e.user_id !== user?.id)
             .map((profile, index) => {

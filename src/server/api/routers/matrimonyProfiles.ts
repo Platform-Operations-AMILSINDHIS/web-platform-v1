@@ -79,7 +79,7 @@ const matrimonyProfiles = createTRPCRouter({
           console.log(fetchIDResponse);
           return {
             status: true,
-            matrimony_id: fetchIDResponse,
+            matrimony_id: fetchIDResponse[0]?.matrimony_id,
             message: "",
           };
         } else {
