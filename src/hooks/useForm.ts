@@ -34,6 +34,11 @@ export interface RecoveryPasswordValues {
   confirmPassword: string;
 }
 
+export interface WithdrawMatAppValues {
+  matrimony_id: string;
+  message: string;
+}
+
 export const initialValues: Values = {
   email: "",
   phonenumber: "",
@@ -65,6 +70,11 @@ export const RecoveryPasswordInitialValues: RecoveryPasswordValues = {
   email: "",
   newPassword: "",
   confirmPassword: "",
+};
+
+export const WithdrawMatAppInitialValues: WithdrawMatAppValues = {
+  matrimony_id: "",
+  message: "",
 };
 
 const useForm = () => {
