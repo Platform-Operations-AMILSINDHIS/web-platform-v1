@@ -94,7 +94,7 @@ export const formatPDFDate = (dateString: Date) => {
   return `${day}/${month}/${year}`;
 };
 
-export const formatPDFAge = (dateString: Date) => {
+export const formatPDFAge = (dateString: Date | unknown | any) => {
   const today = new Date();
   const birthDate = new Date(dateString);
   const birthYear = birthDate.getFullYear();

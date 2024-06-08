@@ -8,6 +8,7 @@ import useServerActions from "~/hooks/useServerActions";
 import ProfilesViewLayout from "~/layouts/ProfilesViewLayout";
 import MatrimonyAuthModal from "~/components/authentication/MatrimonyAuthModal";
 import { MatrimonyProfilesFetchResponse } from "~/types/api";
+import MatrimonyProfilesView from "~/components/matrimony/MatrimonyProfilesView";
 
 const ProfilePage = () => {
   const [{ user }] = useUserAtom();
@@ -65,30 +66,11 @@ const ProfilePage = () => {
         modalState={!isLoggedIn}
         handleModal={() => {}}
       />
-      {isLoggedIn ? (
-        <Flex flexDir="column">
-          <Text fontSize={"2xl"} color="gray.600" fontWeight={600}>
-            Matrimony Profiles
-          </Text>
-          {matrimonyProfiles.length > 0 ? (
-            <Flex>
-              {matrimonyProfiles
-                .filter((e) => e.user_id !== user?.id)
-                .map((profile, index) => {
-                  return (
-                    <Text key={index}>
-                      {profile.submission.personalInfo.firstName}
-                    </Text>
-                  );
-                })}
-            </Flex>
-          ) : (
-            <Spinner />
-          )}
-        </Flex>
-      ) : (
-        <></>
-      )}
+      <MatrimonyProfilesView
+        isLoggedIn={isLoggedIn}
+        matrimonyProfiles={matrimonyProfiles}
+        user={user}
+      />
     </ProfilesViewLayout>
   );
 };
