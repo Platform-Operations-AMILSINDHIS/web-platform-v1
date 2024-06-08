@@ -180,7 +180,7 @@ const MatrimonyFormSection = () => {
           <MatrimonyForm
             submissionVerification={submissionVerified}
             user={user}
-            approved={true}
+            approved={approved}
           />
         </Flex>
       </Box>
