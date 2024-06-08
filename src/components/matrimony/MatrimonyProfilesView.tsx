@@ -94,14 +94,22 @@ const MatrimonyProfilesView: React.FC<MatrimonyProfilesViewProps> = ({
                         </Text>
                       </Flex>
                       <Text
+                        _hover={{
+                          bg: "#1F2937",
+                          cursor: "pointer",
+                          color: "#FFFF",
+                        }}
                         mt={3}
                         w="fit-content"
                         py={1}
                         px={4}
                         border="1px solid"
+                        borderColor="#1F2937"
+                        color="#1F2937"
                         borderRadius={5}
                         fontSize="small"
                         fontWeight={600}
+                        transition="all 0.2s"
                       >
                         View Profile
                       </Text>
