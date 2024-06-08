@@ -9,12 +9,23 @@ import ProfilesViewLayout from "~/layouts/ProfilesViewLayout";
 import MatrimonyAuthModal from "~/components/authentication/MatrimonyAuthModal";
 import { MatrimonyProfilesFetchResponse } from "~/types/api";
 import MatrimonyProfilesView from "~/components/matrimony/MatrimonyProfilesView";
+import MatrimonyApplicationWithdrawModal from "~/components/matrimony/MatrimonyApplicationWithdrawModal";
+import MatrimonyApplicationSelectionModal from "~/components/matrimony/MatrimonySelectionModal";
 
 const ProfilePage = () => {
   const [{ user }] = useUserAtom();
 
-  const { isOpen: isOpenAuth } = useDisclosure();
-  const { isOpen: isOpenSelection } = useDisclosure();
+  const {
+    isOpen: isOpenWithdrawModal,
+    onClose: onCloseWithdrawModal,
+    onOpen: onOpenWithdrawModal,
+  } = useDisclosure();
+
+  const {
+    isOpen: isOpenSelection,
+    onClose: onCloseSelectionModal,
+    onOpen: onOpenSelectionModal,
+  } = useDisclosure();
 
   const { handleMatrimonyLogin, handleMatrimonyProfilesFetch } =
     useServerActions();
@@ -59,7 +70,18 @@ const ProfilePage = () => {
   }, [matrimonyProfiles, isLoggedIn]);
 
   return (
-    <ProfilesViewLayout>
+    <ProfilesViewLayout
+      openSelectionModal={onOpenSelectionModal}
+      openWithdrawModal={onOpenWithdrawModal}
+    >
+      <MatrimonyApplicationWithdrawModal
+        handleModal={onCloseWithdrawModal}
+        modalState={isOpenWithdrawModal}
+      />
+      <MatrimonyApplicationSelectionModal
+        handleModal={onCloseSelectionModal}
+        modalState={isOpenSelection}
+      />
       <MatrimonyAuthModal
         handleFormSubmit={handleFormSubmit}
         isSubmitting={isSubmitting}
