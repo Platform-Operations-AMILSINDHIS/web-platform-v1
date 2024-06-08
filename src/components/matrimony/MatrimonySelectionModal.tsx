@@ -1,4 +1,4 @@
-import { Flex, Icon, Select, Text } from "@chakra-ui/react";
+import { Button, Flex, Icon, Select, Text } from "@chakra-ui/react";
 import ModalLayout from "~/layouts/ModalLayout";
 import { TbArrowsJoin } from "react-icons/tb";
 import {
@@ -17,6 +17,10 @@ interface MatrimonyApplicationSelectionModalProps {
   handleMatrimonyIDFetch: (
     user_id: string
   ) => Promise<MatrimonyIdFetchResponse>;
+  handleCloseSelectionModal: (
+    setProfileMatID: (profileMatID: string | undefined) => void,
+    setFetchStatus: (status: boolean) => void
+  ) => void;
 }
 
 const MatrimonyApplicationSelectionModal: React.FC<
@@ -24,6 +28,7 @@ const MatrimonyApplicationSelectionModal: React.FC<
 > = ({
   handleModal,
   handleMatrimonyIDFetch,
+  handleCloseSelectionModal,
   modalState,
   matrimonyID,
   matrimonyProfiles,
@@ -55,7 +60,9 @@ const MatrimonyApplicationSelectionModal: React.FC<
   return (
     <ModalLayout
       modalHeader="Select Profile"
-      handleModal={handleModal}
+      handleModal={() =>
+        handleCloseSelectionModal(setProfileMatID, setFetchStatus)
+      }
       modalState={modalState}
     >
       <Flex gap={3} flexDir="column">
@@ -104,6 +111,34 @@ const MatrimonyApplicationSelectionModal: React.FC<
               );
             })}
         </Select>
+        <Flex justify="center" mb={2} gap={3}>
+          <Button
+            isLoading={false}
+            type="submit"
+            _hover={{
+              bg: "gray.700",
+            }}
+            color="white"
+            bg="#0E0E11"
+          >
+            Request Profile
+          </Button>
+          <Button
+            color="#FF4D00"
+            bg="none"
+            border="2px solid"
+            borderColor="#FF4D00"
+            _hover={{
+              color: "white",
+              bg: "#FF4D00",
+            }}
+            onClick={() =>
+              handleCloseSelectionModal(setProfileMatID, setFetchStatus)
+            }
+          >
+            Cancel
+          </Button>
+        </Flex>
       </Flex>
     </ModalLayout>
   );

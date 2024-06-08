@@ -61,6 +61,15 @@ const ProfilePage = () => {
     setIsLoggedIn(true);
   };
 
+  const handleCloseSelectProfileModal = (
+    setProfileMatID: (profileMatID: string | undefined) => void,
+    setFetchStatus: (status: boolean) => void
+  ) => {
+    setFetchStatus(false);
+    setProfileMatID("");
+    onCloseSelectionModal();
+  };
+
   const fetchProfiles = async () => {
     const data = await handleMatrimonyProfilesFetch();
     if (data.length > 0 && isLoggedIn) {
@@ -82,6 +91,7 @@ const ProfilePage = () => {
         modalState={isOpenWithdrawModal}
       />
       <MatrimonyApplicationSelectionModal
+        handleCloseSelectionModal={handleCloseSelectProfileModal}
         handleMatrimonyIDFetch={handleMatrimonyIdFetch}
         user={user}
         matrimonyProfiles={matrimonyProfiles}
