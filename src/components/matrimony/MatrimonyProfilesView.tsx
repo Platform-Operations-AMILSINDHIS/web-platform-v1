@@ -1,11 +1,9 @@
-import { Box, Flex, Grid, Icon, Spinner, Text } from "@chakra-ui/react";
-import { MdMale, MdFemale } from "react-icons/md";
+import { Box, Flex, Grid, Spinner, Text } from "@chakra-ui/react";
 
 import React from "react";
 
 import { MatrimonyProfilesFetchResponse } from "~/types/api";
 import { userAtomBody } from "~/types/atoms/users";
-import { formatPDFAge } from "~/utils/helper";
 import MatrimonyProfileCard from "./MatrimonyProfileCard";
 
 interface MatrimonyProfilesViewProps {
