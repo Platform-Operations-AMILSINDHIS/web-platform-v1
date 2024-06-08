@@ -1,7 +1,10 @@
 import { Flex, Icon, Select, Text } from "@chakra-ui/react";
 import ModalLayout from "~/layouts/ModalLayout";
 import { TbArrowsJoin } from "react-icons/tb";
-import { MatrimonyProfilesFetchResponse } from "~/types/api";
+import {
+  MatrimonyIdFetchResponse,
+  MatrimonyProfilesFetchResponse,
+} from "~/types/api";
 import { userAtomBody } from "~/types/atoms/users";
 import { useState } from "react";
 
@@ -11,17 +14,38 @@ interface MatrimonyApplicationSelectionModalProps {
   matrimonyID: string;
   matrimonyProfiles: MatrimonyProfilesFetchResponse[];
   user: userAtomBody | null;
+  handleMatrimonyIDFetch: (
+    user_id: string
+  ) => Promise<MatrimonyIdFetchResponse>;
 }
 
 const MatrimonyApplicationSelectionModal: React.FC<
   MatrimonyApplicationSelectionModalProps
-> = ({ handleModal, modalState, matrimonyID, matrimonyProfiles, user }) => {
+> = ({
+  handleModal,
+  handleMatrimonyIDFetch,
+  modalState,
+  matrimonyID,
+  matrimonyProfiles,
+  user,
+}) => {
   const [selectedOption, setSelectedOption] = useState<string>("");
 
-  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleSelectChange = async (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     const selectedValue = event.target.value;
     setSelectedOption(selectedValue);
-    console.log("Selected option:", selectedOption);
+    const { matrimony_id, message, status } = await handleMatrimonyIDFetch(
+      event.target.value
+    );
+    console.log(
+      "Selected option:",
+      selectedOption,
+      message,
+      matrimony_id,
+      status
+    );
   };
 
   return (

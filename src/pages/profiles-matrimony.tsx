@@ -27,8 +27,11 @@ const ProfilePage = () => {
     onOpen: onOpenSelectionModal,
   } = useDisclosure();
 
-  const { handleMatrimonyLogin, handleMatrimonyProfilesFetch } =
-    useServerActions();
+  const {
+    handleMatrimonyLogin,
+    handleMatrimonyProfilesFetch,
+    handleMatrimonyIdFetch,
+  } = useServerActions();
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -79,6 +82,7 @@ const ProfilePage = () => {
         modalState={isOpenWithdrawModal}
       />
       <MatrimonyApplicationSelectionModal
+        handleMatrimonyIDFetch={handleMatrimonyIdFetch}
         user={user}
         matrimonyProfiles={matrimonyProfiles}
         matrimonyID={matrimoyID}

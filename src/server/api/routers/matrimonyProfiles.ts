@@ -70,21 +70,22 @@ const matrimonyProfiles = createTRPCRouter({
         const { data: fetchIDResponse, error: fetchIDResponseError } =
           await supabase
             .from("matrimony_profiles")
-            .select("*")
+            .select("matrimony_id")
             .eq("user_id", user_id);
 
         if (fetchIDResponseError) throw fetchIDResponseError;
 
         if (fetchIDResponse.length > 0) {
+          console.log(fetchIDResponse);
           return {
             status: true,
-            matrimony_data: fetchIDResponse,
+            matrimony_id: fetchIDResponse,
             message: "",
           };
         } else {
           return {
             status: false,
-            matrimony_data: [],
+            matrimony_id: null,
             message: "Something Went wrong",
           };
         }

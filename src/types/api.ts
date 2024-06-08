@@ -29,3 +29,9 @@ export interface MatrimonyProfilesFetchResponse {
   submission: MatrimonyFormValues;
   user_id: string;
 }
+
+export interface MatrimonyIdFetchResponse {
+  status: boolean;
+  matrimony_id: string | null;
+  message: string;
+}
