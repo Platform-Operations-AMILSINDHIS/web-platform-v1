@@ -48,7 +48,7 @@ const MatrimonyApplicationWithdrawModal: React.FC<
                 <LabelledInput name="message" label="Reason for withdrawing" />
               </Flex>
             </Flex>
-            <Flex mt="-15px" mb={2} gap={3}>
+            <Flex justify="center" mt="-15px" mb={2} gap={3}>
               <Button
                 isLoading={false}
                 type="submit"

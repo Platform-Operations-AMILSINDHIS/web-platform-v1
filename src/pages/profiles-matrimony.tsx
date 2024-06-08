@@ -79,6 +79,7 @@ const ProfilePage = () => {
         modalState={isOpenWithdrawModal}
       />
       <MatrimonyApplicationSelectionModal
+        matrimonyID={matrimoyID}
         handleModal={onCloseSelectionModal}
         modalState={isOpenSelection}
       />
