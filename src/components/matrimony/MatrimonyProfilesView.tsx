@@ -1,10 +1,19 @@
-import { Box, Flex, Grid, Spinner, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Grid,
+  Spinner,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 
-import React from "react";
+import React, { useState } from "react";
 
 import { MatrimonyProfilesFetchResponse } from "~/types/api";
 import { userAtomBody } from "~/types/atoms/users";
 import MatrimonyProfileCard from "./MatrimonyProfileCard";
+import MatrimonyProfileViewModal from "./MatrimonyProfileViewModal";
+import { MatrimonyFormValues } from "~/types/forms/matrimony";
 
 interface MatrimonyProfilesViewProps {
   isLoggedIn: boolean;
@@ -17,6 +26,19 @@ const MatrimonyProfilesView: React.FC<MatrimonyProfilesViewProps> = ({
   matrimonyProfiles,
   user,
 }) => {
+  const {
+    isOpen: isProfileViewOpen,
+    onClose: onCloseProfileView,
+    onOpen: onOpenProfileView,
+  } = useDisclosure();
+
+  const [profileView, setProfileView] = useState<MatrimonyFormValues>();
+
+  const handleViewProfile = (submission: MatrimonyFormValues) => {
+    setProfileView(submission);
+    onOpenProfileView();
+  };
+
   return (
     <Box>
       {isLoggedIn ? (
@@ -36,10 +58,19 @@ const MatrimonyProfilesView: React.FC<MatrimonyProfilesViewProps> = ({
                 .filter((e) => e.user_id !== user?.id)
                 .map((profile, index) => {
                   return (
-                    <MatrimonyProfileCard
-                      submission={profile.submission}
-                      key={index}
-                    />
+                    <>
+                      <MatrimonyProfileViewModal
+                        handleModal={onCloseProfileView}
+                        modalHeader="Profile View"
+                        modalState={isProfileViewOpen}
+                        submission={profileView}
+                      />
+                      <MatrimonyProfileCard
+                        handleOpenModal={handleViewProfile}
+                        submission={profile.submission}
+                        key={index}
+                      />
+                    </>
                   );
                 })}
             </Grid>

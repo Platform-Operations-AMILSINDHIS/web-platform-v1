@@ -5,10 +5,12 @@ import { formatPDFAge } from "~/utils/helper";
 
 interface MatrimonyProfileCardProps {
   submission: MatrimonyFormValues;
+  handleOpenModal: (submission: MatrimonyFormValues) => void;
 }
 
 const MatrimonyProfileCard: React.FC<MatrimonyProfileCardProps> = ({
   submission,
+  handleOpenModal,
 }) => {
   return (
     <Flex
@@ -72,6 +74,9 @@ const MatrimonyProfileCard: React.FC<MatrimonyProfileCardProps> = ({
         fontSize="small"
         fontWeight={600}
         transition="all 0.2s"
+        onClick={() => {
+          handleOpenModal(submission);
+        }}
       >
         View Profile
       </Text>
