@@ -1,4 +1,4 @@
-import { Box, Flex, Icon, Spinner, Text } from "@chakra-ui/react";
+import { Box, Flex, Grid, Icon, Spinner, Text } from "@chakra-ui/react";
 import { MdMale, MdFemale } from "react-icons/md";
 
 import React from "react";
@@ -32,7 +32,7 @@ const MatrimonyProfilesView: React.FC<MatrimonyProfilesViewProps> = ({
             </Text>
           </Flex>
           {matrimonyProfiles.length > 0 ? (
-            <Flex>
+            <Grid gap={5} templateColumns="repeat(3, 1fr)">
               {matrimonyProfiles
                 .filter((e) => e.user_id !== user?.id)
                 .map((profile, index) => {
@@ -47,7 +47,7 @@ const MatrimonyProfilesView: React.FC<MatrimonyProfilesViewProps> = ({
                       key={index}
                     >
                       <Flex align="center" justify="space-between">
-                        <Text fontWeight={600} fontSize="xl">
+                        <Text pr={6} fontWeight={600} fontSize="xl">
                           {`${profile.submission.personalInfo.firstName} ${profile.submission.personalInfo.lastName},`}{" "}
                           <span
                             style={{
@@ -62,7 +62,11 @@ const MatrimonyProfilesView: React.FC<MatrimonyProfilesViewProps> = ({
                         <Flex
                           borderRadius={5}
                           fontSize="small"
-                          bg="blue.200"
+                          bg={
+                            profile.submission.personalInfo.gender === "Male"
+                              ? "blue.200"
+                              : "pink"
+                          }
                           px={2}
                           py={0}
                           align="center"
@@ -71,7 +75,14 @@ const MatrimonyProfilesView: React.FC<MatrimonyProfilesViewProps> = ({
                           <Text fontWeight={600}>
                             {profile.submission.personalInfo.gender}
                           </Text>
-                          <Icon boxSize={3} as={MdMale} />
+                          <Icon
+                            boxSize={3}
+                            as={
+                              profile.submission.personalInfo.gender === "Male"
+                                ? MdMale
+                                : MdFemale
+                            }
+                          />
                         </Flex>
                       </Flex>
                       <Flex align="flex-start" flexDir="column">
@@ -97,7 +108,7 @@ const MatrimonyProfilesView: React.FC<MatrimonyProfilesViewProps> = ({
                     </Flex>
                   );
                 })}
-            </Flex>
+            </Grid>
           ) : (
             <Spinner />
           )}
