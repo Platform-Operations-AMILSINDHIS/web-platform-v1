@@ -46,6 +46,9 @@ const useServerActions = () => {
 
   const matrimonyLoginMut = api.matrimonyProfiles.login.useMutation();
 
+  const matrimonyProfileRequestMut =
+    api.profileRequests.addRequest.useMutation();
+
   const fetchMatrimonyIdMut =
     api.matrimonyProfiles.fetchMatrimonyID.useMutation();
 
@@ -223,6 +226,22 @@ const useServerActions = () => {
     return data as MatrimonyIdFetchResponse;
   };
 
+  const handleMatrimonyRequestProfile = async (
+    requestee_name: string,
+    requestee_id: string,
+    requested_name: string,
+    requested_id: string
+  ) => {
+    const data = await matrimonyProfileRequestMut.mutateAsync({
+      requestee_name: requestee_name,
+      requestee_id: requestee_id,
+      requested_name: requested_name,
+      requested_id: requested_id,
+    });
+
+    console.log(data);
+  };
+
   return {
     handleMemberBufferFetch,
     handleMatrimonyBufferFetch,
@@ -236,6 +255,7 @@ const useServerActions = () => {
     handleMatrimonyLogin,
     handleMatrimonyProfilesFetch,
     handleMatrimonyIdFetch,
+    handleMatrimonyRequestProfile,
     membershipBufferData,
     matrimonyBufferData,
   };

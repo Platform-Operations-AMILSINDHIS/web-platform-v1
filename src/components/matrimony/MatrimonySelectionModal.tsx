@@ -7,6 +7,7 @@ import {
 } from "~/types/api";
 import { userAtomBody } from "~/types/atoms/users";
 import { useState } from "react";
+import useServerActions from "~/hooks/useServerActions";
 
 interface MatrimonyApplicationSelectionModalProps {
   handleModal: () => void;
@@ -37,6 +38,8 @@ const MatrimonyApplicationSelectionModal: React.FC<
   const [selectedOption, setSelectedOption] = useState<string>("");
   const [profileMatID, setProfileMatID] = useState<string | undefined>("");
   const [fetchStatus, setFetchStatus] = useState<boolean>(false);
+
+  const { handleMatrimonyRequestProfile } = useServerActions();
 
   const handleSelectChange = async (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -120,6 +123,14 @@ const MatrimonyApplicationSelectionModal: React.FC<
             }}
             color="white"
             bg="#0E0E11"
+            onClick={() =>
+              handleMatrimonyRequestProfile(
+                user?.first_name ?? "",
+                user?.membership_id ?? "",
+                profileMatID ?? "",
+                selectedOption
+              )
+            }
           >
             Request Profile
           </Button>
