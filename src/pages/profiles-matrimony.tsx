@@ -10,7 +10,7 @@ import MatrimonyAuthModal from "~/components/authentication/MatrimonyAuthModal";
 import { MatrimonyProfilesFetchResponse } from "~/types/api";
 import MatrimonyProfilesView from "~/components/matrimony/MatrimonyProfilesView";
 import MatrimonyApplicationWithdrawModal from "~/components/matrimony/MatrimonyApplicationWithdrawModal";
-import MatrimonyApplicationSelectionModal from "~/components/matrimony/MatrimonySelectionModal";
+import MatrimonyApplicationSelectionModal from "~/components/matrimony/MatrimonyApplicationSelectionModal";
 
 const ProfilePage = () => {
   const [{ user }] = useUserAtom();

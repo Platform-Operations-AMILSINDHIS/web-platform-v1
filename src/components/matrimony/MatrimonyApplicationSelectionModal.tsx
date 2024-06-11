@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Select, Text } from "@chakra-ui/react";
+import { Button, Flex, Icon, Select, Spinner, Text } from "@chakra-ui/react";
 import ModalLayout from "~/layouts/ModalLayout";
 import { TbArrowsJoin } from "react-icons/tb";
 import {
@@ -35,8 +35,10 @@ const MatrimonyApplicationSelectionModal: React.FC<
   matrimonyProfiles,
   user,
 }) => {
+  const [selectingProfile, setSelectingProfile] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<string>("");
   const [profileMatID, setProfileMatID] = useState<string | undefined>("");
+  const [profileName, setProfileName] = useState<string>("");
   const [fetchStatus, setFetchStatus] = useState<boolean>(false);
 
   const { handleMatrimonyRequestProfile } = useServerActions();
@@ -44,18 +46,27 @@ const MatrimonyApplicationSelectionModal: React.FC<
   const handleSelectChange = async (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
+    setSelectingProfile(true);
     const selectedValue = event.target.value;
     setSelectedOption(selectedValue);
     const notty = await handleMatrimonyIDFetch(event.target.value);
 
+    const filtered = matrimonyProfiles.filter(
+      (e) => e.user_id === selectedValue
+    );
+
     if (notty === undefined) {
       setProfileMatID(undefined);
+      setProfileName("");
       console.log(profileMatID);
       setFetchStatus(false);
+      setSelectingProfile(false);
     } else {
       setProfileMatID(notty.matrimony_id ?? "");
+      setProfileName(filtered[0]?.submission.personalInfo.firstName as string);
       console.log(profileMatID);
       setFetchStatus(notty.status);
+      setSelectingProfile(false);
     }
     console.log("Selected option:", selectedOption, notty);
   };
@@ -93,7 +104,9 @@ const MatrimonyApplicationSelectionModal: React.FC<
               {matrimonyID}
             </Text>
             <Icon transition="all 0.2s" as={TbArrowsJoin} />
-            <Text fontWeight={600}>{profileMatID}</Text>
+            <Text fontWeight={600}>
+              {selectingProfile ? <Spinner boxSize={3} /> : profileMatID}
+            </Text>
           </Flex>
         </Flex>
         <Select
@@ -124,12 +137,18 @@ const MatrimonyApplicationSelectionModal: React.FC<
             color="white"
             bg="#0E0E11"
             onClick={() =>
-              handleMatrimonyRequestProfile(
-                user?.first_name ?? "",
-                user?.membership_id ?? "",
-                profileMatID ?? "",
-                selectedOption
-              )
+              //   handleMatrimonyRequestProfile(
+              //     user?.first_name ?? "",
+              //     user?.membership_id ?? "",
+              //     profileMatID ?? "",
+              //     selectedOption
+              //   )
+              console.log({
+                requestee_name: user?.first_name,
+                requestee_id: user?.membership_id,
+                requested_name: selectedOption,
+                requested_ID: profileMatID,
+              })
             }
           >
             Request Profile
