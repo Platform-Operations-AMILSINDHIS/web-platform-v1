@@ -49,6 +49,7 @@ const MatrimonyApplicationSelectionModal: React.FC<
   const handleSelectChange = async (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
+    setTriggerError(false);
     setSelectingProfile(true);
     const selectedValue = event.target.value;
     setSelectedOption(selectedValue);
@@ -61,6 +62,7 @@ const MatrimonyApplicationSelectionModal: React.FC<
     if (notty === undefined) {
       setProfileMatID(undefined);
       setProfileName("");
+      console.log(notty);
       setFetchStatus(false);
       setSelectingProfile(false);
     } else {
@@ -74,13 +76,17 @@ const MatrimonyApplicationSelectionModal: React.FC<
   };
 
   const ProcessingRequestProfile = async () => {
+    setTriggerError(false);
     setRequesting(true);
 
-    if (profileName === "" || selectedOption === "") {
+    if (profileName === "" || profileMatID === "") {
       setTriggerError(true);
+      console.log("error");
       setRequesting(false);
       return;
     }
+
+    console.log("successs");
 
     await handleMatrimonyRequestProfile(
       user?.first_name ?? "",
@@ -88,7 +94,14 @@ const MatrimonyApplicationSelectionModal: React.FC<
       profileName,
       profileMatID ?? ""
     );
+    console.log({
+      A: user?.first_name ?? "",
+      B: matrimonyID,
+      C: profileName,
+      D: profileMatID ?? "",
+    });
     setRequesting(false);
+    handleCloseSelectionModal(setProfileMatID, setFetchStatus);
   };
 
   return (
@@ -129,24 +142,33 @@ const MatrimonyApplicationSelectionModal: React.FC<
             </Text>
           </Flex>
         </Flex>
-        <Select
-          fontWeight={500}
-          border="1px solid"
-          borderColor="gray.300"
-          onChange={handleSelectChange}
-          placeholder="Select Profile"
-        >
-          {matrimonyProfiles
-            .filter((e) => e.user_id !== user?.id)
-            .map((profile, index) => {
-              return (
-                <option
-                  key={index}
-                  value={profile.user_id}
-                >{`${profile.submission.personalInfo.firstName} ${profile.submission.personalInfo.middleName} ${profile.submission.personalInfo.lastName}`}</option>
-              );
-            })}
-        </Select>
+        <Flex gap={1} flexDir="column">
+          <Select
+            fontWeight={500}
+            border="1px solid"
+            borderColor={triggerError ? "red.400" : "gray.500"}
+            onChange={handleSelectChange}
+            placeholder="Select Profile"
+          >
+            {matrimonyProfiles
+              .filter((e) => e.user_id !== user?.id)
+              .map((profile, index) => {
+                return (
+                  <option
+                    key={index}
+                    value={profile.user_id}
+                  >{`${profile.submission.personalInfo.firstName} ${profile.submission.personalInfo.middleName} ${profile.submission.personalInfo.lastName}`}</option>
+                );
+              })}
+          </Select>
+          {triggerError ? (
+            <Text fontWeight={500} color="red" fontSize="small" pl={1}>
+              Please select a pofile name
+            </Text>
+          ) : (
+            <></>
+          )}
+        </Flex>
         <Flex justify="center" mb={2} gap={3}>
           <Button
             isLoading={requesting}
@@ -156,7 +178,7 @@ const MatrimonyApplicationSelectionModal: React.FC<
             }}
             color="white"
             bg="#0E0E11"
-            onClick={ProcessingRequestProfile}
+            onClick={() => ProcessingRequestProfile()}
           >
             Request Profile
           </Button>
