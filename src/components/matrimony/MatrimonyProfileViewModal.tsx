@@ -18,7 +18,6 @@ const MatrimonyProfileViewModal: React.FC<MatrimonyProfileViewModalProps> = ({
   modalHeader,
   modalState,
 }) => {
-  console.log(submission);
   return (
     <ModalLayout
       handleModal={handleModal}
