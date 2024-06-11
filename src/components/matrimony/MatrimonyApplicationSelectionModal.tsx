@@ -36,10 +36,13 @@ const MatrimonyApplicationSelectionModal: React.FC<
   user,
 }) => {
   const [selectingProfile, setSelectingProfile] = useState<boolean>(false);
-  const [selectedOption, setSelectedOption] = useState<string>("");
-  const [profileMatID, setProfileMatID] = useState<string | undefined>("");
-  const [profileName, setProfileName] = useState<string>("");
   const [fetchStatus, setFetchStatus] = useState<boolean>(false);
+  const [requesting, setRequesting] = useState<boolean>(false);
+  const [triggerError, setTriggerError] = useState<boolean>(false);
+
+  const [selectedOption, setSelectedOption] = useState<string>("");
+  const [profileName, setProfileName] = useState<string>("");
+  const [profileMatID, setProfileMatID] = useState<string | undefined>("");
 
   const { handleMatrimonyRequestProfile } = useServerActions();
 
@@ -58,7 +61,6 @@ const MatrimonyApplicationSelectionModal: React.FC<
     if (notty === undefined) {
       setProfileMatID(undefined);
       setProfileName("");
-      console.log(profileMatID);
       setFetchStatus(false);
       setSelectingProfile(false);
     } else {
@@ -69,6 +71,24 @@ const MatrimonyApplicationSelectionModal: React.FC<
       setSelectingProfile(false);
     }
     console.log("Selected option:", selectedOption, notty);
+  };
+
+  const ProcessingRequestProfile = async () => {
+    setRequesting(true);
+
+    if (profileName === "" || selectedOption === "") {
+      setTriggerError(true);
+      setRequesting(false);
+      return;
+    }
+
+    await handleMatrimonyRequestProfile(
+      user?.first_name ?? "",
+      matrimonyID,
+      profileName,
+      profileMatID ?? ""
+    );
+    setRequesting(false);
   };
 
   return (
@@ -129,27 +149,14 @@ const MatrimonyApplicationSelectionModal: React.FC<
         </Select>
         <Flex justify="center" mb={2} gap={3}>
           <Button
-            isLoading={false}
+            isLoading={requesting}
             type="submit"
             _hover={{
               bg: "gray.700",
             }}
             color="white"
             bg="#0E0E11"
-            onClick={() =>
-              //   handleMatrimonyRequestProfile(
-              //     user?.first_name ?? "",
-              //     user?.membership_id ?? "",
-              //     profileMatID ?? "",
-              //     selectedOption
-              //   )
-              console.log({
-                requestee_name: user?.first_name,
-                requestee_id: user?.membership_id,
-                requested_name: selectedOption,
-                requested_ID: profileMatID,
-              })
-            }
+            onClick={ProcessingRequestProfile}
           >
             Request Profile
           </Button>
