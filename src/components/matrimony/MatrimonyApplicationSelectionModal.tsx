@@ -108,7 +108,7 @@ const MatrimonyApplicationSelectionModal: React.FC<
     handleCloseSelectionModal(setProfileMatID, setFetchStatus);
     toast({
       title: "Profile Request Sent",
-      description: "Your request has been sent to the community",
+      description: "Your request has successfully been sent to the community",
       status: "success",
       duration: 3000,
       isClosable: true,
