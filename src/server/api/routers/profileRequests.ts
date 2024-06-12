@@ -33,6 +33,22 @@ const profilRequests = createTRPCRouter({
         console.log(err);
       }
     }),
+
+  fetchAllRequests: publicProcedure.query(async () => {
+    try {
+      const { data: RequestData, error: FetchError } = await supabase
+        .from("profile_requests")
+        .select("*");
+
+      if (FetchError) throw FetchError;
+
+      return {
+        requests: RequestData,
+      };
+    } catch (err) {
+      console.log(err);
+    }
+  }),
 });
 
 export default profilRequests;
