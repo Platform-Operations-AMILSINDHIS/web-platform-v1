@@ -5,6 +5,7 @@ import {
   MatrimonyProfilesFetchResponse,
   MatrimonySubmissionApprovalVerificationResponse,
   MatrimonySubmissionVerificationServerResponse,
+  ProfileRequestsFetchResponse,
 } from "~/types/api";
 import {
   MatrimonyBufferDataType,
@@ -63,6 +64,11 @@ const useServerActions = () => {
 
   const { refetch: fetchApprovedMatrimonyApplications } =
     api.formBuffer.fetchApprovedMatrimonyApplicants.useQuery(undefined, {
+      enabled: false,
+    });
+
+  const { refetch: fetchProfileRequests } =
+    api.profileRequests.fetchAllRequests.useQuery(undefined, {
       enabled: false,
     });
 
@@ -242,6 +248,13 @@ const useServerActions = () => {
     console.log(data);
   };
 
+  const handleProfileFetchRequests = async (): Promise<
+    ProfileRequestsFetchResponse[]
+  > => {
+    const fetchData = await fetchProfileRequests();
+    return fetchData as unknown as ProfileRequestsFetchResponse[];
+  };
+
   return {
     handleMemberBufferFetch,
     handleMatrimonyBufferFetch,
@@ -256,6 +269,7 @@ const useServerActions = () => {
     handleMatrimonyProfilesFetch,
     handleMatrimonyIdFetch,
     handleMatrimonyRequestProfile,
+    handleProfileFetchRequests,
     membershipBufferData,
     matrimonyBufferData,
   };

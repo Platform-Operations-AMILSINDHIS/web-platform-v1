@@ -12,10 +12,12 @@ import { TbArrowsJoin } from "react-icons/tb";
 import {
   MatrimonyIdFetchResponse,
   MatrimonyProfilesFetchResponse,
+  ProfileRequestsFetchResponse,
 } from "~/types/api";
 import { userAtomBody } from "~/types/atoms/users";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useServerActions from "~/hooks/useServerActions";
+import { date } from "zod";
 
 interface MatrimonyApplicationSelectionModalProps {
   handleModal: () => void;
@@ -52,8 +54,21 @@ const MatrimonyApplicationSelectionModal: React.FC<
   const [profileName, setProfileName] = useState<string>("");
   const [profileMatID, setProfileMatID] = useState<string | undefined>("");
 
-  const { handleMatrimonyRequestProfile } = useServerActions();
+  const [requests, setRequests] = useState<ProfileRequestsFetchResponse[]>([]);
+
+  const { handleMatrimonyRequestProfile, handleProfileFetchRequests } =
+    useServerActions();
   const toast = useToast();
+
+  useEffect(() => {
+    const fetchRequests = async () => {
+      const data = await handleProfileFetchRequests();
+      setRequests(data);
+      console.log(data);
+    };
+
+    fetchRequests();
+  }, []);
 
   const handleSelectChange = async (
     event: React.ChangeEvent<HTMLSelectElement>
