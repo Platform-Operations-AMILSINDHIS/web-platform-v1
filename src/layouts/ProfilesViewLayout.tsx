@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import ModalButton from "~/components/buttons/ModalButtons";
 
 interface ProfilesViewLayoutProps {

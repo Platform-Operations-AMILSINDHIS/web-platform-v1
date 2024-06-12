@@ -1,4 +1,12 @@
-import { Button, Flex, Icon, Select, Spinner, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Icon,
+  Select,
+  Spinner,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
 import ModalLayout from "~/layouts/ModalLayout";
 import { TbArrowsJoin } from "react-icons/tb";
 import {
@@ -45,6 +53,7 @@ const MatrimonyApplicationSelectionModal: React.FC<
   const [profileMatID, setProfileMatID] = useState<string | undefined>("");
 
   const { handleMatrimonyRequestProfile } = useServerActions();
+  const toast = useToast();
 
   const handleSelectChange = async (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -94,14 +103,16 @@ const MatrimonyApplicationSelectionModal: React.FC<
       profileName,
       profileMatID ?? ""
     );
-    console.log({
-      A: user?.first_name ?? "",
-      B: matrimonyID,
-      C: profileName,
-      D: profileMatID ?? "",
-    });
+
     setRequesting(false);
     handleCloseSelectionModal(setProfileMatID, setFetchStatus);
+    toast({
+      title: "Profile Request Sent",
+      description: "Your request has been sent to the community",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
   };
 
   return (
