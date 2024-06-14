@@ -9,7 +9,10 @@ import {
 
 import React, { useState } from "react";
 
-import { MatrimonyProfilesFetchResponse } from "~/types/api";
+import {
+  MatrimonyProfilesFetchResponse,
+  ProfileRequestsFetchResponse,
+} from "~/types/api";
 import { userAtomBody } from "~/types/atoms/users";
 import MatrimonyProfileCard from "./MatrimonyProfileCard";
 import MatrimonyProfileViewModal from "./MatrimonyProfileViewModal";
@@ -18,6 +21,7 @@ import { MatrimonyFormValues } from "~/types/forms/matrimony";
 interface MatrimonyProfilesViewProps {
   isLoggedIn: boolean;
   matrimonyProfiles: MatrimonyProfilesFetchResponse[];
+  profileRequests: ProfileRequestsFetchResponse[];
   user: userAtomBody | null;
 }
 

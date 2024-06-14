@@ -48,6 +48,8 @@ const ProfilePage = () => {
     ProfileRequestsFetchResponse[]
   >([]);
 
+  const [profilesRequested, setProfilesRequested] = useState<string[]>([]);
+
   const handleFormSubmit = async (
     values: MatrimonyLoginValues,
     { setErrors }: FormikHelpers<MatrimonyLoginValues>
@@ -86,9 +88,22 @@ const ProfilePage = () => {
 
   const fetchProfileRequests = async () => {
     const data = await handleFetchProfileRequests();
+
     if (data.length > 0 && isLoggedIn) {
-      setProfileRequests(data);
-      console.log({ profileRequests });
+      // Create a new Set to efficiently store unique requested IDs
+      const uniqueRequestedIds: string[] = [];
+
+      // Use `forEach` to avoid unnecessary intermediate array creation
+      data.forEach((profile) => {
+        if (!uniqueRequestedIds.includes(profile.requested_id)) {
+          uniqueRequestedIds.push(profile.requested_id);
+        }
+      });
+
+      // Update `profilesRequested` with the unique IDs
+      setProfilesRequested(uniqueRequestedIds);
+
+      console.log({ profilesRequested });
     }
   };
 
@@ -124,6 +139,7 @@ const ProfilePage = () => {
       <MatrimonyProfilesView
         isLoggedIn={isLoggedIn}
         matrimonyProfiles={matrimonyProfiles}
+        profileRequests={profileRequests}
         user={user}
       />
     </ProfilesViewLayout>
