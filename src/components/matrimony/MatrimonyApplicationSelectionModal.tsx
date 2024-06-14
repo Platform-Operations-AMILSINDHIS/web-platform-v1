@@ -54,21 +54,8 @@ const MatrimonyApplicationSelectionModal: React.FC<
   const [profileName, setProfileName] = useState<string>("");
   const [profileMatID, setProfileMatID] = useState<string | undefined>("");
 
-  const [requests, setRequests] = useState<ProfileRequestsFetchResponse[]>([]);
-
-  const { handleMatrimonyRequestProfile, handleProfileFetchRequests } =
-    useServerActions();
+  const { handleMatrimonyRequestProfile } = useServerActions();
   const toast = useToast();
-
-  useEffect(() => {
-    const fetchRequests = async () => {
-      const data = await handleProfileFetchRequests();
-      setRequests(data);
-      console.log(data);
-    };
-
-    fetchRequests();
-  }, []);
 
   const handleSelectChange = async (
     event: React.ChangeEvent<HTMLSelectElement>

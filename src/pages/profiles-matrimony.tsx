@@ -7,7 +7,10 @@ import { useUserAtom } from "~/lib/atom";
 import useServerActions from "~/hooks/useServerActions";
 import ProfilesViewLayout from "~/layouts/ProfilesViewLayout";
 import MatrimonyAuthModal from "~/components/authentication/MatrimonyAuthModal";
-import { MatrimonyProfilesFetchResponse } from "~/types/api";
+import {
+  MatrimonyProfilesFetchResponse,
+  ProfileRequestsFetchResponse,
+} from "~/types/api";
 import MatrimonyProfilesView from "~/components/matrimony/MatrimonyProfilesView";
 import MatrimonyApplicationWithdrawModal from "~/components/matrimony/MatrimonyApplicationWithdrawModal";
 import MatrimonyApplicationSelectionModal from "~/components/matrimony/MatrimonyApplicationSelectionModal";
@@ -31,6 +34,7 @@ const ProfilePage = () => {
     handleMatrimonyLogin,
     handleMatrimonyProfilesFetch,
     handleMatrimonyIdFetch,
+    handleFetchProfileRequests,
   } = useServerActions();
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -39,6 +43,9 @@ const ProfilePage = () => {
   const [matrimoyID, setMatrimonyID] = useState<string>("");
   const [matrimonyProfiles, setMatrimonyProfiles] = useState<
     MatrimonyProfilesFetchResponse[]
+  >([]);
+  const [profileRequests, setProfileRequests] = useState<
+    ProfileRequestsFetchResponse[]
   >([]);
 
   const handleFormSubmit = async (
@@ -77,9 +84,18 @@ const ProfilePage = () => {
     }
   };
 
+  const fetchProfileRequests = async () => {
+    const data = await handleFetchProfileRequests();
+    if (data.length > 0 && isLoggedIn) {
+      setProfileRequests(data);
+      console.log({ profileRequests });
+    }
+  };
+
   useEffect(() => {
     fetchProfiles();
-  }, [matrimonyProfiles, isLoggedIn]);
+    fetchProfileRequests();
+  }, [matrimonyProfiles, isLoggedIn, profileRequests]);
 
   return (
     <ProfilesViewLayout

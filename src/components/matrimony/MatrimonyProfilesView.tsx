@@ -58,7 +58,7 @@ const MatrimonyProfilesView: React.FC<MatrimonyProfilesViewProps> = ({
                 .filter((e) => e.user_id !== user?.id)
                 .map((profile, index) => {
                   return (
-                    <>
+                    <Box key={index}>
                       <MatrimonyProfileViewModal
                         handleModal={onCloseProfileView}
                         modalHeader="Profile View"
@@ -70,7 +70,7 @@ const MatrimonyProfilesView: React.FC<MatrimonyProfilesViewProps> = ({
                         submission={profile.submission}
                         key={index}
                       />
-                    </>
+                    </Box>
                   );
                 })}
             </Grid>

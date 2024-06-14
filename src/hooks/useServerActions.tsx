@@ -248,11 +248,12 @@ const useServerActions = () => {
     console.log(data);
   };
 
-  const handleProfileFetchRequests = async (): Promise<
+  const handleFetchProfileRequests = async (): Promise<
     ProfileRequestsFetchResponse[]
   > => {
-    const fetchData = await fetchProfileRequests();
-    return fetchData as unknown as ProfileRequestsFetchResponse[];
+    const { data } = await fetchProfileRequests();
+    const profileRequests = data?.requests;
+    return profileRequests as ProfileRequestsFetchResponse[];
   };
 
   return {
@@ -269,7 +270,7 @@ const useServerActions = () => {
     handleMatrimonyProfilesFetch,
     handleMatrimonyIdFetch,
     handleMatrimonyRequestProfile,
-    handleProfileFetchRequests,
+    handleFetchProfileRequests,
     membershipBufferData,
     matrimonyBufferData,
   };
