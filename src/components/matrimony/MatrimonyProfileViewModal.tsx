@@ -23,7 +23,7 @@ const MatrimonyProfileViewModal: React.FC<MatrimonyProfileViewModalProps> = ({
       handleModal={handleModal}
       modalState={modalState}
       modalHeader={modalHeader}
-      modalSize="xl"
+      modalSize="3xl"
     >
       <Flex flexDir="column">
         <Flex flexDir="column">
@@ -60,7 +60,7 @@ const MatrimonyProfileViewModal: React.FC<MatrimonyProfileViewModalProps> = ({
         </Flex>
 
         <Flex flexDir="column" mt={5} gap={2}>
-          <Flex flexDir="column">
+          <Flex flexDir="column" gap={1}>
             <Text fontSize="lg" fontWeight={600}>
               Physical Attributes
             </Text>
@@ -77,20 +77,50 @@ const MatrimonyProfileViewModal: React.FC<MatrimonyProfileViewModalProps> = ({
             </Flex>
           </Flex>
 
-          <Flex flexDir="column">
+          <Flex flexDir="column" gap={1}>
             <Text fontSize="lg" fontWeight={600}>
               Hobbies
             </Text>
             <Text fontWeight={500}>{submission?.personalInfo.hobbies}</Text>
           </Flex>
 
-          <Flex flexDir="column">
+          <Flex flexDir="column" gap={1}>
             <Text fontSize="lg" fontWeight={600}>
               Qualifications
             </Text>
             <Text fontWeight={500}>
               {submission?.personalInfo.qualifications}
             </Text>
+          </Flex>
+
+          <Flex flexDir="column" gap={1}>
+            <Text fontSize="lg" fontWeight={600}>
+              Spouse Preferences
+            </Text>
+            <Flex flexDir="column">
+              <Flex justify="space-between">
+                <Text
+                  fontWeight={500}
+                >{`Complextion : ${submission?.spousePreferences.complexion}`}</Text>
+                <Text
+                  fontWeight={500}
+                >{`Weight : ${submission?.spousePreferences.weight} kg`}</Text>
+                <Text
+                  fontWeight={500}
+                >{`Height : ${submission?.spousePreferences.heightFeet}'${submission?.spousePreferences.heightInches}`}</Text>
+              </Flex>
+              <Flex justify="space-between">
+                <Text
+                  fontWeight={500}
+                >{`Qualification : ${submission?.spousePreferences.qualificationRequirements}`}</Text>
+                <Text
+                  fontWeight={500}
+                >{`Working : ${submission?.spousePreferences.working}`}</Text>
+                <Text
+                  fontWeight={500}
+                >{`Build : ${submission?.spousePreferences.build}`}</Text>
+              </Flex>
+            </Flex>
           </Flex>
         </Flex>
         <Box mb={3} mt={5}>
