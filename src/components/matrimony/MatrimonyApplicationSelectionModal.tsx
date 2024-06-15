@@ -168,6 +168,11 @@ const MatrimonyApplicationSelectionModal: React.FC<
           >
             {matrimonyProfiles
               .filter((e) => e.user_id !== user?.id)
+              .filter((e) =>
+                user?.gender === "Male"
+                  ? e.submission.personalInfo.gender !== "Male"
+                  : e.submission.personalInfo.gender !== "Female"
+              )
               .filter(
                 (e) =>
                   !profilesRequested.includes(
