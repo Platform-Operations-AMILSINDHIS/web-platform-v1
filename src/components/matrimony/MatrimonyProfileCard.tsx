@@ -6,10 +6,12 @@ import { formatPDFAge } from "~/utils/helper";
 interface MatrimonyProfileCardProps {
   submission: MatrimonyFormValues;
   handleOpenModal: (submission: MatrimonyFormValues) => void;
+  profileRequests: string[];
 }
 
 const MatrimonyProfileCard: React.FC<MatrimonyProfileCardProps> = ({
   submission,
+  profileRequests,
   handleOpenModal,
 }) => {
   return (
@@ -57,29 +59,48 @@ const MatrimonyProfileCard: React.FC<MatrimonyProfileCardProps> = ({
           {submission.personalInfo.placeOfBirth}
         </Text>
       </Flex>
-      <Text
-        _hover={{
-          bg: "#1F2937",
-          cursor: "pointer",
-          color: "#FFFF",
-        }}
-        mt={3}
-        w="fit-content"
-        py={1}
-        px={4}
-        border="1px solid"
-        borderColor="#1F2937"
-        color="#1F2937"
-        borderRadius={5}
-        fontSize="small"
-        fontWeight={600}
-        transition="all 0.2s"
-        onClick={() => {
-          handleOpenModal(submission);
-        }}
-      >
-        View Profile
-      </Text>
+      <>
+        {profileRequests.includes(submission.personalInfo.firstName) ? (
+          <Text
+            mt={3}
+            w="fit-content"
+            py={1}
+            px={4}
+            bg="yellow.200"
+            color="#1F2937"
+            borderRadius={5}
+            fontSize="small"
+            fontWeight={700}
+            transition="all 0.2s"
+          >
+            Profile Requested
+          </Text>
+        ) : (
+          <Text
+            _hover={{
+              bg: "#1F2937",
+              cursor: "pointer",
+              color: "#FFFF",
+            }}
+            mt={3}
+            w="fit-content"
+            py={1}
+            px={4}
+            border="1px solid"
+            borderColor="#1F2937"
+            color="#1F2937"
+            borderRadius={5}
+            fontSize="small"
+            fontWeight={600}
+            transition="all 0.2s"
+            onClick={() => {
+              handleOpenModal(submission);
+            }}
+          >
+            View Profile
+          </Text>
+        )}
+      </>
     </Flex>
   );
 };

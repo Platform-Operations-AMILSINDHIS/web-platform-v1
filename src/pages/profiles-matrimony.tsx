@@ -44,10 +44,6 @@ const ProfilePage = () => {
   const [matrimonyProfiles, setMatrimonyProfiles] = useState<
     MatrimonyProfilesFetchResponse[]
   >([]);
-  const [profileRequests, setProfileRequests] = useState<
-    ProfileRequestsFetchResponse[]
-  >([]);
-
   const [profilesRequested, setProfilesRequested] = useState<string[]>([]);
 
   const handleFormSubmit = async (
@@ -95,8 +91,8 @@ const ProfilePage = () => {
 
       // Use `forEach` to avoid unnecessary intermediate array creation
       data.forEach((profile) => {
-        if (!uniqueRequestedIds.includes(profile.requested_id)) {
-          uniqueRequestedIds.push(profile.requested_id);
+        if (!uniqueRequestedIds.includes(profile.requested_name)) {
+          uniqueRequestedIds.push(profile.requested_name);
         }
       });
 
@@ -110,7 +106,7 @@ const ProfilePage = () => {
   useEffect(() => {
     fetchProfiles();
     fetchProfileRequests();
-  }, [matrimonyProfiles, isLoggedIn, profileRequests]);
+  }, [matrimonyProfiles, isLoggedIn]);
 
   return (
     <ProfilesViewLayout
@@ -139,7 +135,7 @@ const ProfilePage = () => {
       <MatrimonyProfilesView
         isLoggedIn={isLoggedIn}
         matrimonyProfiles={matrimonyProfiles}
-        profileRequests={profileRequests}
+        profileRequests={profilesRequested}
         user={user}
       />
     </ProfilesViewLayout>

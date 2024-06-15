@@ -21,13 +21,14 @@ import { MatrimonyFormValues } from "~/types/forms/matrimony";
 interface MatrimonyProfilesViewProps {
   isLoggedIn: boolean;
   matrimonyProfiles: MatrimonyProfilesFetchResponse[];
-  profileRequests: ProfileRequestsFetchResponse[];
+  profileRequests: string[];
   user: userAtomBody | null;
 }
 
 const MatrimonyProfilesView: React.FC<MatrimonyProfilesViewProps> = ({
   isLoggedIn,
   matrimonyProfiles,
+  profileRequests,
   user,
 }) => {
   const {
@@ -70,6 +71,7 @@ const MatrimonyProfilesView: React.FC<MatrimonyProfilesViewProps> = ({
                         submission={profileView}
                       />
                       <MatrimonyProfileCard
+                        profileRequests={profileRequests}
                         handleOpenModal={handleViewProfile}
                         submission={profile.submission}
                         key={index}
