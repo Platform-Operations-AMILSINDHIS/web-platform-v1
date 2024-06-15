@@ -9,10 +9,7 @@ import {
 
 import React, { useState } from "react";
 
-import {
-  MatrimonyProfilesFetchResponse,
-  ProfileRequestsFetchResponse,
-} from "~/types/api";
+import { MatrimonyProfilesFetchResponse } from "~/types/api";
 import { userAtomBody } from "~/types/atoms/users";
 import MatrimonyProfileCard from "./MatrimonyProfileCard";
 import MatrimonyProfileViewModal from "./MatrimonyProfileViewModal";

@@ -1,4 +1,4 @@
-import { Flex, Spinner, Text, useDisclosure } from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
 import { FormikHelpers } from "formik";
 import { useEffect, useState } from "react";
 import { MatrimonyLoginValues } from "~/hooks/useForm";
@@ -96,7 +96,6 @@ const ProfilePage = () => {
         }
       });
 
-      // Update `profilesRequested` with the unique IDs
       setProfilesRequested(uniqueRequestedIds);
 
       console.log({ profilesRequested });
@@ -118,6 +117,7 @@ const ProfilePage = () => {
         modalState={isOpenWithdrawModal}
       />
       <MatrimonyApplicationSelectionModal
+        profilesRequested={profilesRequested}
         handleCloseSelectionModal={handleCloseSelectProfileModal}
         handleMatrimonyIDFetch={handleMatrimonyIdFetch}
         user={user}

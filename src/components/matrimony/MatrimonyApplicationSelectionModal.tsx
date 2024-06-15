@@ -24,6 +24,7 @@ interface MatrimonyApplicationSelectionModalProps {
   modalState: boolean;
   matrimonyID: string;
   matrimonyProfiles: MatrimonyProfilesFetchResponse[];
+  profilesRequested: string[];
   user: userAtomBody | null;
   handleMatrimonyIDFetch: (
     user_id: string
@@ -40,6 +41,7 @@ const MatrimonyApplicationSelectionModal: React.FC<
   handleModal,
   handleMatrimonyIDFetch,
   handleCloseSelectionModal,
+  profilesRequested,
   modalState,
   matrimonyID,
   matrimonyProfiles,
@@ -165,6 +167,12 @@ const MatrimonyApplicationSelectionModal: React.FC<
           >
             {matrimonyProfiles
               .filter((e) => e.user_id !== user?.id)
+              .filter(
+                (e) =>
+                  !profilesRequested.includes(
+                    e.submission.personalInfo.firstName
+                  )
+              )
               .map((profile, index) => {
                 return (
                   <option
