@@ -58,6 +58,11 @@ const MatrimonyProfilesView: React.FC<MatrimonyProfilesViewProps> = ({
             <Grid gap={5} templateColumns="repeat(3, 1fr)">
               {matrimonyProfiles
                 .filter((e) => e.user_id !== user?.id)
+                .filter((e) =>
+                  user?.gender === "Male"
+                    ? e.submission.personalInfo.gender !== "Male"
+                    : e.submission.personalInfo.gender !== "Female"
+                )
                 .map((profile, index) => {
                   return (
                     <Box key={index}>

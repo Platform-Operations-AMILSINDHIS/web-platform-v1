@@ -46,6 +46,8 @@ const matrimonyProfiles = createTRPCRouter({
 
         if (ErrorInLoggingIn) throw ErrorInLoggingIn;
 
+        console.log(loggedInProfile);
+
         if (loggedInProfile.length > 0) {
           return {
             loggedIn: true,
