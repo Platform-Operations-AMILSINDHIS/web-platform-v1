@@ -67,6 +67,7 @@ const MatrimonyLogin: React.FC<MatrimonyLoginProps> = ({
               Login
             </Button>
             <Button
+              onClick={() => (window.location.href = "/matrimony")}
               color="#FF4D00"
               bg="none"
               border="2px solid"
