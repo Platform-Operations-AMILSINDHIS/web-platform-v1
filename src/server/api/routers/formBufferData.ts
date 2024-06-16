@@ -18,7 +18,8 @@ const formBufferData = createTRPCRouter({
         form_buffer: fetchedFormBufferData,
       };
     } catch (err) {
-      console.log("err", err);
+      console.error("Error fetching form buffer data:", err);
+      throw new Error("Failed to fetch form buffer data");
     }
   }),
   fetchMembershipBuffer: publicProcedure.query(async () => {
@@ -36,9 +37,8 @@ const formBufferData = createTRPCRouter({
 
       return formMembershipBufferData as MembershipBufferDataType[]; // Return the fetched data
     } catch (err) {
-      // Handle errors here
       console.error("Error fetching membership form buffer data:", err);
-      throw new Error("Failed to fetch form buffer data");
+      throw new Error("Failed to fetch membership form buffer data");
     }
   }),
 
@@ -58,7 +58,7 @@ const formBufferData = createTRPCRouter({
     } catch (err) {
       // Handle errors here
       console.error("Error fetching membership form buffer data:", err);
-      throw new Error("Failed to fetch form buffer data");
+      throw new Error("Failed to fetch matrimony form buffer data");
     }
   }),
 
