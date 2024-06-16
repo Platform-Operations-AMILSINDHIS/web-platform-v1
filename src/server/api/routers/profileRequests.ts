@@ -49,6 +49,36 @@ const profilRequests = createTRPCRouter({
       console.log(err);
     }
   }),
+
+  acceptOrDeclineRequest: publicProcedure
+    .input(Yup.object({ id: Yup.number() }))
+    .mutation(async ({ input }) => {
+      try {
+        const { id } = input;
+        const { error: rowTerminationError } = await supabase
+          .from("profile_requests")
+          .delete()
+          .eq("id", id);
+
+        if (rowTerminationError) throw rowTerminationError;
+      } catch (err) {
+        console.log("Error while accepting or declining request", err);
+        throw new Error("Unable to process request");
+      }
+    }),
+
+  acceptAllRequests: publicProcedure.mutation(async () => {
+    try {
+      const { error: TerminationError } = await supabase
+        .from("profile_requests")
+        .delete();
+
+      if (TerminationError) throw TerminationError;
+    } catch (err) {
+      console.log("Error while accepting all requests", err);
+      throw new Error("Unable to process request");
+    }
+  }),
 });
 
 export default profilRequests;
