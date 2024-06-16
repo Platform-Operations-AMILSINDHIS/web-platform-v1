@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  FormBufferDataFetch,
   MatrimonyIdFetchResponse,
   MatrimonyLoginResponse,
   MatrimonyProfilesFetchResponse,
@@ -52,6 +53,11 @@ const useServerActions = () => {
 
   const fetchMatrimonyIdMut =
     api.matrimonyProfiles.fetchMatrimonyID.useMutation();
+
+  const { refetch: fetchAllBufferResponse } =
+    api.formBuffer.fetchAllBuffer.useQuery(undefined, {
+      enabled: false,
+    });
 
   const { refetch: fetchAllMemberResponses } =
     api.formBuffer.fetchMembershipBuffer.useQuery(undefined, {
@@ -256,6 +262,14 @@ const useServerActions = () => {
     return profileRequests as ProfileRequestsFetchResponse[];
   };
 
+  const handleFetchFormBufferData = async (): Promise<
+    FormBufferDataFetch[]
+  > => {
+    const { data } = await fetchAllBufferResponse();
+    const formBufferData = data?.form_buffer;
+    return formBufferData as FormBufferDataFetch[];
+  };
+
   return {
     handleMemberBufferFetch,
     handleMatrimonyBufferFetch,
@@ -271,6 +285,7 @@ const useServerActions = () => {
     handleMatrimonyIdFetch,
     handleMatrimonyRequestProfile,
     handleFetchProfileRequests,
+    handleFetchFormBufferData,
     membershipBufferData,
     matrimonyBufferData,
   };
