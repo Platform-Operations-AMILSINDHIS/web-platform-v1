@@ -6,12 +6,14 @@ import {
   Flex,
   Spinner,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import BufferSearch from "~/components/admin/BufferSearch";
 import DropDown from "~/components/admin/DropDown";
 import MatrimonyBufferTable from "~/components/admin/MatrimonyBufferTable";
 import MembershipBufferTable from "~/components/admin/MembershipBufferTable";
+import ProfileRequestsViewModal from "~/components/admin/ProfileRequestsViewModal";
 import { btnThemeLight } from "~/components/buttons/BtnThemes";
 import useServerActions from "~/hooks/useServerActions";
 import AdminPageLayout from "~/layouts/AdminPageLayout";
@@ -27,6 +29,11 @@ import {
 
 const AdminPage = () => {
   const [{ admin }] = useAdminAtom();
+  const {
+    isOpen: isProfileRequestsModalOpen,
+    onOpen: onOpenProfileRequestsModal,
+    onClose: onCloseProfileRequestsModal,
+  } = useDisclosure();
   const {
     handleMemberBufferFetch,
     handleMatrimonyBufferFetch,
@@ -122,9 +129,19 @@ const AdminPage = () => {
             >
               {profileRequestsData.length}
             </Box>
-            <Button style={btnThemeLight} size="md" fontSize="small">
+            <Button
+              onClick={onOpenProfileRequestsModal}
+              style={btnThemeLight}
+              size="md"
+              fontSize="small"
+            >
               Profile Requests
             </Button>
+            <ProfileRequestsViewModal
+              matrimonyProfileRequests={profileRequestsData}
+              handleModal={onCloseProfileRequestsModal}
+              modalState={isProfileRequestsModalOpen}
+            />
           </Box>
           <DropDown
             isSelected={isSelected}
