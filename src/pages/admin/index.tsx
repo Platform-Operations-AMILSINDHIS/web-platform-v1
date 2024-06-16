@@ -8,6 +8,7 @@ import useServerActions from "~/hooks/useServerActions";
 import AdminPageLayout from "~/layouts/AdminPageLayout";
 
 import { useAdminAtom } from "~/lib/atom";
+import { ProfileRequestsDataType } from "~/types/requests";
 
 import {
   FormBufferDataType,
@@ -21,6 +22,7 @@ const AdminPage = () => {
     handleMemberBufferFetch,
     handleMatrimonyBufferFetch,
     handleFetchFormBufferData,
+    handleFetchProfileRequests,
   } = useServerActions();
 
   const [formBufferData, setFormBufferData] = useState<FormBufferDataType[]>(
@@ -32,27 +34,36 @@ const AdminPage = () => {
   const [matrimonyBufferData, setMatrimonyBufferData] = useState<
     MatrimonyBufferDataType[]
   >([]);
+  const [profileRequestsData, setProfileRequestsData] = useState<
+    ProfileRequestsDataType[]
+  >([]);
 
-  const [isLoadingBuf, setIsLoadingBuf] = useState<boolean>(false);
   const [isLoadingMemBuf, setIsLoadingMemBuf] = useState<boolean>(false);
   const [isLoadingMatBuf, setIsLoadingMatBuf] = useState<boolean>(false);
   const [showApprovedMatProfiles, setShowApprovedMatProfiles] =
     useState<boolean>(false);
   const [isSelected, setIsSelected] = useState<string>("Memberships");
 
-  const handleBufferFetch = async () => {
+  const handleFetch = async () => {
     const allBufferData = await handleFetchFormBufferData();
     const allMemBufferData = await handleMemberBufferFetch();
     const allMatBufferData = await handleMatrimonyBufferFetch();
+    const allProfileRequestsData = await handleFetchProfileRequests();
     setFormBufferData(allBufferData);
     setMatrimonyBufferData(allMatBufferData);
     setMembershipBufferData(allMemBufferData);
-    console.log({ allBufferData, allMatBufferData, allMemBufferData });
+    setProfileRequestsData(allProfileRequestsData);
+    console.log({
+      allBufferData,
+      allMatBufferData,
+      allMemBufferData,
+      allProfileRequestsData,
+    });
   };
 
   useEffect(() => {
     async function f() {
-      await handleBufferFetch();
+      await handleFetch();
     }
 
     f().catch(console.error);
