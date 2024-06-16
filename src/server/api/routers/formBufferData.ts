@@ -6,6 +6,21 @@ import { sendDescisionMail, sendMatrimonyDescisionMail } from "~/server/mail";
 import { MembershipBufferDataType } from "~/types/tables/dataBuffer";
 
 const formBufferData = createTRPCRouter({
+  fetchAllBuffer: publicProcedure.query(async () => {
+    try {
+      const { data: fetchedFormBufferData, error: fetchError } = await supabase
+        .from("form_buffer")
+        .select("*");
+
+      if (fetchError) throw fetchError;
+
+      return {
+        form_buffer: fetchedFormBufferData,
+      };
+    } catch (err) {
+      console.log("err", err);
+    }
+  }),
   fetchMembershipBuffer: publicProcedure.query(async () => {
     try {
       const {

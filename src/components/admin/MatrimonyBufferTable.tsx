@@ -43,6 +43,7 @@ const MatrimonyBufferTable: React.FC<MatrimonyBufferTableProps> = ({
                         form_id: buffer?.id,
                         user_id: buffer?.user_id,
                         formType: buffer?.formType,
+                        status: buffer?.status,
                       },
                     });
                   }}

@@ -38,6 +38,7 @@ const MembershipBufferTable: React.FC<MembershipBufferTableProps> = ({
                       form_id: buffer?.id,
                       user_id: buffer?.user_id,
                       formType: buffer?.formType,
+                      status: buffer?.status,
                     },
                   });
                 }}
