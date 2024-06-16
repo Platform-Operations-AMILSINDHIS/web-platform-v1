@@ -6,9 +6,9 @@ import {
 import { MatrimonyFormValues } from "../forms/matrimony";
 
 enum Status {
-  APPROVED,
-  PENDING,
-  REJECTED,
+  APPROVED = "APPROVED",
+  PENDING = "PENDING",
+  REJECTED = "REJECTED",
 }
 
 export interface MembershipBufferDataType {

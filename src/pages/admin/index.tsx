@@ -27,13 +27,11 @@ const AdminPage = () => {
   useEffect(() => {
     async function f() {
       await handleMemberBufferFetch();
-      await handleMatrimonyBufferFetch(
-        showApprovedMatProfiles ? "APPROVED" : "PENDING"
-      );
+      await handleMatrimonyBufferFetch();
     }
 
     f().catch(console.error);
-  }, [showApprovedMatProfiles]);
+  }, []);
 
   useEffect(() => {
     setIsLoadingMemBuf(true);
@@ -51,7 +49,7 @@ const AdminPage = () => {
     } else {
       setIsLoadingMatBuf(false);
     }
-  }, [matrimonyBufferData, showApprovedMatProfiles]);
+  }, [matrimonyBufferData]);
 
   const handleCheckBoxChange = () => {
     setShowApprovedMatProfiles(!showApprovedMatProfiles);
@@ -92,7 +90,10 @@ const AdminPage = () => {
           {isLoadingMatBuf ? (
             <Spinner />
           ) : (
-            <MatrimonyBufferTable matrimonyBufferData={matrimonyBufferData} />
+            <MatrimonyBufferTable
+              showApproved={showApprovedMatProfiles}
+              matrimonyBufferData={matrimonyBufferData}
+            />
           )}
         </Box>
       )}
