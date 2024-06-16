@@ -12,12 +12,10 @@ import { TbArrowsJoin } from "react-icons/tb";
 import {
   MatrimonyIdFetchResponse,
   MatrimonyProfilesFetchResponse,
-  ProfileRequestsFetchResponse,
 } from "~/types/api";
 import { userAtomBody } from "~/types/atoms/users";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useServerActions from "~/hooks/useServerActions";
-import { date } from "zod";
 
 interface MatrimonyApplicationSelectionModalProps {
   handleModal: () => void;
@@ -105,7 +103,8 @@ const MatrimonyApplicationSelectionModal: React.FC<
       user?.first_name ?? "",
       matrimonyID,
       profileName,
-      profileMatID ?? ""
+      profileMatID ?? "",
+      user?.email_id ?? ""
     );
 
     setRequesting(false);

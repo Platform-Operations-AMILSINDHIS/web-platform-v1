@@ -10,12 +10,18 @@ const profilRequests = createTRPCRouter({
         requestee_id: Yup.string(),
         requested_name: Yup.string(),
         requested_id: Yup.string(),
+        email_id: Yup.string(),
       })
     )
     .mutation(async ({ input }) => {
       try {
-        const { requested_id, requested_name, requestee_id, requestee_name } =
-          input;
+        const {
+          requested_id,
+          requested_name,
+          requestee_id,
+          requestee_name,
+          email_id,
+        } = input;
 
         const { data, error } = await supabase.from("profile_requests").insert([
           {
@@ -23,6 +29,7 @@ const profilRequests = createTRPCRouter({
             requested_name: requested_name,
             requestee_name: requestee_name,
             requestee_id: requestee_id,
+            email_id: email_id,
           },
         ]);
 
@@ -50,7 +57,7 @@ const profilRequests = createTRPCRouter({
     }
   }),
 
-  acceptOrDeclineRequest: publicProcedure
+  acceptRequest: publicProcedure
     .input(Yup.object({ id: Yup.number() }))
     .mutation(async ({ input }) => {
       try {
