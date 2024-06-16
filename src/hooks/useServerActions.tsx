@@ -65,7 +65,7 @@ const useServerActions = () => {
       enabled: false,
     });
 
-  const { refetch: fetchProfileRequests } =
+  const { refetch: fetchMatProfileRequests } =
     api.profileRequests.fetchAllRequests.useQuery(undefined, {
       enabled: false,
     });
@@ -260,7 +260,7 @@ const useServerActions = () => {
   const handleFetchProfileRequests = async (): Promise<
     ProfileRequestsFetchResponse[]
   > => {
-    const { data } = await fetchProfileRequests();
+    const { data } = await fetchMatProfileRequests();
     const profileRequests = data?.requests;
     return profileRequests as ProfileRequestsFetchResponse[];
   };
