@@ -10,10 +10,6 @@ import {
 } from "@chakra-ui/react";
 import { BiSearch } from "react-icons/bi";
 import { PiCommand } from "react-icons/pi";
-import {
-  MembershipBufferDataType,
-  MatrimonyBufferDataType,
-} from "~/types/tables/dataBuffer";
 
 const BufferSearch: React.FC = () => {
   return (

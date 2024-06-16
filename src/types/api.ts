@@ -1,4 +1,8 @@
 import { MatrimonyFormValues } from "./forms/matrimony";
+import {
+  KAPMembershipFormValues,
+  YACMembershipFormValues,
+} from "./forms/membership";
 
 export interface MatrimonySubmissionVerificationServerResponse {
   user_verification: boolean;
@@ -43,4 +47,16 @@ export interface ProfileRequestsFetchResponse {
   requestee_id: string;
   requested_name: string;
   requested_id: string;
+}
+
+export interface FormBufferDataFetch {
+  id: number;
+  created_at: string;
+  user_id: string;
+  formType: string;
+  status: string;
+  submission:
+    | MatrimonyFormValues
+    | KAPMembershipFormValues
+    | YACMembershipFormValues;
 }
