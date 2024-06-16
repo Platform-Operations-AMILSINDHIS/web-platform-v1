@@ -14,20 +14,28 @@ const AdminPage = () => {
   const {
     handleMemberBufferFetch,
     handleMatrimonyBufferFetch,
+    handleFetchFormBufferData,
     membershipBufferData,
     matrimonyBufferData,
   } = useServerActions();
 
+  const [isLoadingBuf, setIsLoadingBuf] = useState<boolean>(false);
   const [isLoadingMemBuf, setIsLoadingMemBuf] = useState<boolean>(false);
   const [isLoadingMatBuf, setIsLoadingMatBuf] = useState<boolean>(false);
   const [showApprovedMatProfiles, setShowApprovedMatProfiles] =
     useState<boolean>(false);
   const [isSelected, setIsSelected] = useState<string>("Memberships");
 
+  const handleBufferFetch = async () => {
+    const data = await handleFetchFormBufferData();
+    console.log(data);
+  };
+
   useEffect(() => {
     async function f() {
       await handleMemberBufferFetch();
       await handleMatrimonyBufferFetch();
+      await handleBufferFetch();
     }
 
     f().catch(console.error);
