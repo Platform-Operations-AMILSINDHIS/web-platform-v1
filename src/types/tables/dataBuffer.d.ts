@@ -11,6 +11,18 @@ enum Status {
   REJECTED = "REJECTED",
 }
 
+export interface FormBufferDataType {
+  created_at: string;
+  formType: string;
+  id: number;
+  user_id: string;
+  status: Status;
+  submission:
+    | YACMembershipFormValues
+    | KAPMembershipFormValues
+    | MatrimonyBufferDataType;
+}
+
 export interface MembershipBufferDataType {
   created_at: string;
   formType: string;

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   FormBufferDataFetch,
+  MatrimonyFormBufferDataFetch,
   MatrimonyIdFetchResponse,
   MatrimonyLoginResponse,
   MatrimonyProfilesFetchResponse,
@@ -8,20 +9,10 @@ import {
   MatrimonySubmissionVerificationServerResponse,
   ProfileRequestsFetchResponse,
 } from "~/types/api";
-import {
-  MatrimonyBufferDataType,
-  MembershipBufferDataType,
-} from "~/types/tables/dataBuffer";
+
 import { api } from "~/utils/api";
 
 const useServerActions = () => {
-  const [membershipBufferData, setMembershipBufferData] = useState<
-    MembershipBufferDataType[]
-  >([]);
-  const [matrimonyBufferData, setMatrimonyBufferData] = useState<
-    MatrimonyBufferDataType[]
-  >([]);
-
   const generateMembershipID = api.actions.generateMembershipID.useMutation();
   const generateMatrimonyID = api.actions.generateMatrimonyID.useMutation();
 
@@ -78,17 +69,26 @@ const useServerActions = () => {
       enabled: false,
     });
 
-  const handleMemberBufferFetch = async () => {
-    const data = await fetchAllMemberResponses();
-    setMembershipBufferData(data.data ?? []);
-    console.log(membershipBufferData);
+  const handleMemberBufferFetch = async (): Promise<FormBufferDataFetch[]> => {
+    const { data } = await fetchAllMemberResponses();
+    const membershipFormBufferData = data?.membership_formbuffer;
+    return membershipFormBufferData as FormBufferDataFetch[];
   };
 
-  const handleMatrimonyBufferFetch = async () => {
-    const data = await fetchAllMatrimonyResponses();
-    if (data.data && data.data.length > 0) {
-      setMatrimonyBufferData(data.data);
-    }
+  const handleMatrimonyBufferFetch = async (): Promise<
+    MatrimonyFormBufferDataFetch[]
+  > => {
+    const { data } = await fetchAllMatrimonyResponses();
+    const matrimonyFormBufferData = data?.matrimony_formbuffer;
+    return matrimonyFormBufferData as MatrimonyFormBufferDataFetch[];
+  };
+
+  const handleFetchFormBufferData = async (): Promise<
+    FormBufferDataFetch[]
+  > => {
+    const { data } = await fetchAllBufferResponse();
+    const formBufferData = data?.form_buffer;
+    return formBufferData as FormBufferDataFetch[];
   };
 
   const handleFetchUserSubmission = async (
@@ -262,14 +262,6 @@ const useServerActions = () => {
     return profileRequests as ProfileRequestsFetchResponse[];
   };
 
-  const handleFetchFormBufferData = async (): Promise<
-    FormBufferDataFetch[]
-  > => {
-    const { data } = await fetchAllBufferResponse();
-    const formBufferData = data?.form_buffer;
-    return formBufferData as FormBufferDataFetch[];
-  };
-
   return {
     handleMemberBufferFetch,
     handleMatrimonyBufferFetch,
@@ -286,8 +278,6 @@ const useServerActions = () => {
     handleMatrimonyRequestProfile,
     handleFetchProfileRequests,
     handleFetchFormBufferData,
-    membershipBufferData,
-    matrimonyBufferData,
   };
 };
 

@@ -49,6 +49,24 @@ export interface ProfileRequestsFetchResponse {
   requested_id: string;
 }
 
+export interface MatrimonyFormBufferDataFetch {
+  id: number;
+  created_at: string;
+  user_id: string;
+  formType: string;
+  status: string;
+  submission: MatrimonyFormValues;
+}
+
+export interface MembershipFormBufferDataFetch {
+  id: number;
+  created_at: string;
+  user_id: string;
+  formType: string;
+  status: string;
+  submission: KAPMembershipFormValues | YACMembershipFormValues;
+}
+
 export interface FormBufferDataFetch {
   id: number;
   created_at: string;

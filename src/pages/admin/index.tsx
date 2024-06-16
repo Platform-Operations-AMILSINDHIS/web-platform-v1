@@ -9,15 +9,29 @@ import AdminPageLayout from "~/layouts/AdminPageLayout";
 
 import { useAdminAtom } from "~/lib/atom";
 
+import {
+  FormBufferDataType,
+  MatrimonyBufferDataType,
+  MembershipBufferDataType,
+} from "~/types/tables/dataBuffer";
+
 const AdminPage = () => {
   const [{ admin }] = useAdminAtom();
   const {
     handleMemberBufferFetch,
     handleMatrimonyBufferFetch,
     handleFetchFormBufferData,
-    membershipBufferData,
-    matrimonyBufferData,
   } = useServerActions();
+
+  const [formBufferData, setFormBufferData] = useState<FormBufferDataType[]>(
+    []
+  );
+  const [membershipBufferData, setMembershipBufferData] = useState<
+    MembershipBufferDataType[]
+  >([]);
+  const [matrimonyBufferData, setMatrimonyBufferData] = useState<
+    MatrimonyBufferDataType[]
+  >([]);
 
   const [isLoadingBuf, setIsLoadingBuf] = useState<boolean>(false);
   const [isLoadingMemBuf, setIsLoadingMemBuf] = useState<boolean>(false);
@@ -27,14 +41,14 @@ const AdminPage = () => {
   const [isSelected, setIsSelected] = useState<string>("Memberships");
 
   const handleBufferFetch = async () => {
-    const data = await handleFetchFormBufferData();
-    console.log(data);
+    const allBufferData = await handleFetchFormBufferData();
+    const allMemBufferData = await handleMemberBufferFetch();
+    const allMatBufferData = await handleMatrimonyBufferFetch();
+    console.log({ allBufferData, allMatBufferData, allMemBufferData });
   };
 
   useEffect(() => {
     async function f() {
-      await handleMemberBufferFetch();
-      await handleMatrimonyBufferFetch();
       await handleBufferFetch();
     }
 

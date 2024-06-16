@@ -35,7 +35,9 @@ const formBufferData = createTRPCRouter({
 
       if (formMembershipBufferDataError) throw formMembershipBufferDataError;
 
-      return formMembershipBufferData as MembershipBufferDataType[]; // Return the fetched data
+      return {
+        membership_formbuffer: formMembershipBufferData,
+      }; // Return the fetched data
     } catch (err) {
       console.error("Error fetching membership form buffer data:", err);
       throw new Error("Failed to fetch membership form buffer data");
@@ -54,7 +56,9 @@ const formBufferData = createTRPCRouter({
 
       if (formMatrimonyBufferDataError) throw formMatrimonyBufferDataError;
 
-      return formMatrimonyBufferData; // Return the fetched data
+      return {
+        matrimony_formbuffer: formMatrimonyBufferData,
+      }; // Return the fetched data
     } catch (err) {
       // Handle errors here
       console.error("Error fetching membership form buffer data:", err);
