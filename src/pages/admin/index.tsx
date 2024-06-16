@@ -1,9 +1,18 @@
-import { Box, Button, Checkbox, Flex, Spinner, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Checkbox,
+  Circle,
+  Flex,
+  Spinner,
+  Text,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import BufferSearch from "~/components/admin/BufferSearch";
 import DropDown from "~/components/admin/DropDown";
 import MatrimonyBufferTable from "~/components/admin/MatrimonyBufferTable";
 import MembershipBufferTable from "~/components/admin/MembershipBufferTable";
+import { btnThemeLight } from "~/components/buttons/BtnThemes";
 import useServerActions from "~/hooks/useServerActions";
 import AdminPageLayout from "~/layouts/AdminPageLayout";
 
@@ -97,6 +106,26 @@ const AdminPage = () => {
       <Flex justify="space-between" align="center" w="full" mb={8}>
         <BufferSearch />
         <Flex alignItems="center" gap={3}>
+          <Box position="relative">
+            <Box
+              fontSize="small"
+              borderRadius={5}
+              p={1}
+              px={2}
+              color="white"
+              fontWeight={600}
+              top={-3}
+              left={-2}
+              bg="#FF4D00"
+              position="absolute"
+              zIndex={1}
+            >
+              {profileRequestsData.length}
+            </Box>
+            <Button style={btnThemeLight} size="md" fontSize="small">
+              Profile Requests
+            </Button>
+          </Box>
           <DropDown
             isSelected={isSelected}
             setIsSelected={setIsSelected}
