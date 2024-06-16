@@ -11,7 +11,7 @@ const AdminPageLayout: React.FC<AdminPageLayoutProps> = ({
 }) => {
   return (
     <Flex justify="center" h="100vh" w="full">
-      <Flex gap={5} p={5} flexDir="column">
+      <Flex minW={1200} gap={5} p={5} flexDir="column">
         <Flex justify="space-between" align="center" w="full">
           <Text fontWeight={600} fontSize="xx-large">
             Hey there,{" "}
