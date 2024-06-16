@@ -15,11 +15,7 @@ import {
   MatrimonyBufferDataType,
 } from "~/types/tables/dataBuffer";
 
-interface BufferSearchProps {
-  submission: MembershipBufferDataType[] | MatrimonyBufferDataType[];
-}
-
-const BufferSearch: React.FC<BufferSearchProps> = ({ submission }) => {
+const BufferSearch: React.FC = () => {
   return (
     <InputGroup maxW={400}>
       <InputLeftElement>
