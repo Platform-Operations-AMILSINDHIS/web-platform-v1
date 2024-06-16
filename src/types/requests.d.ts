@@ -5,4 +5,5 @@ export interface ProfileRequestsDataType {
   requestee_id: string;
   requested_name: string;
   requested_id: string;
+  email_id: string;
 }
