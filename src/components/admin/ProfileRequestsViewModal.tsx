@@ -87,6 +87,30 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
           );
         })}
       </Flex>
+      <Flex gap={3} my={2}>
+        <Button
+          color="#FF4D00"
+          bg="none"
+          border="2px solid"
+          borderColor="#FF4D00"
+          _hover={{
+            color: "white",
+            bg: "#FF4D00",
+          }}
+        >
+          Approve All requests
+        </Button>
+        <Button
+          _hover={{
+            bg: "gray.700",
+          }}
+          color="white"
+          bg="#0E0E11"
+          onClick={handleModal}
+        >
+          Return
+        </Button>
+      </Flex>
     </ModalLayout>
   );
 };
