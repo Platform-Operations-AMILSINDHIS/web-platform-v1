@@ -4,6 +4,12 @@ import {
   YACMembershipFormValues,
 } from "./forms/membership";
 
+enum Status {
+  APPROVED = "APPROVED",
+  PENDING = "PENDING",
+  REJECTED = "REJECTED",
+}
+
 export interface MatrimonySubmissionVerificationServerResponse {
   user_verification: boolean;
   user_matData: {
@@ -54,7 +60,7 @@ export interface MatrimonyFormBufferDataFetch {
   created_at: string;
   user_id: string;
   formType: string;
-  status: string;
+  status: Status;
   submission: MatrimonyFormValues;
 }
 
@@ -63,7 +69,7 @@ export interface MembershipFormBufferDataFetch {
   created_at: string;
   user_id: string;
   formType: string;
-  status: string;
+  status: Status;
   submission: KAPMembershipFormValues | YACMembershipFormValues;
 }
 
@@ -72,7 +78,7 @@ export interface FormBufferDataFetch {
   created_at: string;
   user_id: string;
   formType: string;
-  status: string;
+  status: Status;
   submission:
     | MatrimonyFormValues
     | KAPMembershipFormValues

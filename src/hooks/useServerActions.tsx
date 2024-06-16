@@ -7,6 +7,7 @@ import {
   MatrimonyProfilesFetchResponse,
   MatrimonySubmissionApprovalVerificationResponse,
   MatrimonySubmissionVerificationServerResponse,
+  MembershipFormBufferDataFetch,
   ProfileRequestsFetchResponse,
 } from "~/types/api";
 
@@ -69,10 +70,12 @@ const useServerActions = () => {
       enabled: false,
     });
 
-  const handleMemberBufferFetch = async (): Promise<FormBufferDataFetch[]> => {
+  const handleMemberBufferFetch = async (): Promise<
+    MembershipFormBufferDataFetch[]
+  > => {
     const { data } = await fetchAllMemberResponses();
     const membershipFormBufferData = data?.membership_formbuffer;
-    return membershipFormBufferData as FormBufferDataFetch[];
+    return membershipFormBufferData as MembershipFormBufferDataFetch[];
   };
 
   const handleMatrimonyBufferFetch = async (): Promise<

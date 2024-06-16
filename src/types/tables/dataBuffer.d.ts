@@ -20,16 +20,16 @@ export interface FormBufferDataType {
   submission:
     | YACMembershipFormValues
     | KAPMembershipFormValues
-    | MatrimonyBufferDataType;
+    | MatrimonyFormValues;
 }
 
 export interface MembershipBufferDataType {
-  created_at: string;
-  formType: string;
   id: number;
+  created_at: string;
   user_id: string;
+  formType: string;
   status: Status;
-  submission: YACMembershipFormValues | KAPMembershipFormValues;
+  submission: KAPMembershipFormValues | YACMembershipFormValues;
 }
 
 export interface MatrimonyBufferDataType {

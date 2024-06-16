@@ -44,6 +44,9 @@ const AdminPage = () => {
     const allBufferData = await handleFetchFormBufferData();
     const allMemBufferData = await handleMemberBufferFetch();
     const allMatBufferData = await handleMatrimonyBufferFetch();
+    setFormBufferData(allBufferData);
+    setMatrimonyBufferData(allMatBufferData);
+    setMembershipBufferData(allMemBufferData);
     console.log({ allBufferData, allMatBufferData, allMemBufferData });
   };
 
