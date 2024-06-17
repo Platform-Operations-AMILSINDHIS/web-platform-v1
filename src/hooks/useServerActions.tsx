@@ -4,6 +4,7 @@ import {
   MatrimonyFormBufferDataFetch,
   MatrimonyIdFetchResponse,
   MatrimonyLoginResponse,
+  MatrimonyProfileResponse,
   MatrimonyProfilesFetchResponse,
   MatrimonySubmissionApprovalVerificationResponse,
   MatrimonySubmissionVerificationServerResponse,
@@ -18,7 +19,10 @@ const useServerActions = () => {
   const generateMatrimonyID = api.actions.generateMatrimonyID.useMutation();
 
   const fetchUserSubmissionMut =
-    api.formBuffer.fetchUserMembershipSubmission.useMutation();
+    api.formBuffer.fetchUserSubmission.useMutation();
+
+  const fetchMatrimonyProfileMut =
+    api.matrimonyProfiles.fetchMatrimonyProfile.useMutation();
 
   const acceptUserApplicationMut =
     api.formBuffer.acceptUserApplication.useMutation();
@@ -76,6 +80,16 @@ const useServerActions = () => {
     const { data } = await fetchAllMemberResponses();
     const membershipFormBufferData = data?.membership_formbuffer;
     return membershipFormBufferData as MembershipFormBufferDataFetch[];
+  };
+
+  const handleMatrimonyProfileFetch = async (
+    matrimony_id: string
+  ): Promise<MatrimonyProfileResponse[]> => {
+    const data = await fetchMatrimonyProfileMut.mutateAsync({
+      matrimony_id: matrimony_id,
+    });
+    const matrimony_profile = data?.profile_data;
+    return matrimony_profile as MatrimonyProfileResponse[];
   };
 
   const handleMatrimonyBufferFetch = async (): Promise<

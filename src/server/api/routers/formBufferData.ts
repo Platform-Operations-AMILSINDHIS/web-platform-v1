@@ -88,7 +88,7 @@ const formBufferData = createTRPCRouter({
     }
   }),
 
-  fetchUserMembershipSubmission: publicProcedure
+  fetchUserSubmission: publicProcedure
     .input(Yup.object({ user_id: Yup.string(), formType: Yup.string() }))
     .mutation(async ({ input }) => {
       try {

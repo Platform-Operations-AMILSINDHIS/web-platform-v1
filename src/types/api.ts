@@ -85,3 +85,14 @@ export interface FormBufferDataFetch {
     | KAPMembershipFormValues
     | YACMembershipFormValues;
 }
+
+export interface RequestResponse {
+  message: string;
+  toastType: string;
+}
+
+export interface MatrimonyProfileResponse {
+  id: string;
+  user_id: string;
+  matrimony_id: string;
+}
