@@ -51,6 +51,7 @@
     "graphql-tag": "^2.12.6",
     "jotai": "^2.5.0",
     "jotai-optics": "^0.3.1",
+    "jspdf": "^2.5.1",
     "lodash": "^4.17.21",
     "next": "^13.4.2",
     "next-auth": "^4.22.1",
