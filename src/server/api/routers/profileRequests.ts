@@ -73,12 +73,12 @@ const profilRequests = createTRPCRouter({
       try {
         const { id, submission, email_id, requested_id, requested_name } =
           input;
-        const { error: rowTerminationError } = await supabase
-          .from("profile_requests")
-          .delete()
-          .eq("id", id);
+        // const { error: rowTerminationError } = await supabase
+        //   .from("profile_requests")
+        //   .delete()
+        //   .eq("id", id);
 
-        if (rowTerminationError) throw rowTerminationError;
+        // if (rowTerminationError) throw rowTerminationError;
 
         await sendAcceptRequestMail({
           to: email_id ?? "",

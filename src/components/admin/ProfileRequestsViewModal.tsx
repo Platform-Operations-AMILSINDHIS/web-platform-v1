@@ -16,11 +16,21 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
   modalState,
   matrimonyProfileRequests,
 }) => {
-  const { handleMatrimonyProfileFetch, handleFetchUserSubmission } =
-    useServerActions();
+  const {
+    handleMatrimonyProfileFetch,
+    handleFetchUserSubmission,
+    handleAcceptMatrimonyProfileRequest,
+    handleDeclineMatrimonyProfileRequest,
+  } = useServerActions();
   const [acceptingRequest, setAcceptingRequest] = useState<boolean>(false);
 
-  const handleAccept = async (matrimony_id: string) => {
+  const handleAccept = async (
+    matrimony_id: string,
+    email_id: string,
+    id: number,
+    requested_id: string,
+    requested_name: string
+  ) => {
     setAcceptingRequest(true);
     const matrimony_profile_data = await handleMatrimonyProfileFetch(
       matrimony_id
@@ -29,9 +39,23 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
       matrimony_profile_data[0]?.user_id ?? "",
       "MATRIMONY"
     );
-    console.log({ requestedProfile: requested_profile_buffer_data });
-    setAcceptingRequest(false);
+
+    if (requested_profile_buffer_data) {
+      const response = handleAcceptMatrimonyProfileRequest(
+        requested_profile_buffer_data[0]?.submission,
+        email_id,
+        id,
+        requested_id,
+        requested_name
+      );
+      console.log({
+        requestedProfile: requested_profile_buffer_data,
+        response,
+      });
+      setAcceptingRequest(false);
+    }
   };
+
   return (
     <ModalLayout
       modalSize="3xl"
@@ -78,7 +102,15 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
               </Flex>
               <Flex gap={3}>
                 <Button
-                  onClick={() => handleAccept(request.requested_id)}
+                  onClick={() =>
+                    handleAccept(
+                      request.requested_id,
+                      request.email_id,
+                      request.id,
+                      request.requested_id,
+                      request.requested_name
+                    )
+                  }
                   isLoading={acceptingRequest}
                   variant="none"
                   bg="white"
@@ -93,6 +125,14 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
                   Accept Request
                 </Button>
                 <Button
+                  onClick={() =>
+                    handleDeclineMatrimonyProfileRequest(
+                      request.email_id,
+                      request.id,
+                      request.requested_id,
+                      request.requested_name
+                    )
+                  }
                   variant="none"
                   bg="white"
                   border="1px solid"

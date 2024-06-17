@@ -97,6 +97,8 @@ const generateMatrimonyProfilePDF = (details: MatrimonyFormValues) => {
     doc.internal.pageSize.getHeight() - 10
   );
   doc.save("biodata.pdf");
+  const pdfBuffer = doc.output("arraybuffer");
+  return new Uint8Array(pdfBuffer);
 };
 
 export default generateMatrimonyProfilePDF;

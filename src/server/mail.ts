@@ -229,43 +229,16 @@ export const sendAcceptRequestMail = async ({
   to,
 }: AcceptProfileRequestMail) => {
   const matrimonyProfilePDF = await generateMatrimonyProfilePDF(submission);
-  const base64ContentOfMatrimonyProfilePDF = Buffer.from(
-    matrimonyProfilePDF as unknown as
-      | WithImplicitCoercion<string>
-      | { [Symbol.toPrimitive](hint: "string"): string }
-  ).toString("base64");
   const attachments = [
     {
       filename: `${requested_name}_${requested_MatID}.pdf`,
-      content: base64ContentOfMatrimonyProfilePDF,
+      content: Buffer.from(matrimonyProfilePDF),
     },
   ];
   const subject = `Profile Request for ${requested_name}, ${requested_MatID}`;
   const html = `Your Request for matrimony profile data of ${requested_name} has been approved. PFA the attached document`;
   await sendMail({ to, html, subject, attachments });
 };
-// export const sendDonationFormConfirmationMail = async ({
-//   amount,
-//   contactNumber,
-//   donorName,
-//   email,
-// }: DonationFormConfirmationMailType) => {
-//   const subject = `Thank you for donating!`;
-
-//   const html = `
-//     <div style="font-size: 14px;">
-//       <p>Hey ${donorName.split(" ")[0]},</p>
-//       <br>
-//       <p>This is email is to confirm that we have received your donation for Rs. ${amount}/-</p>
-//       <p>We cannot express our gratitude for this, and wholeheartedly thank you for your contribution to the Amil Sindhis community.</p>
-//       <br>
-//       <p>Regards,</p>
-//       <p>Team Amil Sindhis</p>
-//     </div>
-//   `;
-
-//   await sendMail({ to: email, subject, html });
-// };
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 export const sendMatrimonyFormNotificationMail = async (
