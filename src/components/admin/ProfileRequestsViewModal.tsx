@@ -43,7 +43,7 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
     if (requested_profile_buffer_data) {
       const response = handleAcceptMatrimonyProfileRequest(
         requested_profile_buffer_data[0]?.submission,
-        email_id,
+        "sabavatakshat@gmail.com",
         id,
         requested_id,
         requested_name
