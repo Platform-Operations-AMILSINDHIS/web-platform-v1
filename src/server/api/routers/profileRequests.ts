@@ -1,6 +1,7 @@
 import supabase from "~/pages/api/auth/supabase";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import * as Yup from "yup";
+import { sendDeclineRequestMail } from "~/server/mail";
 
 const profilRequests = createTRPCRouter({
   addRequest: publicProcedure
@@ -75,16 +76,29 @@ const profilRequests = createTRPCRouter({
     }),
 
   declineRequest: publicProcedure
-    .input(Yup.object({ id: Yup.string(), email_id: Yup.string() }))
+    .input(
+      Yup.object({
+        id: Yup.string(),
+        requested_id: Yup.string(),
+        requested_name: Yup.string(),
+        email_id: Yup.string(),
+      })
+    )
     .mutation(async ({ input }) => {
       try {
-        const { email_id, id } = input;
+        const { requested_id, requested_name, email_id, id } = input;
         const { error: rowTerminationError } = await supabase
           .from("profile_requests")
           .delete()
           .eq("id", id);
 
         if (rowTerminationError) throw rowTerminationError;
+
+        await sendDeclineRequestMail({
+          to: email_id ?? "",
+          requested_MatID: requested_id ?? "",
+          requested_name: requested_name ?? "",
+        });
 
         return {
           status: true,
