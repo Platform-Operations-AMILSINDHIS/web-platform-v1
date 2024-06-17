@@ -284,6 +284,7 @@ const useServerActions = () => {
   return {
     handleMemberBufferFetch,
     handleMatrimonyBufferFetch,
+    handleMatrimonyProfileFetch,
     handleFetchUserSubmission,
     handleAcceptingUserApplication,
     handleRejectingUserApplication,

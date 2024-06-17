@@ -102,7 +102,7 @@ const matrimonyProfiles = createTRPCRouter({
       try {
         const { matrimony_id } = input;
         const { data: matrimonyProfileData, error: FetchError } = await supabase
-          .from("matrimony_profile")
+          .from("matrimony_profiles")
           .select("*")
           .eq("matrimony_id", matrimony_id);
 

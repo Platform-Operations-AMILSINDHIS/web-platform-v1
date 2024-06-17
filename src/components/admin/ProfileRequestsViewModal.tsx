@@ -2,6 +2,8 @@ import { Button, Flex, Icon, Text } from "@chakra-ui/react";
 import ModalLayout from "~/layouts/ModalLayout";
 import { ProfileRequestsDataType } from "~/types/requests";
 import { HiArrowNarrowRight } from "react-icons/hi";
+import useServerActions from "~/hooks/useServerActions";
+import { useState } from "react";
 
 interface ProfileRequestsViewModalProps {
   handleModal: () => void;
@@ -14,6 +16,22 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
   modalState,
   matrimonyProfileRequests,
 }) => {
+  const { handleMatrimonyProfileFetch, handleFetchUserSubmission } =
+    useServerActions();
+  const [acceptingRequest, setAcceptingRequest] = useState<boolean>(false);
+
+  const handleAccept = async (matrimony_id: string) => {
+    setAcceptingRequest(true);
+    const matrimony_profile_data = await handleMatrimonyProfileFetch(
+      matrimony_id
+    );
+    const requested_profile_buffer_data = await handleFetchUserSubmission(
+      matrimony_profile_data[0]?.user_id ?? "",
+      "MATRIMONY"
+    );
+    console.log({ requestedProfile: requested_profile_buffer_data });
+    setAcceptingRequest(false);
+  };
   return (
     <ModalLayout
       modalSize="3xl"
@@ -60,6 +78,8 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
               </Flex>
               <Flex gap={3}>
                 <Button
+                  onClick={() => handleAccept(request.requested_id)}
+                  isLoading={acceptingRequest}
                   variant="none"
                   bg="white"
                   border="1px solid"
@@ -70,7 +90,7 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
                     color: "white",
                   }}
                 >
-                  Marked as done
+                  Accept Request
                 </Button>
                 <Button
                   variant="none"
