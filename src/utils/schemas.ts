@@ -103,22 +103,24 @@ export const matrimonyPersonalInfoSchema = Yup.object().shape({
     .email("Invalid Email Id")
     .required("Email Id is required"),
   occupation: Yup.string().required("Occupation is required"),
-  incomePerAnnum: Yup.number().required("Income Per Annum is required").nullable(),
+  incomePerAnnum: Yup.number()
+    .required("Income Per Annum is required")
+    .nullable(),
   gender: Yup.mixed().oneOf(["Male", "Female"]).required("Gender is required"),
   maritalStatus: Yup.mixed()
     .oneOf(["Single", "Divorcee", "Widower", "Widow"])
     .required("Marital Status is required"),
-  manglik: Yup.mixed().oneOf(["Yes", "No"]).required("Selecting a Manglik state is required"),
+  manglik: Yup.mixed()
+    .oneOf(["Yes", "No"])
+    .required("Selecting a Manglik state is required"),
   heightFeet: Yup.number().required("Height in Feet is required"),
   heightInches: Yup.number().required("Height in Inches is required"),
   weight: Yup.number().required("Weight is required"),
-  // qualifications: Yup.array()
-  //   .of(Yup.string())
-  //   .required("Qualifications are required"),
-  // hobbies: Yup.string().required("Hobbies are required"),
-  // complexionAndFeatures: Yup.string().required(
-  //   "Complexion And Features are required"
-  // ),
+  qualifications: Yup.string().required("Qualifications are required"),
+  hobbies: Yup.string().required("Hobbies are required"),
+  complexionAndFeatures: Yup.string().required(
+    "Complexion And Features are required"
+  ),
 });
 
 export const residentialAddressDetailsSchema = Yup.object().shape({
@@ -129,8 +131,12 @@ export const residentialAddressDetailsSchema = Yup.object().shape({
 });
 
 export const matrimonySpousePreferencesSchema = Yup.object().shape({
-  working: Yup.mixed().oneOf(["Yes", "No"]).required("Working state is required"),
-  dietaryPreference: Yup.mixed().oneOf(["Veg", "Non-veg"]).required("Dietary Preference is required"),
+  working: Yup.mixed()
+    .oneOf(["Yes", "No"])
+    .required("Working state is required"),
+  dietaryPreference: Yup.mixed()
+    .oneOf(["Veg", "Non-veg"])
+    .required("Dietary Preference is required"),
   qualificationRequirements: Yup.string().required(
     "Qualification Requirements are required"
   ),
@@ -138,9 +144,15 @@ export const matrimonySpousePreferencesSchema = Yup.object().shape({
   heightFeet: Yup.number().required("Height in Feet is required"),
   heightInches: Yup.number().required("Height in Inches is required"),
   weight: Yup.number().required("Weight is required"),
-  horoscopeMatching: Yup.mixed().oneOf(["Yes", "No"]).required("Horoscope matching selection is required"),
-  build: Yup.mixed().oneOf(["Medium", "Slim", "Healthy"]).required("Build selection is required"),
-  siblings: Yup.mixed().oneOf(["Yes", "No"]).required("Siblings selection is required"),
+  horoscopeMatching: Yup.mixed()
+    .oneOf(["Yes", "No"])
+    .required("Horoscope matching selection is required"),
+  build: Yup.mixed()
+    .oneOf(["Medium", "Slim", "Healthy"])
+    .required("Build selection is required"),
+  siblings: Yup.mixed()
+    .oneOf(["Yes", "No"])
+    .required("Siblings selection is required"),
 });
 
 export const matrimonyFormValuesSchema = Yup.object().shape({

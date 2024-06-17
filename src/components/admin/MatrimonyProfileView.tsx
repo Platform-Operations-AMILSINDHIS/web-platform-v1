@@ -43,11 +43,9 @@ const MatrimonyProfileView: React.FC<MatrimonyProfileViewProps> = ({
             mt={-0.5}
           >{`${submission?.personalInfo?.occupation}, ${submission?.personalInfo?.placeOfBirth}`}</Text>
         </Flex>
-        <Flex
-          display={selected_profile?.status === "APPROVED" ? "none" : ""}
-          gap={3}
-        >
+        <Flex display={selected_profile?.status === "APPROVED" ? "none" : ""}>
           <Button
+            mr={3}
             onClick={() => {
               handleAcceptingUserMatrimonyApplication(
                 user_id,
@@ -92,11 +90,6 @@ const MatrimonyProfileView: React.FC<MatrimonyProfileViewProps> = ({
             ) : (
               <Text>Reject</Text>
             )}
-          </Button>
-        </Flex>
-        <Flex>
-          <Button style={btnThemeDark} size="md">
-            Send Profile
           </Button>
         </Flex>
       </Flex>

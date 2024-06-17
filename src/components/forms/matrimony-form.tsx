@@ -95,7 +95,7 @@ const matrimonyFormAtom = atom<MatrimonyFormValues>({
     heightInches: 0,
     weight: 0,
 
-    qualifications: [], // educational and other sorts of qualifications
+    qualifications: "", // educational and other sorts of qualifications
     hobbies: "",
     complexionAndFeatures: "",
   },
@@ -335,6 +335,47 @@ const MatrimonyPersonalInformationSection: React.FC<
                   />
                 )
               )}
+            </Grid>
+
+            <Grid
+              mt="2rem"
+              gap="2rem"
+              templateColumns={["1fr", "repeat(3, 1fr)"]}
+            >
+              {[
+                {
+                  label: "Hobbies",
+                  name: "hobbies",
+                  required: true,
+                },
+                {
+                  label: "Qualifications",
+                  name: "qualifications",
+                  required: true,
+                },
+                {
+                  label: "Complexion and Features",
+                  name: "complexionAndFeatures",
+                  required: true,
+                },
+              ].map(({ label, name, required }, i) => (
+                <LabelledInput
+                  key={i}
+                  label={label}
+                  name={name}
+                  type={"text"}
+                  required={required}
+                  isDisabled={
+                    user
+                      ? submissionVerification
+                        ? true
+                        : approved
+                        ? true
+                        : false
+                      : false
+                  }
+                />
+              ))}
             </Grid>
 
             <Grid
