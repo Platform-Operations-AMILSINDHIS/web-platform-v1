@@ -6,6 +6,7 @@ import type {
   ConfirmationMailType,
   DecisionMailType,
   DeclineProfileRequestMail,
+  AcceptProfileRequestMail,
   DonationFormConfirmationMailType,
   MatrimonyDecisionMailType,
   RSVPMailType,
@@ -20,6 +21,7 @@ import type {
   YACMembershipFormValues,
 } from "~/types/forms/membership";
 import { createId } from "~/utils/helper";
+import generateMatrimonyProfilePDF from "./pdfs/profile-pdf";
 
 // const transporter = nodemailer.createTransport({
 //   host: "smtp.gmail.com",
@@ -218,6 +220,29 @@ export const sendDeclineRequestMail = async ({
   const html = `We regret to inform you that your profile request for ${requested_name}, ${requested_MatID} has been declined. For any queries please email info@amilsindhis.org`;
 
   await sendMail({ html, subject, to });
+};
+
+export const sendAcceptRequestMail = async ({
+  requested_MatID,
+  requested_name,
+  submission,
+  to,
+}: AcceptProfileRequestMail) => {
+  const matrimonyProfilePDF = await generateMatrimonyProfilePDF(submission);
+  const base64ContentOfMatrimonyProfilePDF = Buffer.from(
+    matrimonyProfilePDF as unknown as
+      | WithImplicitCoercion<string>
+      | { [Symbol.toPrimitive](hint: "string"): string }
+  ).toString("base64");
+  const attachments = [
+    {
+      filename: `${requested_name}_${requested_MatID}.pdf`,
+      content: base64ContentOfMatrimonyProfilePDF,
+    },
+  ];
+  const subject = `Profile Request for ${requested_name}, ${requested_MatID}`;
+  const html = `Your Request for matrimony profile data of ${requested_name} has been approved. PFA the attached document`;
+  await sendMail({ to, html, subject, attachments });
 };
 // export const sendDonationFormConfirmationMail = async ({
 //   amount,

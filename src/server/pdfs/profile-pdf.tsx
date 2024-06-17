@@ -20,7 +20,7 @@ function formatAge(dateString: string) {
   return age;
 }
 
-function generatePDF(details: MatrimonyFormValues) {
+const generateMatrimonyProfilePDF = (details: MatrimonyFormValues) => {
   const doc = new jsPDF();
   // Header
   doc.setFontSize(16);
@@ -97,4 +97,6 @@ function generatePDF(details: MatrimonyFormValues) {
     doc.internal.pageSize.getHeight() - 10
   );
   doc.save("biodata.pdf");
-}
+};
+
+export default generateMatrimonyProfilePDF;
