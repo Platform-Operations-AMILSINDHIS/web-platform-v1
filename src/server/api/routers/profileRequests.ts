@@ -100,7 +100,7 @@ const profilRequests = createTRPCRouter({
   declineRequest: publicProcedure
     .input(
       Yup.object({
-        id: Yup.string(),
+        id: Yup.number(),
         requested_id: Yup.string(),
         requested_name: Yup.string(),
         email_id: Yup.string(),

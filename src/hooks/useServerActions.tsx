@@ -10,7 +10,9 @@ import {
   MatrimonySubmissionVerificationServerResponse,
   MembershipFormBufferDataFetch,
   ProfileRequestsFetchResponse,
+  RequestResponse,
 } from "~/types/api";
+import { MatrimonyFormValues } from "~/types/forms/matrimony";
 
 import { api } from "~/utils/api";
 
@@ -49,6 +51,12 @@ const useServerActions = () => {
 
   const fetchMatrimonyIdMut =
     api.matrimonyProfiles.fetchMatrimonyID.useMutation();
+
+  const matrimonyProfileRequestDeclineMut =
+    api.profileRequests.declineRequest.useMutation();
+
+  const matrimonyProfileRequestAcceptMut =
+    api.profileRequests.acceptRequest.useMutation();
 
   const { refetch: fetchAllBufferResponse } =
     api.formBuffer.fetchAllBuffer.useQuery(undefined, {
@@ -281,10 +289,45 @@ const useServerActions = () => {
     return profileRequests as ProfileRequestsFetchResponse[];
   };
 
+  const handleAcceptMatrimonyProfileRequest = async (
+    submission: MatrimonyFormValues,
+    email_id: string,
+    id: number,
+    requested_id: string,
+    requested_name: string
+  ): Promise<RequestResponse> => {
+    const acceptRequestResponse =
+      await matrimonyProfileRequestAcceptMut.mutateAsync({
+        submission,
+        email_id,
+        id,
+        requested_id,
+        requested_name,
+      });
+    return acceptRequestResponse as RequestResponse;
+  };
+
+  const handleDeclineMatrimonyProfileRequest = async (
+    email_id: string,
+    id: number,
+    requested_id: string,
+    requested_name: string
+  ): Promise<RequestResponse> => {
+    const declineRequestResponse =
+      await matrimonyProfileRequestDeclineMut.mutateAsync({
+        email_id,
+        id,
+        requested_id,
+        requested_name,
+      });
+    return declineRequestResponse as RequestResponse;
+  };
+
   return {
     handleMemberBufferFetch,
     handleMatrimonyBufferFetch,
     handleMatrimonyProfileFetch,
+    handleFetchFormBufferData,
     handleFetchUserSubmission,
     handleAcceptingUserApplication,
     handleRejectingUserApplication,
@@ -297,7 +340,8 @@ const useServerActions = () => {
     handleMatrimonyIdFetch,
     handleMatrimonyRequestProfile,
     handleFetchProfileRequests,
-    handleFetchFormBufferData,
+    handleAcceptMatrimonyProfileRequest,
+    handleDeclineMatrimonyProfileRequest,
   };
 };
 
