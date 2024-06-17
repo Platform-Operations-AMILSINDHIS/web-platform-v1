@@ -95,6 +95,26 @@ const matrimonyProfiles = createTRPCRouter({
         console.log(err);
       }
     }),
+
+  fetchMatrimonyProfile: publicProcedure
+    .input(Yup.object({ matrimony_id: Yup.string() }))
+    .mutation(async ({ input }) => {
+      try {
+        const { matrimony_id } = input;
+        const { data: matrimonyProfileData, error: FetchError } = await supabase
+          .from("matrimony_profile")
+          .select("*")
+          .eq("matrimony_id", matrimony_id);
+
+        if (FetchError) throw FetchError;
+
+        return {
+          profile_data: matrimonyProfileData,
+        };
+      } catch (err) {
+        console.log(err);
+      }
+    }),
 });
 
 export default matrimonyProfiles;

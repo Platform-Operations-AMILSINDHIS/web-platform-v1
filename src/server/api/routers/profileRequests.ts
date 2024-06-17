@@ -1,7 +1,8 @@
 import supabase from "~/pages/api/auth/supabase";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import * as Yup from "yup";
-import { sendDeclineRequestMail } from "~/server/mail";
+import { sendAcceptRequestMail, sendDeclineRequestMail } from "~/server/mail";
+import { matrimonyFormValuesSchema } from "~/utils/schemas";
 
 const profilRequests = createTRPCRouter({
   addRequest: publicProcedure
@@ -59,16 +60,37 @@ const profilRequests = createTRPCRouter({
   }),
 
   acceptRequest: publicProcedure
-    .input(Yup.object({ id: Yup.number() }))
+    .input(
+      Yup.object({
+        id: Yup.number(),
+        requested_id: Yup.string(),
+        requested_name: Yup.string(),
+        email_id: Yup.string(),
+        submission: matrimonyFormValuesSchema,
+      })
+    )
     .mutation(async ({ input }) => {
       try {
-        const { id } = input;
+        const { id, submission, email_id, requested_id, requested_name } =
+          input;
         const { error: rowTerminationError } = await supabase
           .from("profile_requests")
           .delete()
           .eq("id", id);
 
         if (rowTerminationError) throw rowTerminationError;
+
+        await sendAcceptRequestMail({
+          to: email_id ?? "",
+          submission: submission as any,
+          requested_MatID: requested_id ?? "",
+          requested_name: requested_name ?? "",
+        });
+
+        return {
+          message: "Request Accepted",
+          toastType: "success",
+        };
       } catch (err) {
         console.log("Error while accepting or declining request", err);
         throw new Error("Unable to process request");
@@ -101,7 +123,6 @@ const profilRequests = createTRPCRouter({
         });
 
         return {
-          status: true,
           message: "Request Declined",
           toastType: "error",
         };
@@ -111,7 +132,7 @@ const profilRequests = createTRPCRouter({
       }
     }),
 
-  acceptAllRequests: publicProcedure.mutation(async () => {
+  DeclineAllRequests: publicProcedure.mutation(async () => {
     try {
       const { error: TerminationError } = await supabase
         .from("profile_requests")

@@ -110,6 +110,28 @@ const formBufferData = createTRPCRouter({
       }
     }),
 
+  fetchUserMatrimonySubmission: publicProcedure
+    .input(Yup.object({ user_id: Yup.string() }))
+    .mutation(async ({ input }) => {
+      try {
+        const { user_id } = input;
+        const { data: userFormSubmission, error: fetchSubmissionError } =
+          await supabase
+            .from("form_buffer")
+            .select("submission")
+            .eq("user_id", user_id)
+            .eq("formType", "MATRIMONY");
+
+        if (fetchSubmissionError) throw fetchSubmissionError;
+
+        return {
+          DB_submission_response: userFormSubmission,
+        };
+      } catch (err) {
+        console.log(err);
+      }
+    }),
+
   rejectUserApplication: publicProcedure
     .input(
       Yup.object({
