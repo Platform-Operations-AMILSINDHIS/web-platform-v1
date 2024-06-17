@@ -74,6 +74,29 @@ const profilRequests = createTRPCRouter({
       }
     }),
 
+  declineRequest: publicProcedure
+    .input(Yup.object({ id: Yup.string(), email_id: Yup.string() }))
+    .mutation(async ({ input }) => {
+      try {
+        const { email_id, id } = input;
+        const { error: rowTerminationError } = await supabase
+          .from("profile_requests")
+          .delete()
+          .eq("id", id);
+
+        if (rowTerminationError) throw rowTerminationError;
+
+        return {
+          status: true,
+          message: "Request Declined",
+          toastType: "error",
+        };
+      } catch (err) {
+        console.log("Err while processing request", err);
+        throw new Error("Error while decining request");
+      }
+    }),
+
   acceptAllRequests: publicProcedure.mutation(async () => {
     try {
       const { error: TerminationError } = await supabase

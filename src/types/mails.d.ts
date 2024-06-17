@@ -37,3 +37,9 @@ export interface DonationFormConfirmationMailType {
   contactNumber: string;
   email: string;
 }
+
+export interface DeclineProfileRequestMail {
+  to: string;
+  requested_name: string;
+  requested_MatID: string;
+}

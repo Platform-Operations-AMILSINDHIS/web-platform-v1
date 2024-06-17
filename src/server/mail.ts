@@ -5,6 +5,7 @@ import { env } from "~/env.mjs";
 import type {
   ConfirmationMailType,
   DecisionMailType,
+  DeclineProfileRequestMail,
   DonationFormConfirmationMailType,
   MatrimonyDecisionMailType,
   RSVPMailType,
@@ -18,8 +19,6 @@ import type {
   KAPMembershipFormValues,
   YACMembershipFormValues,
 } from "~/types/forms/membership";
-import type { DonationsFormValues } from "~/types/forms/donations";
-import type { MatrimonyFormValues } from "~/types/forms/matrimony";
 import { createId } from "~/utils/helper";
 
 // const transporter = nodemailer.createTransport({
@@ -210,6 +209,16 @@ export const sendMatrimonyDescisionMail = async ({
   await sendMail({ html, subject, to });
 };
 
+export const sendDeclineRequestMail = async ({
+  to,
+  requested_MatID,
+  requested_name,
+}: DeclineProfileRequestMail) => {
+  const subject = `Profile Request Declined`;
+  const html = `We regret to inform you that your profile request for ${requested_name}, ${requested_MatID} has been declined. For any queries please email info@amilsindhis.org`;
+
+  await sendMail({ html, subject, to });
+};
 // export const sendDonationFormConfirmationMail = async ({
 //   amount,
 //   contactNumber,
