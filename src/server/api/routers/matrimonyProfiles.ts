@@ -31,6 +31,27 @@ const matrimonyProfiles = createTRPCRouter({
       }
     }),
 
+  DeleteProfile: publicProcedure
+    .input(Yup.object({ user_id: Yup.string(), matrimony_id: Yup.string() }))
+    .mutation(async ({ input }) => {
+      try {
+        const { matrimony_id, user_id } = input;
+        const { data: DeleteResponseData, error: withdrawApplicationError } =
+          await supabase
+            .from("matrimony_profiles")
+            .delete()
+            .eq("user_id", user_id)
+            .eq("matrimony_id", matrimony_id);
+
+        if (withdrawApplicationError) throw withdrawApplicationError;
+
+        return DeleteResponseData;
+      } catch (err) {
+        console.log("Error while deleting profile", err);
+        throw new Error("Profile Deletion Failed");
+      }
+    }),
+
   login: publicProcedure
     .input(Yup.object({ matrimony_id: Yup.string(), user_id: Yup.string() }))
     .mutation(async ({ input }) => {

@@ -1,4 +1,4 @@
-import { Button, Flex, Icon, Text } from "@chakra-ui/react";
+import { Button, Flex, Icon, Text, useToast } from "@chakra-ui/react";
 import ModalLayout from "~/layouts/ModalLayout";
 import { ProfileRequestsDataType } from "~/types/requests";
 import { HiArrowNarrowRight } from "react-icons/hi";
@@ -22,9 +22,15 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
     handleAcceptMatrimonyProfileRequest,
     handleDeclineMatrimonyProfileRequest,
   } = useServerActions();
-  const [acceptingRequest, setAcceptingRequest] = useState<boolean>(false);
+  const toast = useToast();
 
-  const handleAccept = async (
+  const [acceptingRequest, setAcceptingRequest] = useState<boolean>(false);
+  const [decliningRequest, setDecliningRequest] = useState<boolean>(false);
+
+  const [acceptedRequestID, setAcceptedRequestID] = useState<number>(0);
+  const [declinedRequestID, setDeclinedRequestID] = useState<number>(0);
+
+  const handleAcceptRequest = async (
     matrimony_id: string,
     email_id: string,
     id: number,
@@ -41,19 +47,47 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
     );
 
     if (requested_profile_buffer_data) {
-      const response = handleAcceptMatrimonyProfileRequest(
+      const { message, toastType } = await handleAcceptMatrimonyProfileRequest(
         requested_profile_buffer_data[0]?.submission,
-        "sabavatakshat@gmail.com",
+        email_id,
         id,
         requested_id,
         requested_name
       );
-      console.log({
-        requestedProfile: requested_profile_buffer_data,
-        response,
-      });
       setAcceptingRequest(false);
+      setAcceptedRequestID(id);
+      toast({
+        title: "Server Action",
+        description: message,
+        status: toastType as "success",
+        duration: 3000,
+        isClosable: true,
+      });
     }
+  };
+
+  const handleDeclineRequest = async (
+    email_id: string,
+    id: number,
+    requested_id: string,
+    requested_name: string
+  ) => {
+    setDecliningRequest(true);
+    const { message, toastType } = await handleDeclineMatrimonyProfileRequest(
+      email_id,
+      id,
+      requested_id,
+      requested_name
+    );
+    setDecliningRequest(false);
+    setDeclinedRequestID(id);
+    toast({
+      title: "Server Action",
+      description: message,
+      status: toastType as "error",
+      duration: 3000,
+      isClosable: true,
+    });
   };
 
   return (
@@ -103,7 +137,7 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
               <Flex gap={3}>
                 <Button
                   onClick={() =>
-                    handleAccept(
+                    handleAcceptRequest(
                       request.requested_id,
                       request.email_id,
                       request.id,
@@ -113,53 +147,48 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
                   }
                   isLoading={acceptingRequest}
                   variant="none"
-                  bg="white"
+                  bg={acceptedRequestID === request.id ? "green.500" : "white"}
                   border="1px solid"
                   borderColor="green.500"
-                  color="green.500"
+                  color={
+                    acceptedRequestID === request.id ? "white" : "green.500"
+                  }
                   _hover={{
                     bg: "green.500",
                     color: "white",
                   }}
                 >
-                  Accept Request
+                  {acceptedRequestID === request.id
+                    ? `Accepted Request`
+                    : "Accept Request"}
                 </Button>
                 <Button
                   onClick={() =>
-                    handleDeclineMatrimonyProfileRequest(
+                    handleDeclineRequest(
                       request.email_id,
                       request.id,
                       request.requested_id,
                       request.requested_name
                     )
                   }
+                  isLoading={decliningRequest}
                   variant="none"
-                  bg="white"
+                  bg={declinedRequestID === request.id ? "red.500" : "white"}
                   border="1px solid"
                   borderColor="red.500"
-                  color="red.500"
+                  color={declinedRequestID === request.id ? "white" : "red.500"}
                   _hover={{ bg: "red.500", color: "white" }}
                 >
-                  Decline Request
+                  {declinedRequestID === request.id
+                    ? `Declined Request`
+                    : `Decline Request`}
                 </Button>
               </Flex>
             </Flex>
           );
         })}
       </Flex>
-      <Flex gap={3} my={2}>
-        <Button
-          color="#FF4D00"
-          bg="none"
-          border="2px solid"
-          borderColor="#FF4D00"
-          _hover={{
-            color: "white",
-            bg: "#FF4D00",
-          }}
-        >
-          Approve All requests
-        </Button>
+      <Flex my={2}>
         <Button
           _hover={{
             bg: "gray.700",
