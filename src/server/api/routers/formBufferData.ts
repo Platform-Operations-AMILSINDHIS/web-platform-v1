@@ -3,7 +3,6 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 
 import * as Yup from "yup";
 import { sendDescisionMail, sendMatrimonyDescisionMail } from "~/server/mail";
-import { MembershipBufferDataType } from "~/types/tables/dataBuffer";
 
 const formBufferData = createTRPCRouter({
   fetchAllBuffer: publicProcedure.query(async () => {
@@ -331,6 +330,23 @@ const formBufferData = createTRPCRouter({
           };
         }
       } catch (err) {}
+    }),
+
+  deleteMatrimonyFormBufferData: publicProcedure
+    .input(Yup.object({ user_id: Yup.string() }))
+    .mutation(async ({ input }) => {
+      try {
+        const { user_id } = input;
+        const { data: DeleteResponseData, error: DeleteBufferError } =
+          await supabase.from("form_buffer").delete().eq("user_id", user_id);
+
+        if (DeleteBufferError) throw DeleteBufferError;
+
+        return DeleteResponseData;
+      } catch (err) {
+        console.log("Error while deleting matrimony form buffer", err);
+        throw new Error("Form Buffer could not be deleted");
+      }
     }),
 });
 
