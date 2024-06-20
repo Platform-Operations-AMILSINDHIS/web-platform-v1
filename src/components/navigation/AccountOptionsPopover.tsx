@@ -81,7 +81,7 @@ const AccountOptionsPopover: React.FC<AccountOptionsPopoverProps> = ({
               _hover={{ color: "gray.800", cursor: "pointer" }}
               gap={2}
               align="center"
-              onClick={() => (window.location.href = "/profiles-matrimony")}
+              onClick={() => (window.location.href = "/matches")}
             >
               <Icon boxSize={4} as={PiFilesFill}></Icon>
               <Text>Matrimony Profiles</Text>

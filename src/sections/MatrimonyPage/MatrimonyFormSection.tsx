@@ -126,14 +126,15 @@ const MatrimonyFormSection = () => {
                     <Text textAlign="center">
                       Congratulations on your application being approved, you
                       can head over to
-                      <span
+                      <a
+                        href="/matches"
                         style={{
                           color: "#FF4D00",
                           marginInline: "5px",
                         }}
                       >
                         https://amilsindhis.org/matches
-                      </span>{" "}
+                      </a>{" "}
                       to request information on any particular individual's
                       profile that suits you
                     </Text>
