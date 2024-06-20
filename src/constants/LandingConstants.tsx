@@ -15,11 +15,11 @@ import { AiOutlineMail } from "react-icons/ai";
 const socialLinks = [
   {
     ICON: BsFacebook,
-    url: "",
+    url: "https://www.facebook.com/AmilSindhis",
   },
   {
     ICON: BsTwitter,
-    url: "https://twitter.com/amilsindhis?t=AqSLK-YMEZevOcieUMwcvw&s=09",
+    url: "https://x.com/amilsindhis",
   },
   {
     ICON: BsInstagram,
@@ -27,11 +27,11 @@ const socialLinks = [
   },
   {
     ICON: BsLinkedin,
-    url: "https://www.linkedin.com/in/the-khudabadi-amil-panchayat-of-bombay-836830251",
+    url: "https://www.linkedin.com/in/the-khudabadi-amil-panchayat-of-bombay-836830251/",
   },
   {
     ICON: BsYoutube,
-    url: "https://youtube.com/@thekhudabadiamilpanchayato3151",
+    url: "https://www.youtube.com/@amilsindhis",
   },
 ];
 
