@@ -31,7 +31,7 @@ const matrimonyProfiles = createTRPCRouter({
       }
     }),
 
-  DeleteProfile: publicProcedure
+  deleteProfile: publicProcedure
     .input(Yup.object({ user_id: Yup.string(), matrimony_id: Yup.string() }))
     .mutation(async ({ input }) => {
       try {

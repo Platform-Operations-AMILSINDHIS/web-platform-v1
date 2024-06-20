@@ -36,7 +36,6 @@ export interface RecoveryPasswordValues {
 
 export interface WithdrawMatAppValues {
   matrimony_id: string;
-  message: string;
 }
 
 export const initialValues: Values = {
@@ -74,7 +73,6 @@ export const RecoveryPasswordInitialValues: RecoveryPasswordValues = {
 
 export const WithdrawMatAppInitialValues: WithdrawMatAppValues = {
   matrimony_id: "",
-  message: "",
 };
 
 const useForm = () => {

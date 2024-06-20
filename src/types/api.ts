@@ -91,6 +91,11 @@ export interface RequestResponse {
   toastType: string;
 }
 
+export interface DeleteResponseType {
+  status: string;
+  statusText: string;
+}
+
 export interface MatrimonyProfileResponse {
   id: string;
   user_id: string;

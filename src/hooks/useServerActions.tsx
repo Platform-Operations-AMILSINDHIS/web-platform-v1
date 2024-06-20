@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  DeleteResponseType,
   FormBufferDataFetch,
   MatrimonyFormBufferDataFetch,
   MatrimonyIdFetchResponse,
@@ -57,6 +58,9 @@ const useServerActions = () => {
 
   const matrimonyProfileRequestAcceptMut =
     api.profileRequests.acceptRequest.useMutation();
+
+  const deleteMatrimonyProfileMut =
+    api.matrimonyProfiles.deleteProfile.useMutation();
 
   const { refetch: fetchAllBufferResponse } =
     api.formBuffer.fetchAllBuffer.useQuery(undefined, {
@@ -321,6 +325,18 @@ const useServerActions = () => {
         requested_name,
       });
     return declineRequestResponse as RequestResponse;
+  };
+
+  const handleDeleteMatrimonyProfile = async (
+    user_id: string,
+    matrimony_id: string
+  ): Promise<DeleteResponseType> => {
+    const deleteProfileResponse = await deleteMatrimonyProfileMut.mutateAsync({
+      matrimony_id,
+      user_id,
+    });
+
+    return deleteProfileResponse as unknown as DeleteResponseType;
   };
 
   return {

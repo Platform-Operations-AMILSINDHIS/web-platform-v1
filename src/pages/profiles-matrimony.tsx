@@ -113,6 +113,7 @@ const ProfilePage = () => {
       openWithdrawModal={onOpenWithdrawModal}
     >
       <MatrimonyApplicationWithdrawModal
+        user_id={user?.id ?? ""}
         handleModal={onCloseWithdrawModal}
         modalState={isOpenWithdrawModal}
       />

@@ -4,17 +4,33 @@ import { IoIosWarning } from "react-icons/io";
 import ModalLayout from "~/layouts/ModalLayout";
 import { LabelledInput } from "../forms";
 import { Formik, Form } from "formik";
-import { WithdrawMatAppInitialValues } from "~/hooks/useForm";
+import {
+  WithdrawMatAppInitialValues,
+  WithdrawMatAppValues,
+} from "~/hooks/useForm";
 import { WithdrawMatAppValidation } from "~/validations/AuthValidations";
+import { userAtomBody } from "~/types/atoms/users";
+import useServerActions from "~/hooks/useServerActions";
 
 interface MatrimonyApplicationWithdrawModalProps {
   handleModal: () => void;
   modalState: boolean;
+  user_id: string;
 }
 
 const MatrimonyApplicationWithdrawModal: React.FC<
   MatrimonyApplicationWithdrawModalProps
-> = ({ handleModal, modalState }) => {
+> = ({ handleModal, modalState, user_id }) => {
+  const { handleDeleteMatrimonyProfile } = useServerActions();
+
+  const handleApplicationWithdraw = async (values: WithdrawMatAppValues) => {
+    const response = await handleDeleteMatrimonyProfile(
+      user_id,
+      values.matrimony_id
+    );
+
+    console.log(response);
+  };
   return (
     <ModalLayout
       modalHeader="Withdraw Application"
@@ -25,7 +41,7 @@ const MatrimonyApplicationWithdrawModal: React.FC<
       <Formik
         initialValues={WithdrawMatAppInitialValues}
         validationSchema={WithdrawMatAppValidation}
-        onSubmit={() => {}}
+        onSubmit={handleApplicationWithdraw}
       >
         <Form>
           <Flex gap={3} flexDir="column">
@@ -45,7 +61,6 @@ const MatrimonyApplicationWithdrawModal: React.FC<
                   name="matrimony_id"
                   label="Confirm Your MAT"
                 />
-                <LabelledInput name="message" label="Reason for withdrawing" />
               </Flex>
             </Flex>
             <Flex justify="center" mt="-15px" mb={2} gap={3}>
