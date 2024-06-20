@@ -22,14 +22,15 @@ const MatrimonyApplicationWithdrawModal: React.FC<
 > = ({ handleModal, handleDeleteMatrimonyProfile, modalState, user_id }) => {
   const [submitting, setIsSubmitting] = useState<boolean>(false);
   const [matrimonyID, setMatrimonyID] = useState<string>("");
+  const [triggerError, setTriggerError] = useState<boolean>(false);
 
-  const handleSubmit = async (
-    values: WithdrawMatAppValues,
-    user_id: string
-  ) => {
+  const handleSubmit = async (matrimony_id: string) => {
     setIsSubmitting(true);
-    console.log({ user_id, matrimony_id: values.matrimony_id });
-    await handleDeleteMatrimonyProfile(user_id, values.matrimony_id);
+    console.log({ user_id, matrimony_id: matrimony_id });
+    if (matrimony_id === "") {
+      setTriggerError(true);
+    }
+    await handleDeleteMatrimonyProfile(user_id, matrimony_id);
 
     setIsSubmitting(false);
   };
@@ -54,14 +55,21 @@ const MatrimonyApplicationWithdrawModal: React.FC<
           <Flex gap={2} my={5} flexDir="column">
             <Flex gap={2} color="gray.700" fontWeight={600} flexDir="column">
               <Text>Confirm Your Matrimony ID</Text>
-              <Input onChange={(e) => console.log(e.target.value)} />
+              <Input
+                borderColor="gray.400"
+                _hover={{
+                  borderColor: "#FF4D00",
+                }}
+                focusBorderColor="#FF4D00"
+                onChange={(e) => console.log(e.target.value)}
+              />
             </Flex>
           </Flex>
         </Flex>
         <Flex justify="center" mt="-15px" mb={2} gap={3}>
           <Button
             isLoading={submitting}
-            onClick={() => console.log("Hi")}
+            onClick={() => handleSubmit(matrimonyID)}
             _hover={{
               bg: "gray.700",
             }}
