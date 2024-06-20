@@ -23,7 +23,7 @@ const socialLinks = [
   },
   {
     ICON: BsInstagram,
-    url: "https://instagram.com/kapofbombay?igshid=MzNlNGNkZWQ4Mg==",
+    url: "https://www.instagram.com/amilsindhisoftheworld/",
   },
   {
     ICON: BsLinkedin,
