@@ -35,6 +35,24 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
             with a YAC ID, Hencing revoking your KAP previleges
           </Text>
         </Flex>
+      ) : user?.YAC_member === true ? (
+        <Flex
+          gap={2}
+          align="flex-start"
+          p={3}
+          w="fit-content"
+          borderRadius={10}
+          fontWeight={500}
+          bg="yellow.100"
+        >
+          <Icon
+            color="yellow.600"
+            mt={0.4}
+            boxSize={5}
+            as={RiErrorWarningFill}
+          />
+          <Text>You already are registered as a YAC member</Text>
+        </Flex>
       ) : (
         <></>
       )}
