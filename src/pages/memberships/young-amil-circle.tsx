@@ -29,11 +29,15 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
             boxSize={5}
             as={RiErrorWarningFill}
           />
-          <Text>
-            Note: You have already chosen to become a KAP member, if you wish to
-            move to a YAC membership your KAP ID will be revoked and replaced
-            with a YAC ID, Hencing revoking your KAP previleges
-          </Text>
+          {!(user.age <= 16 || user.age >= 30) ? (
+            <Text>
+              Note: You have already chosen to become a KAP member, if you wish
+              to move to a YAC membership your KAP ID will be revoked and
+              replaced with a YAC ID, Hencing revoking your KAP previleges
+            </Text>
+          ) : (
+            <></>
+          )}
         </Flex>
       ) : user?.YAC_member === true ? (
         <Flex
@@ -59,11 +63,11 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
       <Box position="relative">
         <Box
           display={
-            user
-              ? (user.age <= 16 || user.age >= 30) && user.YAC_member != true
-                ? ""
-                : "none"
-              : ""
+            user &&
+            (user.age <= 16 || user.age >= 30) &&
+            user.YAC_member != true
+              ? ""
+              : "none"
           }
           left="50%"
           top="50%"
