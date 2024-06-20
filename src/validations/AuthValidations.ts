@@ -37,5 +37,4 @@ export const RecoveryValidation = Yup.object().shape({
 
 export const WithdrawMatAppValidation = Yup.object().shape({
   matrimony_id: Yup.string().required("Enter Your MAT ID"),
-  message: Yup.string().required("Specify your reason for withdrawing"),
 });

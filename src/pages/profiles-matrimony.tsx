@@ -35,6 +35,7 @@ const ProfilePage = () => {
     handleMatrimonyProfilesFetch,
     handleMatrimonyIdFetch,
     handleFetchProfileRequests,
+    handleDeleteMatrimonyProfile,
   } = useServerActions();
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -114,8 +115,9 @@ const ProfilePage = () => {
     >
       <MatrimonyApplicationWithdrawModal
         user_id={user?.id ?? ""}
-        handleModal={onCloseWithdrawModal}
         modalState={isOpenWithdrawModal}
+        handleModal={onCloseWithdrawModal}
+        handleDeleteMatrimonyProfile={handleDeleteMatrimonyProfile}
       />
       <MatrimonyApplicationSelectionModal
         profilesRequested={profilesRequested}
