@@ -17,7 +17,10 @@ import {
   PopoverTrigger,
   Text,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
+import useRecovery from "~/hooks/UseRecovery";
+import { useState } from "react";
 
 interface AccountOptionsPopoverProps {
   children: React.ReactNode;
@@ -27,7 +30,13 @@ const AccountOptionsPopover: React.FC<AccountOptionsPopoverProps> = ({
   children,
 }) => {
   const { onClose, isOpen, onOpen } = useDisclosure();
-  const [, setUser] = useUserAtom();
+  const toast = useToast();
+  const { handleSendRecoveryURL } = useRecovery();
+
+  const [{ user }, setUser] = useUserAtom();
+
+  const [sendingResetURL, setSendingResetURL] = useState<boolean>(false);
+
   const handleLogout = async () => {
     try {
       const response = await axios.post<{
@@ -41,6 +50,40 @@ const AccountOptionsPopover: React.FC<AccountOptionsPopoverProps> = ({
       }
     } catch (error) {
       console.log("Error during logout:", error);
+    }
+  };
+
+  const handleResetPassword = async () => {
+    setSendingResetURL(true);
+    toast({
+      title: "Sending URL to email ID",
+      description: "Please wait...",
+      status: "info",
+    });
+
+    try {
+      const { message, toastType } = await handleSendRecoveryURL(
+        user?.email_id ?? ""
+      );
+
+      // Hide loading toast and show result toast
+      toast({
+        title: message,
+        status: (toastType as "success") || "error",
+        duration: 5000, // Optional: Set toast duration (5 seconds)
+      });
+    } catch (error) {
+      console.error("Error sending reset password URL:", error);
+
+      // Hide loading toast and show error toast
+      toast({
+        title: "Error Sending Reset URL",
+        description: "An error occurred. Please try again later.",
+        status: "error",
+        duration: 5000, // Optional: Set toast duration (5 seconds)
+      });
+    } finally {
+      setSendingResetURL(false);
     }
   };
 
@@ -72,7 +115,7 @@ const AccountOptionsPopover: React.FC<AccountOptionsPopoverProps> = ({
               _hover={{ color: "gray.800", cursor: "pointer" }}
               gap={2}
               align="center"
-              onClick={() => (window.location.href = "/recovery")}
+              onClick={handleResetPassword}
             >
               <Icon boxSize={4} as={MdOutlinePassword}></Icon>
               <Text>Reset Password</Text>
