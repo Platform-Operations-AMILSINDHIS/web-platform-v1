@@ -1,13 +1,29 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Text, useToast } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 import { LabelledInput } from "~/components/forms";
 import useRecovery from "~/hooks/UseRecovery";
-import { RecoveryPasswordInitialValues } from "~/hooks/useForm";
+import {
+  RecoveryPasswordInitialValues,
+  RecoveryPasswordValues,
+} from "~/hooks/useForm";
+import { useUserAtom } from "~/lib/atom";
 import { RecoveryValidation } from "~/validations/AuthValidations";
 
 const RecoveryPage = () => {
-  const {} = useRecovery();
+  const { handleUpdatePassword } = useRecovery();
+  const [{}, setUserAtom] = useUserAtom();
+  const toast = useToast();
+
+  const [submitting, setSubmitting] = useState<boolean>(false);
+
+  const handlePasswordReset = async () => {
+    setSubmitting(true);
+    await handleUpdatePassword("sabavatakshat@gmail.com", "BigMan112");
+    setUserAtom({ user: null });
+    setSubmitting(false);
+    // window.location.href = "/";
+  };
 
   return (
     <Flex justify="center" align="center" w="full" h="100vh">
@@ -15,9 +31,7 @@ const RecoveryPage = () => {
         <Formik
           validationSchema={RecoveryValidation}
           initialValues={RecoveryPasswordInitialValues}
-          onSubmit={(values) => {
-            console.log(values);
-          }}
+          onSubmit={handlePasswordReset}
         >
           <Form>
             <Flex w={500} flexDir="column">
@@ -48,9 +62,10 @@ const RecoveryPage = () => {
                 />
               </Flex>
             </Flex>
-            <Flex gap={3}>
+            {/* <Flex gap={3}>
               <Button
-                type="submit"
+                isLoading={submitting}
+                onClick={handlePasswordReset}
                 _hover={{
                   bg: "gray.700",
                 }}
@@ -59,7 +74,7 @@ const RecoveryPage = () => {
               >
                 Reset Password
               </Button>
-            </Flex>
+            </Flex> */}
           </Form>
         </Formik>
       </Flex>

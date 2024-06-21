@@ -12,7 +12,7 @@ const useRecovery = () => {
     return response as SendRecoveryURLResponse;
   };
 
-  const handleResetPassword = async (
+  const handleUpdatePassword = async (
     email: string,
     password: string
   ): Promise<UpdatePasswordResponse> => {
@@ -22,7 +22,7 @@ const useRecovery = () => {
     });
     return response as UpdatePasswordResponse;
   };
-  return { handleSendRecoveryURL, handleResetPassword };
+  return { handleSendRecoveryURL, handleUpdatePassword };
 };
 
 export default useRecovery;

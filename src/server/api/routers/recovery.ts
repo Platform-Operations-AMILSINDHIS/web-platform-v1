@@ -39,8 +39,7 @@ const recoveryRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       try {
         const { email, new_password } = input;
-        const { data, error: ResetPwdError } = await supabase.auth.updateUser({
-          email: email,
+        const { error: ResetPwdError } = await supabase.auth.updateUser({
           password: new_password,
         });
         if (ResetPwdError)
@@ -48,29 +47,12 @@ const recoveryRouter = createTRPCRouter({
             `Supabase user updation error: ${ResetPwdError.message}`
           );
 
-        if (data.user) {
-          const hashed_password = await hasher(new_password ?? "");
-          const { error: UpdateDBError } = await supabase
-            .from("general_accounts")
-            .update({ password: hashed_password })
-            .eq("email_id", email);
-
-          if (UpdateDBError)
-            throw new Error(
-              `Supabase user updation error: ${UpdateDBError.message}`
-            );
-          return {
-            message: "Password updated, login again",
-            toastType: "success",
-          };
-        }
+        return {
+          message: "Password updated, login to your account again",
+          toastType: "success",
+        };
       } catch (err) {
         console.log("Error while reseting password", err);
-        return {
-          message:
-            "An error occurred while resetting password. Please try again later.",
-          toastType: "error",
-        };
       }
     }),
 });
