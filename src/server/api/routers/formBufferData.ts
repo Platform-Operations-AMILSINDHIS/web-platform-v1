@@ -339,12 +339,12 @@ const formBufferData = createTRPCRouter({
         const { data: DeleteResponseData, error: DeleteBufferError } =
           await supabase.from("form_buffer").delete().eq("user_id", user_id);
 
-        if (DeleteBufferError) throw DeleteBufferError;
+        if (DeleteBufferError)
+          throw new Error(`Buffer Deletion Error: ${DeleteBufferError}`);
 
         return DeleteResponseData;
       } catch (err) {
-        console.log("Error while deleting matrimony form buffer", err);
-        throw new Error("Form Buffer could not be deleted");
+        console.log(err);
       }
     }),
 });

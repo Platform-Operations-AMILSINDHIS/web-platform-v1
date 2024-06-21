@@ -59,6 +59,17 @@ const matrimonyProfiles = createTRPCRouter({
             `Profile Deletion Failed : ${WithdrawApplicationError.message}`
           );
 
+        const { error: DeleteBufferError } = await supabase
+          .from("form_buffer")
+          .delete()
+          .eq("user_id", user_id)
+          .eq("formType", "MATRIMONY");
+
+        if (DeleteBufferError)
+          throw new Error(
+            `Buffer Deletion Failed: ${DeleteBufferError.message}`
+          );
+
         return {
           status: true,
           statusText: "Application Withdrawn",
