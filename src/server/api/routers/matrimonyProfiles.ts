@@ -36,19 +36,39 @@ const matrimonyProfiles = createTRPCRouter({
     .mutation(async ({ input }) => {
       try {
         const { matrimony_id, user_id } = input;
-        const { data: DeleteResponseData, error: withdrawApplicationError } =
-          await supabase
-            .from("matrimony_profiles")
-            .delete()
-            .eq("user_id", user_id)
-            .eq("matrimony_id", matrimony_id);
+        const { data: ProfileData, error: VerifyError } = await supabase
+          .from("matrimony_profiles")
+          .select("*")
+          .eq("user_id", user_id)
+          .eq("matrimony_id", matrimony_id);
 
-        if (withdrawApplicationError) throw withdrawApplicationError;
+        if (VerifyError)
+          throw new Error(`Error while Verifying: ${VerifyError}`);
 
-        return DeleteResponseData;
+        if (ProfileData.length < 0)
+          return { status: true, statusText: "Invalid Mat ID" };
+
+        const { error: WithdrawApplicationError } = await supabase
+          .from("matrimony_profiles")
+          .delete()
+          .eq("user_id", user_id)
+          .eq("matrimony_id", matrimony_id);
+
+        if (WithdrawApplicationError)
+          throw new Error(
+            `Profile Deletion Failed : ${WithdrawApplicationError.message}`
+          );
+
+        return {
+          status: true,
+          statusText: "Application Withdrawn",
+        };
       } catch (err) {
         console.log("Error while deleting profile", err);
-        throw new Error("Profile Deletion Failed");
+        return {
+          status: true,
+          statusText: "Something went wrong",
+        };
       }
     }),
 

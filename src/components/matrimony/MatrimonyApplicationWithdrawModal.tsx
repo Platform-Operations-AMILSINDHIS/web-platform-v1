@@ -1,4 +1,12 @@
-import { Button, Flex, Icon, Input, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Icon,
+  Input,
+  Text,
+  Toast,
+  useToast,
+} from "@chakra-ui/react";
 import { IoIosWarning } from "react-icons/io";
 
 import ModalLayout from "~/layouts/ModalLayout";
@@ -22,16 +30,27 @@ const MatrimonyApplicationWithdrawModal: React.FC<
   MatrimonyApplicationWithdrawModalProps
 > = ({ handleModal, modalState, user_id }) => {
   const { handleDeleteMatrimonyProfile } = useServerActions();
+  const toast = useToast();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const handleApplicationWithdraw = async (values: WithdrawMatAppValues) => {
+    setSubmitting(true);
     const { status, statusText } = await handleDeleteMatrimonyProfile(
       user_id,
       values.matrimony_id
     );
 
-    console.log(status, statusText);
+    toast({
+      title: status === true ? "Success" : "Error",
+      description: statusText,
+      status: status === true ? "success" : "error",
+      duration: 4000, // How long the toast will be displayed in milliseconds
+      isClosable: true,
+    });
+    handleModal();
+    window.location.href = "/";
+    setSubmitting(false);
   };
 
   return (

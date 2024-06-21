@@ -96,7 +96,7 @@ export interface SendRecoveryURLResponse extends RequestResponse {}
 export interface UpdatePasswordResponse extends RequestResponse {}
 
 export interface DeleteResponseType {
-  status: string;
+  status: boolean;
   statusText: string;
 }
 
