@@ -91,6 +91,8 @@ export interface RequestResponse {
   toastType: string;
 }
 
+export interface SendRecoveryURLResponse extends RequestResponse {}
+
 export interface DeleteResponseType {
   status: string;
   statusText: string;

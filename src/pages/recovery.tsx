@@ -1,30 +1,20 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
-import { useState } from "react";
 import { LabelledInput } from "~/components/forms";
-import useAuthentication from "~/hooks/UseAuthentication";
+import useRecovery from "~/hooks/UseRecovery";
 import { RecoveryPasswordInitialValues } from "~/hooks/useForm";
 import { RecoveryValidation } from "~/validations/AuthValidations";
 
 const RecoveryPage = () => {
-  const { handleRecovery } = useAuthentication();
-  const [submitting, setSubmitting] = useState<boolean>(false);
-
-  const handleSubmit = async (email: string) => {
-    setSubmitting(true);
-    const response = await handleRecovery(email);
-    console.log(response);
-    setSubmitting(false);
-  };
-
+  const {} = useRecovery();
   return (
     <Flex justify="center" align="center" w="full" h="100vh">
       <Flex borderRadius={15} p={5} gap={3}>
         <Formik
           validationSchema={RecoveryValidation}
           initialValues={RecoveryPasswordInitialValues}
-          onSubmit={async (values) => {
-            await handleSubmit(values.email);
+          onSubmit={(values) => {
+            console.log(values);
           }}
         >
           <Form>
@@ -58,7 +48,6 @@ const RecoveryPage = () => {
             </Flex>
             <Flex gap={3}>
               <Button
-                isLoading={submitting}
                 type="submit"
                 _hover={{
                   bg: "gray.700",
