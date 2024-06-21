@@ -330,13 +330,13 @@ const useServerActions = () => {
   const handleDeleteMatrimonyProfile = async (
     user_id: string,
     matrimony_id: string
-  ): Promise<DeleteResponseType> => {
+  ) => {
     const deleteProfileResponse = await deleteMatrimonyProfileMut.mutateAsync({
       matrimony_id,
       user_id,
     });
 
-    return deleteProfileResponse as unknown as DeleteResponseType;
+    console.log(deleteProfileResponse);
   };
 
   return {
@@ -358,6 +358,7 @@ const useServerActions = () => {
     handleFetchProfileRequests,
     handleAcceptMatrimonyProfileRequest,
     handleDeclineMatrimonyProfileRequest,
+    handleDeleteMatrimonyProfile,
   };
 };
 
