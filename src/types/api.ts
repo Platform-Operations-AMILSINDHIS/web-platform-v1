@@ -1,3 +1,4 @@
+import { AdminType, adminAtomBody } from "./atoms/admin";
 import { MatrimonyFormValues } from "./forms/matrimony";
 import {
   KAPMembershipFormValues,
@@ -103,4 +104,11 @@ export interface MatrimonyProfileResponse {
   id: string;
   user_id: string;
   matrimony_id: string;
+}
+
+export interface AdminLoginResponse {
+  loginStatus: boolean;
+  message: string;
+  redirect: string;
+  admin: AdminType | null;
 }

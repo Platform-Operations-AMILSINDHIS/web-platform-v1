@@ -8,4 +8,11 @@ interface adminAtomState {
   admin: adminAtomBody | null;
 }
 
-export { adminAtomBody, adminAtomState };
+interface AdminType {
+  id: string;
+  admin_username: string;
+  admin_password: string;
+  admin_email: string;
+}
+
+export { adminAtomBody, adminAtomState, AdminType };

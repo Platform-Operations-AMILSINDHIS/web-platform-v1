@@ -8,25 +8,27 @@ const adminRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       try {
         const { email, password } = input;
-        const { data: FetchedUser, error: LoginError } = await supabase
+        const { data: FetchedAdmin, error: LoginError } = await supabase
           .from("admin_accounts")
           .select("*")
-          .eq("admin_id", email)
+          .eq("admin_email", email)
           .eq("admin_password", password);
 
         if (LoginError) throw new Error("Error during login");
 
-        if (FetchedUser.length > 0) {
+        if (FetchedAdmin.length > 0) {
           return {
-            login: true,
+            loginStatus: true,
             message: "",
             redirect: "/admin",
+            admin: FetchedAdmin[0],
           };
         } else {
           return {
-            login: false,
+            loginStatus: false,
             message: "Invalid credentials or Account doesn't exist",
             redirect: "",
+            admin: null,
           };
         }
       } catch (err) {}
