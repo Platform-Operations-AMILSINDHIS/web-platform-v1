@@ -1,8 +1,9 @@
-import { SendRecoveryURLResponse } from "~/types/api";
+import { SendRecoveryURLResponse, UpdatePasswordResponse } from "~/types/api";
 import { api } from "~/utils/api";
 
 const useRecovery = () => {
   const sendRecoveryURLMut = api.recovery.sendRecoveryURL.useMutation();
+  const updatePasswordMut = api.recovery.updateUserPassword.useMutation();
 
   const handleSendRecoveryURL = async (
     email: string
@@ -10,7 +11,18 @@ const useRecovery = () => {
     const response = await sendRecoveryURLMut.mutateAsync({ email });
     return response as SendRecoveryURLResponse;
   };
-  return { handleSendRecoveryURL };
+
+  const handleResetPassword = async (
+    email: string,
+    password: string
+  ): Promise<UpdatePasswordResponse> => {
+    const response = await updatePasswordMut.mutateAsync({
+      email,
+      new_password: password,
+    });
+    return response as UpdatePasswordResponse;
+  };
+  return { handleSendRecoveryURL, handleResetPassword };
 };
 
 export default useRecovery;
