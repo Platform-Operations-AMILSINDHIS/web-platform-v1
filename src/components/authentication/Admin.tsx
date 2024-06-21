@@ -14,56 +14,11 @@ const Admin: React.FC = () => {
   const [{ admin }, setAdminAtom] = useAdminAtom();
   const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = async (
-    values: AdminLoginValues,
-    { setErrors }: FormikHelpers<AdminLoginValues>
-  ) => {
-    try {
-      setSubmitting(true);
-      const adminAuthResponse = await axios.post<{
-        adminData: adminAtomBody[];
-        authenticated: boolean;
-        message: string;
-        type: string;
-      }>("/api/auth/admin", {
-        email: values.email,
-        password: values.password,
-      });
-
-      const { authenticated, message, type, adminData } =
-        adminAuthResponse.data;
-      console.log(adminAuthResponse.data);
-      if (!authenticated) {
-        type === "email"
-          ? setErrors({ email: message })
-          : type === "password"
-          ? setErrors({ password: message })
-          : {};
-        setSubmitting(false);
-      } else {
-        setSubmitting(false);
-        console.log("signed In");
-        console.log(adminData[0]);
-        setAdminAtom({
-          admin: {
-            id: adminData[0]?.id,
-            admin_email: adminData[0]?.admin_email,
-            admin_username: adminData[0]?.admin_username,
-          },
-        });
-        console.log(admin);
-        window.location.href = "/admin";
-      }
-    } catch {
-      alert("something went wrong");
-    }
-  };
-
   return (
     <Formik
       validationSchema={AdminLoginValidation}
       initialValues={adminInitialLoginValues}
-      onSubmit={handleSubmit}
+      onSubmit={() => {}}
     >
       <Form>
         <Flex py={4} px={5} gap={6} flexDir="column">
