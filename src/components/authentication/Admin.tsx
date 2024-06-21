@@ -18,7 +18,9 @@ const Admin: React.FC = () => {
     <Formik
       validationSchema={AdminLoginValidation}
       initialValues={adminInitialLoginValues}
-      onSubmit={() => {}}
+      onSubmit={(values) => {
+        console.log(values);
+      }}
     >
       <Form>
         <Flex py={4} px={5} gap={6} flexDir="column">
