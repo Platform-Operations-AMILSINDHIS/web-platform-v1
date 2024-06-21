@@ -117,7 +117,7 @@ const ProfilePage = () => {
         user_id={user?.id ?? ""}
         modalState={isOpenWithdrawModal}
         handleModal={onCloseWithdrawModal}
-        handleDeleteMatrimonyProfile={handleDeleteMatrimonyProfile}
+        name={user?.first_name ?? ""}
       />
       <MatrimonyApplicationSelectionModal
         profilesRequested={profilesRequested}

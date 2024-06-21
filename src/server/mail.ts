@@ -282,6 +282,15 @@ export const sendDonationFormConfirmationMail = async ({
   await sendMail({ to: email, subject, html });
 };
 
+export const sendWithdrawNotificationMail = async (
+  user_name: string,
+  matrimony_id: string
+) => {
+  const subject = `Application Withdrawn`;
+  const html = `Matrimony Application Withdrawn: ${user_name}, ${matrimony_id}`;
+  await sendMail({ to: "amilsindhis@gmail.com", subject, html });
+};
+
 export const sendDonationNotificationMail = async (
   to: string,
   formData: {

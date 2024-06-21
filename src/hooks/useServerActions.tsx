@@ -327,10 +327,12 @@ const useServerActions = () => {
   };
 
   const handleDeleteMatrimonyProfile = async (
+    name: string,
     user_id: string,
     matrimony_id: string
   ): Promise<DeleteResponseType> => {
     const deleteProfileResponse = await deleteMatrimonyProfileMut.mutateAsync({
+      name,
       matrimony_id,
       user_id,
     });

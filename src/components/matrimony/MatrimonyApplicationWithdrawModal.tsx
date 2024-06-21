@@ -24,11 +24,12 @@ interface MatrimonyApplicationWithdrawModalProps {
   handleModal: () => void;
   modalState: boolean;
   user_id: string;
+  name: string;
 }
 
 const MatrimonyApplicationWithdrawModal: React.FC<
   MatrimonyApplicationWithdrawModalProps
-> = ({ handleModal, modalState, user_id }) => {
+> = ({ handleModal, modalState, user_id, name }) => {
   const { handleDeleteMatrimonyProfile } = useServerActions();
   const toast = useToast();
 
@@ -37,6 +38,7 @@ const MatrimonyApplicationWithdrawModal: React.FC<
   const handleApplicationWithdraw = async (values: WithdrawMatAppValues) => {
     setSubmitting(true);
     const { status, statusText } = await handleDeleteMatrimonyProfile(
+      name,
       user_id,
       values.matrimony_id
     );

@@ -2,6 +2,7 @@ import supabase from "~/pages/api/auth/supabase";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 import * as Yup from "yup";
+import { sendWithdrawNotificationMail } from "~/server/mail";
 
 const matrimonyProfiles = createTRPCRouter({
   verifyIfApproved: publicProcedure
@@ -32,10 +33,16 @@ const matrimonyProfiles = createTRPCRouter({
     }),
 
   deleteProfile: publicProcedure
-    .input(Yup.object({ user_id: Yup.string(), matrimony_id: Yup.string() }))
+    .input(
+      Yup.object({
+        name: Yup.string(),
+        user_id: Yup.string(),
+        matrimony_id: Yup.string(),
+      })
+    )
     .mutation(async ({ input }) => {
       try {
-        const { matrimony_id, user_id } = input;
+        const { matrimony_id, user_id, name } = input;
         const { data: ProfileData, error: VerifyError } = await supabase
           .from("matrimony_profiles")
           .select("*")
@@ -69,6 +76,8 @@ const matrimonyProfiles = createTRPCRouter({
           throw new Error(
             `Buffer Deletion Failed: ${DeleteBufferError.message}`
           );
+
+        await sendWithdrawNotificationMail(name ?? "", matrimony_id ?? "");
 
         return {
           status: true,
