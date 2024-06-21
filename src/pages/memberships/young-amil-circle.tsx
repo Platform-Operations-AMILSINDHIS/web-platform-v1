@@ -1,11 +1,11 @@
-import type { NextPage } from "next";
-
-import { Box, Flex, Spacer, Text } from "@chakra-ui/react";
-
 import Layout from "~/components/layout";
 import YoungAmilCircleMembershipForm from "~/components/forms/yac-membership-form";
 import UserBlockModal from "~/components/authentication/UserBlockModal";
+
+import type { NextPage } from "next";
+import { Box, Flex, Icon, Spacer, Text } from "@chakra-ui/react";
 import { useUserAtom } from "~/lib/atom";
+import { RiErrorWarningFill } from "react-icons/ri";
 
 const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
   const [{ user }] = useUserAtom();
@@ -14,14 +14,60 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
 
   return (
     <Layout title="KAP Membership Form">
+      {user?.KAP_member === true ? (
+        <Flex
+          gap={2}
+          align="flex-start"
+          p={3}
+          borderRadius={10}
+          fontWeight={500}
+          bg="yellow.100"
+        >
+          <Icon
+            color="yellow.600"
+            mt={0.4}
+            boxSize={5}
+            as={RiErrorWarningFill}
+          />
+          {!(user.age <= 16 || user.age >= 30) ? (
+            <Text>
+              Note: You have already chosen to become a KAP member, if you wish
+              to move to a YAC membership your KAP ID will be revoked and
+              replaced with a YAC ID, Hencing revoking your KAP previleges
+            </Text>
+          ) : (
+            <></>
+          )}
+        </Flex>
+      ) : user?.YAC_member === true ? (
+        <Flex
+          gap={2}
+          align="flex-start"
+          p={3}
+          w="fit-content"
+          borderRadius={10}
+          fontWeight={500}
+          bg="yellow.100"
+        >
+          <Icon
+            color="yellow.600"
+            mt={0.4}
+            boxSize={5}
+            as={RiErrorWarningFill}
+          />
+          <Text>You already are registered as a YAC member</Text>
+        </Flex>
+      ) : (
+        <></>
+      )}
       <Box position="relative">
         <Box
           display={
-            user
-              ? (user.age <= 16 || user.age >= 30) && user.YAC_member != true
-                ? ""
-                : "none"
-              : ""
+            user &&
+            (user.age <= 16 || user.age >= 30) &&
+            user.YAC_member != true
+              ? ""
+              : "none"
           }
           left="50%"
           top="50%"

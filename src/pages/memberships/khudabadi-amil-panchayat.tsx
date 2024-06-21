@@ -1,11 +1,12 @@
 import type { NextPage } from "next";
 
-import { Box, Flex, Spacer, Text } from "@chakra-ui/react";
+import { Box, Flex, Icon, Spacer, Text } from "@chakra-ui/react";
 
 import Layout from "~/components/layout";
 import KhudabadiAmilPanchayatMembershipForm from "~/components/forms/kap-membership-form";
 import UserBlockModal from "~/components/authentication/UserBlockModal";
 import { useUserAtom } from "~/lib/atom";
+import { RiErrorWarningFill } from "react-icons/ri";
 
 const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
   const [{ user }] = useUserAtom();
@@ -13,6 +14,30 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
 
   return (
     <Layout title="KAP Membership Form">
+      {user?.YAC_member === true ? (
+        <Flex
+          gap={2}
+          align="flex-start"
+          p={3}
+          borderRadius={10}
+          fontWeight={500}
+          bg="yellow.100"
+        >
+          <Icon
+            color="yellow.600"
+            mt={0.4}
+            boxSize={5}
+            as={RiErrorWarningFill}
+          />
+          <Text>
+            Note: You have already chosen to become a YAC member, if you wish to
+            move to a KAP membership your YAC ID will be revoked and replaced
+            with a KAP ID, Hencing revoking your YAC previleges
+          </Text>
+        </Flex>
+      ) : (
+        <></>
+      )}
       <Box position="relative">
         <Box
           display={
@@ -49,7 +74,7 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
                   )}
                   {user.KAP_member ? (
                     <Text textAlign="center">
-                      {`You are already a registered KAP member, Your KAP ID is ${user.membership_id} `}
+                      You are already a registered KAP member
                     </Text>
                   ) : (
                     <Text textAlign="center">

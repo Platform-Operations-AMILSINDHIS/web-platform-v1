@@ -1,36 +1,28 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
-import axios from "axios";
+import { Button, Flex, Text, useToast } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LabelledInput } from "~/components/forms";
+import useRecovery from "~/hooks/UseRecovery";
 import {
   RecoveryPasswordInitialValues,
   RecoveryPasswordValues,
 } from "~/hooks/useForm";
+import { useUserAtom } from "~/lib/atom";
 import { RecoveryValidation } from "~/validations/AuthValidations";
 
 const RecoveryPage = () => {
-  const [submitState, setSubmitState] = useState(false);
+  const { handleUpdatePassword } = useRecovery();
+  const [{}, setUserAtom] = useUserAtom();
+  const toast = useToast();
 
-  const handleSubmit = async (values: RecoveryPasswordValues) => {
-    setSubmitState(true);
-    console.log("hit");
-    const resetPasswordResponse = await axios.post<{ message: string }>(
-      "/api/recovery/resetpwd",
-      {
-        email: values.email,
-        newPassword: values.newPassword,
-      }
-    );
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
-    if (resetPasswordResponse.status === 200) {
-      console.log("success");
-      setSubmitState(false);
-      alert("password reset");
-      window.location.href = "/";
-    } else {
-      console.log("screwed");
-    }
+  const handlePasswordReset = async () => {
+    setSubmitting(true);
+    await handleUpdatePassword("sabavatakshat@gmail.com", "BigMan112");
+    setUserAtom({ user: null });
+    setSubmitting(false);
+    // window.location.href = "/";
   };
 
   return (
@@ -39,7 +31,7 @@ const RecoveryPage = () => {
         <Formik
           validationSchema={RecoveryValidation}
           initialValues={RecoveryPasswordInitialValues}
-          onSubmit={handleSubmit}
+          onSubmit={handlePasswordReset}
         >
           <Form>
             <Flex w={500} flexDir="column">
@@ -72,8 +64,8 @@ const RecoveryPage = () => {
             </Flex>
             <Flex gap={3}>
               <Button
-                isLoading={submitState}
-                type="submit"
+                isLoading={submitting}
+                onClick={handlePasswordReset}
                 _hover={{
                   bg: "gray.700",
                 }}

@@ -2,6 +2,7 @@ interface profileAtomBody {
   form_id: number | null | undefined;
   user_id: string | null | undefined;
   formType: string | null | undefined;
+  status: string | null | undefined;
 }
 
 interface profileAtomState {

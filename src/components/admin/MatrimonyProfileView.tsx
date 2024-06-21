@@ -4,6 +4,7 @@ import { camelCaseToSpaces } from "~/utils/helper";
 import { btnThemeDark, btnThemeLight } from "../buttons/BtnThemes";
 import useServerActions from "~/hooks/useServerActions";
 import { useState } from "react";
+import { useProfileAtom } from "~/lib/atom";
 
 interface MatrimonyProfileViewProps {
   submission: MatrimonyFormValues;
@@ -19,14 +20,14 @@ const MatrimonyProfileView: React.FC<MatrimonyProfileViewProps> = ({
     handleRejectingUserMatrimonyApplication,
   } = useServerActions();
 
+  const [{ selected_profile }] = useProfileAtom();
+
   const [isGeneratingID, setIsGeneratingID] = useState<boolean>(false);
   const [isSendingMail, setIsSendingMail] = useState<boolean>(false);
   const [isApprovingApplication, setIsApprovingApplication] =
     useState<boolean>(false);
   const [isRejectingApplication, setIsRejectingApplication] =
     useState<boolean>(false);
-
-  console.log(submission);
 
   return (
     <>
@@ -42,8 +43,9 @@ const MatrimonyProfileView: React.FC<MatrimonyProfileViewProps> = ({
             mt={-0.5}
           >{`${submission?.personalInfo?.occupation}, ${submission?.personalInfo?.placeOfBirth}`}</Text>
         </Flex>
-        <Flex gap={3}>
+        <Flex display={selected_profile?.status === "APPROVED" ? "none" : ""}>
           <Button
+            mr={3}
             onClick={() => {
               handleAcceptingUserMatrimonyApplication(
                 user_id,

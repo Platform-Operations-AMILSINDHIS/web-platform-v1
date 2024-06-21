@@ -3,9 +3,24 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 
 import * as Yup from "yup";
 import { sendDescisionMail, sendMatrimonyDescisionMail } from "~/server/mail";
-import { MembershipBufferDataType } from "~/types/tables/dataBuffer";
 
 const formBufferData = createTRPCRouter({
+  fetchAllBuffer: publicProcedure.query(async () => {
+    try {
+      const { data: fetchedFormBufferData, error: fetchError } = await supabase
+        .from("form_buffer")
+        .select("*");
+
+      if (fetchError) throw fetchError;
+
+      return {
+        form_buffer: fetchedFormBufferData,
+      };
+    } catch (err) {
+      console.error("Error fetching form buffer data:", err);
+      throw new Error("Failed to fetch form buffer data");
+    }
+  }),
   fetchMembershipBuffer: publicProcedure.query(async () => {
     try {
       const {
@@ -14,16 +29,16 @@ const formBufferData = createTRPCRouter({
       } = await supabase
         .from("form_buffer")
         .select("*")
-        .in("formType", ["KAP", "YAC"])
-        .eq("status", "PENDING");
+        .in("formType", ["KAP", "YAC"]);
 
       if (formMembershipBufferDataError) throw formMembershipBufferDataError;
 
-      return formMembershipBufferData as MembershipBufferDataType[]; // Return the fetched data
+      return {
+        membership_formbuffer: formMembershipBufferData,
+      }; // Return the fetched data
     } catch (err) {
-      // Handle errors here
       console.error("Error fetching membership form buffer data:", err);
-      throw new Error("Failed to fetch form buffer data");
+      throw new Error("Failed to fetch membership form buffer data");
     }
   }),
 
@@ -35,16 +50,17 @@ const formBufferData = createTRPCRouter({
       } = await supabase
         .from("form_buffer")
         .select("*")
-        .in("formType", ["MATRIMONY"])
-        .eq("status", "PENDING");
+        .in("formType", ["MATRIMONY"]);
 
       if (formMatrimonyBufferDataError) throw formMatrimonyBufferDataError;
 
-      return formMatrimonyBufferData; // Return the fetched data
+      return {
+        matrimony_formbuffer: formMatrimonyBufferData,
+      }; // Return the fetched data
     } catch (err) {
       // Handle errors here
       console.error("Error fetching membership form buffer data:", err);
-      throw new Error("Failed to fetch form buffer data");
+      throw new Error("Failed to fetch matrimony form buffer data");
     }
   }),
 
@@ -54,16 +70,15 @@ const formBufferData = createTRPCRouter({
         data: approvedMatrimonyApplicants,
         error: approvedMatrimonyApplicantsFetchError,
       } = await supabase
-        .from("matrimony_profiles")
+        .from("form_buffer")
         .select("*")
-        .eq("status", "APPROVED");
+        .eq("status", "APPROVED")
+        .eq("formType", "MATRIMONY");
 
       if (approvedMatrimonyApplicantsFetchError)
         throw approvedMatrimonyApplicantsFetchError;
 
-      return {
-        matrimonyApplicantsApproved: approvedMatrimonyApplicants,
-      };
+      return approvedMatrimonyApplicants;
     } catch (err) {
       console.log(
         `Error while fetching approved matrimony applicants : ${err}`
@@ -71,7 +86,7 @@ const formBufferData = createTRPCRouter({
     }
   }),
 
-  fetchUserMembershipSubmission: publicProcedure
+  fetchUserSubmission: publicProcedure
     .input(Yup.object({ user_id: Yup.string(), formType: Yup.string() }))
     .mutation(async ({ input }) => {
       try {
@@ -82,6 +97,28 @@ const formBufferData = createTRPCRouter({
             .select("submission")
             .eq("user_id", user_id)
             .eq("formType", formType);
+
+        if (fetchSubmissionError) throw fetchSubmissionError;
+
+        return {
+          DB_submission_response: userFormSubmission,
+        };
+      } catch (err) {
+        console.log(err);
+      }
+    }),
+
+  fetchUserMatrimonySubmission: publicProcedure
+    .input(Yup.object({ user_id: Yup.string() }))
+    .mutation(async ({ input }) => {
+      try {
+        const { user_id } = input;
+        const { data: userFormSubmission, error: fetchSubmissionError } =
+          await supabase
+            .from("form_buffer")
+            .select("submission")
+            .eq("user_id", user_id)
+            .eq("formType", "MATRIMONY");
 
         if (fetchSubmissionError) throw fetchSubmissionError;
 
@@ -245,7 +282,7 @@ const formBufferData = createTRPCRouter({
 
         const { data: _, error: formBufferError } = await supabase
           .from("form_buffer")
-          .update({ status: "REJECTED" })
+          .delete()
           .eq("user_id", user_id)
           .eq("formType", "MATRIMONY");
 
@@ -292,6 +329,23 @@ const formBufferData = createTRPCRouter({
           };
         }
       } catch (err) {}
+    }),
+
+  deleteMatrimonyFormBufferData: publicProcedure
+    .input(Yup.object({ user_id: Yup.string() }))
+    .mutation(async ({ input }) => {
+      try {
+        const { user_id } = input;
+        const { data: DeleteResponseData, error: DeleteBufferError } =
+          await supabase.from("form_buffer").delete().eq("user_id", user_id);
+
+        if (DeleteBufferError)
+          throw new Error(`Buffer Deletion Error: ${DeleteBufferError}`);
+
+        return DeleteResponseData;
+      } catch (err) {
+        console.log(err);
+      }
     }),
 });
 

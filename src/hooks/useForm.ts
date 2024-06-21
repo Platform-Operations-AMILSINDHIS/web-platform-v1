@@ -5,6 +5,10 @@ export interface LoginValues {
   password: string;
 }
 
+export interface MatrimonyLoginValues {
+  matrimony_id: string;
+}
+
 export interface AdminLoginValues {
   email: string;
   password: string;
@@ -30,6 +34,10 @@ export interface RecoveryPasswordValues {
   confirmPassword: string;
 }
 
+export interface WithdrawMatAppValues {
+  matrimony_id: string;
+}
+
 export const initialValues: Values = {
   email: "",
   phonenumber: "",
@@ -48,6 +56,10 @@ export const loginInitialValues: LoginValues = {
   password: "",
 };
 
+export const matrimonyLoginInitialValues: MatrimonyLoginValues = {
+  matrimony_id: "",
+};
+
 export const adminInitialLoginValues: AdminLoginValues = {
   email: "",
   password: "",
@@ -57,6 +69,10 @@ export const RecoveryPasswordInitialValues: RecoveryPasswordValues = {
   email: "",
   newPassword: "",
   confirmPassword: "",
+};
+
+export const WithdrawMatAppInitialValues: WithdrawMatAppValues = {
+  matrimony_id: "",
 };
 
 const useForm = () => {

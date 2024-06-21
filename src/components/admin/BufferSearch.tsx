@@ -8,12 +8,19 @@ import {
   Kbd,
   Text,
 } from "@chakra-ui/react";
+import { ChangeEvent } from "react";
 import { BiSearch } from "react-icons/bi";
 import { PiCommand } from "react-icons/pi";
 
-// interface BufferSearchProps {}
+interface BufferSearchProps {
+  setSearchTerm: (searchTerm: string) => void;
+}
 
-const BufferSearch: React.FC = ({}) => {
+const BufferSearch: React.FC<BufferSearchProps> = ({ setSearchTerm }) => {
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
   return (
     <InputGroup maxW={400}>
       <InputLeftElement>
@@ -23,6 +30,7 @@ const BufferSearch: React.FC = ({}) => {
         fontSize="sm"
         variant="filled"
         placeholder="Search KAP and YAC applicants"
+        onChange={handleSearch}
       />
       <InputRightElement mr={1}>
         <Kbd p={1} fontSize="11px" bg="white">

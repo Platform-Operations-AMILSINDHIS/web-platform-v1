@@ -1,77 +1,53 @@
-import { Button, Checkbox, Flex, Icon, Text } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Flex, Icon, Text } from "@chakra-ui/react";
 import { AiFillLock } from "react-icons/ai";
-import { Form, Formik, FormikHelpers } from "formik";
+import { Form, Formik } from "formik";
 import { LabelledInput } from "../forms";
 import { AdminLoginValidation } from "~/validations/AuthValidations";
 
-import React, { useState } from "react";
-import axios from "axios";
+import React from "react";
 import { AdminLoginValues, adminInitialLoginValues } from "~/hooks/useForm";
-import { useAdminAtom } from "~/lib/atom";
-import type { adminAtomBody } from "~/types/atoms/admin";
 
-const Admin: React.FC = () => {
-  const [{ admin }, setAdminAtom] = useAdminAtom();
-  const [submitting, setSubmitting] = useState(false);
+interface AdminProps {
+  handleSubmit: (values: AdminLoginValues) => void;
+  submitting: boolean;
+  errorTrigger: boolean;
+  errorMessage: string;
+  loginStatus: boolean;
+}
 
-  const handleSubmit = async (
-    values: AdminLoginValues,
-    { setErrors }: FormikHelpers<AdminLoginValues>
-  ) => {
-    try {
-      setSubmitting(true);
-      const adminAuthResponse = await axios.post<{
-        adminData: adminAtomBody[];
-        authenticated: boolean;
-        message: string;
-        type: string;
-      }>("/api/auth/admin", {
-        email: values.email,
-        password: values.password,
-      });
-
-      const { authenticated, message, type, adminData } =
-        adminAuthResponse.data;
-      console.log(adminAuthResponse.data);
-      if (!authenticated) {
-        type === "email"
-          ? setErrors({ email: message })
-          : type === "password"
-          ? setErrors({ password: message })
-          : {};
-        setSubmitting(false);
-      } else {
-        setSubmitting(false);
-        console.log("signed In");
-        console.log(adminData[0]);
-        setAdminAtom({
-          admin: {
-            id: adminData[0]?.id,
-            admin_email: adminData[0]?.admin_email,
-            admin_username: adminData[0]?.admin_username,
-          },
-        });
-        console.log(admin);
-        window.location.href = "/admin";
-      }
-    } catch {
-      alert("something went wrong");
-    }
-  };
-
+const Admin: React.FC<AdminProps> = ({
+  errorMessage,
+  errorTrigger,
+  submitting,
+  loginStatus,
+  handleSubmit,
+}) => {
   return (
     <Formik
       validationSchema={AdminLoginValidation}
       initialValues={adminInitialLoginValues}
-      onSubmit={handleSubmit}
+      onSubmit={async (values) => {
+        await handleSubmit(values);
+      }}
     >
       <Form>
         <Flex py={4} px={5} gap={6} flexDir="column">
-          <Flex justify="space-between" align="center" w="full">
-            <Text fontWeight={700} fontSize="20px">
-              Admin Login
-            </Text>
-            <Icon pb={1} color="#FF4D00" boxSize={7} as={AiFillLock} />
+          <Flex flexDir="column">
+            <Flex justify="space-between" align="center" w="full">
+              <Text fontWeight={700} fontSize="20px">
+                Admin Login
+              </Text>
+              <Icon pb={1} color="#FF4D00" boxSize={7} as={AiFillLock} />
+            </Flex>
+            {errorTrigger ? (
+              <Box borderRadius={5} p={2} bg="red.200" mt={2}>
+                <Text fontWeight={700} color="red.600" fontSize="small">
+                  {errorMessage}
+                </Text>
+              </Box>
+            ) : (
+              <></>
+            )}
           </Flex>
           <Flex gap={3} w="full" flexDir="column">
             <LabelledInput
@@ -107,9 +83,9 @@ const Admin: React.FC = () => {
                 bg: "gray.700",
               }}
               color="white"
-              bg="#0E0E11"
+              bg={loginStatus ? "green.500" : "#0E0E11"}
             >
-              Login
+              {loginStatus ? `Logged In` : "Login"}
             </Button>
           </Flex>
         </Flex>

@@ -5,6 +5,8 @@ import { env } from "~/env.mjs";
 import type {
   ConfirmationMailType,
   DecisionMailType,
+  DeclineProfileRequestMail,
+  AcceptProfileRequestMail,
   DonationFormConfirmationMailType,
   MatrimonyDecisionMailType,
   RSVPMailType,
@@ -18,9 +20,8 @@ import type {
   KAPMembershipFormValues,
   YACMembershipFormValues,
 } from "~/types/forms/membership";
-import type { DonationsFormValues } from "~/types/forms/donations";
-import type { MatrimonyFormValues } from "~/types/forms/matrimony";
 import { createId } from "~/utils/helper";
+import generateMatrimonyProfilePDF from "./pdfs/profile-pdf";
 
 // const transporter = nodemailer.createTransport({
 //   host: "smtp.gmail.com",
@@ -210,28 +211,34 @@ export const sendMatrimonyDescisionMail = async ({
   await sendMail({ html, subject, to });
 };
 
-// export const sendDonationFormConfirmationMail = async ({
-//   amount,
-//   contactNumber,
-//   donorName,
-//   email,
-// }: DonationFormConfirmationMailType) => {
-//   const subject = `Thank you for donating!`;
+export const sendDeclineRequestMail = async ({
+  to,
+  requested_MatID,
+  requested_name,
+}: DeclineProfileRequestMail) => {
+  const subject = `Profile Request Declined`;
+  const html = `We regret to inform you that your profile request for ${requested_name}, ${requested_MatID} has been declined. For any queries please email info@amilsindhis.org`;
 
-//   const html = `
-//     <div style="font-size: 14px;">
-//       <p>Hey ${donorName.split(" ")[0]},</p>
-//       <br>
-//       <p>This is email is to confirm that we have received your donation for Rs. ${amount}/-</p>
-//       <p>We cannot express our gratitude for this, and wholeheartedly thank you for your contribution to the Amil Sindhis community.</p>
-//       <br>
-//       <p>Regards,</p>
-//       <p>Team Amil Sindhis</p>
-//     </div>
-//   `;
+  await sendMail({ html, subject, to });
+};
 
-//   await sendMail({ to: email, subject, html });
-// };
+export const sendAcceptRequestMail = async ({
+  requested_MatID,
+  requested_name,
+  submission,
+  to,
+}: AcceptProfileRequestMail) => {
+  const matrimonyProfilePDF = await generateMatrimonyProfilePDF(submission);
+  const attachments = [
+    {
+      filename: `${requested_name}_${requested_MatID}.pdf`,
+      content: Buffer.from(matrimonyProfilePDF),
+    },
+  ];
+  const subject = `Profile Request for ${requested_name}, ${requested_MatID}`;
+  const html = `Your Request for matrimony profile data of ${requested_name} has been approved. PFA the attached document`;
+  await sendMail({ to, html, subject, attachments });
+};
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 export const sendMatrimonyFormNotificationMail = async (
@@ -273,6 +280,15 @@ export const sendDonationFormConfirmationMail = async ({
   `;
 
   await sendMail({ to: email, subject, html });
+};
+
+export const sendWithdrawNotificationMail = async (
+  user_name: string,
+  matrimony_id: string
+) => {
+  const subject = `Application Withdrawn`;
+  const html = `Matrimony Application Withdrawn: ${user_name}, ${matrimony_id}`;
+  await sendMail({ to: "amilsindhis@gmail.com", subject, html });
 };
 
 export const sendDonationNotificationMail = async (

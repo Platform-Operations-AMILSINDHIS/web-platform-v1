@@ -6,18 +6,30 @@ import {
 import { MatrimonyFormValues } from "../forms/matrimony";
 
 enum Status {
-  APPROVED,
-  PENDING,
-  REJECTED,
+  APPROVED = "APPROVED",
+  PENDING = "PENDING",
+  REJECTED = "REJECTED",
 }
 
-export interface MembershipBufferDataType {
+export interface FormBufferDataType {
   created_at: string;
   formType: string;
   id: number;
   user_id: string;
   status: Status;
-  submission: YACMembershipFormValues | KAPMembershipFormValues;
+  submission:
+    | YACMembershipFormValues
+    | KAPMembershipFormValues
+    | MatrimonyFormValues;
+}
+
+export interface MembershipBufferDataType {
+  id: number;
+  created_at: string;
+  user_id: string;
+  formType: string;
+  status: Status;
+  submission: KAPMembershipFormValues | YACMembershipFormValues;
 }
 
 export interface MatrimonyBufferDataType {

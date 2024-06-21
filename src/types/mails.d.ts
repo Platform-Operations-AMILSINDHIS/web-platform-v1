@@ -1,4 +1,5 @@
 import type { Attachment } from "nodemailer/lib/mailer";
+import { MatrimonyFormValues } from "./forms/matrimony";
 
 export interface SendMailType {
   to: string;
@@ -36,4 +37,17 @@ export interface DonationFormConfirmationMailType {
   donorName: string;
   contactNumber: string;
   email: string;
+}
+
+export interface DeclineProfileRequestMail {
+  to: string;
+  requested_name: string;
+  requested_MatID: string;
+}
+
+export interface AcceptProfileRequestMail {
+  to: string;
+  requested_name: string;
+  requested_MatID: string;
+  submission: MatrimonyFormValues;
 }

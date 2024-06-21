@@ -20,7 +20,6 @@ const DropDown: React.FC<DropDownProps> = ({
         border="1px solid rgba(31, 41, 55, 0.45)"
         boxShadow="0px 3px 0px 0px rgba(0, 0, 0, 0.19)"
         as={Button}
-        h={"35px"}
       >
         {isSelected}
       </MenuButton>
