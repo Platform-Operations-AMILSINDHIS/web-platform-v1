@@ -58,7 +58,9 @@ const AdminPage = () => {
   const [isLoadingMatBuf, setIsLoadingMatBuf] = useState<boolean>(false);
   const [showApprovedMatProfiles, setShowApprovedMatProfiles] =
     useState<boolean>(false);
+
   const [isSelected, setIsSelected] = useState<string>("Memberships");
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const handleFetch = async () => {
     const allBufferData = await handleFetchFormBufferData();
@@ -111,7 +113,7 @@ const AdminPage = () => {
   return (
     <AdminPageLayout adminUsername={admin?.admin_username ?? ""}>
       <Flex justify="space-between" align="center" w="full" mb={8}>
-        <BufferSearch />
+        <BufferSearch setSearchTerm={setSearchTerm} />
         <Flex alignItems="center" gap={3}>
           <Box position="relative">
             <Box
@@ -163,6 +165,7 @@ const AdminPage = () => {
             <Spinner />
           ) : (
             <MembershipBufferTable
+              searchTerm={searchTerm}
               membershipBufferData={membershipBufferData}
             />
           )}

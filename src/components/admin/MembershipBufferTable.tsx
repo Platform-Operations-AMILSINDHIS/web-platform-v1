@@ -1,4 +1,5 @@
 import { Button, Td, Tr } from "@chakra-ui/react";
+import { useMemo } from "react";
 import TableLayout from "~/layouts/TableLayout";
 import { useProfileAtom } from "~/lib/atom";
 import { MembershipBufferDataType } from "~/types/tables/dataBuffer";
@@ -7,15 +8,30 @@ import { formMembershipBufferDataTableHeaders } from "~/utils/tableHeaders";
 
 interface MembershipBufferTableProps {
   membershipBufferData: MembershipBufferDataType[];
+  searchTerm: string;
 }
 
 const MembershipBufferTable: React.FC<MembershipBufferTableProps> = ({
   membershipBufferData,
+  searchTerm,
 }) => {
   const [, setProfileAtom] = useProfileAtom();
+
+  const filteredData = useMemo(() => {
+    if (!searchTerm || searchTerm.trim() === "") {
+      return membershipBufferData; // No filter applied if searchTerm is empty
+    }
+
+    const lowercaseSearchTerm = searchTerm.toLowerCase();
+    return membershipBufferData.filter((buffer) => {
+      const fullName =
+        `${buffer?.submission.personalInfo.firstName} ${buffer?.submission.personalInfo.lastName}`.toLowerCase();
+      return fullName.includes(lowercaseSearchTerm);
+    });
+  }, [membershipBufferData, searchTerm]);
   return (
     <TableLayout tableHeaders={formMembershipBufferDataTableHeaders}>
-      {membershipBufferData.map((buffer, index) => {
+      {filteredData.map((buffer, index) => {
         return (
           <Tr fontSize="sm" key={index}>
             <Td>{index + 1}</Td>
