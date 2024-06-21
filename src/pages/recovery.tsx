@@ -62,7 +62,7 @@ const RecoveryPage = () => {
                 />
               </Flex>
             </Flex>
-            {/* <Flex gap={3}>
+            <Flex gap={3}>
               <Button
                 isLoading={submitting}
                 onClick={handlePasswordReset}
@@ -74,7 +74,7 @@ const RecoveryPage = () => {
               >
                 Reset Password
               </Button>
-            </Flex> */}
+            </Flex>
           </Form>
         </Formik>
       </Flex>
