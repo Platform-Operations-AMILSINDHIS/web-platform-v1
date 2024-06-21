@@ -1,36 +1,20 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
-import axios from "axios";
 import { Form, Formik } from "formik";
 import { useState } from "react";
 import { LabelledInput } from "~/components/forms";
-import {
-  RecoveryPasswordInitialValues,
-  RecoveryPasswordValues,
-} from "~/hooks/useForm";
+import useAuthentication from "~/hooks/UseAuthentication";
+import { RecoveryPasswordInitialValues } from "~/hooks/useForm";
 import { RecoveryValidation } from "~/validations/AuthValidations";
 
 const RecoveryPage = () => {
-  const [submitState, setSubmitState] = useState(false);
+  const { handleRecovery } = useAuthentication();
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
-  const handleSubmit = async (values: RecoveryPasswordValues) => {
-    setSubmitState(true);
-    console.log("hit");
-    const resetPasswordResponse = await axios.post<{ message: string }>(
-      "/api/recovery/resetpwd",
-      {
-        email: values.email,
-        newPassword: values.newPassword,
-      }
-    );
-
-    if (resetPasswordResponse.status === 200) {
-      console.log("success");
-      setSubmitState(false);
-      alert("password reset");
-      window.location.href = "/";
-    } else {
-      console.log("screwed");
-    }
+  const handleSubmit = async (email: string) => {
+    setSubmitting(true);
+    const response = await handleRecovery(email);
+    console.log(response);
+    setSubmitting(false);
   };
 
   return (
@@ -39,7 +23,9 @@ const RecoveryPage = () => {
         <Formik
           validationSchema={RecoveryValidation}
           initialValues={RecoveryPasswordInitialValues}
-          onSubmit={handleSubmit}
+          onSubmit={async (values) => {
+            await handleSubmit(values.email);
+          }}
         >
           <Form>
             <Flex w={500} flexDir="column">
@@ -72,7 +58,7 @@ const RecoveryPage = () => {
             </Flex>
             <Flex gap={3}>
               <Button
-                isLoading={submitState}
+                isLoading={submitting}
                 type="submit"
                 _hover={{
                   bg: "gray.700",
