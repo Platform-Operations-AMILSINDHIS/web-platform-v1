@@ -8,11 +8,13 @@ import { formMembershipBufferDataTableHeaders } from "~/utils/tableHeaders";
 
 interface MembershipBufferTableProps {
   membershipBufferData: MembershipBufferDataType[];
+  filterState: string;
   searchTerm: string;
 }
 
 const MembershipBufferTable: React.FC<MembershipBufferTableProps> = ({
   membershipBufferData,
+  filterState,
   searchTerm,
 }) => {
   const [, setProfileAtom] = useProfileAtom();
@@ -31,40 +33,48 @@ const MembershipBufferTable: React.FC<MembershipBufferTableProps> = ({
   }, [membershipBufferData, searchTerm]);
   return (
     <TableLayout tableHeaders={formMembershipBufferDataTableHeaders}>
-      {filteredData.map((buffer, index) => {
-        return (
-          <Tr fontSize="sm" key={index}>
-            <Td>{index + 1}</Td>
-            <Td>{`${buffer?.user_id.substring(0, 20)}...`}</Td>
-            <Td>{buffer?.formType}</Td>
-            <Td>{formatCreatedTime(buffer?.created_at)}</Td>
-            <Td>{`${buffer?.submission.personalInfo.firstName} ${buffer?.submission.personalInfo.lastName}`}</Td>
-            <Td>{buffer?.submission.personalInfo.emailId}</Td>
-            <Td>{`+91 ${buffer?.submission.personalInfo.mobileNumber}`}</Td>
-            <Td>
-              <Button
-                _hover={{ color: "#FF4D00" }}
-                color="gray.500"
-                variant="none"
-                size="small"
-                onClick={() => {
-                  window.location.href = `/admin/${buffer?.user_id}.${buffer?.formType}`;
-                  setProfileAtom({
-                    selected_profile: {
-                      form_id: buffer?.id,
-                      user_id: buffer?.user_id,
-                      formType: buffer?.formType,
-                      status: buffer?.status,
-                    },
-                  });
-                }}
-              >
-                View Profile
-              </Button>
-            </Td>
-          </Tr>
-        );
-      })}
+      {filteredData
+        .filter((buffer) =>
+          filterState === "All"
+            ? buffer.status === "APPROVED" || "PENDING"
+            : filterState === "Approved"
+            ? buffer.status === "APPROVED"
+            : buffer.status === "PENDING"
+        )
+        .map((buffer, index) => {
+          return (
+            <Tr fontSize="sm" key={index}>
+              <Td>{index + 1}</Td>
+              <Td>{`${buffer?.user_id.substring(0, 20)}...`}</Td>
+              <Td>{buffer?.formType}</Td>
+              <Td>{formatCreatedTime(buffer?.created_at)}</Td>
+              <Td>{`${buffer?.submission.personalInfo.firstName} ${buffer?.submission.personalInfo.lastName}`}</Td>
+              <Td>{buffer?.submission.personalInfo.emailId}</Td>
+              <Td>{`+91 ${buffer?.submission.personalInfo.mobileNumber}`}</Td>
+              <Td>
+                <Button
+                  _hover={{ color: "#FF4D00" }}
+                  color="gray.500"
+                  variant="none"
+                  size="small"
+                  onClick={() => {
+                    window.location.href = `/admin/${buffer?.user_id}.${buffer?.formType}`;
+                    setProfileAtom({
+                      selected_profile: {
+                        form_id: buffer?.id,
+                        user_id: buffer?.user_id,
+                        formType: buffer?.formType,
+                        status: buffer?.status,
+                      },
+                    });
+                  }}
+                >
+                  View Profile
+                </Button>
+              </Td>
+            </Tr>
+          );
+        })}
     </TableLayout>
   );
 };

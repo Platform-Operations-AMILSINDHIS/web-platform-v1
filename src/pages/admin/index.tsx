@@ -151,6 +151,7 @@ const AdminPage = () => {
           ) : (
             <MembershipBufferTable
               searchTerm={searchTerm}
+              filterState={statusType}
               membershipBufferData={membershipBufferData}
             />
           )}
