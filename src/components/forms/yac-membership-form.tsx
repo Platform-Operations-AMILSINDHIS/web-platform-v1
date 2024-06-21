@@ -530,6 +530,9 @@ export const ProposerDetailsSection: React.FC = () => {
                 duration: 90000,
                 isClosable: true,
               });
+              setTimeout(() => {
+                window.location.href = "/";
+              }, 1000);
             },
             onError: (error) => {
               toast({

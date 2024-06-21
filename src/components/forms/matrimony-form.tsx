@@ -808,6 +808,7 @@ export const ProposerDetailsSection: React.FC = () => {
             })
             .then(() => {
               console.log("yo");
+              window.location.href = "/";
             })
             .catch(console.error);
         }}
