@@ -1,4 +1,5 @@
 import {
+  DeleteResponseType,
   FormBufferDataFetch,
   MatrimonyFormBufferDataFetch,
   MatrimonyIdFetchResponse,
@@ -328,13 +329,13 @@ const useServerActions = () => {
   const handleDeleteMatrimonyProfile = async (
     user_id: string,
     matrimony_id: string
-  ) => {
+  ): Promise<DeleteResponseType> => {
     const deleteProfileResponse = await deleteMatrimonyProfileMut.mutateAsync({
       matrimony_id,
       user_id,
     });
 
-    console.log(deleteProfileResponse);
+    return deleteProfileResponse as unknown as DeleteResponseType;
   };
 
   return {

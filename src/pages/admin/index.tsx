@@ -37,13 +37,9 @@ const AdminPage = () => {
   const {
     handleMemberBufferFetch,
     handleMatrimonyBufferFetch,
-    handleFetchFormBufferData,
     handleFetchProfileRequests,
   } = useServerActions();
 
-  const [formBufferData, setFormBufferData] = useState<FormBufferDataType[]>(
-    []
-  );
   const [membershipBufferData, setMembershipBufferData] = useState<
     MembershipBufferDataType[]
   >([]);
@@ -56,23 +52,19 @@ const AdminPage = () => {
 
   const [isLoadingMemBuf, setIsLoadingMemBuf] = useState<boolean>(false);
   const [isLoadingMatBuf, setIsLoadingMatBuf] = useState<boolean>(false);
-  const [showApprovedMatProfiles, setShowApprovedMatProfiles] =
-    useState<boolean>(false);
 
   const [isSelected, setIsSelected] = useState<string>("Memberships");
+  const [statusType, setStatusType] = useState<string>("All");
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   const handleFetch = async () => {
-    const allBufferData = await handleFetchFormBufferData();
     const allMemBufferData = await handleMemberBufferFetch();
     const allMatBufferData = await handleMatrimonyBufferFetch();
     const allProfileRequestsData = await handleFetchProfileRequests();
-    setFormBufferData(allBufferData);
     setMatrimonyBufferData(allMatBufferData);
     setMembershipBufferData(allMemBufferData);
     setProfileRequestsData(allProfileRequestsData);
     console.log({
-      allBufferData,
       allMatBufferData,
       allMemBufferData,
       allProfileRequestsData,
@@ -104,11 +96,6 @@ const AdminPage = () => {
       setIsLoadingMatBuf(false);
     }
   }, [matrimonyBufferData]);
-
-  const handleCheckBoxChange = () => {
-    setShowApprovedMatProfiles(!showApprovedMatProfiles);
-    console.log({ showApprovedMatProfiles });
-  };
 
   return (
     <AdminPageLayout adminUsername={admin?.admin_username ?? ""}>
@@ -148,15 +135,13 @@ const AdminPage = () => {
           <DropDown
             isSelected={isSelected}
             setIsSelected={setIsSelected}
-            MenuItems={["Memberships", "Matrimony"]}
+            MenuItems={["Matrimony", "Memberships"]}
           />
-          {isSelected === "Matrimony" ? (
-            <Checkbox onChange={handleCheckBoxChange} fontWeight={500}>
-              Approved Profiles
-            </Checkbox>
-          ) : (
-            <></>
-          )}
+          <DropDown
+            isSelected={statusType}
+            setIsSelected={setStatusType}
+            MenuItems={["Approved", "Pending", "All"]}
+          />
         </Flex>
       </Flex>
       {isSelected === "Memberships" ? (
@@ -176,7 +161,8 @@ const AdminPage = () => {
             <Spinner />
           ) : (
             <MatrimonyBufferTable
-              showApproved={showApprovedMatProfiles}
+              searchTerm={searchTerm}
+              filterState={statusType}
               matrimonyBufferData={matrimonyBufferData}
             />
           )}

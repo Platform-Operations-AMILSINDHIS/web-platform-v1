@@ -1,4 +1,5 @@
 import { Button, Td, Tr } from "@chakra-ui/react";
+import { useMemo } from "react";
 import TableLayout from "~/layouts/TableLayout";
 import { useProfileAtom } from "~/lib/atom";
 import { MatrimonyBufferDataType } from "~/types/tables/dataBuffer";
@@ -7,20 +8,37 @@ import { formMembershipBufferDataTableHeaders } from "~/utils/tableHeaders";
 
 interface MatrimonyBufferTableProps {
   matrimonyBufferData: MatrimonyBufferDataType[];
-  showApproved: boolean;
+  filterState: string;
+  searchTerm: string;
 }
 
 const MatrimonyBufferTable: React.FC<MatrimonyBufferTableProps> = ({
   matrimonyBufferData,
-  showApproved,
+  filterState,
+  searchTerm,
 }) => {
   const [, setProfileAtom] = useProfileAtom();
-  console.log(matrimonyBufferData);
+
+  const filteredData = useMemo(() => {
+    if (!searchTerm || searchTerm.trim() === "") {
+      return matrimonyBufferData;
+    }
+
+    const lowercaseSearchTerm = searchTerm.toLowerCase();
+    return matrimonyBufferData.filter((buffer) => {
+      const fullName =
+        `${buffer?.submission.personalInfo.firstName} ${buffer?.submission.personalInfo.lastName}`.toLowerCase();
+      return fullName.includes(lowercaseSearchTerm);
+    });
+  }, [matrimonyBufferData, searchTerm]);
+
   return (
     <TableLayout tableHeaders={formMembershipBufferDataTableHeaders}>
-      {matrimonyBufferData
+      {filteredData
         .filter((buffer) =>
-          showApproved
+          filterState === "All"
+            ? buffer.status === "APPROVED" || "PENDING"
+            : filterState === "Approved"
             ? buffer.status === "APPROVED"
             : buffer.status === "PENDING"
         )

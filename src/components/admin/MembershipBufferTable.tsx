@@ -19,7 +19,7 @@ const MembershipBufferTable: React.FC<MembershipBufferTableProps> = ({
 
   const filteredData = useMemo(() => {
     if (!searchTerm || searchTerm.trim() === "") {
-      return membershipBufferData; // No filter applied if searchTerm is empty
+      return membershipBufferData;
     }
 
     const lowercaseSearchTerm = searchTerm.toLowerCase();
