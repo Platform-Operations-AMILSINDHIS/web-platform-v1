@@ -4,47 +4,24 @@ import { Form, Formik } from "formik";
 import { LabelledInput } from "../forms";
 import { AdminLoginValidation } from "~/validations/AuthValidations";
 
-import React, { useState } from "react";
+import React from "react";
 import { AdminLoginValues, adminInitialLoginValues } from "~/hooks/useForm";
-import { useAdminAtom } from "~/lib/atom";
-import useAdminAuth from "~/hooks/useAdminAuth";
 
-const Admin: React.FC = () => {
-  const [{}, setAdminAtom] = useAdminAtom();
-  const { handleAdminLogin } = useAdminAuth();
+interface AdminProps {
+  handleSubmit: (values: AdminLoginValues) => void;
+  submitting: boolean;
+  errorTrigger: boolean;
+  errorMessage: string;
+  loginStatus: boolean;
+}
 
-  const [submitting, setSubmitting] = useState<boolean>(false);
-  const [errorTrigger, setErrorTrigger] = useState<boolean>(false);
-
-  const [errorMessage, setErrorMessage] = useState<string>("");
-
-  const handleSubmit = async (values: AdminLoginValues) => {
-    setSubmitting(true);
-    const { loginStatus, message, redirect, admin } = await handleAdminLogin(
-      values.email,
-      values.password
-    );
-
-    if (loginStatus === true && admin) {
-      setAdminAtom({
-        admin: {
-          admin_email: admin.admin_email,
-          admin_username: admin.admin_username,
-          id: admin.id,
-        },
-      });
-      window.location.href = `${redirect}`;
-      setSubmitting(false);
-    } else if (loginStatus === false) {
-      setErrorTrigger(true);
-      setErrorMessage(message);
-      setTimeout(() => {
-        setErrorTrigger(false);
-      }, 3000);
-      setSubmitting(false);
-    }
-  };
-
+const Admin: React.FC<AdminProps> = ({
+  errorMessage,
+  errorTrigger,
+  submitting,
+  loginStatus,
+  handleSubmit,
+}) => {
   return (
     <Formik
       validationSchema={AdminLoginValidation}
@@ -106,9 +83,9 @@ const Admin: React.FC = () => {
                 bg: "gray.700",
               }}
               color="white"
-              bg="#0E0E11"
+              bg={loginStatus ? "green.500" : "#0E0E11"}
             >
-              Login
+              {loginStatus ? `Logged In` : "Login"}
             </Button>
           </Flex>
         </Flex>
