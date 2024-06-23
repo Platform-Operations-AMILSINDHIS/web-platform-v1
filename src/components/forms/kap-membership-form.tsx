@@ -186,7 +186,11 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC<
         ProposerDetailsSection,
         MembershipDetailsSection,
       ].map((FormSection, i) => (
-        <>{activeStep === i + 1 && <FormSection user={user} key={i} />}</>
+        <>
+          {activeStep === i + 1 && (
+            <FormSection user={user as userAtomBody} key={i} />
+          )}
+        </>
       ))}
 
       <Spacer h="2rem" />

@@ -49,6 +49,7 @@ import type { InputType } from "./kap-membership-form";
 import { focusAtom } from "jotai-optics";
 
 import { api } from "~/utils/api";
+import { userAtomBody } from "~/types/atoms/users";
 
 const steps = [
   {
@@ -196,7 +197,7 @@ const MatrimonyForm: React.FC<MatrimonyFormProps> = ({
         <>
           {activeStep === i + 1 && (
             <FormSection
-              user={user}
+              user={user as userAtomBody}
               submissionVerification={submissionVerification}
               approved={approved}
               key={i}
