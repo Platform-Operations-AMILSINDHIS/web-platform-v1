@@ -2,7 +2,7 @@ import { Button, Td, Tr } from "@chakra-ui/react";
 import { useMemo } from "react";
 import TableLayout from "~/layouts/TableLayout";
 import { useProfileAtom } from "~/lib/atom";
-import { MatrimonyBufferDataType } from "~/types/tables/dataBuffer";
+import { MatrimonyBufferDataType, Status } from "~/types/tables/dataBuffer";
 import { formatCreatedTime } from "~/utils/helper";
 import { formMembershipBufferDataTableHeaders } from "~/utils/tableHeaders";
 
@@ -37,10 +37,10 @@ const MatrimonyBufferTable: React.FC<MatrimonyBufferTableProps> = ({
       {filteredData
         .filter((buffer) =>
           filterState === "All"
-            ? buffer.status === "APPROVED" || "PENDING"
+            ? buffer.status === Status.APPROVED || Status.PENDING
             : filterState === "Approved"
-            ? buffer.status === "APPROVED"
-            : buffer.status === "PENDING"
+            ? buffer.status === Status.APPROVED
+            : buffer.status === Status.PENDING
         )
         .map((buffer, index) => {
           return (

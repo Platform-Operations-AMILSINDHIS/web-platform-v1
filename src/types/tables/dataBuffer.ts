@@ -5,7 +5,7 @@ import {
 
 import { MatrimonyFormValues } from "../forms/matrimony";
 
-enum Status {
+export enum Status {
   APPROVED = "APPROVED",
   PENDING = "PENDING",
   REJECTED = "REJECTED",

@@ -77,7 +77,7 @@ export interface YoungAmilCircleMembershipFormProps
   extends KAPFormSectionProps {}
 
 export interface MatrimonyFormSectionProps {
-  user: userAtomBody;
+  user?: userAtomBody;
   submissionVerification?: boolean;
   approved?: boolean;
 }
