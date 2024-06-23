@@ -27,7 +27,11 @@ const Admin: React.FC<AdminProps> = ({
       validationSchema={AdminLoginValidation}
       initialValues={adminInitialLoginValues}
       onSubmit={async (values) => {
-        await handleSubmit(values);
+        try {
+          await handleSubmit(values);
+        } catch (err) {
+          console.log(err);
+        }
       }}
     >
       <Form>
