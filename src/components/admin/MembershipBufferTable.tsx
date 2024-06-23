@@ -2,7 +2,7 @@ import { Button, Td, Tr } from "@chakra-ui/react";
 import { useMemo } from "react";
 import TableLayout from "~/layouts/TableLayout";
 import { useProfileAtom } from "~/lib/atom";
-import { MembershipBufferDataType } from "~/types/tables/dataBuffer";
+import { MembershipBufferDataType, Status } from "~/types/tables/dataBuffer";
 import { formatCreatedTime } from "~/utils/helper";
 import { formMembershipBufferDataTableHeaders } from "~/utils/tableHeaders";
 
@@ -36,10 +36,10 @@ const MembershipBufferTable: React.FC<MembershipBufferTableProps> = ({
       {filteredData
         .filter((buffer) =>
           filterState === "All"
-            ? buffer.status === "APPROVED" || "PENDING"
+            ? buffer.status === Status.APPROVED || Status.PENDING
             : filterState === "Approved"
-            ? buffer.status === "APPROVED"
-            : buffer.status === "PENDING"
+            ? buffer.status === Status.APPROVED
+            : buffer.status === Status.PENDING
         )
         .map((buffer, index) => {
           return (
