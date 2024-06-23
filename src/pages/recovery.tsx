@@ -65,7 +65,7 @@ const RecoveryPage = () => {
             <Flex gap={3}>
               <Button
                 isLoading={submitting}
-                onClick={handlePasswordReset}
+                onClick={() => void handlePasswordReset()}
                 _hover={{
                   bg: "gray.700",
                 }}

@@ -6,6 +6,7 @@ import { useUserAtom } from "~/lib/atom";
 
 import MatrimonyForm from "~/components/forms/matrimony-form";
 import useServerActions from "~/hooks/useServerActions";
+import Link from "next/link";
 
 const MatrimonyFormSection = () => {
   const [{ user }] = useUserAtom();
@@ -43,8 +44,12 @@ const MatrimonyFormSection = () => {
   };
 
   useEffect(() => {
-    if (user && user.id) {
-      SendSubmissionVerificationQueryToServer(user.id);
+    const f = async (user_id: string) => {
+      await SendSubmissionVerificationQueryToServer(user_id);
+    };
+
+    if (user?.id) {
+      f(user.id);
       console.log({ noPending, submissionVerified, approved });
     } else {
       setLoading(false);
@@ -126,7 +131,7 @@ const MatrimonyFormSection = () => {
                     <Text textAlign="center">
                       Congratulations on your application being approved, you
                       can head over to
-                      <a
+                      <Link
                         href="/matches"
                         style={{
                           color: "#FF4D00",
@@ -134,8 +139,8 @@ const MatrimonyFormSection = () => {
                         }}
                       >
                         https://amilsindhis.org/matches
-                      </a>{" "}
-                      to request information on any particular individual's
+                      </Link>{" "}
+                      to request information on any particular individual&apos;s
                       profile that suits you
                     </Text>
                   </>
