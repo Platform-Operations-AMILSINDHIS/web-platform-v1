@@ -137,7 +137,7 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
               <Flex gap={3}>
                 <Button
                   onClick={() =>
-                    handleAcceptRequest(
+                    void handleAcceptRequest(
                       request.requested_id,
                       request.email_id,
                       request.id,
@@ -164,7 +164,7 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
                 </Button>
                 <Button
                   onClick={() =>
-                    handleDeclineRequest(
+                    void handleDeclineRequest(
                       request.email_id,
                       request.id,
                       request.requested_id,
