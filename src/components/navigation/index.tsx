@@ -98,7 +98,7 @@ const Navigation: React.FC<NavigationProps> = ({
         </Flex>
 
         {user ? (
-          <AccountDisplay matrimonyAccess={matrimonyAccess} user={user} />
+          <AccountDisplay user={user} />
         ) : (
           <Flex gap={3} color="gray.700">
             <ModalButton
