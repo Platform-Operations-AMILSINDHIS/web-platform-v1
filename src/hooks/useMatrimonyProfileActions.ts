@@ -7,6 +7,12 @@ interface useMatrimonyProfileActionsProps {
   matrimonyID: string;
 }
 
+type HandleMatrimonyIDFetch = (user_id: string) => Promise<{
+  status: boolean;
+  matrimony_id: string;
+  message: string;
+}>;
+
 const useMatrimonyProfileActions = ({
   matrimonyID,
   user,
@@ -22,17 +28,14 @@ const useMatrimonyProfileActions = ({
 
   const handleSelectChange = async (
     event: React.ChangeEvent<HTMLSelectElement>,
-    handleMatrimonyIDFetch: (user_id: string) => {
-      status: boolean;
-      matrimony_id: string;
-      message: string;
-    },
+    handleMatrimonyIDFetch: HandleMatrimonyIDFetch, // Specify the correct type
     matrimonyProfiles: MatrimonyProfilesFetchResponse[]
   ) => {
     setTriggerError(false);
     setSelectingProfile(true);
     const selectedValue = event.target.value;
     setSelectedOption(selectedValue);
+
     const notty = await handleMatrimonyIDFetch(event.target.value);
 
     const filtered = matrimonyProfiles.filter(
@@ -61,12 +64,13 @@ const useMatrimonyProfileActions = ({
       setFetchStatus: (status: boolean) => void
     ) => void,
     handleMatrimonyRequestProfile: (
+      // Define a more specific return type
       requestee_name: string,
       requestee_id: string,
       requested_name: string,
       requested_id: string
-    ) => { status: true },
-    toast: (options: any) => void
+    ) => Promise<{ status: boolean }>, // Promise expected
+    toast: (options: any) => void // Consider handling potential null or undefined
   ) => {
     setTriggerError(false);
     setRequesting(true);
@@ -78,7 +82,7 @@ const useMatrimonyProfileActions = ({
       return;
     }
 
-    console.log("successs");
+    console.log("success");
 
     await handleMatrimonyRequestProfile(
       user?.first_name ?? "",
@@ -89,14 +93,21 @@ const useMatrimonyProfileActions = ({
 
     setRequesting(false);
     handleCloseSelectionModal(setProfileMatID, setFetchStatus);
-    toast({
-      title: "Profile Request Sent",
-      description: "Your request has been sent to the community",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
+
+    // Handle potential null or undefined toast:
+    if (toast) {
+      toast({
+        title: "Profile Request Sent",
+        description: "Your request has been sent to the community",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      console.warn("Toast is not available for displaying messages.");
+    }
   };
+
   return {
     fetchStatus,
     profileMatID,
