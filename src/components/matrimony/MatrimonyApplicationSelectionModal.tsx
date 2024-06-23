@@ -55,7 +55,7 @@ const MatrimonyApplicationSelectionModal: React.FC<
   const [profileMatID, setProfileMatID] = useState<string | undefined>("");
 
   const { handleMatrimonyRequestProfile } = useServerActions();
-  const toast = useToast();
+  const toast = useToast()!;
 
   const handleSelectChange = async (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -129,8 +129,8 @@ const MatrimonyApplicationSelectionModal: React.FC<
     >
       <Flex gap={3} flexDir="column">
         <Text textAlign="center" fontWeight={500}>
-          Select a profile from the drop down to request it's information. The
-          team will get back to you in 3 to 4 days
+          Select a profile from the drop down to request it&apos;s information.
+          The team will get back to you in 3 to 4 days
         </Text>
         <Flex w="full" justify="center">
           <Flex
@@ -162,7 +162,7 @@ const MatrimonyApplicationSelectionModal: React.FC<
             fontWeight={500}
             border="1px solid"
             borderColor={triggerError ? "red.400" : "gray.500"}
-            onChange={handleSelectChange}
+            onChange={(e) => void handleSelectChange(e)}
             placeholder="Select Profile"
           >
             {matrimonyProfiles
@@ -204,7 +204,7 @@ const MatrimonyApplicationSelectionModal: React.FC<
             }}
             color="white"
             bg="#0E0E11"
-            onClick={() => ProcessingRequestProfile()}
+            onClick={() => void ProcessingRequestProfile()}
           >
             Request Profile
           </Button>
