@@ -49,6 +49,7 @@ import { type InputType } from "./kap-membership-form";
 import usePayment from "~/hooks/usePayment";
 
 import { api } from "~/utils/api";
+import { userAtomBody } from "~/types/atoms/users";
 
 const steps = [
   {
@@ -228,7 +229,13 @@ export const PersonalInformationSection: React.FC<YACFormSectionProps> = ({
                   label={label}
                   type={inputType ? (inputType as InputType) : "text"}
                   required={required}
-                  isDisabled={user ? (user.YAC_member ? true : false) : true} // parameter to prevent interaction with first form phase
+                  isDisabled={
+                    user
+                      ? (user as userAtomBody).YAC_member
+                        ? true
+                        : false
+                      : true
+                  } // parameter to prevent interaction with first form phase
                 />
               ))}
             </Grid>

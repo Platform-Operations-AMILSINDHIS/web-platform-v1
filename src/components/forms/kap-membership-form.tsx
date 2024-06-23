@@ -47,6 +47,7 @@ import {
 import usePayment from "~/hooks/usePayment";
 
 import { api } from "~/utils/api";
+import { userAtomBody } from "~/types/atoms/users";
 
 const steps = [
   {
@@ -237,7 +238,13 @@ export const PersonalInformationSection: React.FC<KAPFormSectionProps> = ({
                   label={label}
                   type={inputType ? (inputType as InputType) : "text"}
                   required={required}
-                  isDisabled={user ? (user.KAP_member ? true : false) : true} // parameter to prevent interaction with first form phase
+                  isDisabled={
+                    user
+                      ? (user as userAtomBody)?.KAP_member
+                        ? true
+                        : false
+                      : true
+                  } // parameter to prevent interaction with first form phase
                 />
               ))}
             </Grid>
@@ -262,7 +269,13 @@ export const PersonalInformationSection: React.FC<KAPFormSectionProps> = ({
                   label={label}
                   name={name ?? label}
                   required={required}
-                  isDisabled={user ? (user.KAP_member ? true : false) : true} // parameter to prevent interaction with first form phase
+                  isDisabled={
+                    user
+                      ? (user as userAtomBody).KAP_member
+                        ? true
+                        : false
+                      : true
+                  } // parameter to prevent interaction with first form phase
                 />
               ))}
             </Grid>
