@@ -8,7 +8,7 @@ import React from "react";
 import { AdminLoginValues, adminInitialLoginValues } from "~/hooks/useForm";
 
 interface AdminProps {
-  handleSubmit: (values: AdminLoginValues) => void;
+  handleSubmit: (values: AdminLoginValues) => Promise<void>;
   submitting: boolean;
   errorTrigger: boolean;
   errorMessage: string;

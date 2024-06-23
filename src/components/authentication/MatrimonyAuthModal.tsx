@@ -11,7 +11,7 @@ interface MatrimonyAuthModalProps {
   handleFormSubmit: (
     values: MatrimonyLoginValues,
     setErrors: FormikHelpers<MatrimonyLoginValues>
-  ) => void;
+  ) => Promise<void>;
 }
 
 const MatrimonyAuthModal: React.FC<MatrimonyAuthModalProps> = ({

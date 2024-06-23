@@ -104,8 +104,12 @@ const ProfilePage = () => {
   };
 
   useEffect(() => {
-    fetchProfiles();
-    fetchProfileRequests();
+    const fetchPageData = async () => {
+      await fetchProfiles();
+      await fetchProfileRequests();
+    };
+
+    fetchPageData();
   }, [matrimonyProfiles, isLoggedIn]);
 
   return (
@@ -133,7 +137,9 @@ const ProfilePage = () => {
         handleFormSubmit={handleFormSubmit}
         isSubmitting={isSubmitting}
         modalState={!isLoggedIn}
-        handleModal={() => {}}
+        handleModal={() => {
+          console.log("Hi");
+        }}
       />
       <MatrimonyProfilesView
         isLoggedIn={isLoggedIn}
