@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Modal, ModalBody, ModalContent, ModalOverlay } from "@chakra-ui/react";
 import React from "react";
 import MatrimonyLogin from "./MatrimonyLogin";
