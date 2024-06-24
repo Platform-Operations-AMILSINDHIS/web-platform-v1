@@ -5,7 +5,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import { navigation } from "../constants/LandingConstants.json";
 import { useRouter } from "next/router";
 import Footer from "./Footer";
-import Navigation from "./Navigation";
+import Navigation from "./navigation";
 
 const Layout: React.FC<{
   title?: string;
