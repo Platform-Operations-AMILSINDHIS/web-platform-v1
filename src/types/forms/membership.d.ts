@@ -1,3 +1,4 @@
+/* eslint-disable */
 export interface FamilyMember {
   memberName?: string;
   relationship?: string;

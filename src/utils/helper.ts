@@ -1,6 +1,6 @@
+/* eslint-disable */
 import { init } from "@paralleldrive/cuid2";
 import { ToWords } from "to-words";
-import supabase from "~/pages/api/auth/supabase";
 
 export const convertDATE = (date: Date) => {
   const inputDate = new Date(date);

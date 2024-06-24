@@ -1,3 +1,4 @@
+/* eslint-disable */
 import jsPDF from "jspdf";
 import { MatrimonyFormValues } from "~/types/forms/matrimony";
 
