@@ -2,7 +2,7 @@
 import supabase from "~/pages/api/auth/supabase";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import * as Yup from "yup";
-import { sendAcceptRequestMail, sendDeclineRequestMail } from "~/server/mail";
+import { sendDeclineRequestMail } from "~/server/mail";
 import { matrimonyFormValuesSchema } from "~/utils/schemas";
 
 const profilRequests = createTRPCRouter({
