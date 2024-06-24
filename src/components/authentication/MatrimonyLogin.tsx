@@ -12,7 +12,7 @@ interface MatrimonyLoginProps {
   handleFormSubmit: (
     values: MatrimonyLoginValues,
     setErrors: FormikHelpers<MatrimonyLoginValues>
-  ) => void;
+  ) => Promise<void>;
 }
 
 const MatrimonyLogin: React.FC<MatrimonyLoginProps> = ({

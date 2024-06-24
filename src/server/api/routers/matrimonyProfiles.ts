@@ -50,7 +50,7 @@ const matrimonyProfiles = createTRPCRouter({
           .eq("matrimony_id", matrimony_id);
 
         if (VerifyError)
-          throw new Error(`Error while Verifying: ${VerifyError}`);
+          throw new Error(`Error while Verifying: ${VerifyError.message}`);
 
         if (ProfileData.length < 0)
           return { status: true, statusText: "Invalid Mat ID" };
@@ -142,7 +142,7 @@ const matrimonyProfiles = createTRPCRouter({
           console.log(fetchIDResponse);
           return {
             status: true,
-            matrimony_id: fetchIDResponse[0]?.matrimony_id,
+            matrimony_id: fetchIDResponse[0]?.matrimony_id as string,
             message: "",
           };
         } else {

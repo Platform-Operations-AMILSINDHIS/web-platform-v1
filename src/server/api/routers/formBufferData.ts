@@ -1,3 +1,4 @@
+/* eslint-disable */
 import supabase from "~/pages/api/auth/supabase";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 

@@ -49,8 +49,8 @@ const useMatrimonyProfileActions = ({
       setFetchStatus(false);
       setSelectingProfile(false);
     } else {
-      setProfileMatID(notty.matrimony_id ?? "");
-      setProfileName(filtered[0]?.submission.personalInfo.firstName as string);
+      setProfileMatID(notty.matrimony_id!);
+      setProfileName(filtered[0]?.submission.personalInfo.firstName!);
       console.log(profileMatID);
       setFetchStatus(notty.status);
       setSelectingProfile(false);

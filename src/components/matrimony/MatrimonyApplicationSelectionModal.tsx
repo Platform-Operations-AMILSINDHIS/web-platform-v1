@@ -77,7 +77,7 @@ const MatrimonyApplicationSelectionModal: React.FC<
       setFetchStatus(false);
       setSelectingProfile(false);
     } else {
-      setProfileMatID(notty.matrimony_id ?? "");
+      setProfileMatID(notty.matrimony_id!);
       setProfileName(filtered[0]?.submission.personalInfo.firstName as string);
       console.log(profileMatID);
       setFetchStatus(notty.status);

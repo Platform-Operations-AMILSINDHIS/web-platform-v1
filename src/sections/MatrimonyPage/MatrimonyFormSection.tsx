@@ -49,6 +49,7 @@ const MatrimonyFormSection = () => {
     };
 
     if (user?.id) {
+      // eslint-disable-next-line typescript-eslint/no-floating-promises
       f(user.id);
       console.log({ noPending, submissionVerified, approved });
     } else {

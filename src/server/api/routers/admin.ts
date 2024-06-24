@@ -21,6 +21,7 @@ const adminRouter = createTRPCRouter({
             loginStatus: true,
             message: "",
             redirect: "/admin",
+            // eslint-disable-next-line typescript-eslint/no-unsafe-assignment
             admin: FetchedAdmin[0],
           };
         } else {
