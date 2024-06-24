@@ -21,13 +21,13 @@
       "~/*": ["./src/*"]
     }
   },
-  "exclude": [
+  "include": [
     ".eslintrc.cjs",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     "**/*.cjs",
-    "**/*.mjs",
-    "node_modules"
-  ]
+    "**/*.mjs"
+  ],
+  "exclude": ["node_modules"]
 }

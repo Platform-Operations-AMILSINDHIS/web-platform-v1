@@ -21,7 +21,7 @@ import type {
   YACMembershipFormValues,
 } from "~/types/forms/membership";
 import { createId } from "~/utils/helper";
-import generateMatrimonyProfilePDF from "./pdfs/profile-pdf";
+// import generateMatrimonyProfilePDF from "./pdfs/profile-pdf";
 
 // const transporter = nodemailer.createTransport({
 //   host: "smtp.gmail.com",
@@ -222,23 +222,23 @@ export const sendDeclineRequestMail = async ({
   await sendMail({ html, subject, to });
 };
 
-export const sendAcceptRequestMail = async ({
-  requested_MatID,
-  requested_name,
-  submission,
-  to,
-}: AcceptProfileRequestMail) => {
-  const matrimonyProfilePDF = generateMatrimonyProfilePDF(submission);
-  const attachments = [
-    {
-      filename: `${requested_name}_${requested_MatID}.pdf`,
-      content: Buffer.from(matrimonyProfilePDF),
-    },
-  ];
-  const subject = `Profile Request for ${requested_name}, ${requested_MatID}`;
-  const html = `Your Request for matrimony profile data of ${requested_name} has been approved. PFA the attached document`;
-  await sendMail({ to, html, subject, attachments });
-};
+// export const sendAcceptRequestMail = async ({
+//   requested_MatID,
+//   requested_name,
+//   submission,
+//   to,
+// }: AcceptProfileRequestMail) => {
+//   const matrimonyProfilePDF = generateMatrimonyProfilePDF(submission);
+//   const attachments = [
+//     {
+//       filename: `${requested_name}_${requested_MatID}.pdf`,
+//       content: Buffer.from(matrimonyProfilePDF),
+//     },
+//   ];
+//   const subject = `Profile Request for ${requested_name}, ${requested_MatID}`;
+//   const html = `Your Request for matrimony profile data of ${requested_name} has been approved. PFA the attached document`;
+//   await sendMail({ to, html, subject, attachments });
+// };
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 export const sendMatrimonyFormNotificationMail = async (

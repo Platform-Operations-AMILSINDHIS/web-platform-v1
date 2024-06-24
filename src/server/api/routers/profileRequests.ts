@@ -81,12 +81,12 @@ const profilRequests = createTRPCRouter({
 
         if (rowTerminationError) throw rowTerminationError;
 
-        await sendAcceptRequestMail({
-          to: email_id ?? "",
-          submission: submission as any,
-          requested_MatID: requested_id ?? "",
-          requested_name: requested_name ?? "",
-        });
+        // await sendAcceptRequestMail({
+        //   to: email_id ?? "",
+        //   submission: submission as any,
+        //   requested_MatID: requested_id ?? "",
+        //   requested_name: requested_name ?? "",
+        // });
 
         return {
           message: `Profile Request for ${requested_name},${requested_id} Accepted`,
