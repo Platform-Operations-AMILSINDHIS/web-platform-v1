@@ -77,9 +77,6 @@ dependencies:
   '@types/bcrypt':
     specifier: ^5.0.1
     version: 5.0.2
-  '@types/jspdf':
-    specifier: ^2.0.0
-    version: 2.0.0
   '@types/lodash':
     specifier: ^4.14.197
     version: 4.17.4
@@ -205,6 +202,9 @@ devDependencies:
   '@types/eslint':
     specifier: ^8.37.0
     version: 8.56.10
+  '@types/jspdf':
+    specifier: ^2.0.0
+    version: 2.0.0
   '@types/node':
     specifier: ^18.16.0
     version: 18.19.33
@@ -4657,7 +4657,7 @@ packages:
     deprecated: This is a stub types definition. jspdf provides its own type definitions, so you do not need this installed.
     dependencies:
       jspdf: 2.5.1
-    dev: false
+    dev: true
 
   /@types/lodash.mergewith@4.6.7:
     resolution: {integrity: sha512-3m+lkO5CLRRYU0fhGRp7zbsGi6+BZj0uTVSwvcKU+nSlhjA9/QRNfuSGnD2mX6hQA7ZbmcCkzk5h4ZYGOtk14A==}
@@ -4698,7 +4698,6 @@ packages:
   /@types/raf@3.4.3:
     resolution: {integrity: sha512-c4YAvMedbPZ5tEyxzQdMoOhhJ4RD3rngZIdwC2/qDN3d7JpEhB6fiBRKVY1lg5B7Wk+uPBjn5f39j1/2MY1oOw==}
     requiresBuild: true
-    dev: false
     optional: true
 
   /@types/react-datepicker@4.19.6(react-dom@18.2.0)(react@18.2.0):
@@ -5209,7 +5208,6 @@ packages:
     resolution: {integrity: sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==}
     engines: {node: '>= 4.5.0'}
     hasBin: true
-    dev: false
 
   /attr-accept@2.2.2:
     resolution: {integrity: sha512-7prDjvt9HmqiZ0cl5CRjtS84sEyhsHP2coDkaZKRKVfCDo9s7iw7ChVmar78Gu9pC4SoR/28wFu/G5JJhTnqEg==}
@@ -5320,7 +5318,6 @@ packages:
     resolution: {integrity: sha512-I3yl4r9QB5ZRY3XuJVEPfc2XhZO6YweFPI+UovAzn+8/hb3oJ6lnysaFcjVpkCPfVWFUDvoZ8kmVDP7WyRtYtQ==}
     engines: {node: '>= 0.6.0'}
     requiresBuild: true
-    dev: false
     optional: true
 
   /base64-js@1.5.1:
@@ -5420,7 +5417,6 @@ packages:
     resolution: {integrity: sha512-SB4/MIGlsiVkMcHmT+pSmIPoNDoHg+7cMzmt3Uxt628MTz2487DKSqK/fuhFBrkuqrYv5UCEnACpF4dTFNKc/g==}
     engines: {node: '>= 0.4.0'}
     hasBin: true
-    dev: false
 
   /buffer-equal-constant-time@1.0.1:
     resolution: {integrity: sha512-zRpUiDwd/xk6ADqPMATG8vc9VPrkck7T07OIx0gnjmJAnHnTVXNQG3vfvWNuiZIkwu9KrKdA1iJKfsfTVxE6NA==}
@@ -5491,7 +5487,6 @@ packages:
       rgbcolor: 1.0.1
       stackblur-canvas: 2.7.0
       svg-pathdata: 6.0.3
-    dev: false
     optional: true
 
   /capital-case@1.0.4:
@@ -5756,7 +5751,6 @@ packages:
   /core-js@3.37.1:
     resolution: {integrity: sha512-Xn6qmxrQZyB0FFY8E3bgRXei3lWDJHhvI+u0q9TKIYM49G8pAr0FgnnrFRAmsbptZL1yxRADVXn+x5AGsbBfyw==}
     requiresBuild: true
-    dev: false
     optional: true
 
   /core-util-is@1.0.3:
@@ -5828,7 +5822,6 @@ packages:
     requiresBuild: true
     dependencies:
       utrie: 1.0.2
-    dev: false
     optional: true
 
   /cssesc@3.0.0:
@@ -6015,7 +6008,6 @@ packages:
   /dompurify@2.5.5:
     resolution: {integrity: sha512-FgbqnEPiv5Vdtwt6Mxl7XSylttCC03cqP5ldNT2z+Kj0nLxPHJH4+1Cyf5Jasxhw93Rl4Oo11qRoUV72fmya2Q==}
     requiresBuild: true
-    dev: false
     optional: true
 
   /dot-case@3.0.4:
@@ -6599,7 +6591,6 @@ packages:
 
   /fflate@0.4.8:
     resolution: {integrity: sha512-FJqqoDBR00Mdj9ppamLa/Y7vxm+PRmNWA67N846RvsoYVMKB4q3y/de5PA7gUmRMYK/8CMz2GDZQmCRN1wBcWA==}
-    dev: false
 
   /figures@3.2.0:
     resolution: {integrity: sha512-yaduQFRKLXYOGgEn6AZau90j3ggSOyiqXU0F9JZfeXYhNa+Jk4X+s45A2zg5jns87GAFa34BBm2kXw4XpNcbdg==}
@@ -7172,7 +7163,6 @@ packages:
     dependencies:
       css-line-break: 2.1.0
       text-segmentation: 1.0.3
-    dev: false
     optional: true
 
   /http-proxy-agent@7.0.2:
@@ -7708,7 +7698,6 @@ packages:
       core-js: 3.37.1
       dompurify: 2.5.5
       html2canvas: 1.4.1
-    dev: false
 
   /jsx-ast-utils@3.3.5:
     resolution: {integrity: sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==}
@@ -8470,7 +8459,6 @@ packages:
   /performance-now@2.1.0:
     resolution: {integrity: sha512-7EAHlyLHI56VEIdK57uwHdHKIaAGbnXPiw0yWbarQZOKaKpvUIgW0jWRVLiatnM+XXlSwsanIBH/hzGMJulMow==}
     requiresBuild: true
-    dev: false
     optional: true
 
   /picocolors@1.0.1:
@@ -8722,7 +8710,6 @@ packages:
     requiresBuild: true
     dependencies:
       performance-now: 2.1.0
-    dev: false
     optional: true
 
   /razorpay@2.9.4:
@@ -9033,7 +9020,6 @@ packages:
   /regenerator-runtime@0.13.11:
     resolution: {integrity: sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==}
     requiresBuild: true
-    dev: false
     optional: true
 
   /regenerator-runtime@0.14.1:
@@ -9144,7 +9130,6 @@ packages:
     resolution: {integrity: sha512-9aZLIrhRaD97sgVhtJOW6ckOEh6/GnvQtdVNfdZ6s67+3/XwLS9lBcQYzEEhYVeUowN7pRzMLsyGhK2i/xvWbw==}
     engines: {node: '>= 0.8.15'}
     requiresBuild: true
-    dev: false
     optional: true
 
   /rimraf@3.0.2:
@@ -9357,7 +9342,6 @@ packages:
     resolution: {integrity: sha512-yf7OENo23AGJhBriGx0QivY5JP6Y1HbrrDI6WLt6C5auYZXlQrheoY8hD4ibekFKz1HOfE48Ww8kMWMnJD/zcQ==}
     engines: {node: '>=0.1.14'}
     requiresBuild: true
-    dev: false
     optional: true
 
   /streamsearch@1.1.0:
@@ -9540,7 +9524,6 @@ packages:
     resolution: {integrity: sha512-qsjeeq5YjBZ5eMdFuUa4ZosMLxgr5RZ+F+Y1OrDhuOCEInRMA3x74XdBtggJcj9kOeInz0WE+LgCPDkZFlBYJw==}
     engines: {node: '>=12.0.0'}
     requiresBuild: true
-    dev: false
     optional: true
 
   /swap-case@2.0.2:
@@ -9607,7 +9590,6 @@ packages:
     requiresBuild: true
     dependencies:
       utrie: 1.0.2
-    dev: false
     optional: true
 
   /text-table@0.2.0:
@@ -9940,7 +9922,6 @@ packages:
     requiresBuild: true
     dependencies:
       base64-arraybuffer: 1.0.2
-    dev: false
     optional: true
 
   /uuid@8.3.2:
