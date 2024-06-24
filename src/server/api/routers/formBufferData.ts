@@ -101,7 +101,9 @@ const formBufferData = createTRPCRouter({
 
         if (fetchSubmissionError) throw fetchSubmissionError;
 
-        return userFormSubmission[0]?.submission;
+        return {
+          submission: userFormSubmission[0]?.submission,
+        };
       } catch (err) {
         console.log(err);
       }

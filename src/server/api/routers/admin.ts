@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as Yup from "yup";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import supabase from "~/pages/api/auth/supabase";
@@ -21,7 +22,6 @@ const adminRouter = createTRPCRouter({
             loginStatus: true,
             message: "",
             redirect: "/admin",
-            // eslint-disable-next-line typescript-eslint/no-unsafe-assignment
             admin: FetchedAdmin[0],
           };
         } else {

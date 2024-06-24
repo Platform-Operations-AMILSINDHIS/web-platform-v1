@@ -109,8 +109,9 @@ const ProfilePage = () => {
       await fetchProfileRequests();
     };
 
-    // eslint-disable-next-line typescript-eslint/no-floating-promises
-    fetchPageData();
+    fetchPageData()
+      .then(() => console.log("done"))
+      .catch((err) => console.log(err));
   }, [matrimonyProfiles, isLoggedIn]);
 
   return (

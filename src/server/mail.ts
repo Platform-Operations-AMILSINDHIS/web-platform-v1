@@ -228,8 +228,7 @@ export const sendAcceptRequestMail = async ({
   submission,
   to,
 }: AcceptProfileRequestMail) => {
-  // eslint-disable-next-line typescript-eslint/await-thenable
-  const matrimonyProfilePDF = await generateMatrimonyProfilePDF(submission);
+  const matrimonyProfilePDF = generateMatrimonyProfilePDF(submission);
   const attachments = [
     {
       filename: `${requested_name}_${requested_MatID}.pdf`,

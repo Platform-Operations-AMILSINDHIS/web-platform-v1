@@ -46,15 +46,15 @@ const MatrimonyProfileView: React.FC<MatrimonyProfileViewProps> = ({
         <Flex display={selected_profile?.status === "APPROVED" ? "none" : ""}>
           <Button
             mr={3}
-            onClick={async () => {
-              await handleAcceptingUserMatrimonyApplication(
+            onClick={() =>
+              void handleAcceptingUserMatrimonyApplication(
                 user_id,
                 submission?.personalInfo.emailId,
                 setIsGeneratingID,
                 setIsSendingMail,
                 setIsApprovingApplication
-              );
-            }}
+              )
+            }
             style={btnThemeDark}
             size="md"
           >
@@ -72,8 +72,8 @@ const MatrimonyProfileView: React.FC<MatrimonyProfileViewProps> = ({
             )}
           </Button>
           <Button
-            onClick={async () =>
-              await handleRejectingUserMatrimonyApplication(
+            onClick={() =>
+              void handleRejectingUserMatrimonyApplication(
                 submission?.personalInfo.emailId,
                 user_id,
                 setIsSendingMail,

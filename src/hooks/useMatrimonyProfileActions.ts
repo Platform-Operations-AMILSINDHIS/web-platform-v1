@@ -1,3 +1,4 @@
+import { useToast } from "@chakra-ui/react";
 import { useState } from "react";
 import { MatrimonyProfilesFetchResponse } from "~/types/api";
 import { userAtomBody } from "~/types/atoms/users";
@@ -17,6 +18,8 @@ const useMatrimonyProfileActions = ({
   matrimonyID,
   user,
 }: useMatrimonyProfileActionsProps) => {
+  const toast = useToast()!;
+
   const [selectingProfile, setSelectingProfile] = useState<boolean>(false);
   const [triggerError, setTriggerError] = useState<boolean>(false);
   const [fetchStatus, setFetchStatus] = useState<boolean>(false);
@@ -49,8 +52,10 @@ const useMatrimonyProfileActions = ({
       setFetchStatus(false);
       setSelectingProfile(false);
     } else {
-      setProfileMatID(notty.matrimony_id!);
-      setProfileName(filtered[0]?.submission.personalInfo.firstName!);
+      setProfileMatID(notty.matrimony_id);
+      setProfileName(
+        filtered[0]?.submission.personalInfo.firstName ?? "Default Name"
+      );
       console.log(profileMatID);
       setFetchStatus(notty.status);
       setSelectingProfile(false);
@@ -69,8 +74,7 @@ const useMatrimonyProfileActions = ({
       requestee_id: string,
       requested_name: string,
       requested_id: string
-    ) => Promise<{ status: boolean }>, // Promise expected
-    toast: (options: any) => void // Consider handling potential null or undefined
+    ) => Promise<{ status: boolean }> // Promise expected
   ) => {
     setTriggerError(false);
     setRequesting(true);
@@ -95,17 +99,13 @@ const useMatrimonyProfileActions = ({
     handleCloseSelectionModal(setProfileMatID, setFetchStatus);
 
     // Handle potential null or undefined toast:
-    if (toast) {
-      toast({
-        title: "Profile Request Sent",
-        description: "Your request has been sent to the community",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
-    } else {
-      console.warn("Toast is not available for displaying messages.");
-    }
+    toast({
+      title: "Profile Request Sent",
+      description: "Your request has been sent to the community",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
   };
 
   return {

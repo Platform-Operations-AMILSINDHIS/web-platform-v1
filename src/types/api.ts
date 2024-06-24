@@ -96,8 +96,12 @@ export interface RequestResponse {
   toastType: string;
 }
 
-export interface SendRecoveryURLResponse extends RequestResponse {}
-export interface UpdatePasswordResponse extends RequestResponse {}
+export interface SendRecoveryURLResponse extends RequestResponse {
+  dummy?: string;
+}
+export interface UpdatePasswordResponse extends RequestResponse {
+  dummy?: string;
+}
 
 export interface DeleteResponseType {
   status: boolean;

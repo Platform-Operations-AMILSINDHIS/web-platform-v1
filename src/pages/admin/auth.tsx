@@ -59,7 +59,6 @@ const AdminAuthPage = () => {
           errorMessage={errorMessage}
           errorTrigger={errorTrigger}
           loginStatus={loginStatus}
-          // eslint-disable-next-line typescript-eslint/no-misused-promises
           handleSubmit={handleSubmit}
         />
       </Box>

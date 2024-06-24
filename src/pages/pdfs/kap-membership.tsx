@@ -66,7 +66,7 @@ const dummyKapForm: KAPMembershipFormValues = {
 const MembershipsHomePage: NextPage = () => {
   return (
     <Layout title="Home">
-      {/* <KAPMembershipPDF membershipNumber="#12345" kapForm={dummyKapForm} /> */}
+      <></>
     </Layout>
   );
 };
