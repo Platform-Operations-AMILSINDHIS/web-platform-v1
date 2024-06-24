@@ -11,6 +11,10 @@ enum Status {
   REJECTED = "REJECTED",
 }
 
+export interface FetchMembershipSubmissionResponse {
+  submission: MatrimonyFormValues;
+}
+
 export interface MatrimonySubmissionVerificationServerResponse {
   user_verification: boolean;
   user_matData: {

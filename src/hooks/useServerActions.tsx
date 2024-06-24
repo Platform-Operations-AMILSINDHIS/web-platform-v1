@@ -1,5 +1,6 @@
 import {
   DeleteResponseType,
+  FetchMembershipSubmissionResponse,
   FormBufferDataFetch,
   MatrimonyFormBufferDataFetch,
   MatrimonyIdFetchResponse,
@@ -122,13 +123,12 @@ const useServerActions = () => {
   const handleFetchUserSubmission = async (
     user_id: string,
     formType: string
-  ) => {
-    const data = await fetchUserSubmissionMut.mutateAsync({
+  ): Promise<FetchMembershipSubmissionResponse> => {
+    const response = await fetchUserSubmissionMut.mutateAsync({
       user_id: user_id,
       formType: formType,
     });
-    const response = data?.DB_submission_response;
-    return response;
+    return response as FetchMembershipSubmissionResponse;
   };
 
   const handleAcceptingUserApplication = async (

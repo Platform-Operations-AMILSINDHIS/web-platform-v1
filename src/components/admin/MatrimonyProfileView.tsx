@@ -46,8 +46,8 @@ const MatrimonyProfileView: React.FC<MatrimonyProfileViewProps> = ({
         <Flex display={selected_profile?.status === "APPROVED" ? "none" : ""}>
           <Button
             mr={3}
-            onClick={() => {
-              handleAcceptingUserMatrimonyApplication(
+            onClick={async () => {
+              await handleAcceptingUserMatrimonyApplication(
                 user_id,
                 submission?.personalInfo.emailId,
                 setIsGeneratingID,
@@ -72,8 +72,8 @@ const MatrimonyProfileView: React.FC<MatrimonyProfileViewProps> = ({
             )}
           </Button>
           <Button
-            onClick={() =>
-              handleRejectingUserMatrimonyApplication(
+            onClick={async () =>
+              await handleRejectingUserMatrimonyApplication(
                 submission?.personalInfo.emailId,
                 user_id,
                 setIsSendingMail,

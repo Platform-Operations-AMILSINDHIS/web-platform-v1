@@ -48,7 +48,7 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
 
     if (requested_profile_buffer_data) {
       const { message, toastType } = await handleAcceptMatrimonyProfileRequest(
-        requested_profile_buffer_data[0]?.submission,
+        requested_profile_buffer_data.submission,
         email_id,
         id,
         requested_id,

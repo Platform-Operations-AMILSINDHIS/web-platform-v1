@@ -70,7 +70,6 @@ const Footer = () => {
                           color="gray.400"
                           key={index}
                           as="a"
-                          /* tslint:disable-next-line */
                           href={(navItem as { LinkUrl: string }).LinkUrl}
                         >
                           {navItem.LinkLabel}
