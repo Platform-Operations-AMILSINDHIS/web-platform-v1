@@ -59,7 +59,7 @@ const BlogSlider: React.FC<BlogPostSliderProps> = ({ blogPosts, blogType }) => {
         modules={[Autoplay, Navigation]}
         loop={true}
         autoplay={{
-          delay: 1000,
+          delay: 3000,
           disableOnInteraction: true,
         }}
         // navigation={true}
