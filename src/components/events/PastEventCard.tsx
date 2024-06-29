@@ -29,6 +29,7 @@ const PastEventCard: React.FC<PastEventCardProps> = ({ pastEvent }) => {
         src={pastEvent?.pastEventDisplayPicture?.url ?? ""}
         backgroundPosition="center"
         backgroundSize="cover"
+        objectFit="cover"
         borderRadius={7}
       />
       <Flex flexDir="column" mt={4}>

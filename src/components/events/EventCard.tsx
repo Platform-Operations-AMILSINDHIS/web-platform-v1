@@ -25,6 +25,7 @@ const EventCard: React.FC<eventData> = ({ event }) => {
         background={`url(${event?.eventDisplayImage?.url ?? ""})`}
         backgroundPosition="center"
         backgroundSize="cover"
+        objectFit="cover"
         borderRadius={7}
       />
       <Flex flexDir="column" mt={4}>
