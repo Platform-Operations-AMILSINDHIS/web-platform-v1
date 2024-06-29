@@ -33,7 +33,7 @@ const PastEventSlider: React.FC<PastEventSliderProps> = ({ pastEvents }) => {
         slidesPerView={3}
         modules={[Autoplay, Navigation]}
         loop={true}
-        autoplay={{ delay: 1000, disableOnInteraction: true }}
+        autoplay={{ delay: 3000, disableOnInteraction: true }}
         style={{ flexDirection: "row" }} // Override flexDirection (optional)
       >
         {pastEventData?.length && pastEventData.length >= 1 ? (
