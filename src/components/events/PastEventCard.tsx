@@ -1,4 +1,5 @@
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
+import { truncate } from "lodash";
 import { PastEventContentType } from "~/lib/__generated/sdk";
 import { convertDateV2 } from "~/utils/helper";
 
@@ -44,11 +45,11 @@ const PastEventCard: React.FC<PastEventCardProps> = ({ pastEvent }) => {
           fontWeight={600}
           fontSize="2xl"
         >
-          {pastEvent?.pastEventName}
+          {truncate(pastEvent?.pastEventName ?? "", { length: 30 })}
         </Text>
         <Flex mt={2} gap={2}>
           <Flex gap={2}>
-            {pastEvent?.pastEventSearchTags?.map((item, index) => {
+            {pastEvent?.pastEventSearchTags?.slice(0, 3).map((item, index) => {
               return (
                 <Text
                   fontWeight={500}
@@ -61,7 +62,7 @@ const PastEventCard: React.FC<PastEventCardProps> = ({ pastEvent }) => {
                   borderRadius={20}
                   key={index}
                 >
-                  {item}
+                  {truncate(item ?? "", { length: 15 })}
                 </Text>
               );
             })}

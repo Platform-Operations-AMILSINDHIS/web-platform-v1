@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { SwiperSlide, Swiper } from "swiper/react";
 import BlogPostThumb from "./blogPostThumb";
 import { toLower, truncate } from "lodash";
@@ -54,6 +53,7 @@ const BlogSlider: React.FC<BlogPostSliderProps> = ({ blogPosts, blogType }) => {
         </span>
       </Text>
       <Swiper
+        direction="horizontal"
         spaceBetween={20}
         slidesPerView={3}
         modules={[Autoplay, Navigation]}
@@ -89,7 +89,7 @@ const BlogSlider: React.FC<BlogPostSliderProps> = ({ blogPosts, blogType }) => {
             </SwiperSlide>
           ))
         ) : (
-          <Box>Nothing here bro</Box>
+          <Box>Nothing to Read as of now</Box>
         )}
       </Swiper>
     </Box>
