@@ -33,7 +33,7 @@ const EventSlider: React.FC<EventData> = ({ events }) => {
           <>
             {eventData.map((event, i) => {
               return (
-                <SwiperSlide>
+                <SwiperSlide key={i}>
                   <Box>
                     <EventCard event={event} key={i} />
                   </Box>
