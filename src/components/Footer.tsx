@@ -41,7 +41,9 @@ const Footer = () => {
       />
       <Flex w="full" flexDir="column" align="center" justify="center">
         <Flex
+          align={{ base: "center", md: "center" }}
           flexDir={{ base: "column", md: "column", lg: "row" }}
+          gap={{ base: 10, md: 10 }}
           mb={10}
           w="full"
           justify="space-between"
@@ -89,7 +91,11 @@ const Footer = () => {
               );
             })}
           </Flex>
-          <Flex gap={7} flexDir="column">
+          <Flex
+            align={{ base: "center", md: "center", lg: "flex-start" }}
+            gap={7}
+            flexDir="column"
+          >
             <Text fontWeight={600}>Contact us</Text>
             <Flex gap={4} flexDir="column">
               {contactLinks.map(({ ICON, LinkLabel }, index) => {
@@ -106,7 +112,14 @@ const Footer = () => {
           </Flex>
         </Flex>
         <Divider />
-        <Flex color="gray.300" w="full" justify="space-between" my={5}>
+        <Flex
+          flexDir={{ base: "column", md: "column", lg: "row" }}
+          gap={{ base: 5, md: 5 }}
+          color="gray.300"
+          w="full"
+          justify="space-between"
+          my={5}
+        >
           <Text>Copyright © 2023 Amil Sindhi</Text>
           <Text>
             All Rights Reserved |{" "}
