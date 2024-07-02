@@ -55,7 +55,14 @@ const MatrimonyProfilesView: React.FC<MatrimonyProfilesViewProps> = ({
             </Text>
           </Flex>
           {matrimonyProfiles.length > 0 ? (
-            <Grid gap={5} templateColumns="repeat(3, 1fr)">
+            <Grid
+              gap={5}
+              templateColumns={{
+                base: "repeat(1, 1fr)",
+                md: "repeat(2, 1fr)",
+                lg: "repeat(3, 1fr)",
+              }}
+            >
               {matrimonyProfiles
                 .filter((e) => e.user_id !== user?.id)
                 .filter((e) =>
