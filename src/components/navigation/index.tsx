@@ -153,6 +153,9 @@ const Navigation: React.FC<NavigationProps> = ({
         displayFunction={handleModal}
       />
       <NavigationMobile
+        user={user}
+        handleModal={handleModal}
+        userLocation={userLocation}
         navigationItems={navigationItems}
         isOpen={isNavMobileOpen}
         onClose={onNavMobileClose}
