@@ -29,7 +29,7 @@ const Footer = () => {
       pt="65px"
       color="gray.200"
       bg="rgba(0,22,43)"
-      px="130px"
+      px={{ base: "60px", md: "100px", lg: "130px" }}
       w="full"
       as="footer"
     >
@@ -40,7 +40,12 @@ const Footer = () => {
         modalState={isOpen}
       />
       <Flex w="full" flexDir="column" align="center" justify="center">
-        <Flex mb={10} w="full" justify="space-between">
+        <Flex
+          flexDir={{ base: "column", md: "column", lg: "row" }}
+          mb={10}
+          w="full"
+          justify="space-between"
+        >
           <Flex align="center" gap={3} flexDir="column">
             <Image
               src={FooterLogo as StaticImageData}
@@ -58,7 +63,10 @@ const Footer = () => {
               })}
             </Flex>
           </Flex>
-          <Flex gap="50px">
+          <Flex
+            flexDir={{ base: "column", md: "column", lg: "row" }}
+            gap="50px"
+          >
             {FooterConstants.map((footerDiv, index) => {
               return (
                 <Flex gap={7} flexDir="column" key={index}>
