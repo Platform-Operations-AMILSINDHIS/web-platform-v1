@@ -1,6 +1,7 @@
-import { Box, Flex, useDisclosure } from "@chakra-ui/react";
+import { Box, Flex, Icon, useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
 import { useUserAtom } from "~/lib/atom";
+import { IoIosMenu } from "react-icons/io";
 
 import Image from "next/image";
 
@@ -42,79 +43,92 @@ const Navigation: React.FC<NavigationProps> = ({
 
   return (
     <>
-      <Flex
-        justify="space-between"
-        align="center"
-        borderRadius="5px"
-        px={"30px"}
-        py={1}
-        transition="all 0.3s ease-out"
-        className="shadow-xl"
-        border="2px solid"
-        borderColor="gray.50"
-        fontWeight="medium"
-        color="rgba(0, 0, 0, 0.60)"
+      <Box
+        mx={10}
+        display={{ base: "block", md: "block", lg: "none" }}
+        px={{ base: 80, md: 40 }}
       >
-        <Box as="a" href="/">
-          <Image src={AmilSindhiLogo} width={55} height={55} alt="NGO_Logo" />
-        </Box>
-        <Flex gap="15px">
-          {navigationItems.map((navItem, index) => {
-            return (
-              <Flex
-                transition="all 0.2s ease-out"
-                _hover={{
-                  color: "black",
-                }}
-                borderRadius={5}
-                bg={
-                  navItem?.identifierURLS?.includes(userLocation)
-                    ? "rgba(4, 239, 175, 0.20)"
-                    : ""
-                }
-                color={
-                  navItem?.identifierURLS?.includes(userLocation) ? "black" : ""
-                }
-                px={2}
-                py={1}
-                align="center"
-                key={index}
-              >
-                {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */}
-                {navItem.subURLs.length > 0 ? (
-                  <NavigationDropDown
-                    linkTitle={navItem.linkTitle}
-                    subURLs={navItem.subURLs}
-                  />
-                ) : (
-                  <NavigationRegular
-                    linkTitle={navItem.linkTitle}
-                    linkURL={navItem.linkURL}
-                  />
-                )}
-              </Flex>
-            );
-          })}
+        <Flex w="full" align="center" justify="space-between">
+          <Icon color="orange.500" boxSize={10} as={IoIosMenu} />
         </Flex>
-
-        {user ? (
-          <AccountDisplay user={user} />
-        ) : (
-          <Flex gap={3} color="gray.700">
-            <ModalButton
-              CTASize="sm"
-              CTAlabel="Log in"
-              CTATheme={true}
-              CTAaction={() => handleModal(true)}
-            />
-            <ModalButton
-              CTASize="sm"
-              CTAlabel="Sign up"
-              CTAaction={() => handleModal(false)}
-            />
+      </Box>
+      <Box display={{ base: "none", md: "none", lg: "block" }}>
+        <Flex
+          justify="space-between"
+          align="center"
+          borderRadius="5px"
+          px={"30px"}
+          py={1}
+          transition="all 0.3s ease-out"
+          className="shadow-xl"
+          border="2px solid"
+          borderColor="gray.50"
+          fontWeight="medium"
+          color="rgba(0, 0, 0, 0.60)"
+        >
+          <Box as="a" href="/">
+            <Image src={AmilSindhiLogo} width={55} height={55} alt="NGO_Logo" />
+          </Box>
+          <Flex gap="15px">
+            {navigationItems.map((navItem, index) => {
+              return (
+                <Flex
+                  transition="all 0.2s ease-out"
+                  _hover={{
+                    color: "black",
+                  }}
+                  borderRadius={5}
+                  bg={
+                    navItem?.identifierURLS?.includes(userLocation)
+                      ? "rgba(4, 239, 175, 0.20)"
+                      : ""
+                  }
+                  color={
+                    navItem?.identifierURLS?.includes(userLocation)
+                      ? "black"
+                      : ""
+                  }
+                  px={2}
+                  py={1}
+                  align="center"
+                  key={index}
+                >
+                  {/* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access */}
+                  {navItem.subURLs.length > 0 ? (
+                    <NavigationDropDown
+                      linkTitle={navItem.linkTitle}
+                      subURLs={navItem.subURLs}
+                    />
+                  ) : (
+                    <NavigationRegular
+                      linkTitle={navItem.linkTitle}
+                      linkURL={navItem.linkURL}
+                    />
+                  )}
+                </Flex>
+              );
+            })}
           </Flex>
-        )}
-      </Flex>
+
+          {user ? (
+            <AccountDisplay user={user} />
+          ) : (
+            <Flex gap={3} color="gray.700">
+              <ModalButton
+                CTASize="sm"
+                CTAlabel="Log in"
+                CTATheme={true}
+                CTAaction={() => handleModal(true)}
+              />
+              <ModalButton
+                CTASize="sm"
+                CTAlabel="Sign up"
+                CTAaction={() => handleModal(false)}
+              />
+            </Flex>
+          )}
+        </Flex>
+      </Box>
       <AuthModal
         displayState={displayState}
         modalState={isOpen}
