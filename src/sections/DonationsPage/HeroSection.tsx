@@ -10,7 +10,7 @@ const HeroSection = () => {
       className={`${satoshi.variable} mx-auto mt-16 flex max-w-screen-lg flex-col gap-y-10 text-center text-[#1F2937]`}
     >
       {/* Hero */}
-      <div className="flex-col font-heading text-3xl font-semibold leading-5 md:text-7xl">
+      <div className="flex-col font-heading text-4xl font-semibold leading-5 md:text-7xl">
         Donate to Make a
         <p className="mt-5">
           <span className="text-[#FF4D00]">Difference</span>
