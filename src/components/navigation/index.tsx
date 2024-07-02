@@ -12,6 +12,7 @@ import NavigationDropDown from "./NavigationDropDown";
 import NavigationRegular from "./NavigationRegular";
 import AuthModal from "../authentication/AuthModal";
 import ModalButton from "../buttons/ModalButtons";
+import NavigationMobile from "./NavigationMobile";
 
 interface NavigationProps {
   navigationItems: {
@@ -32,24 +33,40 @@ const Navigation: React.FC<NavigationProps> = ({
   userLocation,
   matrimonyAccess,
 }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isAuthOpen,
+    onOpen: onAuthOpen,
+    onClose: onAuthClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isNavMobileOpen,
+    onOpen: onNavMobileOpen,
+    onClose: onNavMobileClose,
+  } = useDisclosure();
+
   const [displayState, setDisplayState] = useState(false);
   const [{ user }] = useUserAtom();
 
   const handleModal = (state: boolean) => {
     setDisplayState(state);
-    onOpen();
+    onAuthOpen();
   };
 
   return (
     <>
       <Box
-        mx={10}
+        mx={{ base: 100 }}
         display={{ base: "block", md: "block", lg: "none" }}
-        px={{ base: 80, md: 40 }}
+        px={{ base: 60, md: 20 }}
       >
         <Flex w="full" align="center" justify="space-between">
-          <Icon color="orange.500" boxSize={10} as={IoIosMenu} />
+          <Icon
+            onClick={onNavMobileOpen}
+            color="orange.500"
+            boxSize={10}
+            as={IoIosMenu}
+          />
         </Flex>
       </Box>
       <Box display={{ base: "none", md: "none", lg: "block" }}>
@@ -131,9 +148,14 @@ const Navigation: React.FC<NavigationProps> = ({
       </Box>
       <AuthModal
         displayState={displayState}
-        modalState={isOpen}
-        handleModal={onClose}
+        modalState={isAuthOpen}
+        handleModal={onAuthClose}
         displayFunction={handleModal}
+      />
+      <NavigationMobile
+        navigationItems={navigationItems}
+        isOpen={isNavMobileOpen}
+        onClose={onNavMobileClose}
       />
     </>
   );
