@@ -11,7 +11,6 @@ export const EventThumb: React.FC<{
     <Link href={href} target="_blank" _hover={{ textDecor: "none" }}>
       <Flex flexDir="column" gap="1rem">
         <img src={image} alt="" />
-
         <Box>
           <Text color="#FB1FFF" fontSize="sm" fontWeight="semibold">
             {date.toLocaleDateString("en-GB", {
