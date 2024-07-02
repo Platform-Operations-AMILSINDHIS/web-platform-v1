@@ -3,6 +3,7 @@ import { Flex, GridItem, Heading, Text } from "@chakra-ui/react";
 const LegacyBox = () => {
   return (
     <Flex
+      flexDir={["column", "column", "row"]}
       align="flex-end"
       p="5rem"
       backgroundImage="/images/backgrounds/ajrak_bg_legacy.jpg"
@@ -11,12 +12,12 @@ const LegacyBox = () => {
         <Text mb={2} fontWeight={600} color="#FF4D00">
           Our History and Founders
         </Text>
-        <Heading fontSize="5xl" fontWeight="semibold">
+        <Heading fontSize={["2xl", "5xl"]} fontWeight="semibold">
           A Legacy of Service & Community Building
         </Heading>
       </Flex>
 
-      <Text maxW={550}>
+      <Text mt={[5, 0, 0]} fontSize={["sm", "md"]} maxW={550}>
         From Khudabad to Mumbai, the journey of the Amils has been
         ever-evolving. After the partition of India in 1947, pioneering Amils
         came together in Mumbai to form the Khudabadi Amil Panchayat in 1952 to

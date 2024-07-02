@@ -7,7 +7,7 @@ import LinkButton from "~/components/buttons/LinkButton";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 
 const HeroSection = () => {
-  const [isSmallerThan800] = useMediaQuery('(max-width: 800px)')
+  const [isSmallerThan800] = useMediaQuery("(max-width: 800px)");
 
   return (
     <Flex py="2rem" direction="column" w="100%" alignItems="center">
@@ -15,19 +15,23 @@ const HeroSection = () => {
         We need you
       </Text>
       <Text
-        fontSize={["5xl", "7xl"]}
+        fontSize={["4xl", "5xl", "7xl"]}
         fontWeight="semibold"
         textAlign="center"
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        _after={isSmallerThan800 ? {} : {
-          content: '""',
-          display: "block",
-          width: "100%",
-          height: "0.5rem",
-          background: "#FF4D00",
-          borderRadius: "20px",
-          mt: "-0.5rem",
-        }}
+        _after={
+          isSmallerThan800
+            ? {}
+            : {
+                content: '""',
+                display: "block",
+                width: "100%",
+                height: "0.5rem",
+                background: "#FF4D00",
+                borderRadius: "20px",
+                mt: "-0.5rem",
+              }
+        }
       >
         &nbsp;Become a{" "}
         <Box as="span" color="#FF4D00">
@@ -43,11 +47,23 @@ const HeroSection = () => {
         Sindhis to be a part of our vibrant community!
       </Text>
 
-      <Flex direction={["column", "row"]} align="flex-start" justify="space-between" mt={20} mb={10} w="full">
+      <Flex
+        direction={["column", "row"]}
+        align="flex-start"
+        justify="space-between"
+        mt={20}
+        mb={10}
+        w="full"
+      >
         <Box display={["none", "block"]} w="50%">
           {/* <Image alt="HeroImage-01" src={HeroImage01} /> */}
           {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
-          <Image alt="HeroImage-01" src={HeroImage01} width={600} height={400} />
+          <Image
+            alt="HeroImage-01"
+            src={HeroImage01}
+            width={600}
+            height={400}
+          />
         </Box>
         <Flex mt={[5, -5]} flexDir={["column-reverse", "column"]}>
           <Flex flexDir="column">
@@ -66,9 +82,11 @@ const HeroSection = () => {
                 onClick={(e) => {
                   e.preventDefault();
 
-                  document.querySelector("#memberships-learn-more")?.scrollIntoView({
-                    behavior: "smooth",
-                  });
+                  document
+                    .querySelector("#memberships-learn-more")
+                    ?.scrollIntoView({
+                      behavior: "smooth",
+                    });
                 }}
                 size="sm"
                 py={5}

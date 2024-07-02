@@ -21,7 +21,10 @@ const FoundingMembers = ({
         Meet Our Office Bearers
       </Text>
       <Spacer h="2rem" />
-      <Grid templateColumns="repeat(5, 1fr)" gap="1.5rem">
+      <Grid
+        templateColumns={["repeat(1, 1fr)", "repeat(3, 1fr)", "repeat(5, 1fr)"]}
+        gap="1.5rem"
+      >
         {foundingMembers
           .reverse()
           .map(({ name, position, displayPictureUrl }, i) => (

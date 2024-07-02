@@ -5,15 +5,17 @@ import {
   Heading,
   Button,
   Spacer,
+  Flex,
 } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 
 const ConstitutionBox = () => {
   return (
-    <Grid
+    <Flex
+      align={["center", "center", "flex-start"]}
+      flexDir={["column", "column", "row"]}
       p="4rem"
       borderRadius="20px"
-      templateColumns="1fr 1fr"
       gap="2rem"
       position="relative"
       _before={{
@@ -29,15 +31,15 @@ const ConstitutionBox = () => {
         zIndex: -1,
       }}
     >
-      <GridItem>
+      <Flex w={["100%", "100%", "50%"]} flexDir="column">
         <Text color="#FF4D00" fontWeight="semibold">
           Our Constitution
         </Text>
-        <Heading fontWeight={600} fontSize="5xl">
+        <Heading fontWeight={600} fontSize={["4xl", "5xl"]}>
           Transparency and Governance
         </Heading>
-      </GridItem>
-      <GridItem>
+      </Flex>
+      <Flex gap={3} w={["100%", "100%", "50%"]} flexDir="column">
         <Text>
           We believe in upholding the principles of democracy and accountability
           to ensure that our community&apos;s interests are safeguarded and our
@@ -49,8 +51,8 @@ const ConstitutionBox = () => {
         <Button colorScheme="yellow" rightIcon={<ArrowForwardIcon />}>
           Download Constitution
         </Button>
-      </GridItem>
-    </Grid>
+      </Flex>
+    </Flex>
   );
 };
 
