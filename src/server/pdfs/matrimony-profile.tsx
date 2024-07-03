@@ -187,5 +187,5 @@ export const MatrimonyPDF: React.FC<MatrimonyPDFProps> = ({ profileData }) => {
   );
 };
 
-export const generateKAPMembershipPDF = async (props: MatrimonyPDFProps) =>
+export const generateMatrimonyProfilePDF = async (props: MatrimonyPDFProps) =>
   await renderToBuffer(<MatrimonyPDF {...props} />);

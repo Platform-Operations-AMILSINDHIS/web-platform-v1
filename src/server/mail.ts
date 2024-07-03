@@ -21,6 +21,8 @@ import type {
   YACMembershipFormValues,
 } from "~/types/forms/membership";
 import { createId } from "~/utils/helper";
+import { MatrimonyFormValues } from "~/types/forms/matrimony";
+import { generateMatrimonyProfilePDF } from "./pdfs/matrimony-profile";
 // import generateMatrimonyProfilePDF from "./pdfs/profile-pdf";
 
 // const transporter = nodemailer.createTransport({
@@ -135,6 +137,35 @@ export async function sendRawJsonDataWithPDF(
     attachments: [{ filename: "response-doc.pdf", content: pdf }],
   });
 }
+
+export const sendMatrimonyProfileMail = async (
+  to: string,
+  data: MatrimonyFormValues,
+  requested_name: string,
+  requested_matrimony_id: string
+) => {
+  const subject = `Matrimony Profile Request for ${requested_name}, ${requested_matrimony_id}`;
+
+  const html = `
+    <div style="font-size: 16px;">
+      <p>Your Request for matrimony profile: ${requested_matrimony_id}</p>
+    </div>
+  `;
+
+  let pdf;
+  pdf = await generateMatrimonyProfilePDF({
+    profileData: data,
+  });
+
+  await sendMail({
+    html,
+    subject,
+    to,
+    attachments: [
+      { filename: `${requested_name}, ${requested_name}`, content: pdf },
+    ],
+  });
+};
 
 export const sendFormConfirmationMail = async ({
   to,
