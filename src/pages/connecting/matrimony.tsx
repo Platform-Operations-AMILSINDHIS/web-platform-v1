@@ -17,7 +17,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-import { ArrowBackIcon, ArrowForwardIcon, CloseIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 
 import Layout from "~/components/layout";
 import MatrimonyForm from "~/components/forms/matrimony-form";

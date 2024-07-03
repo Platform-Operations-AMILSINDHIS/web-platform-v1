@@ -4,6 +4,7 @@ import { toLower, truncate } from "lodash";
 import { Autoplay, Navigation } from "swiper/modules";
 import { Box, Text } from "@chakra-ui/react";
 import { satoshi } from "~/utils/fonts";
+import useWindowDimensions from "~/hooks/useWindowDemensions";
 
 interface BlogPostSliderProps {
   blogPosts:
@@ -32,6 +33,8 @@ const BlogSlider: React.FC<BlogPostSliderProps> = ({ blogPosts, blogType }) => {
     (post) => post.blogType[0]?.toLowerCase() === blogType
   );
 
+  const { height, width } = useWindowDimensions();
+
   console.log(filteredBlogPosts);
 
   return (
@@ -55,12 +58,11 @@ const BlogSlider: React.FC<BlogPostSliderProps> = ({ blogPosts, blogType }) => {
       <Swiper
         direction="horizontal"
         spaceBetween={20}
-        slidesPerView={3}
+        slidesPerView={width && width < 600 ? 1 : width && width < 900 ? 2 : 3}
         modules={[Autoplay, Navigation]}
         loop={true}
         autoplay={{
           delay: 3000,
-          disableOnInteraction: true,
         }}
         // navigation={true}
       >

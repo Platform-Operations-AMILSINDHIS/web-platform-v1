@@ -16,6 +16,8 @@ import "swiper/css/navigation";
 import HeroSection from "~/sections/BlogsPage/HeroSection";
 import BlogSlider from "~/components/blog/BlogSlider";
 import { Box, Flex } from "@chakra-ui/react";
+import { useEffect } from "react";
+import useWindowDimensions from "~/hooks/useWindowDemensions";
 
 export const getServerSideProps: GetServerSideProps<{
   posts: PageBlogPostCollectionQuery;
