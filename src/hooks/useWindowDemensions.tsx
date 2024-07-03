@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-type WindowDimentions = {
+interface WindowDimentions {
   width: number | undefined;
   height: number | undefined;
-};
+}
 
 const useWindowDimensions = (): WindowDimentions => {
   const [windowDimensions, setWindowDimensions] = useState<WindowDimentions>({

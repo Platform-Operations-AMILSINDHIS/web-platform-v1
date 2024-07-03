@@ -1,5 +1,5 @@
 import { Flex, Box, Text, Spacer, useMediaQuery } from "@chakra-ui/react";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 
 import HeroImage01 from "../../../public/images/membership/HeroImage01.svg";
 import HeroImage02 from "../../../public/images/membership/HeroImage02.svg";
@@ -56,11 +56,9 @@ const HeroSection = () => {
         w="full"
       >
         <Box display={["none", "block"]} w="50%">
-          {/* <Image alt="HeroImage-01" src={HeroImage01} /> */}
-          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
           <Image
             alt="HeroImage-01"
-            src={HeroImage01}
+            src={HeroImage01 as StaticImageData}
             width={600}
             height={400}
           />
@@ -115,8 +113,11 @@ const HeroSection = () => {
             </Flex>
           </Flex>
           <Box h="50%">
-            {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
-            <Image width={600} alt="HeroImage-02" src={HeroImage02} />
+            <Image
+              width={600}
+              alt="HeroImage-02"
+              src={HeroImage02 as StaticImageData}
+            />
           </Box>
         </Flex>
       </Flex>
