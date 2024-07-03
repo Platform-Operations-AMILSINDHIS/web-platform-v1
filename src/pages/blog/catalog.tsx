@@ -90,7 +90,15 @@ const CatalogPage = ({
             <Text>No results available</Text>
           </Flex>
         ) : (
-          <Grid mb={5} templateColumns="repeat(3, 1fr)" gap={2}>
+          <Grid
+            mb={5}
+            templateColumns={[
+              "repeat(1, 1fr)",
+              "repeat(2, 1fr)",
+              "repeat(3, 1fr)",
+            ]}
+            gap={2}
+          >
             {renderedBlogs.length &&
               renderedBlogs.length >= 1 &&
               renderedBlogs.map((post, i) => (

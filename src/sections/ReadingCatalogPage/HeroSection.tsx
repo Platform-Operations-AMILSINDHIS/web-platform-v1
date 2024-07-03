@@ -1,29 +1,40 @@
-import { Flex, Box, Text, Spacer } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import BlogCatalogSearchBar from "~/components/blog/BlogCatalogSearchBar";
+import useWindowDimensions from "~/hooks/useWindowDemensions";
 
 interface SectionProps {
   handleSearch: (query: string) => void;
 }
 
 const HeroSection: React.FC<SectionProps> = ({ handleSearch }) => {
+  const { width } = useWindowDimensions();
+
   return (
     <Flex py="2rem" direction="column" w="100%" alignItems="center">
-      <Text fontSize="2xl" fontWeight="semibold" textColor="#1F293780">
+      <Text
+        fontSize={["lg", "lg", "2xl"]}
+        fontWeight="semibold"
+        textColor="#1F293780"
+      >
         Welcome to the
       </Text>
       <Text
-        fontSize="7xl"
+        fontSize={["4xl", "4xl", "7xl"]}
         fontWeight="semibold"
-        _after={{
-          content: '""',
-          display: "block",
-          width: "100%",
-          height: "0.5rem",
-          background: "#FFB84C",
-          borderRadius: "20px",
-          mt: "-1.3rem",
-        }}
+        _after={
+          width && width < 800
+            ? {}
+            : {
+                content: '""',
+                display: "block",
+                width: "100%",
+                height: "0.5rem",
+                background: "#FF4D00",
+                borderRadius: "20px",
+                mt: "-0.5rem",
+              }
+        }
       >
         Reading Catalog
       </Text>
