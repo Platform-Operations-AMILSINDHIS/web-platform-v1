@@ -164,7 +164,11 @@ const MatrimonyForm: React.FC<MatrimonyFormProps> = ({
 
   return (
     <>
-      <Stepper index={activeStep} colorScheme="orange">
+      <Stepper
+        display={["none", "none", "flex"]}
+        index={activeStep}
+        colorScheme="orange"
+      >
         {steps.map(({ title, description }, index) => (
           <Step key={index}>
             <StepIndicator>

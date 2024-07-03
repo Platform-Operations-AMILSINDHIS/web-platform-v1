@@ -175,8 +175,8 @@ const MatrimonyFormSection = () => {
         }
       >
         <Flex id="matrimony-form" direction="column">
-          <Box mb="4rem" w="40%">
-            <Heading fontWeight="semibold" fontSize="5xl">
+          <Box mb="4rem" w={["100%", "100%", "40%"]}>
+            <Heading fontWeight="semibold" fontSize={["5xl"]}>
               Matrimony Form
             </Heading>
             <Spacer h="1rem" />

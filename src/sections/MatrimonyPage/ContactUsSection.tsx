@@ -4,7 +4,11 @@ const ContactUsSection = () => {
   return (
     <Flex id="contact-us" direction="column" alignItems="center">
       <Heading>Contact Us</Heading>
-      <Grid mt="3rem" templateColumns="repeat(2, 1fr)" gap="1.5rem">
+      <Grid
+        mt="3rem"
+        templateColumns={["repeat(1, 1fr)", "repeat(1, 1fr)", "repeat(2, 1fr)"]}
+        gap="1.5rem"
+      >
         {[
           {
             image: "https://placehold.jp/297x323.png",

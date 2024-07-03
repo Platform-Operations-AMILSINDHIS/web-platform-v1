@@ -147,8 +147,13 @@ const YoungAmilCircleMembershipForm: React.FC<
   useEffect(() => console.log(JSON.stringify(formState, null, 2)), [formState]);
 
   return (
-    <Box my={10}>
-      <Stepper mb={3} index={activeStep} colorScheme="orange">
+    <Box my={[0, 0, 10]}>
+      <Stepper
+        display={["none", "none", "flex"]}
+        mb={3}
+        index={activeStep}
+        colorScheme="orange"
+      >
         {steps.map(({ title, description }, index) => (
           <Step key={index}>
             <StepIndicator>

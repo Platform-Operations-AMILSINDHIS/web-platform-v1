@@ -12,20 +12,30 @@ import LinkButton from "~/components/buttons/LinkButton";
 
 const MatrimonyHero = () => {
   return (
-    <Grid templateColumns="1fr 1fr" gap="3rem">
-      <GridItem>
+    <Flex gap="3rem">
+      <Flex
+        gap={2}
+        w={["100%", "100%", "50%"]}
+        align={["center", "center", "flex-start"]}
+        flexDir="column"
+      >
         <Text color="#1F293780" fontWeight="medium">
           Khudabadi Amil Panchayat presents
         </Text>
         <Spacer h="0.5rem" />
-        <Heading fontWeight="bold" fontSize="5xl">
+        <Heading fontWeight="bold" fontSize={["4xl", "4xl", "5xl"]}>
           <Box as="span" color="#FF4D00">
             Matrimony
           </Box>
           &nbsp;Services
         </Heading>
         <Spacer h="0.5rem" />
-        <Text color="#1F2937">
+        <Text
+          textAlign={["center", "center", "left"]}
+          mb={2}
+          fontSize={["sm", "sm", "md"]}
+          color="#1F2937"
+        >
           In addition to all the numerous benefits of our membership, Khudabadi
           Amil Panchayat can also play cupid for you! Marriage is one of the
           purest bonds. It is a harmonious union of two souls who are meant to
@@ -34,7 +44,7 @@ const MatrimonyHero = () => {
           Amil Sindhi brides and grooms.
         </Text>
         <Spacer h="2rem" />
-        <Flex gap="1.5rem">
+        <Flex w="full" flexDir={["column", "column", "row"]} gap="1.5rem">
           <LinkButton
             CTAlabel="Contact us"
             CTAlink="/matrimony#contact-us"
@@ -59,11 +69,11 @@ const MatrimonyHero = () => {
             }}
           />
         </Flex>
-      </GridItem>
-      <GridItem>
+      </Flex>
+      <Flex w="50%" display={["none", "none", "block"]}>
         <Image alt="" src="/images/matrimony/hero.png" />
-      </GridItem>
-    </Grid>
+      </Flex>
+    </Flex>
   );
 };
 

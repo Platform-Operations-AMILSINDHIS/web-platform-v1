@@ -6,7 +6,10 @@ const WhyChooseSection = () => {
       <Heading fontSize="5xl" fontWeight="semibold">
         Why Choose Us?
       </Heading>
-      <Grid templateColumns="repeat(3, 1fr)" gap="1rem">
+      <Grid
+        templateColumns={["repeat(1, 1fr)", "repeat(1, 1fr)", "repeat(3, 1fr)"]}
+        gap="1rem"
+      >
         <GridItem
           as={Flex}
           p="1.5rem"
