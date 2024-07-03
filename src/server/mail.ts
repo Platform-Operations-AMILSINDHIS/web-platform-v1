@@ -152,8 +152,7 @@ export const sendMatrimonyProfileMail = async (
     </div>
   `;
 
-  let pdf;
-  pdf = await generateMatrimonyProfilePDF({
+  const pdf = await generateMatrimonyProfilePDF({
     profileData: attachment_data,
   });
   await sendMail({
