@@ -16,7 +16,11 @@ const ManagingCommunityYACSection: React.FC<
       <Text textAlign="center" textColor="#FF4D00" fontWeight={600}>
         Meet Our YAC Managing Committee
       </Text>
-      <Grid gridTemplateColumns="repeat(4,1fr)" gap="4.5rem" rowGap={10}>
+      <Grid
+        templateColumns={["repeat(1, 1fr)", "repeat(2, 1fr)", "repeat(4, 1fr)"]}
+        gap="4.5rem"
+        rowGap={10}
+      >
         {yacMembers?.map((member, index) => {
           return (
             <GridItem key={index}>

@@ -20,19 +20,35 @@ const TextAndImageBox: React.FC<TextAndImageBoxProps> = ({
   direction = "row",
 }) => {
   return (
-    <Flex gap="5rem" direction={direction}>
-      <Box w="50%">
-        <Text color="#FF4D00" fontWeight="semibold">
+    <Flex
+      flexDir={["column", "column", `${direction}`]}
+      gap={["3rem", "3rem", "5rem"]}
+      direction={direction}
+    >
+      <Box w={["100%", "100%", "50%"]}>
+        <Text
+          fontSize={["sm", "sm", "lg"]}
+          color="#FF4D00"
+          fontWeight="semibold"
+        >
           {tag}
         </Text>
-        <Heading mt={2} mb={3} fontWeight={600} fontSize="5xl">
+        <Heading
+          mt={2}
+          mb={3}
+          fontWeight={600}
+          fontSize={["3xl", "3xl", "5xl"]}
+        >
           {title}
         </Heading>
-        <Text fontSize="lg">{content}</Text>
+        <Text fontSize={["sm", "sm", "lg"]}>{content}</Text>
       </Box>
-      <Box w="50%">
+      <Flex
+        justify={["center", "center", "flex-start"]}
+        w={["100%", "100%", "50%"]}
+      >
         <Image width={480} alt="" src={image} />
-      </Box>
+      </Flex>
     </Flex>
   );
 };

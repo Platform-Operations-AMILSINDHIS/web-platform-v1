@@ -32,10 +32,15 @@ const ConstitutionBox = () => {
       }}
     >
       <Flex w={["100%", "100%", "50%"]} flexDir="column">
-        <Text color="#FF4D00" fontWeight="semibold">
+        <Text
+          fontSize={["sm", "sm", "lg"]}
+          color="#FF4D00"
+          fontWeight="semibold"
+          mb={1}
+        >
           Our Constitution
         </Text>
-        <Heading fontWeight={600} fontSize={["4xl", "5xl"]}>
+        <Heading fontWeight={600} fontSize={["3xl", "3xl", "5xl"]}>
           Transparency and Governance
         </Heading>
       </Flex>

@@ -1,11 +1,12 @@
-import { Grid, GridItem, Text, Heading } from "@chakra-ui/react";
+import { Grid, GridItem, Text, Heading, Flex } from "@chakra-ui/react";
 
 const CommunityBox = () => {
   return (
-    <Grid
+    <Flex
+      align={["center", "center", "flex-start"]}
+      flexDir={["column", "column", "row"]}
       p="4rem"
       borderRadius="20px"
-      templateColumns="1fr 1fr"
       gap="2rem"
       position="relative"
       _before={{
@@ -21,15 +22,20 @@ const CommunityBox = () => {
         zIndex: -1,
       }}
     >
-      <GridItem>
-        <Text mb={1} color="#FF4D00" fontWeight="semibold">
+      <Flex w={["100%", "100%", "50%"]} flexDir="column">
+        <Text
+          fontSize={["sm", "sm", "lg"]}
+          mb={1}
+          color="#FF4D00"
+          fontWeight="semibold"
+        >
           Stay Connected
         </Text>
-        <Heading fontWeight={600} fontSize="5xl">
+        <Heading fontWeight={600} fontSize={["3xl", "3xl", "5xl"]}>
           Join Our Community and Stay Informed
         </Heading>
-      </GridItem>
-      <GridItem>
+      </Flex>
+      <Flex w={["100%", "100%", "50%"]}>
         <Text>
           We invite you to join our vibrant community and stay informed about
           the latest news, events, and initiatives of the Khudabadi Amil
@@ -38,8 +44,8 @@ const CommunityBox = () => {
           profiles. Engage with fellow community members, share your thoughts,
           and be a part of the conversations that matter to you.
         </Text>
-      </GridItem>
-    </Grid>
+      </Flex>
+    </Flex>
   );
 };
 
