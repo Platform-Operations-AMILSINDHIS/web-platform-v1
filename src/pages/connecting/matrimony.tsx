@@ -1,13 +1,6 @@
 import type { NextPage } from "next";
-import { useState, useEffect } from "react";
 
 import {
-  Text,
-  Grid,
-  FormControl,
-  FormLabel,
-  Input,
-  Heading,
   Spacer,
   Flex,
   Box,
@@ -22,19 +15,8 @@ import {
   Stepper,
   useSteps,
   Button,
-  IconButton,
 } from "@chakra-ui/react";
 
-import {
-  Formik,
-  FormikHelpers,
-  FormikProps,
-  Form,
-  Field,
-  FieldProps,
-} from "formik";
-
-import { FaHandHoldingHeart, FaUserFriends } from "react-icons/fa";
 import { ArrowBackIcon, ArrowForwardIcon, CloseIcon } from "@chakra-ui/icons";
 
 import Layout from "~/components/layout";
