@@ -2,7 +2,10 @@
 import supabase from "~/pages/api/auth/supabase";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import * as Yup from "yup";
-import { sendDeclineRequestMail } from "~/server/mail";
+import {
+  sendDeclineRequestMail,
+  sendMatrimonyProfileMail,
+} from "~/server/mail";
 import { matrimonyFormValuesSchema } from "~/utils/schemas";
 
 const profilRequests = createTRPCRouter({
@@ -81,12 +84,12 @@ const profilRequests = createTRPCRouter({
 
         if (rowTerminationError) throw rowTerminationError;
 
-        // await sendAcceptRequestMail({
-        //   to: email_id ?? "",
-        //   submission: submission as any,
-        //   requested_MatID: requested_id ?? "",
-        //   requested_name: requested_name ?? "",
-        // });
+        await sendMatrimonyProfileMail(
+          email_id ?? "",
+          submission as any,
+          requested_name ?? "",
+          requested_id ?? ""
+        );
 
         return {
           message: `Profile Request for ${requested_name},${requested_id} Accepted`,

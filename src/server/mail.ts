@@ -140,7 +140,7 @@ export async function sendRawJsonDataWithPDF(
 
 export const sendMatrimonyProfileMail = async (
   to: string,
-  data: MatrimonyFormValues,
+  attachment_data: any,
   requested_name: string,
   requested_matrimony_id: string
 ) => {
@@ -154,7 +154,7 @@ export const sendMatrimonyProfileMail = async (
 
   let pdf;
   pdf = await generateMatrimonyProfilePDF({
-    profileData: data,
+    profileData: attachment_data,
   });
 
   await sendMail({
