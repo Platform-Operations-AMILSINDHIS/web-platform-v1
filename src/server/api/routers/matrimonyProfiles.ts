@@ -98,17 +98,19 @@ const matrimonyProfiles = createTRPCRouter({
       try {
         const { matrimony_id, user_id } = input;
 
+        console.log({ input });
+
         const { data: loggedInProfile, error: ErrorInLoggingIn } =
           await supabase
             .from("matrimony_profiles")
             .select("*")
-            .eq("matrimony_id", matrimony_id)
-            .eq("user_id", user_id);
+            .eq("matrimony_id", matrimony_id);
+        // .eq("user_id", user_id);
 
         if (ErrorInLoggingIn) throw ErrorInLoggingIn;
 
         console.log(loggedInProfile);
-
+        // COME HERE AGAIN AND CHECK
         if (loggedInProfile.length > 0) {
           return {
             loggedIn: true,
