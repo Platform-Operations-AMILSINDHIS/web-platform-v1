@@ -145,7 +145,9 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
                       request.requested_name
                     )
                   }
-                  isLoading={acceptingRequest}
+                  isLoading={
+                    acceptedRequestID === request.id ? acceptingRequest : false
+                  }
                   variant="none"
                   bg={acceptedRequestID === request.id ? "green.500" : "white"}
                   border="1px solid"

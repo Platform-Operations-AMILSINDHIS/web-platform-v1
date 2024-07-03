@@ -156,13 +156,15 @@ export const sendMatrimonyProfileMail = async (
   pdf = await generateMatrimonyProfilePDF({
     profileData: attachment_data,
   });
-
   await sendMail({
     html,
     subject,
     to,
     attachments: [
-      { filename: `${requested_name}, ${requested_name}`, content: pdf },
+      {
+        filename: `${requested_name}(${requested_matrimony_id}).pdf`,
+        content: pdf,
+      },
     ],
   });
 };
