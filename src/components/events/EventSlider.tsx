@@ -5,12 +5,14 @@ import { Flex, Text, Box } from "@chakra-ui/react";
 import type { EventCollectionQueryQuery } from "~/lib/__generated/sdk";
 import EventCard from "./EventCard";
 import { Autoplay, Navigation } from "swiper/modules";
+import useWindowDimensions from "~/hooks/useWindowDemensions";
 
 interface EventData {
   events: EventCollectionQueryQuery;
 }
 
 const EventSlider: React.FC<EventData> = ({ events }) => {
+  const { width } = useWindowDimensions();
   const eventData = events.eventContentTypeCollection?.items;
   console.log(events);
   return (
@@ -20,7 +22,7 @@ const EventSlider: React.FC<EventData> = ({ events }) => {
       </Text>
       <Swiper
         spaceBetween={20}
-        slidesPerView={3}
+        slidesPerView={width && width < 600 ? 1 : width && width < 900 ? 2 : 3}
         modules={[Autoplay, Navigation]}
         loop={true}
         autoplay={{

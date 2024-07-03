@@ -11,6 +11,7 @@ import { Autoplay, Navigation } from "swiper/modules";
 
 // Import Swiper CSS (choose one method)
 import "swiper/css"; // Download method
+import useWindowDimensions from "~/hooks/useWindowDemensions";
 // import 'swiper/css/swiper.min.css';  // CSS bundler method (if applicable)
 
 interface PastEventSliderProps {
@@ -18,6 +19,7 @@ interface PastEventSliderProps {
 }
 
 const PastEventSlider: React.FC<PastEventSliderProps> = ({ pastEvents }) => {
+  const { width } = useWindowDimensions();
   const pastEventData = pastEvents.pastEventContentTypeCollection?.items;
 
   return (
@@ -30,7 +32,7 @@ const PastEventSlider: React.FC<PastEventSliderProps> = ({ pastEvents }) => {
       <Swiper
         direction="horizontal"
         spaceBetween={20}
-        slidesPerView={3}
+        slidesPerView={width && width < 600 ? 1 : width && width < 900 ? 2 : 3}
         modules={[Autoplay, Navigation]}
         loop={true}
         autoplay={{ delay: 3000, disableOnInteraction: true }}
