@@ -2,14 +2,13 @@ import {
   Page,
   Text,
   View,
-  Image,
   Document,
   StyleSheet,
   renderToBuffer,
 } from "@react-pdf/renderer";
 
 import type { KAPMembershipFormValues } from "~/types/forms/membership";
-import { formatDate, formatPDFAge, formatPDFDate } from "~/utils/helper";
+import { formatPDFAge, formatPDFDate } from "~/utils/helper";
 
 interface KAPMembershipFormPDFProps {
   membershipNumber: string;
