@@ -17,6 +17,7 @@ const ProfileViewLayout: React.FC<ProfileViewLayoutProps> = ({
   children,
   submission,
 }) => {
+  console.log({ submission, check: "true on layout component" });
   return (
     <Flex mb={10} p={10} w="full" justify="center">
       <Box bg="yellow" w={1120} h="80vh">

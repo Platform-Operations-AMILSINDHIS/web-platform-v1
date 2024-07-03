@@ -77,6 +77,7 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
   membershipNumber,
   kapForm,
 }) => {
+  console.log({ kapForm, check: "true on form render" });
   return (
     <Document>
       <Page size="A4" style={styles.page}>

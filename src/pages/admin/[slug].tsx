@@ -31,14 +31,21 @@ const SlugPage = () => {
 
   useEffect(() => {
     const handleSubmissionSlug = async () => {
+      console.log({
+        selected_profile_id: selected_profile?.user_id,
+        check: "true",
+      });
       const response = await handleFetchUserSubmission(
         selected_profile?.user_id ?? "",
         selected_profile?.formType ?? ""
       );
 
-      if (response && response.length > 0) {
+      console.log({ response });
+      console.log("hi");
+
+      if (response) {
         if (["KAP", "YAC"].includes(selected_profile?.formType)) {
-          const user_submission = await response[0]?.submission;
+          const user_submission = await response?.submission;
           const submission_data = {
             personalInfo: user_submission?.personalInfo,
             addressInfo: user_submission?.addressInfo,
@@ -47,8 +54,9 @@ const SlugPage = () => {
             membershipInfo: user_submission?.membershipInfo,
           };
           setSubmissionValues(submission_data);
+          console.log({ submission_data });
         } else {
-          const user_matrimony_submission = await response[0]?.submission;
+          const user_matrimony_submission = await response?.submission;
           const matrimony_submission_data = {
             personalInfo: user_matrimony_submission?.personalInfo,
             familyMembers: user_matrimony_submission?.familyMembers,
