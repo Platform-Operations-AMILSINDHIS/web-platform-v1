@@ -9,6 +9,7 @@ import ProfileViewLayout from "~/layouts/ProfileViewLayout";
 import { useProfileAtom } from "~/lib/atom";
 import { MatrimonyFormValues } from "~/types/forms/matrimony";
 import { KAPMembershipFormValues } from "~/types/forms/membership";
+import { Status } from "~/types/tables/dataBuffer";
 
 const SlugPage = () => {
   const [{ selected_profile }] = useProfileAtom();
@@ -106,7 +107,13 @@ const SlugPage = () => {
         <>
           {submissionValues ? (
             <ProfileViewLayout submission={submissionValues}>
-              <Flex gap={3} my={5}>
+              <Flex
+                display={
+                  selected_profile?.status === Status.APPROVED ? "none" : "flex"
+                }
+                gap={3}
+                my={5}
+              >
                 <LinkButton
                   onClick={() => handleReject(submissionValues)}
                   py={3}

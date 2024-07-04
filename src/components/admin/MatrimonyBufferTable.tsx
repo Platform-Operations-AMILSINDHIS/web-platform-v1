@@ -1,4 +1,4 @@
-import { Button, Td, Tr } from "@chakra-ui/react";
+import { Button, Td, Text, Tr } from "@chakra-ui/react";
 import { useMemo } from "react";
 import TableLayout from "~/layouts/TableLayout";
 import { useProfileAtom } from "~/lib/atom";
@@ -48,7 +48,30 @@ const MatrimonyBufferTable: React.FC<MatrimonyBufferTableProps> = ({
               <Td>{index + 1}</Td>
               <Td>{`${buffer?.user_id.substring(0, 20)}...`}</Td>
               <Td>{buffer?.formType}</Td>
-              <Td>{formatCreatedTime(buffer?.created_at)}</Td>
+              <Td
+                fontSize="small"
+                fontWeight={600}
+                color={
+                  buffer?.status === Status.APPROVED
+                    ? "green.500"
+                    : "yellow.500"
+                }
+              >
+                <Text
+                  textAlign="center"
+                  p={1}
+                  px={3}
+                  borderRadius={20}
+                  bg={
+                    buffer?.status === Status.APPROVED
+                      ? "green.100"
+                      : "yellow.100"
+                  }
+                  border="1px solid"
+                >
+                  {buffer?.status}
+                </Text>
+              </Td>
               <Td>{`${buffer?.submission.personalInfo.firstName} ${buffer?.submission.personalInfo.lastName}`}</Td>
               <Td>{buffer?.submission.personalInfo.emailId}</Td>
               <Td>{`+91 ${buffer?.submission.personalInfo.mobileNumber}`}</Td>

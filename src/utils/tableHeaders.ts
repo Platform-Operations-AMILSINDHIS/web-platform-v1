@@ -2,7 +2,7 @@ const formMembershipBufferDataTableHeaders = [
   "Sno.",
   "User ID",
   "Type",
-  "Registered At",
+  "Status",
   "Name",
   "Email ID",
   "Mobile no.",
