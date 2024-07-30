@@ -67,7 +67,7 @@ const BlogPage = ({
                     {blogPosts[0]?.author} &middot;{" "}
                     {new Date(
                       blogPosts[0]?.dateOfBlog as string
-                    ).toLocaleDateString("en-GB", {
+                    ).toLocaleDateString("en-IN", {
                       day: "numeric",
                       month: "short",
                       year: "numeric",

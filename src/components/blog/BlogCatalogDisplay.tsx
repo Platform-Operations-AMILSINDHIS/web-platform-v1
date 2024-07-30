@@ -35,7 +35,7 @@ const BlogCatalogDisplay: React.FC<BlogCatalogProps> = ({ blogPosts }) => {
               </Text>{" "}
               |
               <Text fontSize="sm" color="gray.500" fontWeight={600}>
-                {new Date(blog?.dateOfBlog).toLocaleDateString("en-GB", {
+                {new Date(blog?.dateOfBlog).toLocaleDateString("en-IN", {
                   day: "numeric",
                   month: "short",
                   year: "numeric",

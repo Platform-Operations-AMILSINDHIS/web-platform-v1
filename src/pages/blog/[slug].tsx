@@ -79,7 +79,7 @@ const BlogPostPage = ({
           <Text color="#1F2937AD" fontWeight="medium">
             {blogContentType?.author} &middot;{" "}
             {new Date(blogContentType?.dateOfBlog as string).toLocaleDateString(
-              "en-GB",
+              "en-IN",
               {
                 day: "numeric",
                 month: "short",

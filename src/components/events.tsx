@@ -13,7 +13,7 @@ export const EventThumb: React.FC<{
         <img src={image} alt="" />
         <Box>
           <Text color="#FB1FFF" fontSize="sm" fontWeight="semibold">
-            {date.toLocaleDateString("en-GB", {
+            {date.toLocaleDateString("en-IN", {
               day: "numeric",
               month: "short",
               year: "numeric",

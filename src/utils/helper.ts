@@ -5,7 +5,7 @@ import { ToWords } from "to-words";
 export const convertDATE = (date: Date) => {
   const inputDate = new Date(date);
 
-  const formattedDate = inputDate.toLocaleString("en-US", {
+  const formattedDate = inputDate.toLocaleString("en-IN", {
     day: "numeric",
     month: "short",
     hour: "numeric",
@@ -18,7 +18,7 @@ export const convertDATE = (date: Date) => {
 export const convertDateV2 = (input: Date) => {
   const date = new Date(input);
 
-  const formatter = new Intl.DateTimeFormat("en-US", {
+  const formatter = new Intl.DateTimeFormat("en-IN", {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -30,7 +30,7 @@ export const convertDateV2 = (input: Date) => {
 export const getTimeFromDate = (date: Date) => {
   const inputDate = new Date(date);
 
-  const formattedTime = inputDate.toLocaleString("en-US", {
+  const formattedTime = inputDate.toLocaleString("en-IN", {
     hour: "numeric",
     minute: "numeric",
     hour12: true,
@@ -42,7 +42,7 @@ export const getTimeFromDate = (date: Date) => {
 export const getDayOfWeekFromDate = (date: Date) => {
   const inputDate = new Date(date);
 
-  const formattedDayOfWeek = inputDate.toLocaleString("en-US", {
+  const formattedDayOfWeek = inputDate.toLocaleString("en-IN", {
     weekday: "long",
   });
 
@@ -52,7 +52,7 @@ export const getDayOfWeekFromDate = (date: Date) => {
 export const formatDate = (date: Date) => {
   const inputDate = new Date(date);
 
-  const formattedDate = inputDate.toLocaleString("en-US", {
+  const formattedDate = inputDate.toLocaleString("en-IN", {
     day: "numeric",
     month: "short",
     year: "numeric",
@@ -73,7 +73,7 @@ export const toWords = new ToWords({
 
 export const formatCreatedTime = (dateString: string) => {
   const date = new Date(dateString);
-  const readableDate = date.toLocaleDateString("en-us", {
+  const readableDate = date.toLocaleDateString("en-IN", {
     timeZone: "UTC",
     year: "numeric",
     month: "short",

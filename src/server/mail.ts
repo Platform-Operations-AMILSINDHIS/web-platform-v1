@@ -360,7 +360,7 @@ export const sendRsvpMailForEvent = async ({
 }: RSVPMailType) => {
   try {
     const subject = `RSVP confirmation for ${eventTitle}, held on ${eventDate.toLocaleDateString(
-      "en-GB",
+      "en-IN",
       {
         day: "numeric",
         month: "short",
