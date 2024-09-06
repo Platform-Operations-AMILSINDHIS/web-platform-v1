@@ -27,7 +27,7 @@ const EventDetailPage = ({
           : "Event Details"
       }
     >
-      <Flex mb={10} mt={"45px"} flexDir="column">
+      <Flex mx="auto" maxW="1100px" mb={10} mt={"45px"} flexDir="column">
         <Flex
           align="flex-end"
           p={6}

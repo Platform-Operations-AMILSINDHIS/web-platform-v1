@@ -29,7 +29,7 @@ const PastEventDetailPage = ({
           : "Event Details"
       }
     >
-      <Box maxW="1000px" mx="auto">
+      <Box maxW="1100px" mx="auto">
         <Flex mb={10} mt={"45px"} flexDir="column">
           <Flex
             align="flex-end"
@@ -37,7 +37,7 @@ const PastEventDetailPage = ({
             width="full"
             height={350}
             // background={`url(${eventContentType?.eventDisplayImage?.url ?? ""})`}
-            background={`linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), url(${
+            background={`linear-gradient(0deg, rgba(0, 0, 0, 0.50) 0%, rgba(0, 0, 0, 0.20) 100%), url(${
               pastEventContentType?.pastEventDisplayPicture?.url ?? ""
             }), lightgray 50% / cover no-repeat;
           `}
