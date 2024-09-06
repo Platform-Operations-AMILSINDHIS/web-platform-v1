@@ -32,7 +32,7 @@ const BlogPostThumb: React.FC<{
     <div>
       <div className="font-semibold text-[#1F2937] opacity-70">
         {author} &middot;{" "}
-        {date.toLocaleDateString("en-GB", {
+        {date.toLocaleDateString("en-IN", {
           day: "numeric",
           month: "short",
           year: "numeric",
