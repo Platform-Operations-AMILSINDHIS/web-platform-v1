@@ -1,6 +1,4 @@
-import { Button, Flex, Spacer } from "@chakra-ui/react";
-import Link from "next/link";
-import { btnThemeDark, btnThemeLight } from "~/components/buttons/BtnThemes";
+import { Flex, Spacer } from "@chakra-ui/react";
 import LinkButton from "~/components/buttons/LinkButton";
 import { satoshi } from "~/utils/fonts";
 
