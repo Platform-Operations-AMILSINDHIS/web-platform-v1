@@ -1,4 +1,5 @@
 import { Flex, Spacer } from "@chakra-ui/react";
+import { TypeAnimation } from "react-type-animation";
 import LinkButton from "~/components/buttons/LinkButton";
 import { satoshi } from "~/utils/fonts";
 
@@ -13,7 +14,12 @@ const HeroSection = () => {
         <div
           className={`${satoshi.variable} mt-10 font-heading text-4xl font-semibold leading-normal md:text-7xl`}
         >
-          {`Sharing سنڌي,`}{" "}
+          <TypeAnimation
+            preRenderFirstString
+            sequence={[`Sharing Amil`, 1000, `Sharing سنڌي`, 1000]}
+            repeat={Infinity}
+          />
+          {`,`}
           <span className="text-[#FF4D00]">
             Culture <br />
           </span>{" "}
