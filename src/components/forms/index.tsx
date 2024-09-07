@@ -9,6 +9,10 @@ import {
   Box,
   Checkbox,
   Text,
+  InputGroup,
+  InputRightAddon,
+  Icon,
+  InputRightElement,
 } from "@chakra-ui/react";
 import {
   Field,
@@ -17,6 +21,8 @@ import {
   FieldMetaProps,
   FormikHelpers,
 } from "formik";
+import { WarningIcon } from "@chakra-ui/icons";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export const camelCase = (str: string) =>
   str
@@ -83,28 +89,30 @@ export const LabelledInput: React.FC<{
         </>
       ) : type === "password" ? (
         <>
-          <Field
-            as={Input}
-            type={showPassword ? "text" : "password"}
-            id={camelCase(label)}
-            name={name ?? camelCase(label)}
-            validate={validate ?? undefined}
-            placeholder={placeholder}
-            borderColor="gray.400"
-            _hover={{
-              borderColor: "#FF4D00",
-            }}
-            focusBorderColor="#FF4D00"
-          />
-          <Flex justify="space-between" align="center" mt={2} gap={2}>
-            {showPasswordOption ? (
-              <Flex flexDir="row" gap={2}>
-                <Checkbox onChange={() => setShowPassword(!showPassword)} />
-                <Text fontSize="small">Show password</Text>
-              </Flex>
-            ) : (
-              <></>
-            )}
+          <InputGroup>
+            <Field
+              as={Input}
+              type={showPassword ? "text" : "password"}
+              id={camelCase(label)}
+              name={name ?? camelCase(label)}
+              validate={validate ?? undefined}
+              placeholder={placeholder}
+              borderColor="gray.400"
+              _hover={{
+                borderColor: "#FF4D00",
+              }}
+              focusBorderColor="#FF4D00"
+            />
+            <InputRightElement>
+              <Icon
+                boxSize={5}
+                color="gray.600"
+                onClick={() => setShowPassword(!showPassword)}
+                as={showPassword ? FaEyeSlash : FaEye}
+              />
+            </InputRightElement>
+          </InputGroup>
+          <Flex justify="space-between" align="center" gap={2}>
             <Box py={1} fontWeight={600} fontSize="sm" color="red">
               <ErrorMessage name={name ?? camelCase(label)} />
             </Box>

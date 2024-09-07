@@ -1,4 +1,4 @@
-import { Button, Checkbox, Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { LoginValues, loginInitialValues } from "~/hooks/useForm";
 import { LabelledInput } from "../forms";
@@ -16,6 +16,7 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
   const [{ user }, setUserAtom] = useUserAtom();
   const [submitting, setSubmitting] = useState(false);
+  const [showError, setShowError] = useState<boolean>(false);
 
   const handleUserAtom = (userObject: userAtomBody) => {
     setUserAtom({
@@ -35,28 +36,9 @@ const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
     });
   };
 
-  const handleSubmit = async (
-    values: LoginValues,
-    { setErrors }: FormikHelpers<LoginValues>
-  ) => {
+  const handleSubmit = async (values: LoginValues) => {
     try {
       setSubmitting(true);
-
-      const mailValidateResponse = await axios.post<{
-        loginValidated: boolean;
-        message: string;
-      }>("/api/auth/loginvalidation/mail", {
-        email: values.email,
-      });
-
-      const { loginValidated, message } = mailValidateResponse.data;
-      console.log(loginValidated);
-      if (!loginValidated) {
-        setErrors({ email: message });
-        setSubmitting(false);
-        return;
-      }
-
       const response = await axios.post<{
         userData: {
           auth_id: string;
@@ -120,9 +102,16 @@ const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
             <Text fontSize="25px" fontWeight={800}>
               Login
             </Text>
-            <Text fontWeight={500} maxW={400} textAlign="center">
-              Great to have you back! Enter your registered credentials to log
-              into your account
+            <Text
+              color={showError ? "red" : "black"}
+              fontWeight={500}
+              maxW={400}
+              textAlign="center"
+            >
+              {showError
+                ? `Invalid email or password`
+                : `Great to have you back! Enter your registered credentials to log
+              into your account`}
             </Text>
           </Flex>
           <Flex gap={3} w="full" flexDir="column">
@@ -136,6 +125,7 @@ const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
               label="Enter password"
               name="password"
               type="password"
+              showPasswordOption
               placeholder="********"
             />
 
