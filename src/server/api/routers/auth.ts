@@ -1,34 +1,46 @@
 import * as Yup from "yup";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import supabase from "~/pages/api/auth/supabase";
+import { TRPCError } from "@trpc/server";
 
 const authRouter = createTRPCRouter({
   login: publicProcedure
-    .input(Yup.object({ email: Yup.string(), password: Yup.string() }))
+    .input(
+      Yup.object({
+        email: Yup.string().required(),
+        password: Yup.string().required(),
+      })
+    )
     .mutation(async ({ input }) => {
-      try {
-        const { email, password } = input;
-        const { data: LoginData, error: LoginError } =
-          await supabase.auth.signInWithPassword({
-            email: email as string,
-            password: password as string,
-          });
+      const { email, password } = input;
 
-        if (LoginError) throw new Error("Invalid Login Credentials");
+      const { data: LoginData, error: LoginError } =
+        await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
 
-        console.log(LoginData);
-
-        const { data: userData, error: fetchError } = await supabase
-          .from("general_accounts")
-          .select("*")
-          .eq("email_id", LoginData.user?.email);
-
-        if (fetchError) throw new Error("Couldn't fetch account details");
-
-        return { userData, message: "signed in :)" };
-      } catch (err) {
-        console.log(err);
+      if (LoginError) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Invalid Login Credentials",
+        });
       }
+
+      const { data: userData, error: fetchError } = await supabase
+        .from("general_accounts")
+        .select("*")
+        .eq("email_id", LoginData.user?.email)
+        .single();
+
+      if (fetchError) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Couldn't fetch account details",
+        });
+      }
+
+      return { userData, message: "signed in :)", LoginData };
     }),
 });
 

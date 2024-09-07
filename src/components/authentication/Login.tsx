@@ -2,11 +2,12 @@ import { Button, Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { LoginValues, loginInitialValues } from "~/hooks/useForm";
 import { LabelledInput } from "../forms";
-import { Form, Formik, FormikHelpers } from "formik";
-import axios from "axios";
-import { LoginValidation } from "~/validations/AuthValidations";
-import { useUserAtom } from "~/lib/atom";
+import { Form, Formik } from "formik";
+import { api } from "~/utils/api";
 import { userAtomBody } from "~/types/atoms/users";
+import { useUserAtom } from "~/lib/atom";
+import { LoginValidation } from "~/validations/AuthValidations";
+import { TRPCError } from "@trpc/server";
 
 interface LoginProps {
   setCloseModal: (input: boolean) => void;
@@ -14,9 +15,12 @@ interface LoginProps {
 }
 
 const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
-  const [{ user }, setUserAtom] = useUserAtom();
   const [submitting, setSubmitting] = useState(false);
   const [showError, setShowError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
+  const loginMutation = api.auth.login.useMutation();
+  const [, setUserAtom] = useUserAtom();
 
   const handleUserAtom = (userObject: userAtomBody) => {
     setUserAtom({
@@ -37,55 +41,45 @@ const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
   };
 
   const handleSubmit = async (values: LoginValues) => {
+    setSubmitting(true);
+    setShowError(false);
+    setErrorMessage("");
+
     try {
-      setSubmitting(true);
-      const response = await axios.post<{
-        userData: {
-          auth_id: string;
-          id: string;
-          account_name: string;
-          age: number;
-          email_id: string;
-          first_name: string;
-          membership_id: string;
-          gender: string;
-          last_name: string;
-          KAP_member: boolean;
-          YAC_member: boolean;
-        }[];
-      }>("/api/auth/login", {
+      const response = await loginMutation.mutateAsync({
         email: values.email,
         password: values.password,
       });
 
-      console.log({
-        responseStatus: response.status,
-        message: "hey",
-        data: response.data?.userData[0], // Using optional chaining here
-      });
+      if (response && response.userData) {
+        const userHit = response.userData;
 
-      const userHit = response.data?.userData[0];
+        const filteredUserData: userAtomBody = {
+          auth_id: userHit.auth_id ?? "",
+          id: userHit.id ?? "",
+          account_name: userHit.account_name ?? "",
+          membership_id: userHit.membership_id ?? "",
+          age: userHit.age ?? 0,
+          email_id: userHit.email_id ?? "",
+          first_name: userHit.first_name ?? "",
+          gender: userHit.gender ?? "",
+          last_name: userHit.last_name ?? "",
+          KAP_member: userHit.KAP_member ?? false,
+          YAC_member: userHit.YAC_member ?? false,
+        };
 
-      const filteredUserData: userAtomBody = {
-        auth_id: userHit?.auth_id ?? "",
-        id: userHit?.id ?? "",
-        account_name: userHit?.account_name ?? "",
-        membership_id: userHit?.membership_id ?? "",
-        age: userHit?.age ?? 0,
-        email_id: userHit?.email_id ?? "",
-        first_name: userHit?.first_name ?? "",
-        gender: userHit?.gender ?? "",
-        last_name: userHit?.last_name ?? "",
-        KAP_member: userHit?.KAP_member ?? false,
-        YAC_member: userHit?.YAC_member ?? false,
-      };
-
-      handleUserAtom(filteredUserData);
-      console.log(user);
-      setSubmitting(false);
-      setCloseModal(true);
+        handleUserAtom(filteredUserData);
+        setCloseModal(true);
+      } else {
+        throw new Error("Invalid response from server");
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Login failed", error);
+      setShowError(true);
+      setErrorMessage(
+        error instanceof Error ? error.message : "Something went wronf"
+      );
+    } finally {
       setSubmitting(false);
     }
   };
@@ -109,9 +103,8 @@ const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
               textAlign="center"
             >
               {showError
-                ? `Invalid email or password`
-                : `Great to have you back! Enter your registered credentials to log
-              into your account`}
+                ? errorMessage || "Invalid email or password"
+                : `Great to have you back! Enter your registered credentials to log into your account`}
             </Text>
           </Flex>
           <Flex gap={3} w="full" flexDir="column">
@@ -135,7 +128,7 @@ const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
               justify="space-between"
               align="center"
             >
-              <Text>Forgot password ?</Text>
+              <Text>Forgot password?</Text>
             </Flex>
           </Flex>
           <Flex gap={3}>
@@ -161,7 +154,7 @@ const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
               }}
               onClick={() => displayFunction(false)}
             >
-              New Here ?
+              New Here?
             </Button>
           </Flex>
         </Flex>

@@ -10,6 +10,7 @@ import matrimonyProfiles from "./routers/matrimonyProfiles";
 import profilRequests from "./routers/profileRequests";
 import recoveryRouter from "./routers/recovery";
 import adminRouter from "./routers/admin";
+import authRouter from "./routers/auth";
 
 /**
  * This is the primary router for your server.
@@ -27,6 +28,7 @@ export const appRouter = createTRPCRouter({
   profileRequests: profilRequests,
   recovery: recoveryRouter,
   admin: adminRouter,
+  auth: authRouter,
 });
 
 // export type definition of API
