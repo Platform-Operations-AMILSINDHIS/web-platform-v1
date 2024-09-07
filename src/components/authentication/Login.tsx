@@ -152,6 +152,7 @@ const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
             <LabelledInput
               label="Enter password"
               name="password"
+              type="password"
               placeholder="********"
             />
 
@@ -161,10 +162,6 @@ const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
               justify="space-between"
               align="center"
             >
-              <Flex gap={2}>
-                <Checkbox />
-                <Text>Remember me</Text>
-              </Flex>
               <Text>Forgot password ?</Text>
             </Flex>
           </Flex>

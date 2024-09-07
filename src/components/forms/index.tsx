@@ -7,6 +7,8 @@ import {
   Flex,
   Select,
   Box,
+  Checkbox,
+  Text,
 } from "@chakra-ui/react";
 import {
   Field,
@@ -26,7 +28,14 @@ export const LabelledInput: React.FC<{
   label: string;
   placeholder?: string;
   name?: string;
-  type?: "text" | "chakra-text" | "date" | "datetime" | "number" | "select";
+  type?:
+    | "text"
+    | "chakra-text"
+    | "date"
+    | "datetime"
+    | "number"
+    | "select"
+    | "password";
   validate?: () => string; // validation function returns error string
   onChange?: ChangeEventHandler<HTMLInputElement>;
   defaultValue?: string;
@@ -44,199 +53,228 @@ export const LabelledInput: React.FC<{
   required,
   selectOptions,
   isDisabled,
-}) => (
-  <FormControl isDisabled={isDisabled} isRequired={required} fontWeight={500}>
-    <FormLabel color="gray.700" fontWeight={600}>
-      {label}
-    </FormLabel>
-    {type === "text" ? (
-      <>
-        <Field
-          as={Input}
-          id={camelCase(label)}
-          name={name ?? camelCase(label)}
-          validate={validate ?? undefined}
-          placeholder={placeholder}
-          borderColor="gray.400"
-          _hover={{
-            borderColor: "#FF4D00",
-          }}
-          focusBorderColor="#FF4D00"
-        />
-        <Box py={1} fontWeight={600} fontSize="sm" color="red">
-          <ErrorMessage name={name ?? camelCase(label)} />
-        </Box>
-      </>
-    ) : type === "chakra-text" ? (
-      <>
-        <Input
-          name={name ?? camelCase(label)}
-          onChange={onChange ?? undefined}
-          defaultValue={defaultValue ?? undefined}
-          placeholder={placeholder}
-          required={required ?? false}
-          borderColor="gray.400"
-          _hover={{
-            borderColor: "#FF4D00",
-          }}
-          focusBorderColor="#FF4D00"
-        />
-        {/* <FormErrorMessage> */}
-      </>
-    ) : type === "date" ? (
-      // TODO: Hook up date picker component to Formik
-      <>
-        {/* <Flex>
-          <Input
-            type="date"
-            variant="ghost"
+}) => {
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  return (
+    <FormControl isDisabled={isDisabled} isRequired={required} fontWeight={500}>
+      <FormLabel color="gray.700" fontWeight={600}>
+        {label}
+      </FormLabel>
+      {type === "text" ? (
+        <>
+          <Field
+            as={Input}
+            id={camelCase(label)}
             name={name ?? camelCase(label)}
-            border="1px solid #E2E8F0"
-            py="10px"
-            borderRadius="5px"
-            onChange={onChange ?? undefined}
-            defaultValue={defaultValue ?? undefined}
-          />
-          <ErrorMessage name={name ?? camelCase(label)} />
-        </Flex> */}
-
-        {/* <Field
-          as={Input}
-          type="date"
-          id={camelCase(label)}
-          name={name ?? camelCase(label)}
-          validate={validate ?? undefined}
-          placeholder={placeholder}
-          borderColor="gray.400"
-          _hover={{
-            borderColor: "#FF4D00",
-          }}
-          focusBorderColor="#FF4D00"
-        />
-        <Box py={1} fontWeight={600} fontSize="sm" color="red">
-          <ErrorMessage name={name ?? camelCase(label)} />
-        </Box> */}
-
-        <Field name={name ?? camelCase(label)}>
-          {({
-            field,
-            meta,
-            form: { setFieldValue },
-          }: {
-            field: FieldInputProps<Date>;
-            meta: FieldMetaProps<Date>;
-            form: FormikHelpers<Date>;
-          }) => {
-            return (
-              <>
-                <Input
-                  // {...field}
-                  type="date"
-                  onChange={(e) => {
-                    void setFieldValue(field.name, new Date(e.target.value));
-                    console.log({ d: new Date(e.target.value) });
-                  }}
-                  value={
-                    field.value
-                      ? field.value.toISOString().split("T")[0]
-                      : undefined
-                  }
-                  id={camelCase(label)}
-                  placeholder={placeholder}
-                  borderColor="gray.400"
-                  _hover={{
-                    borderColor: "#FF4D00",
-                  }}
-                  focusBorderColor="#FF4D00"
-                />
-                <Box py={1} fontWeight={600} fontSize="sm" color="red">
-                  <ErrorMessage name={name ?? camelCase(label)} />
-                </Box>
-              </>
-            );
-          }}
-        </Field>
-      </>
-    ) : type === "datetime" ? (
-      <Field name={name ?? camelCase(label)}>
-        {({
-          field,
-          form: { setFieldValue },
-        }: {
-          field: FieldInputProps<string>;
-          form: FormikHelpers<string>;
-        }) => (
-          <Input
-            type="datetime-local"
-            variant="outline"
-            name={field.name}
-            borderRadius="5px"
+            validate={validate ?? undefined}
+            placeholder={placeholder}
             borderColor="gray.400"
             _hover={{
               borderColor: "#FF4D00",
             }}
             focusBorderColor="#FF4D00"
-            onChange={(e) => {
-              void setFieldValue(field.name, e.target.value);
-            }}
-            value={field.value}
           />
-        )}
-      </Field>
-    ) : type === "number" ? (
-      <>
-        <Field
-          as={Input}
-          type="number"
-          id={camelCase(label)}
-          name={name ?? camelCase(label)}
-          placeholder={placeholder}
-          validate={validate ?? undefined}
-          _hover={{
-            borderColor: "#FF4D00",
-          }}
-          focusBorderColor="#FF4D00"
-          borderColor="gray.400"
-          color="gray.700"
-        />
-        <Box py={1} fontWeight={600} fontSize="sm" color="red">
-          <ErrorMessage name={name ?? camelCase(label)} />
-        </Box>
-      </>
-    ) : type === "select" ? (
-      <>
-        <Field
-          as={Select}
+          <Box py={1} fontWeight={600} fontSize="sm" color="red">
+            <ErrorMessage name={name ?? camelCase(label)} />
+          </Box>
+        </>
+      ) : type === "password" ? (
+        <>
+          <Field
+            as={Input}
+            type={showPassword ? "text" : "password"}
+            id={camelCase(label)}
+            name={name ?? camelCase(label)}
+            validate={validate ?? undefined}
+            placeholder={placeholder}
+            borderColor="gray.400"
+            _hover={{
+              borderColor: "#FF4D00",
+            }}
+            focusBorderColor="#FF4D00"
+          />
+          <Flex justify="space-between" align="center" mt={2} gap={2}>
+            <Flex flexDir="row" gap={2}>
+              <Checkbox onChange={() => setShowPassword(!showPassword)} />
+              <Text fontSize="small">Show password</Text>
+            </Flex>
+            <Box py={1} fontWeight={600} fontSize="sm" color="red">
+              <ErrorMessage name={name ?? camelCase(label)} />
+            </Box>
+          </Flex>
+        </>
+      ) : type === "chakra-text" ? (
+        <>
+          <Input
+            name={name ?? camelCase(label)}
+            onChange={onChange ?? undefined}
+            defaultValue={defaultValue ?? undefined}
+            placeholder={placeholder}
+            required={required ?? false}
+            borderColor="gray.400"
+            _hover={{
+              borderColor: "#FF4D00",
+            }}
+            focusBorderColor="#FF4D00"
+          />
+          {/* <FormErrorMessage> */}
+        </>
+      ) : type === "date" ? (
+        // TODO: Hook up date picker component to Formik
+        <>
+          {/* <Flex>
+        <Input
+          type="date"
           variant="ghost"
           name={name ?? camelCase(label)}
+          border="1px solid #E2E8F0"
+          py="10px"
           borderRadius="5px"
-          // onChange={onChange ?? undefined}
+          onChange={onChange ?? undefined}
           defaultValue={defaultValue ?? undefined}
-          placeholder={placeholder}
-          focusBorderColor="#FF4D00"
-          border="1px solid"
-          borderColor="gray.400"
-          color="gray.700"
-          _hover={{
-            borderColor: "#FF4D00",
-          }}
-        >
-          {selectOptions?.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
+        />
+        <ErrorMessage name={name ?? camelCase(label)} />
+      </Flex> */}
+
+          {/* <Field
+        as={Input}
+        type="date"
+        id={camelCase(label)}
+        name={name ?? camelCase(label)}
+        validate={validate ?? undefined}
+        placeholder={placeholder}
+        borderColor="gray.400"
+        _hover={{
+          borderColor: "#FF4D00",
+        }}
+        focusBorderColor="#FF4D00"
+      />
+      <Box py={1} fontWeight={600} fontSize="sm" color="red">
+        <ErrorMessage name={name ?? camelCase(label)} />
+      </Box> */}
+
+          <Field name={name ?? camelCase(label)}>
+            {({
+              field,
+              meta,
+              form: { setFieldValue },
+            }: {
+              field: FieldInputProps<Date>;
+              meta: FieldMetaProps<Date>;
+              form: FormikHelpers<Date>;
+            }) => {
+              return (
+                <>
+                  <Input
+                    // {...field}
+                    type="date"
+                    onChange={(e) => {
+                      void setFieldValue(field.name, new Date(e.target.value));
+                      console.log({ d: new Date(e.target.value) });
+                    }}
+                    value={
+                      field.value
+                        ? field.value.toISOString().split("T")[0]
+                        : undefined
+                    }
+                    id={camelCase(label)}
+                    placeholder={placeholder}
+                    borderColor="gray.400"
+                    _hover={{
+                      borderColor: "#FF4D00",
+                    }}
+                    focusBorderColor="#FF4D00"
+                  />
+                  <Box py={1} fontWeight={600} fontSize="sm" color="red">
+                    <ErrorMessage name={name ?? camelCase(label)} />
+                  </Box>
+                </>
+              );
+            }}
+          </Field>
+        </>
+      ) : type === "datetime" ? (
+        <Field name={name ?? camelCase(label)}>
+          {({
+            field,
+            form: { setFieldValue },
+          }: {
+            field: FieldInputProps<string>;
+            form: FormikHelpers<string>;
+          }) => (
+            <Input
+              type="datetime-local"
+              variant="outline"
+              name={field.name}
+              borderRadius="5px"
+              borderColor="gray.400"
+              _hover={{
+                borderColor: "#FF4D00",
+              }}
+              focusBorderColor="#FF4D00"
+              onChange={(e) => {
+                void setFieldValue(field.name, e.target.value);
+              }}
+              value={field.value}
+            />
+          )}
         </Field>
-        <Box py={1} fontWeight={600} fontSize="sm" color="red">
-          <ErrorMessage name={name ?? camelCase(label)} />
-        </Box>
-      </>
-    ) : (
-      // </Flex>
-      <></>
-    )}
-  </FormControl>
-);
+      ) : type === "number" ? (
+        <>
+          <Field
+            as={Input}
+            type="number"
+            id={camelCase(label)}
+            name={name ?? camelCase(label)}
+            placeholder={placeholder}
+            validate={validate ?? undefined}
+            _hover={{
+              borderColor: "#FF4D00",
+            }}
+            focusBorderColor="#FF4D00"
+            borderColor="gray.400"
+            color="gray.700"
+          />
+          <Box py={1} fontWeight={600} fontSize="sm" color="red">
+            <ErrorMessage name={name ?? camelCase(label)} />
+          </Box>
+        </>
+      ) : type === "select" ? (
+        <>
+          <Field
+            as={Select}
+            variant="ghost"
+            name={name ?? camelCase(label)}
+            borderRadius="5px"
+            // onChange={onChange ?? undefined}
+            defaultValue={defaultValue ?? undefined}
+            placeholder={placeholder}
+            focusBorderColor="#FF4D00"
+            border="1px solid"
+            borderColor="gray.400"
+            color="gray.700"
+            _hover={{
+              borderColor: "#FF4D00",
+            }}
+          >
+            {selectOptions?.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </Field>
+          <Box py={1} fontWeight={600} fontSize="sm" color="red">
+            <ErrorMessage name={name ?? camelCase(label)} />
+          </Box>
+        </>
+      ) : (
+        // </Flex>
+        <></>
+      )}
+    </FormControl>
+  );
+};
 
 // export const FormObserver: React.FC = () => {
 //   const { values } = useFormikContext();
