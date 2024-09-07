@@ -1,7 +1,6 @@
 import {
   Grid,
   GridItem,
-  Text,
   Box,
   Heading,
   Accordion,
@@ -53,7 +52,7 @@ const RequirementsSection = () => {
                   <AccordionIcon />
                 </AccordionButton>
               </h2>
-              <AccordionPanel pb={4} fontSize="xl">
+              <AccordionPanel pb={4} fontSize="medium">
                 {content}
               </AccordionPanel>
             </AccordionItem>

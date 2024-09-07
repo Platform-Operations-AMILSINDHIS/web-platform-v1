@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { Box, Spacer } from "@chakra-ui/react";
+import { Spacer } from "@chakra-ui/react";
 
 import Layout from "~/components/layout";
 

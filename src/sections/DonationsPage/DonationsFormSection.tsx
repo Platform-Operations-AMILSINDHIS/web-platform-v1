@@ -19,7 +19,6 @@ import {
   FormControl,
   FormHelperText,
   FormLabel,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { useDropzone } from "react-dropzone";
 import { createId as cuid } from "@paralleldrive/cuid2";
@@ -27,8 +26,8 @@ import { LabelledInput } from "~/components/forms";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { GrDocument } from "react-icons/gr";
 import { toWords } from "~/utils/helper";
-import { useUserAtom } from "~/lib/atom";
 import { api } from "~/utils/api";
+import { truncate } from "lodash";
 
 const DonationsForm: React.FC = () => {
   const toast = useToast();
@@ -79,7 +78,7 @@ const DonationsForm: React.FC = () => {
     onDropAccepted: (files, _event) => {
       const file = files[0] as File;
 
-      const uniqueFilename = cuid() + "_" + file.name;
+      const uniqueFilename = cuid() + "_" + file.name.trim();
 
       fetchPresignedUrls({
         key: uniqueFilename,
@@ -104,7 +103,7 @@ const DonationsForm: React.FC = () => {
     onDropAccepted: (files, _event) => {
       const file = files[0] as File;
 
-      const uniqueFilename = cuid() + "_" + file.name;
+      const uniqueFilename = cuid() + "_" + file.name.trim();
 
       fetchPresignedUrls({
         key: uniqueFilename,
@@ -156,12 +155,14 @@ const DonationsForm: React.FC = () => {
         .catch((err) => console.error(err));
 
       try {
+        console.log(panFilename);
+        console.log(addressFilename);
         const res = await donationsFormMut.mutateAsync({
           formData: {
             ...form,
             amount: form.amount!,
-            panCard: env.NEXT_PUBLIC_R2_ACCESS_URL + "/" + panFilename,
-            addressProof: env.NEXT_PUBLIC_R2_ACCESS_URL + "/" + addressFilename,
+            panCard: `${env.NEXT_PUBLIC_R2_ACCESS_URL}/${panFilename}`,
+            addressProof: `${env.NEXT_PUBLIC_R2_ACCESS_URL}/${addressFilename}`,
           },
         });
 
@@ -306,7 +307,7 @@ const DonationsForm: React.FC = () => {
             {panCardAcceptedFiles.length > 0 ? (
               <Flex alignItems="center" gap="0.35rem">
                 <GrDocument size="1.5rem" />
-                <Text>{panCardAcceptedFiles[0]!.name}</Text>
+                <Text>{truncate(panCardAcceptedFiles[0]!.name)}</Text>
               </Flex>
             ) : (
               <Text>Drag & drop your files here or choose files</Text>
