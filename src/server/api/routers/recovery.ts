@@ -1,7 +1,6 @@
 import * as Yup from "yup";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import supabase from "~/pages/api/auth/supabase";
-import hasher from "~/utils/hasher";
 
 const recoveryRouter = createTRPCRouter({
   sendRecoveryURL: publicProcedure

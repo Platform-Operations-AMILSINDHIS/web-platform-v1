@@ -93,7 +93,7 @@ export interface FormBufferDataFetch {
 
 export interface RequestResponse {
   message: string;
-  toastType: string;
+  toastType: "success" | "error" | "info" | "warning";
 }
 
 export interface SendRecoveryURLResponse extends RequestResponse {
