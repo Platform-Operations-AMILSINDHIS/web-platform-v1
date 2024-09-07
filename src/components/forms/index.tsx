@@ -28,6 +28,7 @@ export const LabelledInput: React.FC<{
   label: string;
   placeholder?: string;
   name?: string;
+  showPasswordOption?: boolean;
   type?:
     | "text"
     | "chakra-text"
@@ -53,6 +54,7 @@ export const LabelledInput: React.FC<{
   required,
   selectOptions,
   isDisabled,
+  showPasswordOption,
 }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -95,10 +97,14 @@ export const LabelledInput: React.FC<{
             focusBorderColor="#FF4D00"
           />
           <Flex justify="space-between" align="center" mt={2} gap={2}>
-            <Flex flexDir="row" gap={2}>
-              <Checkbox onChange={() => setShowPassword(!showPassword)} />
-              <Text fontSize="small">Show password</Text>
-            </Flex>
+            {showPasswordOption ? (
+              <Flex flexDir="row" gap={2}>
+                <Checkbox onChange={() => setShowPassword(!showPassword)} />
+                <Text fontSize="small">Show password</Text>
+              </Flex>
+            ) : (
+              <></>
+            )}
             <Box py={1} fontWeight={600} fontSize="sm" color="red">
               <ErrorMessage name={name ?? camelCase(label)} />
             </Box>

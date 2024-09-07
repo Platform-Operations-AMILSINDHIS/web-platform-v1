@@ -38,7 +38,7 @@ const recoveryRouter = createTRPCRouter({
     .input(Yup.object({ email: Yup.string(), new_password: Yup.string() }))
     .mutation(async ({ input }) => {
       try {
-        const { email, new_password } = input;
+        const { new_password } = input;
         const { error: ResetPwdError } = await supabase.auth.updateUser({
           password: new_password,
         });

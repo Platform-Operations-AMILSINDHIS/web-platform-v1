@@ -17,12 +17,28 @@ const RecoveryPage = () => {
 
   const [submitting, setSubmitting] = useState<boolean>(false);
 
-  const handlePasswordReset = async () => {
+  const [inputType, setInputType] = useState<"password" | "text">("password");
+  const [ctaLabel, setCtaLabel] = useState<string>("View Password");
+
+  const handlePasswordReset = async (values: RecoveryPasswordValues) => {
+    // setSubmitting(true);
+    // await handleUpdatePassword("sabavatakshat@gmail.com", "BigMan112");
+    // setUserAtom({ user: null });
+    // setSubmitting(false);
     setSubmitting(true);
-    await handleUpdatePassword("sabavatakshat@gmail.com", "BigMan112");
-    setUserAtom({ user: null });
+    console.log(values);
     setSubmitting(false);
     // window.location.href = "/";
+  };
+
+  const handleViewNewPassword = () => {
+    if (inputType === "password") {
+      setInputType("text");
+      setCtaLabel("Hide Password");
+    } else {
+      setInputType("password");
+      setCtaLabel("View Password");
+    }
   };
 
   return (
@@ -52,12 +68,14 @@ const RecoveryPage = () => {
                 <LabelledInput
                   label="Enter your new password"
                   name="newPassword"
+                  type={inputType}
                   placeholder="********"
                 />
 
                 <LabelledInput
                   label="Confirm new passoword"
                   name="confirmPassword"
+                  type={inputType}
                   placeholder="********"
                 />
               </Flex>
@@ -65,7 +83,18 @@ const RecoveryPage = () => {
             <Flex gap={3}>
               <Button
                 isLoading={submitting}
-                onClick={() => void handlePasswordReset()}
+                _hover={{
+                  bg: "gray.200",
+                }}
+                color="#0E0E11"
+                bg="gray.100"
+                onClick={handleViewNewPassword}
+              >
+                {ctaLabel}
+              </Button>
+              <Button
+                type="submit"
+                isLoading={submitting}
                 _hover={{
                   bg: "gray.700",
                 }}

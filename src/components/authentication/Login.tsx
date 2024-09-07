@@ -57,23 +57,6 @@ const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
         return;
       }
 
-      const passwordValidateResponse = await axios.post<{
-        passwordValidate: boolean;
-        password_server_validate_message: string;
-      }>("/api/auth/loginvalidation/password", {
-        email: values.email,
-        password: values.password,
-      });
-
-      const { passwordValidate, password_server_validate_message } =
-        passwordValidateResponse.data;
-
-      if (!passwordValidate) {
-        setErrors({ password: password_server_validate_message });
-        setSubmitting(false);
-        return;
-      }
-
       const response = await axios.post<{
         userData: {
           auth_id: string;
