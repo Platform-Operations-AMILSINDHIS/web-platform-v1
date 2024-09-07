@@ -5,11 +5,13 @@ import { adminAtomBody } from "~/types/atoms/admin";
 interface AdminPageLayoutProps {
   children: React.ReactNode;
   admin: adminAtomBody | null;
+  handleAdminLogout: () => void;
 }
 
 const AdminPageLayout: React.FC<AdminPageLayoutProps> = ({
   children,
   admin,
+  handleAdminLogout,
 }) => {
   return (
     <Flex justify="center" h="100vh" w="full">
@@ -26,16 +28,15 @@ const AdminPageLayout: React.FC<AdminPageLayoutProps> = ({
                 {admin?.admin_username ?? ""}
               </span>
             </Text>
-            <Flex gap={3}>
-              <Button color="white" bg="#FF4D00" variant="none">
-                {" "}
-                Manage Access
-              </Button>
-              <Button color="#FF4D00" variant="none">
-                {" "}
-                Sign Out
-              </Button>
-            </Flex>
+            <Button
+              onClick={handleAdminLogout}
+              color="white"
+              bg="#FF4D00"
+              variant="none"
+            >
+              {" "}
+              Sign out
+            </Button>
           </Flex>
           <Box mt={3}>{children}</Box>
         </Flex>

@@ -22,13 +22,12 @@ import { useAdminAtom } from "~/lib/atom";
 import { ProfileRequestsDataType } from "~/types/requests";
 
 import {
-  FormBufferDataType,
   MatrimonyBufferDataType,
   MembershipBufferDataType,
 } from "~/types/tables/dataBuffer";
 
 const AdminPage = () => {
-  const [{ admin }] = useAdminAtom();
+  const [{ admin }, setAdminAtom] = useAdminAtom();
   const {
     isOpen: isProfileRequestsModalOpen,
     onOpen: onOpenProfileRequestsModal,
@@ -71,6 +70,11 @@ const AdminPage = () => {
     });
   };
 
+  const handleAdminLogout = () => {
+    setAdminAtom({ admin: null });
+    window.location.href = "/";
+  };
+
   useEffect(() => {
     async function f() {
       await handleFetch();
@@ -98,7 +102,7 @@ const AdminPage = () => {
   }, [matrimonyBufferData]);
 
   return (
-    <AdminPageLayout admin={admin}>
+    <AdminPageLayout handleAdminLogout={handleAdminLogout} admin={admin}>
       <Flex justify="space-between" align="center" w="full" mb={8}>
         <BufferSearch setSearchTerm={setSearchTerm} />
         <Flex alignItems="center" gap={3}>
