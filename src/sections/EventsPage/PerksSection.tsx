@@ -19,7 +19,12 @@ import { BiSolidShareAlt } from "react-icons/bi";
 
 const PerksSection: React.FC = () => {
   return (
-    <Grid mt={10} templateColumns={["1fr", "1fr 1fr"]} gap="3rem" position="relative">
+    <Grid
+      mt={10}
+      templateColumns={["1fr", "1fr 1fr"]}
+      gap="3rem"
+      position="relative"
+    >
       <GridItem>
         <Text color="#FF4D00" fontSize="lg" fontWeight="semibold">
           Your perks
@@ -121,7 +126,7 @@ const PerksSection: React.FC = () => {
         <Spacer h="2rem" />
         <Flex direction={["column", "row"]} gap="1.5rem">
           <LinkButton
-            CTAlink="#"
+            CTAlink="/about"
             CTAlabel="Learn about connecting"
             px="1.5rem"
             py="1.5rem"
@@ -133,7 +138,7 @@ const PerksSection: React.FC = () => {
                 <ArrowForwardIcon />
               </Flex>
             }
-            CTAlink="#"
+            CTAlink="/memberships"
             CTATheme={false}
             px="1.5rem"
             py="1.5rem"
@@ -143,7 +148,12 @@ const PerksSection: React.FC = () => {
         <Spacer h="4rem" />
       </GridItem>
 
-      <GridItem display={["none", "block"]} position="absolute" bottom="-40px" right="0">
+      <GridItem
+        display={["none", "block"]}
+        position="absolute"
+        bottom="-40px"
+        right="0"
+      >
         <Box
           px="2.5rem"
           h="570px"
