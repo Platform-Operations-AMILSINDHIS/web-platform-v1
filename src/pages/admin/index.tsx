@@ -98,7 +98,7 @@ const AdminPage = () => {
   }, [matrimonyBufferData]);
 
   return (
-    <AdminPageLayout adminUsername={admin?.admin_username ?? ""}>
+    <AdminPageLayout admin={admin}>
       <Flex justify="space-between" align="center" w="full" mb={8}>
         <BufferSearch setSearchTerm={setSearchTerm} />
         <Flex alignItems="center" gap={3}>
