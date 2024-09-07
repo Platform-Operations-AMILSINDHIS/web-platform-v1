@@ -60,7 +60,7 @@ const Navigation: React.FC<NavigationProps> = ({
         display={{ base: "block", md: "block", lg: "none" }}
         px={{ base: 60, md: 20 }}
       >
-        <Flex w="full" align="center" justify="space-between">
+        <Flex w="full" align="center" justify="flex-end">
           <Icon
             onClick={onNavMobileOpen}
             color="orange.500"

@@ -98,11 +98,11 @@ const Footer = () => {
           >
             <Text fontWeight={600}>Contact us</Text>
             <Flex gap={4} flexDir="column">
-              {contactLinks.map(({ ICON, LinkLabel }, index) => {
+              {contactLinks.map(({ ICON, LinkLabel, href }, index) => {
                 return (
                   <Flex gap={3} align="flex-start" key={index}>
                     <Icon boxSize={5} as={ICON} />
-                    <Text w={350} color="gray.400">
+                    <Text as="a" href={href} w={350} color="gray.400">
                       {LinkLabel}
                     </Text>
                   </Flex>

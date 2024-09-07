@@ -41,7 +41,7 @@ const YacSection = () => {
       <Flex gap={10} flexDir="column">
         <Flex gap={1} flexDir="column">
           <Text fontWeight={500} fontSize={"3xl"}>
-            Offerings from KAP
+            Offerings from YAC
           </Text>
           <Text w={["90%", 450]}>
             As an official member of KAP, you will have posses various benefits

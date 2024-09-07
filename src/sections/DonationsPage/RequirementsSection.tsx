@@ -32,7 +32,7 @@ const RequirementsSection = () => {
                 "Payment can be processed using UPI, Credit Card, Debit Card and Net Banking",
             },
             {
-              title: "Donation Camps",
+              title: "Donation Reliefs",
               content:
                 "Donation camps offer opportunities to contribute to various causes, supporting those in need. Health checkup camps prioritise the society's wellness, ensuring that even the ones who face socio-economic constraints, have access to healthcare services. Through educational drives, we aim to empower our community by promoting learning and skill development. ",
             },

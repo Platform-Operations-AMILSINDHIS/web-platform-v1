@@ -122,15 +122,6 @@
           "LinkUrl": "/donations"
         }
       ]
-    },
-    {
-      "FooterColumnTitle": "Credits",
-      "FooterColumnItems": [
-        {
-          "LinkLabel": "View all credits",
-          "LinkText": "<p>Website initiative and development - content, planning & management Headed by Gita V. Kaycee - Convener Global Networking KAP</p><p>Logistics, database and coordination Namrata Advani - Vice President YAC</p>"
-        }
-      ]
     }
   ]
 }

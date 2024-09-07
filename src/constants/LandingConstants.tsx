@@ -39,15 +39,18 @@ const contactLinks = [
   {
     ICON: AiOutlineMail,
     LinkLabel: "amilsindhis@gmail.com",
+    href: "mailto:amilsindhis@gmail.com",
   },
   {
     ICON: BsTelephone,
     LinkLabel: "(+91) 9820081700",
+    href: "tel:+919820081700",
   },
   {
     ICON: CiLocationOn,
     LinkLabel:
       "1 A, Sindhu House,1st Floor, Nanabhai Lane, Fort, Mumbai, Maharashtra 400001",
+    href: "https://maps.app.goo.gl/uSWFCg8biZMJXfzf7",
   },
 ];
 
