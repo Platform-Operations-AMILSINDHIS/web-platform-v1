@@ -111,7 +111,7 @@ const AccountOptionsPopover: React.FC<AccountOptionsPopoverProps> = ({
               handleModal={onClose}
               modalState={isOpen}
             />
-            {/* <Flex
+            <Flex
               _hover={{ color: "gray.800", cursor: "pointer" }}
               gap={2}
               align="center"
@@ -119,7 +119,7 @@ const AccountOptionsPopover: React.FC<AccountOptionsPopoverProps> = ({
             >
               <Icon boxSize={4} as={MdOutlinePassword}></Icon>
               <Text>Reset Password</Text>
-            </Flex> */}
+            </Flex>
             <Flex
               _hover={{ color: "gray.800", cursor: "pointer" }}
               gap={2}
