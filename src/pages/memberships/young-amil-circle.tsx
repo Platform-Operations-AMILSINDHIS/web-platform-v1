@@ -13,7 +13,7 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
   console.log(user?.age);
 
   return (
-    <Layout title="KAP Membership Form">
+    <Layout title="YAC Membership Form">
       {user?.KAP_member === true ? (
         <Flex
           gap={2}
@@ -63,9 +63,8 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
       <Box position="relative">
         <Box
           display={
-            user &&
-            (user.age <= 16 || user.age >= 30) &&
-            user.YAC_member != true
+            !user ||
+            ((user.age <= 16 || user.age >= 30) && user.YAC_member != true)
               ? ""
               : "none"
           }
