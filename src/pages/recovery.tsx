@@ -1,16 +1,11 @@
-import { Button, Flex, Text, useToast } from "@chakra-ui/react";
-import { Form, Formik } from "formik";
+import { Flex, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { use, useEffect, useState } from "react";
-import Recovery from "~/components/authentication/Recovery";
-import { LabelledInput } from "~/components/forms";
-import useRecovery from "~/hooks/UseRecovery";
-import {
-  RecoveryPasswordInitialValues,
-  RecoveryPasswordValues,
-} from "~/hooks/useForm";
+import { useEffect, useState } from "react";
+import { RecoveryPasswordValues } from "~/hooks/useForm";
 import { useUserAtom } from "~/lib/atom";
-import { RecoveryValidation } from "~/validations/AuthValidations";
+
+import Recovery from "~/components/authentication/Recovery";
+import useRecovery from "~/hooks/UseRecovery";
 
 const RecoveryPage = () => {
   const router = useRouter();
