@@ -12,7 +12,7 @@ const recoveryRouter = createTRPCRouter({
         console.log(email);
         const { error: ErrorInRecoverURL } =
           await supabase.auth.resetPasswordForEmail(email ?? "", {
-            redirectTo: "http://localhost:3000/recovery",
+            redirectTo: "https://amilsindhis.org/recovery",
           });
 
         if (ErrorInRecoverURL) {
