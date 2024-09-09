@@ -15,6 +15,7 @@ import MatrimonyBufferTable from "~/components/admin/MatrimonyBufferTable";
 import MembershipBufferTable from "~/components/admin/MembershipBufferTable";
 import ProfileRequestsViewModal from "~/components/admin/ProfileRequestsViewModal";
 import { btnThemeLight } from "~/components/buttons/BtnThemes";
+import useRealTime from "~/hooks/useRealTime";
 import useServerActions from "~/hooks/useServerActions";
 import AdminPageLayout from "~/layouts/AdminPageLayout";
 
@@ -63,12 +64,22 @@ const AdminPage = () => {
     setMatrimonyBufferData(allMatBufferData);
     setMembershipBufferData(allMemBufferData);
     setProfileRequestsData(allProfileRequestsData);
-    console.log({
-      allMatBufferData,
-      allMemBufferData,
-      allProfileRequestsData,
-    });
   };
+
+  // seperated calls for real time reaction to changes made to specific tables
+  // please refactor and optimize code below for later stages
+  const handleRealTimeMemAndMatDataFetch = async () => {
+    const allMemBufferData = await handleMemberBufferFetch();
+    setMembershipBufferData(allMemBufferData);
+  };
+
+  const handleRealTimeProfileDataFetch = async () => {
+    const allProfileRequestsData = await handleFetchProfileRequests();
+    setProfileRequestsData(allProfileRequestsData);
+  };
+
+  useRealTime(handleRealTimeMemAndMatDataFetch, "form_buffer");
+  useRealTime(handleRealTimeProfileDataFetch, "profile_requests");
 
   const handleAdminLogout = () => {
     setAdminAtom({ admin: null });

@@ -6,6 +6,16 @@ import AuthModal from "./AuthModal";
 const UserBlockModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [displayState, setDisplayState] = useState(false);
+  const [authState, setAuthState] = useState<
+    "login" | "signup" | "forgotPassword"
+  >("login");
+
+  const authStateHandleFunction = (
+    authType: "login" | "signup" | "forgotPassword"
+  ) => {
+    setAuthState(authType);
+    onOpen();
+  };
 
   const handleModal = (state: boolean) => {
     setDisplayState(state);
@@ -34,8 +44,8 @@ const UserBlockModal = () => {
           create an account or login
         </Text>
         <AuthModal
-          displayFunction={handleModal}
-          displayState={displayState}
+          authState={authState}
+          authStateHandleFunction={authStateHandleFunction}
           handleModal={onClose}
           modalState={isOpen}
         />
