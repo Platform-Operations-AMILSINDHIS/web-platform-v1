@@ -32,6 +32,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({
 
   const handleSendPasswordResetLink = async (email: string) => {
     try {
+      setShowError(false);
       setSubmitting(true);
       const { message, toastType } = await handleSendRecoveryURL(email);
       toast({

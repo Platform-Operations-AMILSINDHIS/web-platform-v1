@@ -1,8 +1,10 @@
 import {
+  Box,
   Button,
   Flex,
   FormLabel,
   Input,
+  Spinner,
   Text,
   useToast,
 } from "@chakra-ui/react";
@@ -14,6 +16,7 @@ import { useUserAtom } from "~/lib/atom";
 import Recovery from "~/components/authentication/Recovery";
 import useRecovery from "~/hooks/UseRecovery";
 import { TRPCClientError } from "@trpc/client";
+import RecoveryResend from "~/components/authentication/RecoveryResend";
 
 const RecoveryPage = () => {
   const router = useRouter();
@@ -24,12 +27,13 @@ const RecoveryPage = () => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [activateResend, setActivateResend] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
-  const [fieldError, setFieldError] = useState<boolean>(false);
 
   const [urlData, setUrlData] = useState<Record<string, string>>({});
   const [inputType, setInputType] = useState<"password" | "text">("password");
   const [ctaLabel, setCtaLabel] = useState<string>("View Password");
   const [email, setEmail] = useState<string>("");
+
+  const [redirectCountDown, setRedirectCountDown] = useState<number>(0);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -53,6 +57,12 @@ const RecoveryPage = () => {
     });
 
     setUrlData(newUrlData);
+
+    if (
+      !("recoveryaccess_token" in newUrlData && "refresh_token" in newUrlData)
+    ) {
+      router.push("/");
+    }
   }, [router.isReady, router.asPath]);
 
   const handlePasswordReset = async (values: RecoveryPasswordValues) => {
@@ -107,7 +117,6 @@ const RecoveryPage = () => {
 
   const handleResendPasswordResetLink = async (email: string) => {
     try {
-      if (email.length === 0) setFieldError(true);
       const { message, toastType } = await handleSendRecoveryURL(email);
       toast({
         description: message,
@@ -137,89 +146,79 @@ const RecoveryPage = () => {
 
   return (
     <Flex justify="center" align="center" w="full" h="100vh">
-      <Flex borderRadius={15} p={5} gap={3}>
-        {"recoveryerror" in urlData ? (
-          <Flex
-            align={!activateResend ? "center" : "flex-start"}
-            gap={3}
-            flexDir="column"
-          >
-            {activateResend ? (
-              <>
-                <Flex flexDir="column">
-                  <FormLabel color="gray.700" fontWeight={600}>
-                    Enter your email
-                  </FormLabel>
-                  <Input
-                    onChange={(e) => setEmail(e.target.value)}
-                    borderColor="gray.400"
-                    _hover={{
-                      borderColor: "#FF4D00",
-                    }}
-                    focusBorderColor="#FF4D00"
-                    placeholder="xyz@email.com"
-                    w={400}
-                  />
-                </Flex>
-                <Flex gap={2}>
-                  <Button
-                    onClick={() => void handleResendPasswordResetLink(email)}
-                    _hover={{ bg: "#FF4D00", color: "white" }}
-                    bg="#0E0011"
-                    color="white"
-                  >
-                    Send link
-                  </Button>
-                  <Button
-                    onClick={() => setActivateResend(false)}
-                    bg="gray.100"
-                    _hover={{ bg: "gray.200" }}
-                  >
-                    Cancel
-                  </Button>
-                </Flex>
-              </>
-            ) : (
-              <>
-                {" "}
-                <Flex flexDir="column">
-                  <Text fontWeight={700} fontSize="x-large" textAlign="center">
-                    Looks like something ain't quite right
-                  </Text>
-                  <Text fontWeight={500} fontSize="large" textAlign="center">
-                    {urlData.error_description?.split("+").join(" ")}
-                  </Text>
-                </Flex>
-                <Flex gap={2}>
-                  <Button
-                    _hover={{ bg: "#FF4D00", color: "white" }}
-                    bg="#0E0011"
-                    color="white"
-                  >
-                    Return home
-                  </Button>
-                  <Button
-                    onClick={() => setActivateResend(true)}
-                    bg="gray.100"
-                    _hover={{ bg: "gray.200" }}
-                  >
-                    Resend Link
-                  </Button>
-                </Flex>
-              </>
-            )}
+      {"recoveryaccess_token" && "refresh_token" in urlData ? (
+        <Flex borderRadius={15} p={5} gap={3}>
+          {"recoveryerror" in urlData ? (
+            <Flex
+              align={!activateResend ? "center" : "flex-start"}
+              gap={3}
+              flexDir="column"
+            >
+              {activateResend ? (
+                <RecoveryResend
+                  email={email}
+                  handleResendPasswordResetLink={handleResendPasswordResetLink}
+                  setActivateResend={setActivateResend}
+                  setEmail={setEmail}
+                />
+              ) : (
+                <>
+                  {" "}
+                  <Flex flexDir="column">
+                    <Text
+                      fontWeight={700}
+                      fontSize="x-large"
+                      textAlign="center"
+                    >
+                      Looks like something ain't quite right
+                    </Text>
+                    <Text fontWeight={500} fontSize="large" textAlign="center">
+                      {urlData.error_description?.split("+").join(" ")}
+                    </Text>
+                  </Flex>
+                  <Flex gap={2}>
+                    <Button
+                      _hover={{ bg: "#FF4D00", color: "white" }}
+                      bg="#0E0011"
+                      color="white"
+                    >
+                      Return home
+                    </Button>
+                    <Button
+                      onClick={() => setActivateResend(true)}
+                      bg="gray.100"
+                      _hover={{ bg: "gray.200" }}
+                    >
+                      Resend Link
+                    </Button>
+                  </Flex>
+                </>
+              )}
+            </Flex>
+          ) : (
+            <Recovery
+              ctaLabel={ctaLabel}
+              errorState={error}
+              handlePasswordReset={handlePasswordReset}
+              handleViewNewPassword={handleViewNewPassword}
+              inputType={inputType}
+              submitting={submitting}
+            />
+          )}
+        </Flex>
+      ) : (
+        <Flex flexDir="column">
+          <Text fontWeight={700} fontSize="x-large">
+            Invalid Authentication Flow detected
+          </Text>
+          <Flex align="center" flexDir="row" gap={1}>
+            <Spinner boxSize={3} />
+            <Text fontWeight={500} fontSize="large">
+              Redirecting to home...
+            </Text>
           </Flex>
-        ) : (
-          <Recovery
-            ctaLabel={ctaLabel}
-            errorState={error}
-            handlePasswordReset={handlePasswordReset}
-            handleViewNewPassword={handleViewNewPassword}
-            inputType={inputType}
-            submitting={submitting}
-          />
-        )}
-      </Flex>
+        </Flex>
+      )}
     </Flex>
   );
 };
