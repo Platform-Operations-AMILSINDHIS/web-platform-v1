@@ -1,5 +1,3 @@
-import DeleteModal from "../authentication/DeleteModal";
-
 import { MdOutlinePassword, MdOutlineLogout } from "react-icons/md";
 import { PiFilesFill } from "react-icons/pi";
 import { FaTrash } from "react-icons/fa6";
@@ -19,8 +17,10 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import useRecovery from "~/hooks/UseRecovery";
 import { useState } from "react";
+
+import useRecovery from "~/hooks/UseRecovery";
+import DeleteModal from "../authentication/DeleteModal";
 
 interface AccountOptionsPopoverProps {
   children: React.ReactNode;
