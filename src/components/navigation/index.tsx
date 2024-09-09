@@ -45,11 +45,15 @@ const Navigation: React.FC<NavigationProps> = ({
     onClose: onNavMobileClose,
   } = useDisclosure();
 
-  const [displayState, setDisplayState] = useState(false);
+  const [authState, setAuthState] = useState<
+    "login" | "signup" | "forgotPassword"
+  >("login");
   const [{ user }] = useUserAtom();
 
-  const handleModal = (state: boolean) => {
-    setDisplayState(state);
+  const authStateHandleFunction = (
+    authType: "login" | "signup" | "forgotPassword"
+  ) => {
+    setAuthState(authType);
     onAuthOpen();
   };
 
@@ -135,30 +139,30 @@ const Navigation: React.FC<NavigationProps> = ({
                 CTASize="sm"
                 CTAlabel="Log in"
                 CTATheme={true}
-                CTAaction={() => handleModal(true)}
+                CTAaction={() => authStateHandleFunction("login")}
               />
               <ModalButton
                 CTASize="sm"
                 CTAlabel="Sign up"
-                CTAaction={() => handleModal(false)}
+                CTAaction={() => authStateHandleFunction("signup")}
               />
             </Flex>
           )}
         </Flex>
       </Box>
       <AuthModal
-        displayState={displayState}
+        authState={authState}
         modalState={isAuthOpen}
         handleModal={onAuthClose}
-        displayFunction={handleModal}
+        authStateHandleFunction={authStateHandleFunction}
       />
       <NavigationMobile
         user={user}
-        handleModal={handleModal}
         userLocation={userLocation}
         navigationItems={navigationItems}
         isOpen={isNavMobileOpen}
         onClose={onNavMobileClose}
+        authStateHandleFunction={authStateHandleFunction}
       />
     </>
   );

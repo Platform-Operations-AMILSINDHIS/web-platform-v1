@@ -7,14 +7,18 @@ import { api } from "~/utils/api";
 import { userAtomBody } from "~/types/atoms/users";
 import { useUserAtom } from "~/lib/atom";
 import { LoginValidation } from "~/validations/AuthValidations";
-import { TRPCError } from "@trpc/server";
 
 interface LoginProps {
   setCloseModal: (input: boolean) => void;
-  displayFunction: (input: boolean) => void;
+  authStateHandleFunction: (
+    authState: "login" | "signup" | "forgotPassword"
+  ) => void;
 }
 
-const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
+const Login: React.FC<LoginProps> = ({
+  setCloseModal,
+  authStateHandleFunction,
+}) => {
   const [submitting, setSubmitting] = useState(false);
   const [showError, setShowError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -113,22 +117,33 @@ const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
               name="email"
               placeholder="xyz@gmail.com"
             />
-
-            <LabelledInput
-              label="Enter password"
-              name="password"
-              type="password"
-              showPasswordOption
-              placeholder="********"
-            />
-
-            <Flex
-              fontWeight={500}
-              w="full"
-              justify="space-between"
-              align="center"
-            >
-              <Text>Forgot password?</Text>
+            <Flex flexDir="column">
+              <LabelledInput
+                label="Enter password"
+                name="password"
+                type="password"
+                showPasswordOption
+                placeholder="********"
+              />
+              <Flex
+                fontSize="small"
+                fontWeight={500}
+                w="full"
+                justify="space-between"
+                align="center"
+              >
+                <Text
+                  onClick={() => authStateHandleFunction("forgotPassword")}
+                  cursor="pointer"
+                  _hover={{
+                    color: "#FF4D00",
+                    textDecoration: "underline",
+                    transition: "all 0.2s",
+                  }}
+                >
+                  Forgot password?
+                </Text>
+              </Flex>
             </Flex>
           </Flex>
           <Flex gap={3}>
@@ -152,7 +167,7 @@ const Login: React.FC<LoginProps> = ({ setCloseModal, displayFunction }) => {
                 color: "white",
                 bg: "#FF4D00",
               }}
-              onClick={() => displayFunction(false)}
+              onClick={() => authStateHandleFunction("signup")}
             >
               New Here?
             </Button>

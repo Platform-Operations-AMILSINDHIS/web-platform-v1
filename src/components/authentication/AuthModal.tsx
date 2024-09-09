@@ -1,20 +1,30 @@
-import { Modal, ModalBody, ModalContent, ModalOverlay } from "@chakra-ui/react";
+import {
+  Flex,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalOverlay,
+  Text,
+} from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import Login from "./Login";
 import Signup from "./Signup";
+import ForgotPassword from "./ForgotPassword";
 
 interface AuthModalProps {
   modalState: boolean;
-  displayState: boolean;
+  authState: "login" | "signup" | "forgotPassword";
   handleModal: () => void;
-  displayFunction: (state: boolean) => void;
+  authStateHandleFunction: (
+    authState: "login" | "signup" | "forgotPassword"
+  ) => void;
 }
 
 const AuthModal: React.FC<AuthModalProps> = ({
   modalState,
+  authState,
   handleModal,
-  displayState,
-  displayFunction,
+  authStateHandleFunction,
 }) => {
   const [closeModal, setCloseModal] = useState(false);
   useEffect(() => {
@@ -27,14 +37,19 @@ const AuthModal: React.FC<AuthModalProps> = ({
       <ModalOverlay />
       <ModalContent>
         <ModalBody>
-          {displayState ? (
+          {authState === "login" ? (
             <Login
-              displayFunction={displayFunction}
+              authStateHandleFunction={authStateHandleFunction}
+              setCloseModal={setCloseModal}
+            />
+          ) : authState === "forgotPassword" ? (
+            <ForgotPassword
+              authStateHandleFunction={authStateHandleFunction}
               setCloseModal={setCloseModal}
             />
           ) : (
             <Signup
-              displayFunction={displayFunction}
+              authStateHandleFunction={authStateHandleFunction}
               setCloseModal={setCloseModal}
             />
           )}

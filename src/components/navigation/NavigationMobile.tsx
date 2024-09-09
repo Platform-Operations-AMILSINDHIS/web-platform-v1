@@ -30,7 +30,9 @@ interface NavigationMobileProps {
     }[];
   }[];
   onClose: () => void;
-  handleModal: (state: boolean) => void;
+  authStateHandleFunction: (
+    authState: "login" | "signup" | "forgotPassword"
+  ) => void;
 }
 
 const NavigationMobile: React.FC<NavigationMobileProps> = ({
@@ -39,7 +41,7 @@ const NavigationMobile: React.FC<NavigationMobileProps> = ({
   userLocation,
   navigationItems,
   onClose,
-  handleModal,
+  authStateHandleFunction,
 }) => {
   return (
     <Drawer
@@ -105,12 +107,12 @@ const NavigationMobile: React.FC<NavigationMobileProps> = ({
                 CTASize="sm"
                 CTAlabel="Log in"
                 CTATheme={true}
-                CTAaction={() => handleModal(true)}
+                CTAaction={() => authStateHandleFunction("login")}
               />
               <ModalButton
                 CTASize="sm"
                 CTAlabel="Sign up"
-                CTAaction={() => handleModal(false)}
+                CTAaction={() => authStateHandleFunction("signup")}
               />
             </Flex>
           )}

@@ -10,10 +10,15 @@ import { SignUpValidationSchema } from "~/validations/AuthValidations";
 
 interface SignupProps {
   setCloseModal: (input: boolean) => void;
-  displayFunction: (input: boolean) => void;
+  authStateHandleFunction: (
+    authState: "login" | "signup" | "forgotPassword"
+  ) => void;
 }
 
-const Signup: React.FC<SignupProps> = ({ setCloseModal, displayFunction }) => {
+const Signup: React.FC<SignupProps> = ({
+  setCloseModal,
+  authStateHandleFunction,
+}) => {
   const [submitting, setSubmitting] = useState(false);
   const toast = useToast();
 
@@ -167,7 +172,7 @@ const Signup: React.FC<SignupProps> = ({ setCloseModal, displayFunction }) => {
               Create account
             </Button>
             <Button
-              onClick={() => displayFunction(true)}
+              onClick={() => authStateHandleFunction("login")}
               color="#FF4D00"
               bg="none"
               border="2px solid"

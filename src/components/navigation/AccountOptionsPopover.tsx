@@ -13,6 +13,7 @@ import {
   PopoverContent,
   PopoverHeader,
   PopoverTrigger,
+  Spinner,
   Text,
   useDisclosure,
   useToast,
@@ -117,7 +118,10 @@ const AccountOptionsPopover: React.FC<AccountOptionsPopoverProps> = ({
               align="center"
               onClick={handleResetPassword}
             >
-              <Icon boxSize={4} as={MdOutlinePassword}></Icon>
+              <Icon
+                boxSize={4}
+                as={sendingResetURL ? Spinner : MdOutlinePassword}
+              ></Icon>
               <Text>Reset Password</Text>
             </Flex>
             <Flex
