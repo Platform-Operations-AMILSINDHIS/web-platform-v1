@@ -90,9 +90,7 @@ const Recovery: React.FC<RecoveryProps> = ({
           <Button
             type="submit"
             isLoading={submitting}
-            _hover={{
-              bg: "gray.700",
-            }}
+            _hover={{ bg: "#FF4D00", color: "white" }}
             color="white"
             bg="#0E0E11"
           >

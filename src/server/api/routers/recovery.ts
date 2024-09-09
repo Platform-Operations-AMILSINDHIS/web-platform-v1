@@ -1,10 +1,11 @@
 import * as Yup from "yup";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import supabase from "~/pages/api/auth/supabase";
+import { TRPCError } from "@trpc/server";
 
 const recoveryRouter = createTRPCRouter({
   sendRecoveryURL: publicProcedure
-    .input(Yup.object({ email: Yup.string() }))
+    .input(Yup.object({ email: Yup.string().email().min(1) }))
     .mutation(async ({ input }) => {
       try {
         const { email } = input;
@@ -15,7 +16,10 @@ const recoveryRouter = createTRPCRouter({
           });
 
         if (ErrorInRecoverURL) {
-          throw new Error(`Supabase error: ${ErrorInRecoverURL.message}`);
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: `${ErrorInRecoverURL.message}`,
+          });
         }
 
         return {
@@ -42,9 +46,10 @@ const recoveryRouter = createTRPCRouter({
           password: new_password,
         });
         if (ResetPwdError)
-          throw new Error(
-            `Supabase user updation error: ${ResetPwdError.message}`
-          );
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: `${ResetPwdError.message}`,
+          });
 
         return {
           message: "Password updated, login to your account again",
