@@ -78,7 +78,6 @@ const Recovery: React.FC<RecoveryProps> = ({
         </Flex>
         <Flex gap={3}>
           <Button
-            isLoading={submitting}
             _hover={{
               bg: "gray.200",
             }}
