@@ -84,20 +84,18 @@ const AdminPage = () => {
   }, []);
 
   useEffect(() => {
-    setIsLoadingMemBuf(true);
     if (membershipBufferData && membershipBufferData.length > 0) {
       setIsLoadingMemBuf(false);
     } else {
-      setIsLoadingMemBuf(false);
+      setIsLoadingMemBuf(true);
     }
   }, [membershipBufferData]);
 
   useEffect(() => {
-    setIsLoadingMatBuf(true);
     if (matrimonyBufferData && matrimonyBufferData.length > 0) {
       setIsLoadingMatBuf(false);
     } else {
-      setIsLoadingMatBuf(false);
+      setIsLoadingMatBuf(true);
     }
   }, [matrimonyBufferData]);
 
@@ -151,7 +149,10 @@ const AdminPage = () => {
       {isSelected === "Memberships" ? (
         <Box>
           {isLoadingMemBuf ? (
-            <Spinner />
+            <Flex gap={2} align="center">
+              <Spinner color="#FF4D00" boxSize={4} />
+              <Text>Fetching Data...</Text>
+            </Flex>
           ) : (
             <MembershipBufferTable
               searchTerm={searchTerm}
