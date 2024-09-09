@@ -14,11 +14,15 @@ const useRecovery = () => {
 
   const handleUpdatePassword = async (
     email: string,
-    password: string
+    new_password: string,
+    access_token: string,
+    refresh_token: string
   ): Promise<UpdatePasswordResponse> => {
     const response = await updatePasswordMut.mutateAsync({
       email,
-      new_password: password,
+      new_password,
+      access_token,
+      refresh_token,
     });
     return response as UpdatePasswordResponse;
   };

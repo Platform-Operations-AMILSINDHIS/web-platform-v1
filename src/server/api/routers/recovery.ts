@@ -38,10 +38,30 @@ const recoveryRouter = createTRPCRouter({
     }),
 
   updateUserPassword: publicProcedure
-    .input(Yup.object({ email: Yup.string(), new_password: Yup.string() }))
+    .input(
+      Yup.object({
+        email: Yup.string(),
+        new_password: Yup.string(),
+        access_token: Yup.string(),
+        refresh_token: Yup.string(),
+      })
+    )
     .mutation(async ({ input }) => {
       try {
-        const { new_password } = input;
+        const { new_password, access_token, refresh_token } = input;
+        // re authenticate user to create an auth session to allow password reset
+        const { error: setSessionError } = await supabase.auth.setSession({
+          access_token: access_token as string,
+          refresh_token: refresh_token as string,
+        });
+
+        if (setSessionError)
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message:
+              "Error when creating session try sending another reset link to your email",
+          });
+
         const { error: ResetPwdError } = await supabase.auth.updateUser({
           password: new_password,
         });

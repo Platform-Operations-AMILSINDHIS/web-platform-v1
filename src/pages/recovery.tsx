@@ -60,7 +60,9 @@ const RecoveryPage = () => {
       setSubmitting(true);
       const response = await handleUpdatePassword(
         values.email,
-        values.confirmPassword
+        values.confirmPassword,
+        urlData.recoveryaccess_token ?? "",
+        urlData.refresh_token ?? ""
       );
       setSubmitting(false);
       if (response) {
