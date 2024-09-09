@@ -52,6 +52,10 @@ const recoveryRouter = createTRPCRouter({
         };
       } catch (err) {
         console.log("Error while reseting password", err);
+        return {
+          message: "Failed to update password",
+          toastType: "error",
+        };
       }
     }),
 });

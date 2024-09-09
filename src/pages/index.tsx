@@ -1,11 +1,7 @@
-import type {
-  NextPage,
-  InferGetServerSidePropsType,
-  GetServerSideProps,
-} from "next";
+import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import type { EventCollectionQueryQuery } from "~/lib/__generated/sdk";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { Box } from "@chakra-ui/react";
 
 import constants from "../constants/LandingConstants.json";

@@ -14,7 +14,6 @@ interface EventData {
 const EventSlider: React.FC<EventData> = ({ events }) => {
   const { width } = useWindowDimensions();
   const eventData = events.eventContentTypeCollection?.items;
-  console.log(events);
   return (
     <>
       <Text fontSize="xl" fontWeight={600}>
