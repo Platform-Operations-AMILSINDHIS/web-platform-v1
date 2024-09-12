@@ -61,7 +61,10 @@ const RecoveryPage = () => {
     if (
       !("recoveryaccess_token" in newUrlData && "refresh_token" in newUrlData)
     ) {
-      router.push("/");
+      router
+        .push("/")
+        .then(() => console.log("moved back to home"))
+        .catch((err) => console.log(err));
     }
   }, [router.isReady, router.asPath]);
 
@@ -170,7 +173,7 @@ const RecoveryPage = () => {
                       fontSize="x-large"
                       textAlign="center"
                     >
-                      Looks like something ain't quite right
+                      Looks like something ain&apos;t quite right
                     </Text>
                     <Text fontWeight={500} fontSize="large" textAlign="center">
                       {urlData.error_description?.split("+").join(" ")}

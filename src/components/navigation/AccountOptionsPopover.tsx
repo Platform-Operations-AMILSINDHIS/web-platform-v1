@@ -116,7 +116,7 @@ const AccountOptionsPopover: React.FC<AccountOptionsPopoverProps> = ({
               _hover={{ color: "gray.800", cursor: "pointer" }}
               gap={2}
               align="center"
-              onClick={handleResetPassword}
+              onClick={() => void handleResetPassword()}
             >
               <Icon
                 boxSize={4}
