@@ -1,4 +1,5 @@
 import { Flex, Spacer } from "@chakra-ui/react";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { TypeAnimation } from "react-type-animation";
 import LinkButton from "~/components/buttons/LinkButton";
