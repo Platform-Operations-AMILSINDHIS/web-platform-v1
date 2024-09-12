@@ -1,4 +1,5 @@
 import { Flex, Spacer } from "@chakra-ui/react";
+// @ts-ignore
 import { TypeAnimation } from "react-type-animation";
 import LinkButton from "~/components/buttons/LinkButton";
 import { satoshi } from "~/utils/fonts";
