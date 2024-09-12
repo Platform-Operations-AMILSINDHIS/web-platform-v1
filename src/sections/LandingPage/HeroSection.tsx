@@ -13,8 +13,9 @@ const HeroSection = () => {
         <div
           className={`${satoshi.variable} mt-10 font-heading text-4xl font-semibold leading-normal md:text-7xl`}
         >
+          Sharing Amil
           <span className="text-[#FF4D00]">
-            Sharing Amil Culture <br />
+            Culture <br />
           </span>{" "}
           Language{" "}
           <span className="underline decoration-[#FF4D00] decoration-8">
