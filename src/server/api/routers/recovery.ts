@@ -51,8 +51,8 @@ const recoveryRouter = createTRPCRouter({
         const { new_password, access_token, refresh_token } = input;
         // re authenticate user to create an auth session to allow password reset
         const { error: setSessionError } = await supabase.auth.setSession({
-          access_token: access_token as string,
-          refresh_token: refresh_token as string,
+          access_token: access_token!,
+          refresh_token: refresh_token!,
         });
 
         if (setSessionError)

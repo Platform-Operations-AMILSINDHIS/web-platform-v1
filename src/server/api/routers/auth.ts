@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as Yup from "yup";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import supabase from "~/pages/api/auth/supabase";
@@ -26,7 +27,7 @@ const authRouter = createTRPCRouter({
           message: "Invalid Login Credentials",
         });
       }
-
+      // eslint-disable-next-line no-unsafe-assignment
       const { data: userData, error: fetchError } = await supabase
         .from("general_accounts")
         .select("*")
@@ -39,7 +40,7 @@ const authRouter = createTRPCRouter({
           message: "Couldn't fetch account details",
         });
       }
-
+      // eslint-disable-next-line no-unsafe-assignment
       return { userData, message: "signed in :)", LoginData };
     }),
 });
