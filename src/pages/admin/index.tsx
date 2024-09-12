@@ -1,8 +1,7 @@
+"use-client";
 import {
   Box,
   Button,
-  Checkbox,
-  Circle,
   Flex,
   Spinner,
   Text,
