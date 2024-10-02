@@ -1,4 +1,6 @@
-import { Flex, Grid, GridItem, Image, Text } from "@chakra-ui/react";
+import React from "react";
+import { Box, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
+import Image from "next/image";
 
 interface ManagingCommunityYACSectionProps {
   yacMembers: {
@@ -12,33 +14,39 @@ const ManagingCommunityYACSection: React.FC<
   ManagingCommunityYACSectionProps
 > = ({ yacMembers }) => {
   return (
-    <Flex gap={10} align="center" flexDir="column">
-      <Text textAlign="center" textColor="#FF4D00" fontWeight={600}>
+    <Box>
+      <Text textAlign="center" color="#FF4D00" fontWeight={600} mb={8}>
         Meet Our YAC Managing Committee
       </Text>
       <Grid
         templateColumns={["repeat(1, 1fr)", "repeat(2, 1fr)", "repeat(4, 1fr)"]}
-        gap="4.5rem"
-        rowGap={10}
+        rowGap={8}
+        columnGap={16}
       >
-        {yacMembers?.map((member, index) => {
-          return (
-            <GridItem key={index}>
-              <Flex gap={3} flexDir="column">
+        {yacMembers?.map((member, index) => (
+          <GridItem key={index}>
+            <Flex direction="column">
+              <Box position="relative" width="100%" height={300} mb={0}>
                 <Image
-                  alt={`${member.yacMemberName} picture`}
+                  layout="fill"
+                  objectFit="cover"
+                  alt={`${member.yacMemberName}_image`}
                   src={member.yacDisplayPictureUrl}
                 />
-                <Flex flexDir="column">
-                  <Text fontWeight={500}>{member.yacMemberPosition}</Text>
-                  <Text fontWeight={700}>{member.yacMemberName}</Text>
-                </Flex>
-              </Flex>
-            </GridItem>
-          );
-        })}
+              </Box>
+              <Box p={2}>
+                <Text fontWeight={500} fontSize="sm">
+                  {member.yacMemberPosition}
+                </Text>
+                <Text fontWeight={700} fontSize="md">
+                  {member.yacMemberName}
+                </Text>
+              </Box>
+            </Flex>
+          </GridItem>
+        ))}
       </Grid>
-    </Flex>
+    </Box>
   );
 };
 
