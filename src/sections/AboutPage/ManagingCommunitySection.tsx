@@ -1,4 +1,5 @@
-import { Flex, Grid, GridItem, Image, Text } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
+import Image from "next/image";
 
 interface ManagingCommunitySectionProps {
   otherMembers: {
@@ -18,17 +19,21 @@ const ManagingCommunitySection: React.FC<ManagingCommunitySectionProps> = ({
       </Text>
       <Grid
         templateColumns={["repeat(1, 1fr)", "repeat(2, 1fr)", "repeat(4, 1fr)"]}
-        gap="4.5rem"
-        rowGap={10}
+        columnGap="2rem"
+        rowGap="5rem"
       >
         {otherMembers?.map((member, index) => {
           return (
             <GridItem key={index}>
-              <Flex gap={3} flexDir="column">
-                <Image
-                  alt={`${member.memberName} picture`}
-                  src={member.displayPictureUrl}
-                />
+              <Flex alignItems="baseline" gap={3} flexDir="column">
+                <Box position="relative" width={"100%"} height={400}>
+                  <Image
+                    layout="fill"
+                    objectFit="cover"
+                    alt={`${member.memberName} picture`}
+                    src={member.displayPictureUrl}
+                  />
+                </Box>
                 <Flex flexDir="column">
                   <Text fontWeight={500}>{member.memberPosition}</Text>
                   <Text fontWeight={700}>{member.memberName}</Text>

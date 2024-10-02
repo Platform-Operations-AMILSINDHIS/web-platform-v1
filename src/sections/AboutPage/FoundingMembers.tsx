@@ -34,7 +34,7 @@ const FoundingMembers = ({
               alignItems="baseline"
               textAlign="left"
             >
-              <Box position="relative" width={200} height={300}>
+              <Box position="relative" width={"100%"} height={300}>
                 <Image
                   layout="fill"
                   objectFit="cover"
