@@ -38,12 +38,14 @@ const EventsPage = ({
         <Spacer h="4rem" />
         <EventSlider events={events} />
         <Spacer h="4rem" />
-
-        <PastEventSlider pastEvents={pastEvents} />
         <Spacer h="4rem" />
         <EventTypesSection />
         <Spacer h="4rem" />
-        <PerksSection />
+        <PastEventSlider pastEvents={pastEvents} />
+        <Spacer h="4rem" />
+
+        {/* un comment the section below if required to be used later */}
+        {/* <PerksSection /> */}
       </Box>
     </Layout>
   );
