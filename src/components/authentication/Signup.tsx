@@ -129,6 +129,7 @@ const Signup: React.FC<SignupProps> = ({
             <LabelledInput
               label="Create a password"
               name="password"
+              type="password"
               placeholder="********"
             />
             <Flex w="full" gap={3}>
