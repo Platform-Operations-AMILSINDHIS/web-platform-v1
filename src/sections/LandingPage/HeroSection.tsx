@@ -15,7 +15,7 @@ const HeroSection = () => {
         >
           Sharing Amil
           <span className="text-[#FF4D00]">
-            Culture <br />
+            &nbsp;Culture <br />
           </span>{" "}
           Language{" "}
           <span className="underline decoration-[#FF4D00] decoration-8">
