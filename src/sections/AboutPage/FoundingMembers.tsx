@@ -34,7 +34,14 @@ const FoundingMembers = ({
               alignItems="baseline"
               textAlign="left"
             >
-              <Image width={300} height={300} alt="" src={displayPictureUrl} />
+              <Box position="relative" width={200} height={300}>
+                <Image
+                  layout="fill"
+                  objectFit="cover"
+                  alt={`${name}_image`}
+                  src={displayPictureUrl}
+                />
+              </Box>
               <Text mt="0.75rem" fontWeight={500}>
                 {position}
               </Text>
