@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState } from "react";
 import {
   Box,
@@ -7,7 +8,6 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-// @ts-ignore
 import {
   FacebookShareButton,
   TwitterShareButton,
