@@ -7,6 +7,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
+// @ts-ignore
 import {
   FacebookShareButton,
   TwitterShareButton,
