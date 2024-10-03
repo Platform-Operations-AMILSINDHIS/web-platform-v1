@@ -15,13 +15,13 @@ const ContactUsSection = () => {
       >
         {[
           {
-            image: Mrs_Lajwati_Thandani_image as StaticImageData,
+            image: Mrs_Lajwati_Thandani_image,
             role: "Convener",
             name: "Mrs. Lajwanti Thadani",
             contact: "Mobile: +91 9967605943",
           },
           {
-            image: Mrs_Nikita_Advani_image as StaticImageData,
+            image: Mrs_Nikita_Advani_image,
             role: "Sub-committee member",
             name: "Mr. Ghanshyam Wadhwani",
             contact: "Mobile: +91 9930222092",
