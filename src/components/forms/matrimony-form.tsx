@@ -20,11 +20,8 @@ import {
   StepStatus,
   StepTitle,
   Stepper,
-  useSteps,
   useToast,
-  Tag,
 } from "@chakra-ui/react";
-import { FaHandHoldingHeart, FaUserFriends } from "react-icons/fa";
 import { ArrowBackIcon, ArrowForwardIcon, DeleteIcon } from "@chakra-ui/icons";
 
 import { LabelledInput, camelCase } from "./index";
@@ -282,7 +279,7 @@ const MatrimonyPersonalInformationSection: React.FC<
                         : approved
                         ? true
                         : false
-                      : false
+                      : true
                   }
                   required={required}
                 />
@@ -335,7 +332,7 @@ const MatrimonyPersonalInformationSection: React.FC<
                           : approved
                           ? true
                           : false
-                        : false
+                        : true
                     }
                   />
                 )
@@ -377,7 +374,7 @@ const MatrimonyPersonalInformationSection: React.FC<
                         : approved
                         ? true
                         : false
-                      : false
+                      : true
                   }
                 />
               ))}
@@ -421,7 +418,7 @@ const MatrimonyPersonalInformationSection: React.FC<
                         : approved
                         ? true
                         : false
-                      : false
+                      : true
                   }
                 />
               ))}
