@@ -19,6 +19,7 @@ import {
   LinkedinIcon,
   WhatsappIcon,
   EmailIcon,
+  // @ts-ignore: Could not find a declaration file for module 'react-share'
 } from "react-share";
 import ModalLayout from "~/layouts/ModalLayout";
 
