@@ -24,9 +24,9 @@ import {
   getDayOfWeekFromDate,
   getTimeFromDate,
 } from "~/utils/helper";
-import LinkButton from "../buttons/LinkButton";
 
 import { api } from "~/utils/api";
+import EventShareModal from "./EventShareModal";
 
 interface DetailModuleProps {
   title: string | null | undefined;
@@ -42,7 +42,13 @@ const EventDetailModule: React.FC<DetailModuleProps> = ({
   const toast = useToast();
   const rvspMut = api.event.rsvp.useMutation();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isEventShareModalOpen,
+    onOpen: onOpenEventShareModal,
+    onClose: onCloseEventShareModal,
+  } = useDisclosure();
 
+  const [clipBoardContent, SetClipBoardContent] = useState<string>("");
   const [rsvpDetails, setRsvpDetails] = useState<{
     name: string;
     email: string;
@@ -104,23 +110,7 @@ const EventDetailModule: React.FC<DetailModuleProps> = ({
           >
             RSVP
           </Button>
-          <Button
-            style={{
-              cursor: "pointer",
-              color: "#1F2937",
-              border: "1px solid",
-              borderColor: "rgba(31, 41, 55, 0.30)",
-              backgroundColor: "white",
-              boxShadow: "0px 4px 0px 0px rgba(0, 0, 0, 0.19)",
-            }}
-            fontWeight={600}
-            py={5}
-            px={8}
-            fontSize="sm"
-            as="a"
-          >
-            Share
-          </Button>
+          <EventShareModal eventTitle={title ?? "Event"} />
         </Flex>
       </Flex>
 

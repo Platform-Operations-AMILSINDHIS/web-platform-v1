@@ -1,5 +1,5 @@
-import { Grid, Flex, Text, Heading, Spacer, Box } from "@chakra-ui/react";
-import Image, { StaticImageData } from "next/image";
+import { Grid, Flex, Text, Heading, Box } from "@chakra-ui/react";
+import Image from "next/image";
 
 import Mrs_Lajwati_Thandani_image from "../../../public/images/matrimony/Mrs_Lajwati_Thandani.png";
 import Mrs_Nikita_Advani_image from "../../../public/images/matrimony/Mrs_Nikita_Advani.png";
