@@ -16,7 +16,7 @@ const Layout: React.FC<{
   const router = useRouter();
   const currentEndpoint = router.pathname;
   return (
-    <div>
+    <>
       <Head>
         <title suppressHydrationWarning>
           {title
@@ -45,7 +45,7 @@ const Layout: React.FC<{
         </main>
       </Flex>
       <Footer />
-    </div>
+    </>
   );
 };
 
