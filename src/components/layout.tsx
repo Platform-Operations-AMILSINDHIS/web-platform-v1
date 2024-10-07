@@ -18,7 +18,7 @@ const Layout: React.FC<{
   return (
     <div>
       <Head>
-        <title>
+        <title suppressHydrationWarning>
           {title
             ? `${title} | Khudabadi Amil Panchayat`
             : "Khudabadi Amil Panchayat of Bombay"}
