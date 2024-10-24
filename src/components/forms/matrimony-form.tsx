@@ -274,7 +274,8 @@ const MatrimonyPersonalInformationSection: React.FC<
                   type={inputType ? (inputType as InputType) : "text"}
                   isDisabled={
                     user
-                      ? !user.membership_id || user.membership_id === ""
+                      ? !(user as userAtomBody).membership_id ||
+                        (user as userAtomBody).membership_id === ""
                         ? true
                         : submissionVerification
                         ? true
@@ -329,7 +330,8 @@ const MatrimonyPersonalInformationSection: React.FC<
                     required={required}
                     isDisabled={
                       user
-                        ? !user.membership_id || user.membership_id === ""
+                        ? !(user as userAtomBody).membership_id ||
+                          (user as userAtomBody).membership_id === ""
                           ? true
                           : submissionVerification
                           ? true
@@ -373,7 +375,8 @@ const MatrimonyPersonalInformationSection: React.FC<
                   required={required}
                   isDisabled={
                     user
-                      ? !user.membership_id || user.membership_id === ""
+                      ? !(user as userAtomBody).membership_id ||
+                        (user as userAtomBody).membership_id === ""
                         ? true
                         : submissionVerification
                         ? true
@@ -419,7 +422,8 @@ const MatrimonyPersonalInformationSection: React.FC<
                   required={required}
                   isDisabled={
                     user
-                      ? !user.membership_id || user.membership_id === ""
+                      ? !(user as userAtomBody).membership_id ||
+                        (user as userAtomBody).membership_id === ""
                         ? true
                         : submissionVerification
                         ? true

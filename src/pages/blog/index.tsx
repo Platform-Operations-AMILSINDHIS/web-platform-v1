@@ -40,8 +40,6 @@ const BlogPage = ({
     );
   }
 
-  const [user, _] = useUserAtom();
-  console.log(user);
   return (
     <Layout title="Blog">
       <HeroSection />

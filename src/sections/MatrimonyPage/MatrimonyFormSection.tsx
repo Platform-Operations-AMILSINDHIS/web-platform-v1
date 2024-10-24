@@ -103,8 +103,8 @@ const MatrimonyFormSection = () => {
         position="absolute"
       >
         {user ? (
+          !user.membership_id ||
           user.membership_id === "" ||
-          null ||
           submissionVerified === true ||
           approved === true ? (
             <Flex
