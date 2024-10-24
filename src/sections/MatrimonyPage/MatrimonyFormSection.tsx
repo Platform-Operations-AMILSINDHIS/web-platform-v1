@@ -22,12 +22,12 @@ const MatrimonyFormSection = () => {
   const [isMember, setIsMember] = useState<boolean>(false); // boolean here incase needed in the future
   const [loading, setLoading] = useState<boolean>(true);
 
-  const handleMemberVerify = async (user_id: string) => {
-    const response_data = await handleIsMemberVerifiedCheck(user_id);
-    console.log(response_data);
-    const memberStatus = await response_data?.isMemberVerified;
-    setIsMember(memberStatus);
-  };
+  // const handleMemberVerify = async (user_id: string) => {
+  //   const response_data = await handleIsMemberVerifiedCheck(user_id);
+  //   console.log(response_data);
+  //   const memberStatus = await response_data?.isMemberVerified;
+  //   setIsMember(memberStatus);
+  // };
 
   const SendSubmissionVerificationQueryToServer = async (user_id: string) => {
     const response_data = await handleUserMatrimonySubmissionVerification(

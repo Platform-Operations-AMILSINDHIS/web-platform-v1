@@ -23,8 +23,10 @@ const useServerActions = () => {
   const generateMembershipID = api.actions.generateMembershipID.useMutation();
   const generateMatrimonyID = api.actions.generateMatrimonyID.useMutation();
 
-  const verifyMembershipMut =
-    api.matrimonyProfiles.verifyMemberStatus.useMutation();
+  // uncomment to use isMember boolean and verify through that
+
+  // const verifyMembershipMut =
+  //   api.matrimonyProfiles.verifyMemberStatus.useMutation();
 
   const fetchUserSubmissionMut =
     api.formBuffer.fetchUserSubmission.useMutation();
@@ -345,14 +347,16 @@ const useServerActions = () => {
     return deleteProfileResponse as unknown as DeleteResponseType;
   };
 
-  const handleIsMemberVerifiedCheck = async (
-    user_id: string
-  ): Promise<verifyMemberStatusResponse> => {
-    const verification_response = await verifyMembershipMut.mutateAsync({
-      user_id,
-    });
-    return verification_response as verifyMemberStatusResponse;
-  };
+  // uncomment to use isMember boolean and verify through that
+
+  // const handleIsMemberVerifiedCheck = async (
+  //   user_id: string
+  // ): Promise<verifyMemberStatusResponse> => {
+  //   const verification_response = await verifyMembershipMut.mutateAsync({
+  //     user_id,
+  //   });
+  //   return verification_response as verifyMemberStatusResponse;
+  // };
 
   return {
     handleMemberBufferFetch,
@@ -374,7 +378,8 @@ const useServerActions = () => {
     handleAcceptMatrimonyProfileRequest,
     handleDeclineMatrimonyProfileRequest,
     handleDeleteMatrimonyProfile,
-    handleIsMemberVerifiedCheck,
+    // uncomment to use isMember boolean and verify through that
+    // handleIsMemberVerifiedCheck,
   };
 };
 
