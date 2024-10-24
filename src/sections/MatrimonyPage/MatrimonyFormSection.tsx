@@ -19,7 +19,7 @@ const MatrimonyFormSection = () => {
   const [submissionVerified, setSubmissionVerified] = useState<boolean>(false);
   const [noPending, setNoPending] = useState<boolean>(false);
   const [approved, setApproved] = useState<boolean>(false);
-  const [isMember, setIsMember] = useState<boolean>(false);
+  const [isMember, setIsMember] = useState<boolean>(false); // boolean here incase needed in the future
   const [loading, setLoading] = useState<boolean>(true);
 
   const handleMemberVerify = async (user_id: string) => {
@@ -102,6 +102,7 @@ const MatrimonyFormSection = () => {
       >
         {user ? (
           user.membership_id === "" ||
+          null ||
           submissionVerified === true ||
           approved === true ? (
             <Flex
@@ -117,14 +118,14 @@ const MatrimonyFormSection = () => {
               w={500}
             >
               <Flex gap={2} px={10} align="center" flexDir="column">
-                {user.membership_id === "" ? (
+                {user.membership_id === "" || null ? (
                   <>
                     <Text fontWeight={600} textAlign="center" fontSize="xl">
                       Must be a member
                     </Text>
                     <Text textAlign="center">
-                      You need to be a KAP member or a YAC member above the age
-                      of 18 to access matrimony services
+                      You need to be a KAP member or a YAC member above and the
+                      age of 18 to access matrimony services
                     </Text>
                   </>
                 ) : submissionVerified ? (
@@ -178,14 +179,17 @@ const MatrimonyFormSection = () => {
       <Box
         _hover={
           user
-            ? user.membership_id === ""
+            ? user.membership_id === "" || null
               ? { cursor: "not-allowed" }
               : {}
             : { cursor: "not-allowed" }
         }
         filter={
           user
-            ? user.membership_id === "" || submissionVerified || approved
+            ? user.membership_id === "" ||
+              null ||
+              submissionVerified ||
+              approved
               ? "blur(2px)"
               : ""
             : "blur(2px)"

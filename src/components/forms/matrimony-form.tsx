@@ -274,7 +274,9 @@ const MatrimonyPersonalInformationSection: React.FC<
                   type={inputType ? (inputType as InputType) : "text"}
                   isDisabled={
                     user
-                      ? submissionVerification
+                      ? user.membership_id === "" || null
+                        ? true
+                        : submissionVerification
                         ? true
                         : approved
                         ? true
@@ -327,7 +329,9 @@ const MatrimonyPersonalInformationSection: React.FC<
                     required={required}
                     isDisabled={
                       user
-                        ? submissionVerification
+                        ? user.membership_id === "" || null
+                          ? true
+                          : submissionVerification
                           ? true
                           : approved
                           ? true
@@ -369,7 +373,9 @@ const MatrimonyPersonalInformationSection: React.FC<
                   required={required}
                   isDisabled={
                     user
-                      ? submissionVerification
+                      ? user.membership_id === "" || null
+                        ? true
+                        : submissionVerification
                         ? true
                         : approved
                         ? true
@@ -413,7 +419,9 @@ const MatrimonyPersonalInformationSection: React.FC<
                   required={required}
                   isDisabled={
                     user
-                      ? submissionVerification
+                      ? user.membership_id === "" || null
+                        ? true
+                        : submissionVerification
                         ? true
                         : approved
                         ? true
