@@ -181,15 +181,15 @@ const MatrimonyFormSection = () => {
       <Box
         _hover={
           user
-            ? user.membership_id === "" || null
+            ? !user.membership_id || user.membership_id === ""
               ? { cursor: "not-allowed" }
               : {}
             : { cursor: "not-allowed" }
         }
         filter={
           user
-            ? user.membership_id === "" ||
-              null ||
+            ? !user.membership_id ||
+              user.membership_id === "" ||
               submissionVerified ||
               approved
               ? "blur(2px)"
