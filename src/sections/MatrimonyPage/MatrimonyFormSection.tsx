@@ -13,7 +13,7 @@ const MatrimonyFormSection = () => {
   const {
     handleUserMatrimonySubmissionVerification,
     handleUserMatrimonyApprovalVerification,
-    handleIsMemberVerifiedCheck,
+    // handleIsMemberVerifiedCheck,
   } = useServerActions();
 
   const [submissionVerified, setSubmissionVerified] = useState<boolean>(false);
