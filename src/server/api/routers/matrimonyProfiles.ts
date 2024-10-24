@@ -32,6 +32,27 @@ const matrimonyProfiles = createTRPCRouter({
       }
     }),
 
+  verifyMemberStatus: publicProcedure
+    .input(Yup.object({ user_id: Yup.string() }))
+    .mutation(async ({ input }) => {
+      try {
+        const { user_id } = input;
+        const { data: user, error: userFetchError } = await supabase
+          .from("general_accounts")
+          .select("*")
+          .eq("user_id", user_id);
+        if (userFetchError) throw userFetchError;
+        if (user.length > 0) {
+          const isMember = user[0].KAP_member || user[0].YAC_member;
+          return {
+            isMemberVerified: isMember,
+          };
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }),
+
   deleteProfile: publicProcedure
     .input(
       Yup.object({
