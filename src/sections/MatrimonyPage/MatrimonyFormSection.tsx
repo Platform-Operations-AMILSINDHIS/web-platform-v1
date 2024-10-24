@@ -52,20 +52,22 @@ const MatrimonyFormSection = () => {
     setLoading(false);
   };
 
+  // uncomment all y function to verify through is Member boolean
+
   useEffect(() => {
-    const y = async (user_id: string) => {
-      await handleMemberVerify(user_id);
-    };
+    // const y = async (user_id: string) => {
+    //   await handleMemberVerify(user_id);
+    // };
     const f = async (user_id: string) => {
       await SendSubmissionVerificationQueryToServer(user_id);
     };
 
     if (user?.id) {
-      y(user.id)
-        .then(() => console.log("done"))
-        .catch((err) => {
-          console.log(err);
-        });
+      // y(user.id)
+      //   .then(() => console.log("done"))
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
       f(user.id)
         .then(() => {
           console.log("done");
