@@ -33,27 +33,29 @@ const matrimonyProfiles = createTRPCRouter({
       }
     }),
 
-  verifyMemberStatus: publicProcedure
-    .input(Yup.object({ user_id: Yup.string() }))
-    .mutation(async ({ input }) => {
-      try {
-        const { user_id } = input;
-        const { data: user, error: userFetchError } = await supabase
-          .from("general_accounts")
-          .select("*")
-          .eq("id", user_id);
-        console.log(user);
-        if (userFetchError) throw userFetchError;
-        if (user.length > 0) {
-          const isMember = user[0].KAP_member || user[0].YAC_member;
-          return {
-            isMemberVerified: isMember,
-          };
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    }),
+  // uncomment to use isMember boolean and verify through that
+
+  // verifyMemberStatus: publicProcedure
+  //   .input(Yup.object({ user_id: Yup.string() }))
+  //   .mutation(async ({ input }) => {
+  //     try {
+  //       const { user_id } = input;
+  //       const { data: user, error: userFetchError } = await supabase
+  //         .from("general_accounts")
+  //         .select("*")
+  //         .eq("id", user_id);
+  //       console.log(user);
+  //       if (userFetchError) throw userFetchError;
+  //       if (user.length > 0) {
+  //         const isMember = user[0].KAP_member || user[0].YAC_member;
+  //         return {
+  //           isMemberVerified: isMember,
+  //         };
+  //       }
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   }),
 
   deleteProfile: publicProcedure
     .input(
