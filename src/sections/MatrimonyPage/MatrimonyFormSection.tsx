@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { Box, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
 
 import UserBlockModal from "~/components/authentication/UserBlockModal";
@@ -13,12 +13,21 @@ const MatrimonyFormSection = () => {
   const {
     handleUserMatrimonySubmissionVerification,
     handleUserMatrimonyApprovalVerification,
+    handleIsMemberVerifiedCheck,
   } = useServerActions();
 
   const [submissionVerified, setSubmissionVerified] = useState<boolean>(false);
   const [noPending, setNoPending] = useState<boolean>(false);
   const [approved, setApproved] = useState<boolean>(false);
+  const [isMember, setIsMember] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+
+  const handleMemberVerify = async (user_id: string) => {
+    const response_data = await handleIsMemberVerifiedCheck(user_id);
+    console.log(response_data);
+    const memberStatus = await response_data?.isMemberVerified;
+    setIsMember(memberStatus);
+  };
 
   const SendSubmissionVerificationQueryToServer = async (user_id: string) => {
     const response_data = await handleUserMatrimonySubmissionVerification(
@@ -44,17 +53,25 @@ const MatrimonyFormSection = () => {
   };
 
   useEffect(() => {
+    const y = async (user_id: string) => {
+      await handleMemberVerify(user_id);
+    };
     const f = async (user_id: string) => {
       await SendSubmissionVerificationQueryToServer(user_id);
     };
 
     if (user?.id) {
+      y(user.id)
+        .then(() => console.log("done"))
+        .catch((err) => {
+          console.log(err);
+        });
       f(user.id)
         .then(() => {
           console.log("done");
         })
         .catch((err) => console.log(err));
-      console.log({ noPending, submissionVerified, approved });
+      console.log({ noPending, submissionVerified, approved, isMember });
     } else {
       setLoading(false);
       console.log("Loading");

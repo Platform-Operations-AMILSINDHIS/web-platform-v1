@@ -41,12 +41,9 @@ const matrimonyProfiles = createTRPCRouter({
         const { data: user, error: userFetchError } = await supabase
           .from("general_accounts")
           .select("*")
-          .eq("user_id", user_id);
-        if (userFetchError)
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Could not retrieve user data",
-          });
+          .eq("id", user_id);
+        console.log(user);
+        if (userFetchError) throw userFetchError;
         if (user.length > 0) {
           const isMember = user[0].KAP_member || user[0].YAC_member;
           return {
