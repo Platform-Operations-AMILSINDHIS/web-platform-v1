@@ -3,6 +3,7 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 
 import * as Yup from "yup";
 import { sendWithdrawNotificationMail } from "~/server/mail";
+import { TRPCError } from "@trpc/server";
 
 const matrimonyProfiles = createTRPCRouter({
   verifyIfApproved: publicProcedure
@@ -41,7 +42,11 @@ const matrimonyProfiles = createTRPCRouter({
           .from("general_accounts")
           .select("*")
           .eq("user_id", user_id);
-        if (userFetchError) throw userFetchError;
+        if (userFetchError)
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Could not retrieve user data",
+          });
         if (user.length > 0) {
           const isMember = user[0].KAP_member || user[0].YAC_member;
           return {
