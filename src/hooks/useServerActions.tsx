@@ -13,6 +13,7 @@ import {
   MembershipFormBufferDataFetch,
   ProfileRequestsFetchResponse,
   RequestResponse,
+  verifyMemberStatusResponse,
 } from "~/types/api";
 import { MatrimonyFormValues } from "~/types/forms/matrimony";
 
@@ -21,6 +22,9 @@ import { api } from "~/utils/api";
 const useServerActions = () => {
   const generateMembershipID = api.actions.generateMembershipID.useMutation();
   const generateMatrimonyID = api.actions.generateMatrimonyID.useMutation();
+
+  const verifyMembershipMut =
+    api.matrimonyProfiles.verifyMemberStatus.useMutation();
 
   const fetchUserSubmissionMut =
     api.formBuffer.fetchUserSubmission.useMutation();
@@ -341,6 +345,15 @@ const useServerActions = () => {
     return deleteProfileResponse as unknown as DeleteResponseType;
   };
 
+  const handleIsMemberVerifiedCheck = async (
+    user_id: string
+  ): Promise<verifyMemberStatusResponse> => {
+    const verification_response = await verifyMembershipMut.mutateAsync({
+      user_id,
+    });
+    return verification_response as verifyMemberStatusResponse;
+  };
+
   return {
     handleMemberBufferFetch,
     handleMatrimonyBufferFetch,
@@ -361,6 +374,7 @@ const useServerActions = () => {
     handleAcceptMatrimonyProfileRequest,
     handleDeclineMatrimonyProfileRequest,
     handleDeleteMatrimonyProfile,
+    handleIsMemberVerifiedCheck,
   };
 };
 

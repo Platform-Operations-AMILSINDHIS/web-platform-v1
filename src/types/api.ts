@@ -120,3 +120,7 @@ export interface AdminLoginResponse {
   redirect: string;
   admin: AdminType | null;
 }
+
+export interface verifyMemberStatusResponse {
+  isMemberVerified: boolean;
+}
