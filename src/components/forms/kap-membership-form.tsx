@@ -21,6 +21,7 @@ import {
   Stepper,
   useToast,
   Tag,
+  Checkbox,
 } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import { atom, useAtom } from "jotai";
@@ -149,6 +150,7 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC<
   KhudabadiAmilPanchayatMembershipFormProps
 > = ({ user }) => {
   const [activeStep] = useAtom(activeStepAtom);
+  const [isPrevMember, setIsPrevMember] = useState<boolean>(false);
 
   // Logger
   // const [formState] = useAtom(kapFormAtom);
@@ -183,7 +185,30 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC<
       </Stepper>
 
       <Spacer h="2rem" />
+      <Flex
+        bg={isPrevMember ? "green.200" : "yellow.100"}
+        borderRadius={5}
+        width="fit-content"
+        px={3}
+        py={2}
+        flexDir="row"
+        gap={2}
+        transition={"all 0.3s"}
+      >
+        <Checkbox
+          checked={isPrevMember}
+          onChange={(e) => setIsPrevMember(e.target.checked)}
+          colorScheme="green"
+          borderColor="gray.800"
+        />
+        {isPrevMember ? (
+          <Text>Thank you for letting us know</Text>
+        ) : (
+          <Text>Are you an existing Kap member</Text>
+        )}
+      </Flex>
 
+      <Spacer h="1rem" />
       {[
         PersonalInformationSection,
         AddressDetailsSection,
