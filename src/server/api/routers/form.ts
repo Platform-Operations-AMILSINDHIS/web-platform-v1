@@ -166,6 +166,44 @@ export const formRouter = createTRPCRouter({
 
       return { success: true };
     }),
+
+  kapMembershipPrev: publicProcedure
+    .input(
+      Yup.object({
+        formData: kapMembershipFormValuesSchema,
+      })
+    )
+    .mutation(async ({ input }) => {
+      const { formData } = input;
+      console.log({ formData });
+
+      // KAP Form submission buffer
+      const userId = await getUserIdByEmail(formData.personalInfo.emailId);
+
+      if (!userId)
+        throw new TRPCClientError("Email does not exist in user database");
+
+      const { error } = await supabase.from("form_buffer").insert({
+        user_id: userId,
+        formType: "KAP",
+        submission: formData,
+      });
+
+      if (error) console.error(error);
+      await sendRawJsonDataWithPDF(
+        "amilsindhis@gmail.com",
+        formData,
+        "kap-membership"
+      );
+
+      await sendFormConfirmationMail({
+        to: formData.personalInfo.emailId,
+        formName: "Khudabadi Amil Panchayat Membership",
+      });
+
+      return { success: true };
+    }),
+
   yacMembership: publicProcedure
     .input(
       Yup.object({

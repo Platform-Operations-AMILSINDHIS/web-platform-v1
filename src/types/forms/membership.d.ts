@@ -67,6 +67,7 @@ export interface YACMembershipFormValues {
 
 export interface KAPFormSectionProps {
   user: userAtomBody;
+  isMember?: boolean
 }
 export interface KhudabadiAmilPanchayatMembershipFormProps
   extends KAPFormSectionProps {}
