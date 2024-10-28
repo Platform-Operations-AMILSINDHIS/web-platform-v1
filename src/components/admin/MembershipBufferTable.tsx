@@ -1,4 +1,4 @@
-import { Button, Td, Text, Tr } from "@chakra-ui/react";
+import { Button, Flex, Td, Text, Tr } from "@chakra-ui/react";
 import { useMemo } from "react";
 import TableLayout from "~/layouts/TableLayout";
 import { useProfileAtom } from "~/lib/atom";
@@ -71,7 +71,12 @@ const MembershipBufferTable: React.FC<MembershipBufferTableProps> = ({
                   {buffer?.status}
                 </Text>
               </Td>
-              <Td>{`${buffer?.submission.personalInfo.firstName} ${buffer?.submission.personalInfo.lastName}`}</Td>
+              <Td as={Flex} gap={1}>
+                <Text>{`${buffer?.submission.personalInfo.firstName} ${buffer?.submission.personalInfo.lastName}`}</Text>
+                <Text color="orange.500" fontWeight="bold">{`${
+                  buffer?.isMember ? `(Member)` : ``
+                }`}</Text>
+              </Td>
               <Td>{buffer?.submission.personalInfo.emailId}</Td>
               <Td>{`+91 ${buffer?.submission.personalInfo.mobileNumber}`}</Td>
               <Td>

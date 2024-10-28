@@ -29,6 +29,7 @@ export interface MembershipBufferDataType {
   user_id: string;
   formType: string;
   status: Status;
+  isMember: boolean;
   submission: KAPMembershipFormValues | YACMembershipFormValues;
 }
 

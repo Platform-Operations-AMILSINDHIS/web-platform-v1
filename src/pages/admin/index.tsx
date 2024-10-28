@@ -63,6 +63,9 @@ const AdminPage = () => {
     setMatrimonyBufferData(allMatBufferData);
     setMembershipBufferData(allMemBufferData);
     setProfileRequestsData(allProfileRequestsData);
+
+    // delete later | calls below for testing purpose only
+    console.log({ allMemBufferData });
   };
 
   // seperated calls for real time reaction to changes made to specific tables
