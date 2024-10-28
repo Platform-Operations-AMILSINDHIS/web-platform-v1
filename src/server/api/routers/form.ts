@@ -259,6 +259,61 @@ export const formRouter = createTRPCRouter({
 
       return { success: true };
     }),
+
+  yacMembershipPrev: publicProcedure
+    .input(
+      Yup.object({
+        formData: yacMembershipFormValuesSchema,
+      })
+    )
+    .mutation(async ({ input }) => {
+      const { formData } = input;
+      console.log({ formData });
+
+      // YAC Form submission buffer
+      const userId = await getUserIdByEmail(formData.personalInfo.emailId);
+
+      if (!userId)
+        throw new TRPCClientError("Email does not exist in user database");
+
+      const { error } = await supabase.from("form_buffer").insert({
+        user_id: userId,
+        formType: "YAC",
+        submission: formData,
+      });
+
+      if (error) console.error(error);
+
+      // // Membership ID Logic
+      // const { lastYacMembershipIdNum } = await getLastMembershipNums();
+      // const membershipId = `Y${(lastYacMembershipIdNum + 1)
+      //   .toString()
+      //   .padStart(5, "0")}`;
+
+      // const { error } = await supabase
+      //   .from("general_accounts")
+      //   .update({ membership_id: membershipId })
+      //   .eq("email_id", formData.personalInfo.emailId);
+
+      // if (error) console.error(error);
+
+      // Send response
+      await sendRawJsonDataWithPDF(
+        "amilsindhis@gmail.com",
+        // "akshat.sabavat@gmail.com",
+        // "somesh.kar@gmail.com",
+        formData,
+        "yac-membership"
+      );
+
+      // Send confirmation mail
+      await sendFormConfirmationMail({
+        to: formData.personalInfo.emailId,
+        formName: "Young Amil Circle Membership",
+      });
+
+      return { success: true };
+    }),
   donations: publicProcedure
     .input(Yup.object({ formData: donationsFormSchema }))
     .mutation(async ({ input }) => {
