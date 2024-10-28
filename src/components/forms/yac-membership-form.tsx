@@ -681,4 +681,191 @@ export const ProposerDetailsSection: React.FC = () => {
   );
 };
 
+const ConfirmDetailsSection: React.FC<YACFormSectionProps> = () => {
+  const toast = useToast();
+  const formMut = api.form.yacMembershipPrev.useMutation(); // using a different mutation for prev member form submission
+  const [activeStep, setActiveStep] = useAtom(activeStepAtom);
+  const [submittingState, setSubmittingState] = useState<boolean>(false);
+
+  const [formState] = useAtom(atom((get) => get(yacFormAtom)));
+
+  const handleSubmit = async () => {
+    setSubmittingState(true);
+    formMut
+      .mutateAsync(
+        { formData: formState },
+        {
+          onSuccess: () => {
+            toast({
+              title: "Response recorded successfully",
+              // description: `Your membership ID: ${membershipId}`,
+              description: "We will get back to you shortly.",
+              status: "success",
+              duration: 90000,
+              isClosable: true,
+            });
+            setSubmittingState(false);
+
+            setTimeout(() => {
+              window.location.href = "/";
+            }, 1000);
+          },
+          onError: (error) => {
+            toast({
+              title: "Error",
+              // description: "Something went wrong, please try again later.",
+              description: error.message,
+              status: "error",
+              duration: 9000,
+              isClosable: true,
+            });
+            setSubmittingState(false);
+          },
+        }
+      )
+      .catch(console.error);
+  };
+
+  return (
+    <>
+      {" "}
+      <Heading>Confirm Your Details</Heading>
+      <Text mt="4" color="gray.600">
+        Please review your information below. You can go back to make any
+        changes if needed.
+      </Text>
+      <Box mt="8">
+        <Heading size="md" mb="4">
+          Personal Information
+        </Heading>
+        <Grid templateColumns="repeat(2, 1fr)" gap="4">
+          <Box>
+            <Text fontWeight="semibold">Name</Text>
+            <Text>{`${formState.personalInfo.firstName} ${formState.personalInfo.middleName} ${formState.personalInfo.lastName}`}</Text>
+          </Box>
+          <Box>
+            <Text fontWeight="semibold">Occupation</Text>
+            <Text>{formState.personalInfo.occupation}</Text>
+          </Box>
+          <Box>
+            <Text fontWeight="semibold">Date of Birth</Text>
+            <Text>
+              {new Date(
+                formState.personalInfo.dateOfBirth
+              ).toLocaleDateString()}
+            </Text>
+          </Box>
+          <Box>
+            <Text fontWeight="semibold">Contact</Text>
+            <Text>{formState.personalInfo.mobileNumber}</Text>
+            <Text>{formState.personalInfo.emailId}</Text>
+          </Box>
+        </Grid>
+
+        <Heading size="md" mt="8" mb="4">
+          Residential Address
+        </Heading>
+        <Text>
+          {formState.addressInfo.residentialAddress.addressLine1}
+          <br />
+          {formState.addressInfo.residentialAddress.addressLine2}
+          <br />
+          {formState.addressInfo.residentialAddress.addressLine3}
+          <br />
+          Pin Code: {formState.addressInfo.residentialAddress.pinCode}
+        </Text>
+
+        {formState.addressInfo.officeAddress?.addressLine1 && (
+          <>
+            <Heading size="md" mt="8" mb="4">
+              Office Address
+            </Heading>
+            <Text>
+              {formState.addressInfo.officeAddress.addressLine1}
+              <br />
+              {formState.addressInfo.officeAddress.addressLine2}
+              <br />
+              {formState.addressInfo.officeAddress.addressLine3}
+              <br />
+              Pin Code: {formState.addressInfo.officeAddress.pinCode}
+            </Text>
+          </>
+        )}
+
+        {formState.familyMembers && formState.familyMembers.length > 0 && (
+          <>
+            <Heading size="md" mt="8" mb="4">
+              Family Members
+            </Heading>
+            <Table variant="simple" size="sm">
+              <Thead>
+                <Tr>
+                  <Th>Name</Th>
+                  <Th>Relationship</Th>
+                  <Th>Occupation</Th>
+                  <Th>Age</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {formState.familyMembers.map((member, index) => (
+                  <Tr key={index}>
+                    <Td>{member.memberName}</Td>
+                    <Td>{member.relationship}</Td>
+                    <Td>{member.occupation}</Td>
+                    <Td>{member.age}</Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </>
+        )}
+
+        <Heading size="md" mt="8" mb="4">
+          Proposer Information
+        </Heading>
+        <Grid templateColumns="repeat(2, 1fr)" gap="4">
+          <Box>
+            <Text fontWeight="semibold">Name</Text>
+            <Text>{`${formState.proposerInfo.firstName} ${formState.proposerInfo.lastName}`}</Text>
+          </Box>
+          <Box>
+            <Text fontWeight="semibold">Contact</Text>
+            <Text>{formState.proposerInfo.mobileNumber}</Text>
+          </Box>
+        </Grid>
+      </Box>
+      <Spacer h="2rem" />
+      <Alert status="info" mb="6">
+        <AlertIcon />
+        <Box>
+          <AlertTitle>Please Note</AlertTitle>
+          <AlertDescription>
+            By submitting this form, you confirm that all the information
+            provided above is accurate and complete.
+          </AlertDescription>
+        </Box>
+      </Alert>
+      <Flex w="100%" justifyContent="space-between">
+        <Button
+          colorScheme="orange"
+          leftIcon={<ArrowBackIcon />}
+          size="lg"
+          onClick={() => setActiveStep(activeStep - 1)}
+        >
+          Go Back
+        </Button>
+
+        <Button
+          colorScheme="orange"
+          size="lg"
+          onClick={handleSubmit}
+          isLoading={submittingState}
+        >
+          Confirm & Submit
+        </Button>
+      </Flex>
+    </>
+  );
+};
+
 export default YoungAmilCircleMembershipForm;
