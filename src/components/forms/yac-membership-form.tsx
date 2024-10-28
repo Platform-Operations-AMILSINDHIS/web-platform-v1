@@ -594,7 +594,9 @@ export const FamilyMemberDetailsSection: React.FC = () => {
   );
 };
 
-export const ProposerDetailsSection: React.FC = () => {
+export const ProposerDetailsSection: React.FC<YACFormSectionProps> = ({
+  isMemberYAC,
+}) => {
   const toast = useToast();
 
   const formMut = api.form.yacMembership.useMutation();
@@ -618,8 +620,6 @@ export const ProposerDetailsSection: React.FC = () => {
   });
 
   useEffect(() => {
-    console.log("useEffect triggered here");
-
     if (paymentId) {
       formMut
         .mutateAsync(
@@ -629,7 +629,6 @@ export const ProposerDetailsSection: React.FC = () => {
               toast({
                 title: "Response recorded successfully",
                 description: "We will get back to you shortly.",
-                // description: `Your membership ID: ${membershipId}`,
                 status: "success",
                 duration: 90000,
                 isClosable: true,
@@ -641,7 +640,6 @@ export const ProposerDetailsSection: React.FC = () => {
             onError: (error) => {
               toast({
                 title: "Error",
-                // description: "Something went wrong, please try again later.",
                 description: error.message,
                 status: "error",
                 duration: 9000,
@@ -662,15 +660,17 @@ export const ProposerDetailsSection: React.FC = () => {
         initialValues={proposerInfo}
         validationSchema={proposerInfoSchema}
         onSubmit={(values, actions) => {
-          // console.log({ values });
-
           setProposerInfo(values);
           actions.setSubmitting(false);
-          // setActiveStep(activeStep + 1);
 
-          setIsPaying(true);
-
-          void handlePayment(100000, "kap_membership").catch(console.error);
+          if (isMemberYAC) {
+            // If they are a previous member, move to confirm details section
+            setActiveStep(activeStep + 1);
+          } else {
+            // If new member, proceed with payment
+            setIsPaying(true);
+            void handlePayment(100000, "kap_membership").catch(console.error);
+          }
         }}
       >
         {(formik) => (
@@ -713,13 +713,15 @@ export const ProposerDetailsSection: React.FC = () => {
                 I agree to abide by the Constitution and rules of the Khudabadi
                 Amil Panchayat of Bombay in force from time to time.
               </ListItem>
-              <ListItem>
-                I hereby agree to pay{" "}
-                <Tag size="md" colorScheme="orange">
-                  Rs. 1000
-                </Tag>{" "}
-                as membership fees.
-              </ListItem>
+              {!isMemberYAC && (
+                <ListItem>
+                  I hereby agree to pay{" "}
+                  <Tag size="md" colorScheme="orange">
+                    Rs. 1000
+                  </Tag>{" "}
+                  as membership fees.
+                </ListItem>
+              )}
             </UnorderedList>
             <Spacer h="2rem" />
             <Flex w="100%" justifyContent="space-between">
@@ -738,10 +740,10 @@ export const ProposerDetailsSection: React.FC = () => {
                 isDisabled={isPaying}
                 isLoading={isPaying}
                 colorScheme="orange"
-                leftIcon={<FaRupeeSign />}
+                leftIcon={isMemberYAC ? undefined : <FaRupeeSign />}
                 size="lg"
               >
-                Pay now
+                {isMemberYAC ? "Next" : "Pay now"}
               </Button>
             </Flex>
           </Form>
@@ -750,7 +752,6 @@ export const ProposerDetailsSection: React.FC = () => {
     </>
   );
 };
-
 const ConfirmDetailsSection: React.FC<YACFormSectionProps> = () => {
   const toast = useToast();
   const formMut = api.form.yacMembershipPrev.useMutation(); // using a different mutation for prev member form submission
