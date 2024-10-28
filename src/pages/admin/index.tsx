@@ -52,12 +52,12 @@ const AdminPage = () => {
   const [isLoadingMemBuf, setIsLoadingMemBuf] = useState<boolean>(false);
   const [isLoadingMatBuf, setIsLoadingMatBuf] = useState<boolean>(false);
 
-  const [isSelected, setIsSelected] = useState<string>("Memberships");
-  const [statusType, setStatusType] = useState<string>("All");
   const [searchTerm, setSearchTerm] = useState<string>("");
-
+  const [statusType, setStatusType] = useState<string>("All");
+  const [membershipType, setMembershipType] = useState<string>("All members");
+  const [isSelected, setIsSelected] = useState<string>("Memberships");
   const [prevMemberDataStatus, setPrevMemberDataStatus] =
-    useState<string>("All members");
+    useState<string>("All applicants");
 
   const handleFetch = async () => {
     const allMemBufferData = await handleMemberBufferFetch();
@@ -161,10 +161,10 @@ const AdminPage = () => {
             MenuItems={["Approved", "Pending", "All"]}
           />
           {isSelected === "Memberships" ? (
-            <Flex align="center" gap={3}>
+            <Flex align="center" gap={2}>
               <Text
                 borderRadius={5}
-                py={3}
+                py={2.5}
                 px={4}
                 fontWeight={700}
                 bg="yellow.200"
@@ -175,7 +175,16 @@ const AdminPage = () => {
               <DropDown
                 isSelected={prevMemberDataStatus}
                 setIsSelected={setPrevMemberDataStatus}
-                MenuItems={["New Members", "Current Members", "All Members"]}
+                MenuItems={[
+                  "New applicants",
+                  "Current Members",
+                  "All applicants",
+                ]}
+              />
+              <DropDown
+                isSelected={membershipType}
+                setIsSelected={setMembershipType}
+                MenuItems={["KAP members", "YAC members", "All members"]}
               />
             </Flex>
           ) : (
