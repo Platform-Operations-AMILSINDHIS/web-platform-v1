@@ -17,6 +17,7 @@ export interface RSVPMailType {
 export interface ConfirmationMailType {
   to: string;
   formName: string;
+  isPrevMember?: boolean; // only applicable when mailing to applicants
 }
 
 export interface DecisionMailType {

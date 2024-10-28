@@ -171,14 +171,25 @@ export const sendMatrimonyProfileMail = async (
 export const sendFormConfirmationMail = async ({
   to,
   formName,
+  isPrevMember,
 }: ConfirmationMailType) => {
   const subject = `Thank you for submitting the ${formName} form!`;
 
-  const html = `
+  let html: string = ``;
+
+  if (isPrevMember) {
+    html = `
+    <div style="font-size: 16px;">
+      <p>Welcome to the new digital ${formName} community, while we are in the process of building our digital comunity we will provide you with a KAP ID soon and integrate you on to our database after performing some background checks just to confirm your details. We will get back to you shortly.</p>
+    </div>
+  `;
+  } else {
+    html = `
     <div style="font-size: 16px;">
       <p>Your response to the ${formName} form has been successfully recorded. We will get back to you shortly.</p>
     </div>
   `;
+  }
 
   await sendMail({ to, subject, html });
 };

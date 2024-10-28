@@ -162,6 +162,7 @@ export const formRouter = createTRPCRouter({
       await sendFormConfirmationMail({
         to: formData.personalInfo.emailId,
         formName: "Khudabadi Amil Panchayat Membership",
+        isPrevMember: false,
       });
 
       return { success: true };
@@ -200,6 +201,7 @@ export const formRouter = createTRPCRouter({
       await sendFormConfirmationMail({
         to: formData.personalInfo.emailId,
         formName: "Khudabadi Amil Panchayat Membership",
+        isPrevMember: true,
       });
 
       return { success: true };
@@ -256,6 +258,7 @@ export const formRouter = createTRPCRouter({
       await sendFormConfirmationMail({
         to: formData.personalInfo.emailId,
         formName: "Young Amil Circle Membership",
+        isPrevMember: false,
       });
 
       return { success: true };
@@ -312,6 +315,7 @@ export const formRouter = createTRPCRouter({
       await sendFormConfirmationMail({
         to: formData.personalInfo.emailId,
         formName: "Young Amil Circle Membership",
+        isPrevMember: true,
       });
 
       return { success: true };
