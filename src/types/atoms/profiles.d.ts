@@ -4,6 +4,7 @@ interface profileAtomBody {
   formType: string | null | undefined;
   status: string | null | undefined;
   isMember: boolean;
+  paymentID: string;
 }
 
 interface profileAtomState {
