@@ -22,6 +22,7 @@ import {
   useToast,
   Tag,
   Checkbox,
+  Input,
 } from "@chakra-ui/react";
 import {
   Table,
@@ -745,7 +746,6 @@ export const ProposerDetailsSection: React.FC<KAPFormSectionProps> = ({
 
 const MembershipDetailsSection: React.FC = () => {
   const toast = useToast();
-
   const formMut = api.form.kapMembership.useMutation();
 
   const [activeStep, setActiveStep] = useAtom(activeStepAtom);
@@ -755,54 +755,91 @@ const MembershipDetailsSection: React.FC = () => {
   const [paymentAmount, setPaymentAmount] = useState<number>(0);
   const [isPaying, setIsPaying] = useState<boolean>(false);
 
-  const { handlePayment, paymentId } = usePayment({
-    prefillDetails: {
-      name: `${formState.personalInfo.firstName}${
-        formState.personalInfo.middleName
-          ? ` ${formState.personalInfo.middleName}`
-          : ""
-      } ${formState.personalInfo.lastName}`,
-      email: formState.personalInfo.emailId,
-      contact: formState.personalInfo.mobileNumber,
-    },
-  });
+  // comment/delete state out below if moving to Razorpay gateway partially/completely respectively
+  const [paymentID, setPaymentID] = useState<string>("");
 
-  useEffect(() => {
-    console.log("useEffect triggered here");
+  // uncomment below logic if in future moving to a razorpay gateway
+  // const { handlePayment, paymentId } = usePayment({
+  //   prefillDetails: {
+  //     name: `${formState.personalInfo.firstName}${
+  //       formState.personalInfo.middleName
+  //         ? ` ${formState.personalInfo.middleName}`
+  //         : ""
+  //     } ${formState.personalInfo.lastName}`,
+  //     email: formState.personalInfo.emailId,
+  //     contact: formState.personalInfo.mobileNumber,
+  //   },
+  // });
 
-    if (paymentId) {
-      formMut
-        .mutateAsync(
-          { formData: formState, paymentId },
-          {
-            onSuccess: () => {
-              toast({
-                title: "Response recorded successfully",
-                // description: `Your membership ID: ${membershipId}`,
-                description: "We will get back to you shortly.",
-                status: "success",
-                duration: 90000,
-                isClosable: true,
-              });
-              setTimeout(() => {
-                window.location.href = "/";
-              }, 1000);
-            },
-            onError: (error) => {
-              toast({
-                title: "Error",
-                // description: "Something went wrong, please try again later.",
-                description: error.message,
-                status: "error",
-                duration: 9000,
-                isClosable: true,
-              });
-            },
-          }
-        )
-        .catch(console.error);
-    }
-  }, [paymentId]);
+  // comment/delete function out below if moving to Razorpay gateway partially/completely respectively
+  const handleSubmit = async () => {
+    formMut
+      .mutateAsync(
+        { formData: formState, paymentId: paymentID },
+        {
+          onSuccess: () => {
+            toast({
+              title: "Response recorded successfully",
+              description: "We will get back to you shortly.",
+              status: "success",
+              duration: 90000,
+              isClosable: true,
+            });
+            setTimeout(() => {
+              window.location.href = "/";
+            }, 1000);
+          },
+          onError: (error) => {
+            toast({
+              title: "Error",
+              description: error.message,
+              status: "error",
+              duration: 9000,
+              isClosable: true,
+            });
+          },
+        }
+      )
+      .catch(console.error);
+  };
+
+  // uncomment below logic if in future moving to a razorpay gateway
+  // useEffect(() => {
+  //   console.log("useEffect triggered here");
+
+  //   if (paymentId) {
+  //     formMut
+  //       .mutateAsync(
+  //         { formData: formState, paymentId },
+  //         {
+  //           onSuccess: () => {
+  //             toast({
+  //               title: "Response recorded successfully",
+  //               // description: `Your membership ID: ${membershipId}`,
+  //               description: "We will get back to you shortly.",
+  //               status: "success",
+  //               duration: 90000,
+  //               isClosable: true,
+  //             });
+  //             setTimeout(() => {
+  //               window.location.href = "/";
+  //             }, 1000);
+  //           },
+  //           onError: (error) => {
+  //             toast({
+  //               title: "Error",
+  //               // description: "Something went wrong, please try again later.",
+  //               description: error.message,
+  //               status: "error",
+  //               duration: 9000,
+  //               isClosable: true,
+  //             });
+  //           },
+  //         }
+  //       )
+  //       .catch(console.error);
+  //   }
+  // }, [paymentId]);
 
   return (
     <>
@@ -853,7 +890,7 @@ const MembershipDetailsSection: React.FC = () => {
       <UnorderedList mt="1rem" spacing="0.75rem" maxW="60%">
         <ListItem>
           The Applicant hereby declares that, I am a Khudabadi Amil and request
-          the Committee to admit me as
+          the Committee to admit me as{" "}
           <Tag size="md" colorScheme="orange">
             {paymentAmount === 500000
               ? "Patron"
@@ -876,6 +913,20 @@ const MembershipDetailsSection: React.FC = () => {
         </ListItem>
       </UnorderedList>
       <Spacer h="2rem" />
+
+      {/* Payment ID Input Field */}
+      <Heading size="md" mb="1rem">
+        {`Enter Payment ID / confirmation ID`}
+      </Heading>
+      <Input
+        placeholder="Enter Payment ID"
+        value={paymentID}
+        onChange={(e) => setPaymentID(e.target.value)}
+        mb="2rem"
+      />
+
+      <Spacer h="2rem" />
+
       <Flex w="100%" justifyContent="space-between">
         <Button
           colorScheme="orange"
@@ -888,17 +939,28 @@ const MembershipDetailsSection: React.FC = () => {
 
         <Button
           type="submit"
-          isDisabled={paymentAmount === 0 || isPaying}
+          // uncomment below disable logic when moving to razorpay
+          // isDisabled={paymentAmount === 0 || isPaying}
+          isDisabled={paymentID === "" || isPaying}
           isLoading={isPaying}
           colorScheme="orange"
           leftIcon={<FaRupeeSign />}
           size="lg"
-          onClick={() => {
-            setIsPaying(true);
+          onClick={async () => {
+            // setIsPaying(true);
 
-            void handlePayment(paymentAmount, "kap_membership").catch(
-              console.error
-            );
+            // uncomment logic below when moving to razor pay dashboard
+            // void handlePayment(paymentAmount, "kap_membership").catch(
+            //   console.error
+            // );
+            setIsPaying(true);
+            try {
+              await handleSubmit();
+            } catch (err) {
+              console.error(err);
+            } finally {
+              setIsPaying(false); // Reset only after `handleSubmit` completes
+            }
           }}
         >
           Pay now
