@@ -76,6 +76,7 @@ export interface MembershipFormBufferDataFetch {
   user_id: string;
   formType: string;
   isMember: boolean;
+  paymentID: string;
   status: Status;
   submission: KAPMembershipFormValues | YACMembershipFormValues;
 }

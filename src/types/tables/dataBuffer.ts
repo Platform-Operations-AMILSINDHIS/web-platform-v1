@@ -30,6 +30,7 @@ export interface MembershipBufferDataType {
   formType: string;
   status: Status;
   isMember: boolean;
+  paymentID: string;
   submission: KAPMembershipFormValues | YACMembershipFormValues;
 }
 
