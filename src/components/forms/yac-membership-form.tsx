@@ -21,6 +21,7 @@ import {
   Stepper,
   useToast,
   Tag,
+  Checkbox,
 } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import { atom, useAtom } from "jotai";
@@ -79,6 +80,29 @@ const steps = [
   {
     title: "Step 4",
     description: "Proposer Details",
+  },
+];
+
+const prevMemberSteps = [
+  {
+    title: "Step 1",
+    description: "Personal Information",
+  },
+  {
+    title: "Step 2",
+    description: "Address Details",
+  },
+  {
+    title: "Step 3",
+    description: "Family Members",
+  },
+  {
+    title: "Step 4",
+    description: "Proposer Details",
+  },
+  {
+    title: "Step 5",
+    description: "Confirm Your Details",
   },
 ];
 
@@ -155,6 +179,10 @@ const YoungAmilCircleMembershipForm: React.FC<
   const [activeStep] = useAtom(activeStepAtom);
   const [isPrevMember, setIsPrevMember] = useState<boolean>(false);
 
+  const formSteps: { title: string; description: string }[] = isPrevMember
+    ? prevMemberSteps
+    : steps;
+
   // Logger
   const [formState] = useAtom(yacFormAtom);
   useEffect(() => console.log(JSON.stringify(formState, null, 2)), [formState]);
@@ -167,7 +195,7 @@ const YoungAmilCircleMembershipForm: React.FC<
         index={activeStep}
         colorScheme="orange"
       >
-        {steps.map(({ title, description }, index) => (
+        {formSteps.map(({ title, description }, index) => (
           <Step key={index}>
             <StepIndicator>
               <StepStatus
@@ -186,6 +214,31 @@ const YoungAmilCircleMembershipForm: React.FC<
           </Step>
         ))}
       </Stepper>
+
+      <Spacer h="2rem" />
+
+      <Flex
+        bg={isPrevMember ? "green.200" : "yellow.100"}
+        borderRadius={5}
+        width="fit-content"
+        px={3}
+        py={2}
+        flexDir="row"
+        gap={2}
+        transition={"all 0.3s"}
+      >
+        <Checkbox
+          checked={isPrevMember}
+          onChange={(e) => setIsPrevMember(e.target.checked)}
+          colorScheme="green"
+          borderColor="gray.800"
+        />
+        {isPrevMember ? (
+          <Text>Thank you for letting us know</Text>
+        ) : (
+          <Text>Are you an existing Yac member</Text>
+        )}
+      </Flex>
 
       <Spacer h="2rem" />
 

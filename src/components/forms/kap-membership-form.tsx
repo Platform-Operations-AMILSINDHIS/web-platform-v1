@@ -85,6 +85,29 @@ const steps = [
   },
 ];
 
+const prevMemberSteps = [
+  {
+    title: "Step 1",
+    description: "Personal Information",
+  },
+  {
+    title: "Step 2",
+    description: "Address Details",
+  },
+  {
+    title: "Step 3",
+    description: "Family Members",
+  },
+  {
+    title: "Step 4",
+    description: "Proposer Details",
+  },
+  {
+    title: "Step 5",
+    description: "Confirm Your Details",
+  },
+];
+
 export type InputType =
   | "number"
   | "select"
@@ -168,6 +191,10 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC<
   // const [formState] = useAtom(kapFormAtom);
   // useEffect(() => console.log(JSON.stringify(formState, null, 2)), [formState]);
 
+  const formSteps: { title: string; description: string }[] = isPrevMember
+    ? prevMemberSteps
+    : steps;
+
   return (
     <Box my={[0, 0, 10]}>
       <Stepper
@@ -176,7 +203,7 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC<
         index={activeStep}
         colorScheme="orange"
       >
-        {steps.map(({ title, description }, index) => (
+        {formSteps.map(({ title, description }, index) => (
           <Step key={index}>
             <StepIndicator>
               <StepStatus
