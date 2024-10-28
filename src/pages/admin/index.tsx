@@ -56,6 +56,9 @@ const AdminPage = () => {
   const [statusType, setStatusType] = useState<string>("All");
   const [searchTerm, setSearchTerm] = useState<string>("");
 
+  const [prevMemberDataStatus, setPrevMemberDataStatus] =
+    useState<string>("All members");
+
   const handleFetch = async () => {
     const allMemBufferData = await handleMemberBufferFetch();
     const allMatBufferData = await handleMatrimonyBufferFetch();
@@ -157,6 +160,27 @@ const AdminPage = () => {
             setIsSelected={setStatusType}
             MenuItems={["Approved", "Pending", "All"]}
           />
+          {isSelected === "Memberships" ? (
+            <Flex align="center" gap={3}>
+              <Text
+                borderRadius={5}
+                py={3}
+                px={4}
+                fontWeight={700}
+                bg="yellow.200"
+                fontSize="sm"
+              >
+                {`Member Applicants control →`}
+              </Text>
+              <DropDown
+                isSelected={prevMemberDataStatus}
+                setIsSelected={setPrevMemberDataStatus}
+                MenuItems={["New Members", "Current Members", "All Members"]}
+              />
+            </Flex>
+          ) : (
+            <></>
+          )}
         </Flex>
       </Flex>
       {isSelected === "Memberships" ? (
