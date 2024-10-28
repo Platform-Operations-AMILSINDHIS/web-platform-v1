@@ -199,25 +199,44 @@ export const sendDescisionMail = async ({
   formType,
   to,
   membershipID,
+  isPrevMember,
 }: DecisionMailType) => {
   const subject = `${formType} Application Descision`;
   let html = ``;
 
   if (descision) {
-    html = `
-    <div style="font-size: 16px;">
-      <p>Congratulations on being Accepted into our community as a honarary ${formType} member</p>
-      <p> ${formType} Membership ID: ${membershipID ?? ""}</p>
-    </div>
-  `;
+    if (isPrevMember) {
+      html = `
+  <div style="font-size: 16px;">
+    <p>Congratulations on now being a part of our digital ${formType} community, Below is ur ID and make sure to save it</p>
+    <p> ${formType} Membership ID: ${membershipID ?? ""}</p>
+  </div>
+`;
+    } else {
+      html = `
+  <div style="font-size: 16px;">
+    <p>Congratulations on being Accepted into our community as a honarary ${formType} member</p>
+    <p> ${formType} Membership ID: ${membershipID ?? ""}</p>
+  </div>
+`;
+    }
   } else {
-    html = `
-    <div style="font-size: 16px;">
-      <p>After carefully reviewing your application with ${formType} community. We regret to inform you that we would not be</p>
-      <p>able to grant you a ${formType} Membership. We understand this may be dejecting but this in no way defines your ability and charecter</p>
-      <p>Your payment will be refunded in 7 to 8 working days.</p>
-    </div>
-  `;
+    if (isPrevMember) {
+      html = `
+  <div style="font-size: 16px;">
+    <p>After carefully reviewing your application with ${formType} community. We regret to inform you that we cannot onboard you as a part of our digital community</p>
+    <p>We reviewed your application carefully and found a few descrepencies, please resubmit the form on the website once again if needed, so we can take another look</p>
+  </div>
+`;
+    } else {
+      html = `
+  <div style="font-size: 16px;">
+    <p>After carefully reviewing your application with ${formType} community. We regret to inform you that we would not be</p>
+    <p>able to grant you a ${formType} Membership. We understand this may be dejecting but this in no way defines your ability and charecter</p>
+    <p>Your payment will be refunded in 7 to 8 working days.</p>
+  </div>
+`;
+    }
   }
 
   console.log({ descision, formType, to, membershipID, html });

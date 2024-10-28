@@ -4,6 +4,7 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 
 import * as Yup from "yup";
 import { sendDescisionMail, sendMatrimonyDescisionMail } from "~/server/mail";
+import { boolean } from "zod";
 
 const formBufferData = createTRPCRouter({
   fetchAllBuffer: publicProcedure.query(async () => {
@@ -137,11 +138,12 @@ const formBufferData = createTRPCRouter({
         user_id: Yup.string(),
         formType: Yup.string(),
         to: Yup.string(),
+        isPrevMember: Yup.boolean().required(),
       })
     )
     .mutation(async ({ input }) => {
       try {
-        const { user_id, formType, to } = input;
+        const { user_id, formType, to, isPrevMember } = input;
         const { data: _, error: formBufferError } = await supabase
           .from("form_buffer")
           .update({ status: "REJECTED" })
@@ -154,6 +156,7 @@ const formBufferData = createTRPCRouter({
           formType: formType ?? "",
           descision: false,
           to: to ?? "",
+          isPrevMember: isPrevMember,
         });
 
         return {
@@ -171,11 +174,12 @@ const formBufferData = createTRPCRouter({
         formType: Yup.string(),
         to: Yup.string(),
         membership_id: Yup.string(),
+        isPrevMember: Yup.boolean().required(),
       })
     )
     .mutation(async ({ input }) => {
       try {
-        const { formType, to, user_id, membership_id } = input;
+        const { formType, to, user_id, membership_id, isPrevMember } = input;
         const memberProperty = `${formType}_member`;
 
         const { data, error } = await supabase
@@ -198,6 +202,7 @@ const formBufferData = createTRPCRouter({
           descision: true,
           formType: formType ?? "",
           to: to ?? "",
+          isPrevMember: isPrevMember,
         });
 
         return {

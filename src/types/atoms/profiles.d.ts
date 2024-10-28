@@ -3,6 +3,7 @@ interface profileAtomBody {
   user_id: string | null | undefined;
   formType: string | null | undefined;
   status: string | null | undefined;
+  isMember: boolean;
 }
 
 interface profileAtomState {

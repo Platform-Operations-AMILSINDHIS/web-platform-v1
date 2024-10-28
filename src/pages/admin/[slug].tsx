@@ -23,6 +23,8 @@ const SlugPage = () => {
     KAPMembershipFormValues | MatrimonyFormValues
   >();
 
+  console.log({ selected_profile });
+
   const [isGeneratingID, setIsGeneratingID] = useState<boolean>(false);
   const [isSendingMail, setIsSendingMail] = useState<boolean>(false);
   const [isApprovingApplication, setIsApprovingApplication] =
@@ -79,6 +81,7 @@ const SlugPage = () => {
       selected_profile?.formType ?? "",
       submissionValues.personalInfo.emailId,
       selected_profile?.user_id ?? "",
+      selected_profile?.isMember,
       setIsGeneratingID,
       setIsSendingMail,
       setIsApprovingApplication
@@ -90,6 +93,7 @@ const SlugPage = () => {
       selected_profile?.formType ?? "",
       submissionValues.personalInfo.emailId,
       selected_profile?.user_id ?? "",
+      selected_profile?.isMember,
       setIsGeneratingID,
       setIsSendingMail,
       setIsRejectingApplication

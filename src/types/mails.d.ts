@@ -25,6 +25,7 @@ export interface DecisionMailType {
   descision: boolean;
   formType: string;
   membershipID?: string;
+  isPrevMember?: boolean; // only applicable when mailing to applicants
 }
 
 export interface MatrimonyDecisionMailType {

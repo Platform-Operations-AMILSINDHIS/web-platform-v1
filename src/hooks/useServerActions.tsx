@@ -142,6 +142,7 @@ const useServerActions = () => {
     formType: string,
     to: string,
     user_id: string,
+    isPrevMember: boolean,
     setIsGeneratingID: (state: boolean) => void,
     setIsSendingMail: (state: boolean) => void,
     setIsApprovingApplication: (state: boolean) => void
@@ -158,6 +159,7 @@ const useServerActions = () => {
       formType: formType,
       to,
       user_id: user_id,
+      isPrevMember: isPrevMember,
     });
     setIsSendingMail(false);
     setIsApprovingApplication(false);
@@ -168,6 +170,7 @@ const useServerActions = () => {
     formType: string,
     to: string,
     user_id: string,
+    isPrevMember: boolean,
     setIsSendingMail: (state: boolean) => void,
     setIsRejectingApplication: (state: boolean) => void
   ) => {
@@ -177,6 +180,7 @@ const useServerActions = () => {
       formType: formType,
       to,
       user_id: user_id,
+      isPrevMember: isPrevMember,
     });
     setIsSendingMail(false);
     setIsRejectingApplication(false);
