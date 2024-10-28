@@ -187,6 +187,7 @@ export const formRouter = createTRPCRouter({
         user_id: userId,
         formType: "KAP",
         submission: formData,
+        isMember: true,
       });
 
       if (error) console.error(error);
@@ -280,6 +281,7 @@ export const formRouter = createTRPCRouter({
         user_id: userId,
         formType: "YAC",
         submission: formData,
+        isMember: true,
       });
 
       if (error) console.error(error);
