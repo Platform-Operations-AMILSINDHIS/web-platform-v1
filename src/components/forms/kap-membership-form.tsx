@@ -965,7 +965,7 @@ const MembershipDetailsSection: React.FC = () => {
           colorScheme="orange"
           leftIcon={<FaRupeeSign />}
           size="lg"
-          onClick={async () => {
+          onClick={() => {
             // setIsPaying(true);
 
             // uncomment logic below when moving to razor pay dashboard
@@ -973,13 +973,7 @@ const MembershipDetailsSection: React.FC = () => {
             //   console.error
             // );
             setIsPaying(true);
-            try {
-              await handleSubmit();
-            } catch (err) {
-              console.error(err);
-            } finally {
-              setIsPaying(false); // Reset only after `handleSubmit` completes
-            }
+            handleSubmit();
           }}
         >
           Pay now
