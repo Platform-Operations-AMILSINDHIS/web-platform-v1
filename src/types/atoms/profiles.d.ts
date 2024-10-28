@@ -3,8 +3,9 @@ interface profileAtomBody {
   user_id: string | null | undefined;
   formType: string | null | undefined;
   status: string | null | undefined;
-  isMember: boolean;
-  paymentID: string;
+  // only required for member applicants
+  isMember?: boolean;
+  paymentID?: string;
 }
 
 interface profileAtomState {
