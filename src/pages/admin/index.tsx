@@ -56,8 +56,7 @@ const AdminPage = () => {
   const [statusType, setStatusType] = useState<string>("All");
   const [membershipType, setMembershipType] = useState<string>("All members");
   const [isSelected, setIsSelected] = useState<string>("Memberships");
-  const [prevMemberDataStatus, setPrevMemberDataStatus] =
-    useState<string>("All applicants");
+  const [applicantType, setapplicantType] = useState<string>("All applicants");
 
   const handleFetch = async () => {
     const allMemBufferData = await handleMemberBufferFetch();
@@ -173,8 +172,8 @@ const AdminPage = () => {
                 {`Member Applicants control →`}
               </Text>
               <DropDown
-                isSelected={prevMemberDataStatus}
-                setIsSelected={setPrevMemberDataStatus}
+                isSelected={applicantType}
+                setIsSelected={setapplicantType}
                 MenuItems={[
                   "New applicants",
                   "Current Members",
@@ -201,6 +200,8 @@ const AdminPage = () => {
             </Flex>
           ) : (
             <MembershipBufferTable
+              membershipType={membershipType}
+              applicantType={applicantType}
               searchTerm={searchTerm}
               filterState={statusType}
               membershipBufferData={membershipBufferData}

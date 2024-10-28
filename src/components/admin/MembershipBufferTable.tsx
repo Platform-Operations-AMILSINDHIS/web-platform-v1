@@ -1,5 +1,6 @@
 import { Button, Flex, Td, Text, Tr } from "@chakra-ui/react";
 import { useMemo } from "react";
+import { buffer } from "stream/consumers";
 import TableLayout from "~/layouts/TableLayout";
 import { useProfileAtom } from "~/lib/atom";
 import { MembershipBufferDataType, Status } from "~/types/tables/dataBuffer";
@@ -10,11 +11,15 @@ interface MembershipBufferTableProps {
   membershipBufferData: MembershipBufferDataType[];
   filterState: string;
   searchTerm: string;
+  membershipType: string;
+  applicantType: string;
 }
 
 const MembershipBufferTable: React.FC<MembershipBufferTableProps> = ({
   membershipBufferData,
   filterState,
+  applicantType,
+  membershipType,
   searchTerm,
 }) => {
   const [, setProfileAtom] = useProfileAtom();
@@ -40,6 +45,20 @@ const MembershipBufferTable: React.FC<MembershipBufferTableProps> = ({
             : filterState === "Approved"
             ? buffer.status === Status.APPROVED
             : buffer.status === Status.PENDING
+        )
+        .filter((buffer) =>
+          applicantType === "All applicants"
+            ? buffer.isMember === true || buffer.isMember == false
+            : applicantType === "New applicants"
+            ? buffer.isMember === true
+            : buffer.isMember === false
+        )
+        .filter((buffer) =>
+          membershipType === "All members"
+            ? buffer.formType === "KAP" || buffer.formType === "YAC"
+            : membershipType === "KAP members"
+            ? buffer.formType === "KAP"
+            : buffer.formType === "YAC"
         )
         .map((buffer, index) => {
           return (
