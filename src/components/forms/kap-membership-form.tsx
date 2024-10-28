@@ -58,10 +58,15 @@ import {
   proposerInfoSchema,
 } from "~/utils/schemas";
 
-import usePayment from "~/hooks/usePayment";
+// uncomment import when moving to razor pay
+// import usePayment from "~/hooks/usePayment";
+
+// comment out / remove import when moving to razor pay
+import paymentQRCode from "../../../public/images/payments/qr_sbi.jpg";
 
 import { api } from "~/utils/api";
 import { userAtomBody } from "~/types/atoms/users";
+import Image from "next/image";
 
 const steps = [
   {
@@ -913,6 +918,18 @@ const MembershipDetailsSection: React.FC = () => {
         </ListItem>
       </UnorderedList>
       <Spacer h="2rem" />
+
+      {/* QR Code for Payment */}
+      <Heading size="md" mb="1rem">
+        Scan QR Code for Payment
+      </Heading>
+      <Image
+        src={paymentQRCode}
+        alt="Payment QR Code for SBI"
+        width={200} // Adjust width and height as needed
+        height={200}
+        style={{ borderRadius: "8px", marginBottom: "1rem" }}
+      />
 
       {/* Payment ID Input Field */}
       <Heading size="md" mb="1rem">
