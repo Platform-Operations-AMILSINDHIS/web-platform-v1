@@ -67,8 +67,14 @@ export interface YACMembershipFormValues {
 
 export interface KAPFormSectionProps {
   user: userAtomBody;
-  isMember?: boolean
+  isMember?: boolean;
 }
+
+export interface YACFormSectionProps {
+  user: userAtomBody;
+  isMemberYAC?: boolean;
+}
+
 export interface KhudabadiAmilPanchayatMembershipFormProps
   extends KAPFormSectionProps {}
 
@@ -76,7 +82,7 @@ export interface YACFormSectionProps {
   user: userAtomBody;
 }
 export interface YoungAmilCircleMembershipFormProps
-  extends KAPFormSectionProps {}
+  extends YACFormSectionProps {}
 
 export interface MatrimonyFormSectionProps {
   user?: userAtomBody;

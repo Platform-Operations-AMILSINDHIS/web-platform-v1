@@ -142,7 +142,7 @@ const activeStepAtom = atom<number>(1);
 
 const YoungAmilCircleMembershipForm: React.FC<
   YoungAmilCircleMembershipFormProps
-> = ({ user }) => {
+> = ({ user, isMemberYAC }) => {
   // const toast = useToast();
 
   // const { activeStep, setActiveStep } = useSteps({
@@ -153,6 +153,7 @@ const YoungAmilCircleMembershipForm: React.FC<
   // const formMut = api.form.yacMembership.useMutation();
 
   const [activeStep] = useAtom(activeStepAtom);
+  const [isPrevMember, setIsPrevMember] = useState<boolean>(false);
 
   // Logger
   const [formState] = useAtom(yacFormAtom);
@@ -188,18 +189,34 @@ const YoungAmilCircleMembershipForm: React.FC<
 
       <Spacer h="2rem" />
 
-      {[
-        PersonalInformationSection,
-        AddressDetailsSection,
-        FamilyMemberDetailsSection,
-        ProposerDetailsSection,
-      ].map((FormSection, i) => (
-        <>
-          {activeStep === i + 1 && (
-            <FormSection user={user as userAtomBody} key={i} />
+      {isPrevMember
+        ? [
+            PersonalInformationSection,
+            AddressDetailsSection,
+            FamilyMemberDetailsSection,
+            ProposerDetailsSection,
+            ConfirmDetailsSection,
+          ].map(
+            (FormSection, i) =>
+              activeStep === i + 1 && (
+                <FormSection
+                  user={user as userAtomBody}
+                  key={i}
+                  isMemberYAC={isPrevMember}
+                />
+              )
+          )
+        : [
+            PersonalInformationSection,
+            AddressDetailsSection,
+            FamilyMemberDetailsSection,
+            ProposerDetailsSection,
+          ].map(
+            (FormSection, i) =>
+              activeStep === i + 1 && (
+                <FormSection user={user as userAtomBody} key={i} />
+              )
           )}
-        </>
-      ))}
 
       <Spacer h="2rem" />
     </Box>
