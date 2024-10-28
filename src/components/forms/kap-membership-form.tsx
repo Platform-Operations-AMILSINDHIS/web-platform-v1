@@ -733,7 +733,9 @@ export const ProposerDetailsSection: React.FC<KAPFormSectionProps> = ({
               <Button
                 type="submit"
                 isDisabled={
-                  !(formik.isValid && formik.dirty) || !membershipType
+                  isMember
+                    ? !(formik.isValid && formik.dirty) || !membershipType
+                    : !(formik.isValid && formik.dirty)
                 }
                 colorScheme="orange"
                 rightIcon={<ArrowForwardIcon />}
