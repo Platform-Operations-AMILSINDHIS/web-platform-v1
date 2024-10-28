@@ -779,7 +779,7 @@ const MembershipDetailsSection: React.FC = () => {
   // });
 
   // comment/delete function out below if moving to Razorpay gateway partially/completely respectively
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     formMut
       .mutateAsync(
         { formData: formState, paymentId: paymentID },
@@ -997,7 +997,7 @@ const ConfirmDetailsSection: React.FC<KAPFormSectionProps> = () => {
 
   const [formState] = useAtom(atom((get) => get(kapFormAtom)));
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     setSubmittingState(true);
     formMut
       .mutateAsync(

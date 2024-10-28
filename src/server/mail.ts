@@ -175,7 +175,7 @@ export const sendFormConfirmationMail = async ({
 }: ConfirmationMailType) => {
   const subject = `Thank you for submitting the ${formName} form!`;
 
-  let html: string = ``;
+  let html = ``;
 
   if (isPrevMember) {
     html = `

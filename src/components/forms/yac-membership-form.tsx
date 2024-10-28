@@ -760,7 +760,7 @@ const ConfirmDetailsSection: React.FC<YACFormSectionProps> = () => {
 
   const [formState] = useAtom(atom((get) => get(yacFormAtom)));
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     setSubmittingState(true);
     formMut
       .mutateAsync(
