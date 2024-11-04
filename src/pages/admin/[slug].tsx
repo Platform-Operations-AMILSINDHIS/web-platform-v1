@@ -112,17 +112,20 @@ const SlugPage = () => {
           {submissionValues ? (
             <ProfileViewLayout submission={submissionValues}>
               {/* Display only if isMember is not true (New Applicants) */}
-              {!selected_profile?.isMember && (
-                <Text
-                  my={5}
-                  px={4}
-                  py={2.5}
-                  borderRadius={5}
-                  width="fit-content"
-                  bg="yellow.200"
-                  fontWeight={700}
-                >{`Payment UPI ID : ${selected_profile.paymentID}`}</Text>
-              )}
+              {!selected_profile?.isMember &&
+                (selected_profile?.status !== "PENDING" ? (
+                  <></>
+                ) : (
+                  <Text
+                    my={5}
+                    px={4}
+                    py={2.5}
+                    borderRadius={5}
+                    width="fit-content"
+                    bg="yellow.200"
+                    fontWeight={700}
+                  >{`Payment UPI ID : ${selected_profile.paymentID}`}</Text>
+                ))}
               <Flex
                 display={
                   selected_profile?.status === Status.APPROVED ? "none" : "flex"
