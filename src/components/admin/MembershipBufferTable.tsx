@@ -50,8 +50,8 @@ const MembershipBufferTable: React.FC<MembershipBufferTableProps> = ({
           applicantType === "All applicants"
             ? buffer.isMember === true || buffer.isMember == false
             : applicantType === "New applicants"
-            ? buffer.isMember === true
-            : buffer.isMember === false
+            ? buffer.isMember === false
+            : buffer.isMember === true
         )
         .filter((buffer) =>
           membershipType === "All members"

@@ -216,7 +216,7 @@ export const formRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input }) => {
-      const { formData } = input;
+      const { formData, paymentId } = input;
       console.log({ formData });
 
       // YAC Form submission buffer
@@ -229,6 +229,7 @@ export const formRouter = createTRPCRouter({
         user_id: userId,
         formType: "YAC",
         submission: formData,
+        paymentID: paymentId,
       });
 
       if (error) console.error(error);

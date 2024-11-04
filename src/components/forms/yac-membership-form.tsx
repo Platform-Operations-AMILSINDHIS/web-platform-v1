@@ -22,6 +22,7 @@ import {
   useToast,
   Tag,
   Checkbox,
+  Input,
 } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import { atom, useAtom } from "jotai";
@@ -59,10 +60,15 @@ import {
 
 import { type InputType } from "./kap-membership-form";
 
-import usePayment from "~/hooks/usePayment";
+// uncomment import when moving to razor pay
+// import usePayment from "~/hooks/usePayment";
+
+// comment out / remove import when moving to razor pay
+import paymentQRCode from "../../../public/images/payments/qr_sbi.jpg";
 
 import { api } from "~/utils/api";
 import { userAtomBody } from "~/types/atoms/users";
+import Image from "next/image";
 
 const steps = [
   {
@@ -80,6 +86,10 @@ const steps = [
   {
     title: "Step 4",
     description: "Proposer Details",
+  },
+  {
+    title: "Step 5",
+    description: "Payment Details",
   },
 ];
 
@@ -264,6 +274,7 @@ const YoungAmilCircleMembershipForm: React.FC<
             AddressDetailsSection,
             FamilyMemberDetailsSection,
             ProposerDetailsSection,
+            PaymentSection,
           ].map(
             (FormSection, i) =>
               activeStep === i + 1 && (
@@ -594,63 +605,56 @@ export const FamilyMemberDetailsSection: React.FC = () => {
   );
 };
 
-export const ProposerDetailsSection: React.FC<YACFormSectionProps> = ({
-  isMemberYAC,
-}) => {
-  const toast = useToast();
-
-  const formMut = api.form.yacMembership.useMutation();
-
+export const ProposerDetailsSection: React.FC<YACFormSectionProps> = () => {
   const [activeStep, setActiveStep] = useAtom(activeStepAtom);
   const [proposerInfo, setProposerInfo] = useAtom(proposerInfoAtom);
-  const [formState] = useAtom(atom((get) => get(yacFormAtom)));
 
-  const [isPaying, setIsPaying] = useState<boolean>(false);
+  // uncomment below logic if in future moving to a razorpay gateway
+  // const { handlePayment, paymentId } = usePayment({
+  //   prefillDetails: {
+  //     name: `${formState.personalInfo.firstName}${
+  //       formState.personalInfo.middleName
+  //         ? ` ${formState.personalInfo.middleName}`
+  //         : ""
+  //     } ${formState.personalInfo.lastName}`,
+  //     email: formState.personalInfo.emailId,
+  //     contact: formState.personalInfo.mobileNumber,
+  //   },
+  // });
 
-  const { handlePayment, paymentId } = usePayment({
-    prefillDetails: {
-      name: `${formState.personalInfo.firstName}${
-        formState.personalInfo.middleName
-          ? ` ${formState.personalInfo.middleName}`
-          : ""
-      } ${formState.personalInfo.lastName}`,
-      email: formState.personalInfo.emailId,
-      contact: formState.personalInfo.mobileNumber,
-    },
-  });
-
-  useEffect(() => {
-    if (paymentId) {
-      formMut
-        .mutateAsync(
-          { formData: formState, paymentId },
-          {
-            onSuccess: () => {
-              toast({
-                title: "Response recorded successfully",
-                description: "We will get back to you shortly.",
-                status: "success",
-                duration: 90000,
-                isClosable: true,
-              });
-              setTimeout(() => {
-                window.location.href = "/";
-              }, 1000);
-            },
-            onError: (error) => {
-              toast({
-                title: "Error",
-                description: error.message,
-                status: "error",
-                duration: 9000,
-                isClosable: true,
-              });
-            },
-          }
-        )
-        .catch(console.error);
-    }
-  }, [paymentId]);
+  // uncomment below logic if in future moving to a razorpay gateway
+  // useEffect(() => {
+  //   if (paymentId) {
+  //     formMut
+  //       .mutateAsync(
+  //         { formData: formState, paymentId },
+  //         {
+  //           onSuccess: () => {
+  //             toast({
+  //               title: "Response recorded successfully",
+  //               description: "We will get back to you shortly.",
+  //               status: "success",
+  //               duration: 90000,
+  //               isClosable: true,
+  //             });
+  //             setTimeout(() => {
+  //               window.location.href = "/";
+  //             }, 1000);
+  //           },
+  //           onError: (error) => {
+  //             toast({
+  //               title: "Error",
+  //               description: error.message,
+  //               status: "error",
+  //               duration: 9000,
+  //               isClosable: true,
+  //             });
+  //           },
+  //         }
+  //       )
+  //       .catch(console.error);
+  //   }
+  // }, [paymentId]);
 
   return (
     <>
@@ -661,16 +665,7 @@ export const ProposerDetailsSection: React.FC<YACFormSectionProps> = ({
         validationSchema={proposerInfoSchema}
         onSubmit={(values, actions) => {
           setProposerInfo(values);
-          actions.setSubmitting(false);
-
-          if (isMemberYAC) {
-            // If they are a previous member, move to confirm details section
-            setActiveStep(activeStep + 1);
-          } else {
-            // If new member, proceed with payment
-            setIsPaying(true);
-            void handlePayment(100000, "kap_membership").catch(console.error);
-          }
+          setActiveStep(activeStep + 1);
         }}
       >
         {(formik) => (
@@ -702,32 +697,9 @@ export const ProposerDetailsSection: React.FC<YACFormSectionProps> = ({
 
             <Spacer h="2rem" />
 
-            <Heading size="lg">Declaration</Heading>
-            <UnorderedList mt="1rem" spacing="0.75rem" maxW="60%">
-              <ListItem>
-                The Applicant hereby declares that: I am a Khudabadi Amil and
-                request the Committee to admit me as Member of The Young Amil
-                Circle.
-              </ListItem>
-              <ListItem>
-                I agree to abide by the Constitution and rules of the Khudabadi
-                Amil Panchayat of Bombay in force from time to time.
-              </ListItem>
-              {!isMemberYAC && (
-                <ListItem>
-                  I hereby agree to pay{" "}
-                  <Tag size="md" colorScheme="orange">
-                    Rs. 1000
-                  </Tag>{" "}
-                  as membership fees.
-                </ListItem>
-              )}
-            </UnorderedList>
-            <Spacer h="2rem" />
             <Flex w="100%" justifyContent="space-between">
               <Button
                 colorScheme="orange"
-                isDisabled={isPaying}
                 leftIcon={<ArrowBackIcon />}
                 size="lg"
                 onClick={() => setActiveStep(activeStep - 1)}
@@ -737,13 +709,11 @@ export const ProposerDetailsSection: React.FC<YACFormSectionProps> = ({
 
               <Button
                 type="submit"
-                isDisabled={isPaying}
-                isLoading={isPaying}
+                isDisabled={!formik.isValid || !formik.dirty}
                 colorScheme="orange"
-                leftIcon={isMemberYAC ? undefined : <FaRupeeSign />}
                 size="lg"
               >
-                {isMemberYAC ? "Next" : "Pay now"}
+                Next
               </Button>
             </Flex>
           </Form>
@@ -752,6 +722,136 @@ export const ProposerDetailsSection: React.FC<YACFormSectionProps> = ({
     </>
   );
 };
+
+// Remove entire section if moving to razor pay
+export const PaymentSection: React.FC<YACFormSectionProps> = ({
+  isMemberYAC,
+}) => {
+  const toast = useToast();
+  const formMut = api.form.yacMembership.useMutation();
+
+  const [activeStep, setActiveStep] = useAtom(activeStepAtom);
+  const [formState] = useAtom(atom((get) => get(yacFormAtom)));
+
+  const [isPaying, setIsPaying] = useState<boolean>(false);
+  const [paymentID, setPaymentID] = useState<string>("");
+
+  const handleSubmit = async () => {
+    setIsPaying(true);
+    try {
+      await formMut.mutateAsync(
+        { formData: formState, paymentId: paymentID },
+        {
+          onSuccess: () => {
+            toast({
+              title: "Response recorded successfully",
+              description: "We will get back to you shortly.",
+              status: "success",
+              duration: 9000,
+              isClosable: true,
+            });
+            setTimeout(() => {
+              window.location.href = "/";
+            }, 1000);
+          },
+          onError: (error) => {
+            toast({
+              title: "Error",
+              description: error.message,
+              status: "error",
+              duration: 9000,
+              isClosable: true,
+            });
+          },
+        }
+      );
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsPaying(false);
+    }
+  };
+
+  return (
+    <>
+      <Heading>Payment</Heading>
+
+      <Spacer h="2rem" />
+
+      <Heading size="lg">Declaration</Heading>
+      <UnorderedList mt="1rem" spacing="0.75rem" maxW="60%">
+        <ListItem>
+          The Applicant hereby declares that: I am a Khudabadi Amil and request
+          the Committee to admit me as Member of The Young Amil Circle.
+        </ListItem>
+        <ListItem>
+          I agree to abide by the Constitution and rules of the Khudabadi Amil
+          Panchayat of Bombay in force from time to time.
+        </ListItem>
+        {!isMemberYAC && (
+          <ListItem>
+            I hereby agree to pay{" "}
+            <Tag size="md" colorScheme="orange">
+              Rs. 1000
+            </Tag>{" "}
+            as membership fees.
+          </ListItem>
+        )}
+      </UnorderedList>
+
+      <Spacer h="2rem" />
+
+      {/* QR Code for Payment */}
+      <Heading size="md" mb="1rem">
+        Scan QR Code for Payment
+      </Heading>
+      <Image
+        src={paymentQRCode}
+        alt="Payment QR Code for SBI"
+        width={200} // Adjust width and height as needed
+        height={200}
+        style={{ borderRadius: "8px", marginBottom: "1rem" }}
+      />
+
+      {/* Payment ID Input Field */}
+      <Heading size="md" mb="1rem">
+        {`Enter Payment ID / confirmation ID`}
+      </Heading>
+      <Input
+        placeholder="Enter Payment ID"
+        value={paymentID}
+        onChange={(e) => setPaymentID(e.target.value)}
+        mb="2rem"
+      />
+
+      <Spacer h="2rem" />
+
+      <Flex w="100%" justifyContent="space-between">
+        <Button
+          colorScheme="orange"
+          isDisabled={isPaying}
+          leftIcon={<ArrowBackIcon />}
+          size="lg"
+          onClick={() => setActiveStep(activeStep - 1)}
+        >
+          Previous
+        </Button>
+
+        <Button
+          onClick={() => void handleSubmit()}
+          isDisabled={paymentID === "" || isPaying}
+          isLoading={isPaying}
+          colorScheme="orange"
+          leftIcon={<FaRupeeSign />}
+          size="lg"
+        >
+          Pay now
+        </Button>
+      </Flex>
+    </>
+  );
+};
+
 const ConfirmDetailsSection: React.FC<YACFormSectionProps> = () => {
   const toast = useToast();
   const formMut = api.form.yacMembershipPrev.useMutation(); // using a different mutation for prev member form submission
