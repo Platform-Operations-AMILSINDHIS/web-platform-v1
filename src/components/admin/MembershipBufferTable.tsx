@@ -1,5 +1,6 @@
 import { Button, Flex, Td, Text, Tr } from "@chakra-ui/react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { Tooltip } from "react-leaflet";
 import { buffer } from "stream/consumers";
 import TableLayout from "~/layouts/TableLayout";
 import { useProfileAtom } from "~/lib/atom";
@@ -61,10 +62,34 @@ const MembershipBufferTable: React.FC<MembershipBufferTableProps> = ({
             : buffer.formType === "YAC"
         )
         .map((buffer, index) => {
+          const [isHovered, setIsHovered] = useState(false);
           return (
             <Tr fontSize="sm" key={index}>
               <Td>{index + 1}</Td>
-              <Td>{`${buffer?.user_id.substring(0, 20)}...`}</Td>
+              <Td
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                pos={"relative"}
+              >
+                {isHovered && (
+                  <Text
+                    pos="absolute"
+                    top={-3}
+                    left={0}
+                    bg="yellow.200"
+                    color="black"
+                    fontWeight={600}
+                    px={2}
+                    py={1}
+                    borderRadius="md"
+                    zIndex="1"
+                  >
+                    {`${buffer?.user_id}`} {/* Full user ID */}
+                  </Text>
+                )}
+
+                <>{`${buffer?.user_id.substring(0, 10)}...`}</>
+              </Td>
               <Td>{buffer?.formType}</Td>
               <Td
                 fontSize="small"
