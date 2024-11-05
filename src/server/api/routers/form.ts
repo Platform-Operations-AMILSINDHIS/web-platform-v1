@@ -106,6 +106,23 @@ export const formRouter = createTRPCRouter({
       if (!userId)
         throw new TRPCClientError("Email does not exist in user database");
 
+      // check for duplicate payment ID
+
+      const { data: paymentID, error: paymentIDfetchError } = await supabase
+        .from("form_buffer")
+        .select("paymentID")
+        .eq("paymentID", paymentId);
+
+      if (paymentIDfetchError)
+        throw new TRPCClientError(
+          "Issue verifying paymentId, try submitting again"
+        );
+
+      if (paymentID.length > 0)
+        throw new TRPCClientError(
+          "Duplicate paymentIds detected, please enter the right payment ID"
+        );
+
       const { error } = await supabase.from("form_buffer").insert({
         user_id: userId,
         formType: "KAP",
