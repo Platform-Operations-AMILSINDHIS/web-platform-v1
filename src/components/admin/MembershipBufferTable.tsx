@@ -62,34 +62,10 @@ const MembershipBufferTable: React.FC<MembershipBufferTableProps> = ({
             : buffer.formType === "YAC"
         )
         .map((buffer, index) => {
-          const [isHovered, setIsHovered] = useState(false);
           return (
             <Tr fontSize="sm" key={index}>
               <Td>{index + 1}</Td>
-              <Td
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-                pos={"relative"}
-              >
-                {isHovered && (
-                  <Text
-                    pos="absolute"
-                    top={-3}
-                    left={0}
-                    bg="yellow.200"
-                    color="black"
-                    fontWeight={600}
-                    px={2}
-                    py={1}
-                    borderRadius="md"
-                    zIndex="1"
-                  >
-                    {`${buffer?.user_id}`} {/* Full user ID */}
-                  </Text>
-                )}
-
-                <>{`${buffer?.user_id.substring(0, 10)}...`}</>
-              </Td>
+              <Td>{`${buffer?.user_id.substring(0, 10)}...`}</Td>
               <Td>{buffer?.formType}</Td>
               <Td
                 fontSize="small"
@@ -152,5 +128,35 @@ const MembershipBufferTable: React.FC<MembershipBufferTableProps> = ({
     </TableLayout>
   );
 };
+
+// Add later
+{
+  /* <Td
+onMouseEnter={() => setIsHovered(true)}
+onMouseLeave={() => setIsHovered(false)}
+pos={"relative"}
+>
+{isHovered && (
+  <Text
+    pos="absolute"
+    top={-3}
+    left={0}
+    bg="yellow.200"
+    color="black"
+    fontWeight={600}
+    px={2}
+    py={1}
+    borderRadius="md"
+    zIndex="1"
+  >
+    {`${buffer?.user_id}`} {/* Full user ID */
+}
+// </Text>
+// )}
+
+{
+  /* <>{`${buffer?.user_id.substring(0, 10)}...`}</> */
+}
+// </Td> */}
 
 export default MembershipBufferTable;

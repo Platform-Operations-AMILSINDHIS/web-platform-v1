@@ -67,7 +67,7 @@ const AddAdminModal: React.FC<AddAdminModalProps> = ({
         </Flex>
         <Text color="gray.500" fontWeight={500} mt={1} fontSize="md">
           The new user will be sent the password in their email. Please create
-          the password and add the new user's email below
+          the password and add the new user&apos;s email below
         </Text>
         {formError === "" ? (
           <></>
