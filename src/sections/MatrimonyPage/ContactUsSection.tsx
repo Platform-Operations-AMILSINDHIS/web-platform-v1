@@ -15,16 +15,16 @@ const ContactUsSection = () => {
       >
         {[
           {
-            image: Mrs_Lajwati_Thandani_image,
+            image: Mrs_Nikita_Advani_image,
             role: "Convener",
-            name: "Mrs. Lajwanti Thadani",
-            contact: "Mobile: +91 9967605943",
+            name: "Mrs. Nikita Advani",
+            contact: "Mobile: +919820783670",
           },
           {
-            image: Mrs_Nikita_Advani_image,
-            role: "Sub-committee member",
-            name: "Mr. Ghanshyam Wadhwani",
-            contact: "Mobile: +91 9930222092",
+            image: Mrs_Lajwati_Thandani_image,
+            role: "Co-Convener",
+            name: "Mrs. Lajwanti Thadani",
+            contact: "Mobile: +919967605943",
           },
         ].map(({ image, role, name, contact }, i) => (
           <Flex
