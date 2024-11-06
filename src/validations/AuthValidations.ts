@@ -44,4 +44,5 @@ export const AddAdminValidation = Yup.object().shape({
   password: Yup.string().required(
     "Please provide a password for the admin user"
   ),
+  username: Yup.string().required("Please provide user name for new admin"),
 });

@@ -41,6 +41,7 @@ export interface WithdrawMatAppValues {
 export interface AddAdminValues {
   email: string;
   password: string;
+  username: string;
 }
 
 export const initialValues: Values = {
@@ -83,6 +84,7 @@ export const WithdrawMatAppInitialValues: WithdrawMatAppValues = {
 export const AddAdminInitialValues: AddAdminValues = {
   email: "",
   password: "",
+  username: "",
 };
 
 const useForm = () => {

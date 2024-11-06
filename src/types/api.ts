@@ -123,6 +123,11 @@ export interface AdminLoginResponse {
   admin: AdminType | null;
 }
 
+export interface AddAdminResponse {
+  success: boolean;
+  message: string;
+}
+
 export interface verifyMemberStatusResponse {
   isMemberVerified: boolean;
 }

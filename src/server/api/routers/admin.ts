@@ -1,7 +1,9 @@
 /* eslint-disable */
 import * as Yup from "yup";
+import bcrypt from "bcrypt";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import supabase from "~/pages/api/auth/supabase";
+import { TRPCClientError } from "@trpc/client";
 
 const adminRouter = createTRPCRouter({
   login: publicProcedure
@@ -33,6 +35,61 @@ const adminRouter = createTRPCRouter({
           };
         }
       } catch (err) {}
+    }),
+
+  addAdmin: publicProcedure
+    .input(
+      Yup.object({
+        email: Yup.string().email().required(),
+        password: Yup.string().required(),
+        username: Yup.string().required(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      try {
+        const { email, password, username } = input;
+
+        // Check if the email already exists
+        const { data: existingAdmin, error: fetchError } = await supabase
+          .from("admin_accounts")
+          .select("*")
+          .eq("admin_email", email);
+
+        if (fetchError) throw new Error("Error checking existing admin");
+
+        if (existingAdmin.length > 0)
+          return {
+            success: false,
+            message: "Email ID already associated with an admin account",
+          };
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Add new admin with hashed password
+        const { data, error } = await supabase.from("admin_accounts").insert([
+          {
+            admin_email: email,
+            admin_password: hashedPassword,
+            admin_username: username,
+          },
+        ]);
+
+        if (error) {
+          throw new TRPCClientError("Error adding admin account");
+        }
+
+        return {
+          success: true,
+          message: "Admin account created successfully",
+        };
+      } catch (err) {
+        console.error(err);
+        return {
+          success: false,
+          message: `An error occurred while adding the admin`,
+        };
+      }
     }),
 });
 
