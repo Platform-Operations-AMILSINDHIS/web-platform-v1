@@ -38,6 +38,11 @@ export interface WithdrawMatAppValues {
   matrimony_id: string;
 }
 
+export interface AddAdminValues {
+  email: string;
+  password: string;
+}
+
 export const initialValues: Values = {
   email: "",
   phonenumber: "",
@@ -73,6 +78,11 @@ export const RecoveryPasswordInitialValues: RecoveryPasswordValues = {
 
 export const WithdrawMatAppInitialValues: WithdrawMatAppValues = {
   matrimony_id: "",
+};
+
+export const AddAdminInitialValues: AddAdminValues = {
+  email: "",
+  password: "",
 };
 
 const useForm = () => {

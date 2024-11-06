@@ -38,3 +38,10 @@ export const RecoveryValidation = Yup.object().shape({
 export const WithdrawMatAppValidation = Yup.object().shape({
   matrimony_id: Yup.string().required("Enter Your MAT ID"),
 });
+
+export const AddAdminValidation = Yup.object().shape({
+  email: Yup.string().required("Please provide an email Id"),
+  password: Yup.string().required(
+    "Please provide a password for the admin user"
+  ),
+});

@@ -1,5 +1,6 @@
 import { WarningIcon } from "@chakra-ui/icons";
-import { Box, Button, Flex, Icon, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Icon, Text, useDisclosure } from "@chakra-ui/react";
+import AddAdminModal from "~/components/admin/AddAdminModal";
 import { adminAtomBody } from "~/types/atoms/admin";
 
 interface AdminPageLayoutProps {
@@ -13,8 +14,18 @@ const AdminPageLayout: React.FC<AdminPageLayoutProps> = ({
   admin,
   handleAdminLogout,
 }) => {
+  const {
+    isOpen: isAdminAddOpen,
+    onOpen: onAdminAddOpen,
+    onClose: onAdminAddClose,
+  } = useDisclosure();
+
   return (
     <Flex justify="center" h="100vh" w="full">
+      <AddAdminModal
+        handleModal={onAdminAddClose}
+        modalState={isAdminAddOpen}
+      />
       {admin !== null ? (
         <Flex minW={1200} gap={5} p={5} flexDir="column">
           <Flex justify="space-between" align="center" w="full">
@@ -28,15 +39,28 @@ const AdminPageLayout: React.FC<AdminPageLayoutProps> = ({
                 {admin?.admin_username ?? ""}
               </span>
             </Text>
-            <Button
-              onClick={handleAdminLogout}
-              color="white"
-              bg="#FF4D00"
-              variant="none"
-            >
-              {" "}
-              Sign out
-            </Button>
+            <Flex flexDir="row" gap={3}>
+              <Button
+                onClick={handleAdminLogout}
+                color="white"
+                bg="#FF4D00"
+                variant="none"
+              >
+                {" "}
+                Sign out
+              </Button>
+              <Button
+                onClick={onAdminAddOpen}
+                color="#00162B"
+                bg="white"
+                border="1px solid"
+                variant="none"
+                _hover={{ color: "white", bg: "#00162B" }}
+              >
+                {" "}
+                Add Admin
+              </Button>
+            </Flex>
           </Flex>
           <Box mt={3}>{children}</Box>
         </Flex>
