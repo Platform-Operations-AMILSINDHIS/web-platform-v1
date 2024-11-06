@@ -11,6 +11,7 @@ import type {
   MatrimonyDecisionMailType,
   RSVPMailType,
   SendMailType,
+  AddAdminMailType,
 } from "~/types/mails";
 
 import { generateKAPMembershipPDF } from "./pdfs/kap-membership";
@@ -408,4 +409,21 @@ export const sendRsvpMailForEvent = async ({
   } catch (e) {
     console.error(e);
   }
+};
+
+export const sendAdminEntryMail = async ({
+  password,
+  to,
+  username,
+}: AddAdminMailType) => {
+  const subject = `Admin Account Details`;
+  const html = `
+    <div style="font-size: 16px;">
+      <p>You have been granted admin access. below are your credentials and link to login</p>
+      <p>Email: ${to}, admin_password: ${password}, admin_username: ${username}</p>
+      <p>Head over and login onto : https://amilsindhis.org/admin/auth , to access the admin panel</p>
+    </div>
+  `;
+
+  await sendMail({ to, subject, html });
 };

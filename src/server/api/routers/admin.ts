@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import supabase from "~/pages/api/auth/supabase";
 import { TRPCClientError } from "@trpc/client";
+import { sendAdminEntryMail } from "~/server/mail";
 
 const adminRouter = createTRPCRouter({
   login: publicProcedure
@@ -14,22 +15,34 @@ const adminRouter = createTRPCRouter({
         const { data: FetchedAdmin, error: LoginError } = await supabase
           .from("admin_accounts")
           .select("*")
-          .eq("admin_email", email)
-          .eq("admin_password", password);
+          .eq("admin_email", email);
 
         if (LoginError) throw new Error("Error during login");
 
         if (FetchedAdmin.length > 0) {
-          return {
-            loginStatus: true,
-            message: "",
-            redirect: "/admin",
-            admin: FetchedAdmin[0],
-          };
+          const isPasswordValid = await bcrypt.compare(
+            password ?? "",
+            FetchedAdmin[0].admin_password
+          );
+          if (isPasswordValid) {
+            return {
+              loginStatus: true,
+              message: "",
+              redirect: "/admin",
+              admin: FetchedAdmin[0],
+            };
+          } else {
+            return {
+              loginStatus: false,
+              message: "Invalid credentials",
+              redirect: "",
+              admin: null,
+            };
+          }
         } else {
           return {
             loginStatus: false,
-            message: "Invalid credentials or Account doesn't exist",
+            message: "Account doesn't exist",
             redirect: "",
             admin: null,
           };
@@ -74,6 +87,12 @@ const adminRouter = createTRPCRouter({
             admin_username: username,
           },
         ]);
+
+        await sendAdminEntryMail({
+          to: email,
+          password: password,
+          username: username,
+        });
 
         if (error) {
           throw new TRPCClientError("Error adding admin account");

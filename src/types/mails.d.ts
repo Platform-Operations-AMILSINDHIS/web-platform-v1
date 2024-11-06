@@ -1,5 +1,6 @@
 import type { Attachment } from "nodemailer/lib/mailer";
 import { MatrimonyFormValues } from "./forms/matrimony";
+import { StringNullableChain } from "lodash";
 
 export interface SendMailType {
   to: string;
@@ -52,4 +53,10 @@ export interface AcceptProfileRequestMail {
   requested_name: string;
   requested_MatID: string;
   submission: MatrimonyFormValues;
+}
+
+export interface AddAdminMailType {
+  to: string;
+  password: string;
+  username: string;
 }
