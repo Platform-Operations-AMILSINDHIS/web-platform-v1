@@ -12,10 +12,6 @@
       "identifierURLS": ["/about", "/blog", "/blog/catalog", "/matrimony"],
       "subURLs": [
         {
-          "linkTitle": "About Us",
-          "linkURL": "/about"
-        },
-        {
           "linkTitle": "Read Blogs",
           "linkURL": "/blog"
         },
