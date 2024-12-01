@@ -4,6 +4,7 @@ import { api } from "~/utils/api";
 const useAdminAuth = () => {
   const adminLoginMut = api.admin.login.useMutation();
   const addAdminMut = api.admin.addAdmin.useMutation();
+  const forgotPasswordMut = api.admin.forgotPasswordAdmin.useMutation();
 
   const handleAdminLogin = async (
     email: string,
@@ -26,9 +27,21 @@ const useAdminAuth = () => {
     console.log(add_response);
     return add_response as AddAdminResponse;
   };
+
+  const handleForgotPassword = async (
+    email: string,
+    newPassword: string
+  ): Promise<{ success: boolean; message: string }> => {
+    const forgot_response = await forgotPasswordMut.mutateAsync({
+      email,
+      new_password: newPassword,
+    });
+    return forgot_response;
+  };
   return {
     handleAdminLogin,
     handleAddAdmin,
+    handleForgotPassword,
   };
 };
 

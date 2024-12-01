@@ -9,7 +9,7 @@ import AdminForgot from "~/components/authentication/AdminForgot";
 
 const AdminAuthPage = () => {
   const [{}, setAdminAtom] = useAdminAtom();
-  const { handleAdminLogin } = useAdminAuth();
+  const { handleAdminLogin, handleForgotPassword } = useAdminAuth();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [errorTrigger, setErrorTrigger] = useState<boolean>(false);
@@ -66,7 +66,11 @@ const AdminAuthPage = () => {
             handleSubmit={handleSubmit}
           />
         ) : (
-          <AdminForgot setForgot={setForgotMode} submitting={false} />
+          <AdminForgot
+            handleForgotPassword={handleForgotPassword}
+            setForgot={setForgotMode}
+            submitting={false}
+          />
         )}
       </Box>
     </Flex>

@@ -50,6 +50,39 @@ const adminRouter = createTRPCRouter({
       } catch (err) {}
     }),
 
+  forgotPasswordAdmin: publicProcedure
+    .input(
+      Yup.object({
+        email: Yup.string().required(),
+        new_password: Yup.string().required(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      try {
+        const { email, new_password } = input;
+        const hashed_new_password = await bcrypt.hash(new_password, 10);
+
+        const { data: UpdateAdminPwdData, error: ErrorUpdateAdminPwd } =
+          await supabase
+            .from("admin_accounts")
+            .update({ admin_password: hashed_new_password })
+            .eq("admin_email", email);
+        if (ErrorUpdateAdminPwd)
+          throw new Error("Error while updating password");
+
+        return {
+          success: true,
+          message: `Password updated for ${email} Signin again`,
+        };
+      } catch (err) {
+        console.log(err);
+        return {
+          success: false,
+          message: `An error occurred while updating password`,
+        };
+      }
+    }),
+
   addAdmin: publicProcedure
     .input(
       Yup.object({

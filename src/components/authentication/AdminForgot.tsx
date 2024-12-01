@@ -1,27 +1,59 @@
+import React, { Dispatch, SetStateAction } from "react";
 import { Box, Button, Flex, Icon, Text } from "@chakra-ui/react";
 import { AiOutlineMail } from "react-icons/ai";
 import { Form, Formik } from "formik";
 import { LabelledInput } from "../forms";
-import React, { Dispatch, SetStateAction } from "react";
 import {
   RecoveryPasswordValues,
   RecoveryPasswordInitialValues,
 } from "~/hooks/useForm";
 import { RecoveryValidation } from "~/validations/AuthValidations";
+import { useToast } from "@chakra-ui/react";
 
 interface AdminForgotProps {
   submitting: boolean;
   setForgot: Dispatch<SetStateAction<boolean>>;
+  handleForgotPassword: (
+    email: string,
+    newPassword: string
+  ) => Promise<{ success: boolean; message: string }>;
 }
 
-const AdminForgot: React.FC<AdminForgotProps> = ({ submitting, setForgot }) => {
+const AdminForgot: React.FC<AdminForgotProps> = ({
+  submitting,
+  setForgot,
+  handleForgotPassword,
+}) => {
+  const toast = useToast();
+
   return (
     <Formik
       validationSchema={RecoveryValidation}
       initialValues={RecoveryPasswordInitialValues}
       onSubmit={async (values: RecoveryPasswordValues) => {
-        console.log("Form Submitted:", values);
-        // Perform your password recovery logic here
+        try {
+          const { email, newPassword } = values;
+          const response = await handleForgotPassword(email, newPassword);
+
+          toast({
+            title: response.success ? "Success!" : "Error!",
+            description: response.message,
+            status: response.success ? "success" : "error",
+            duration: 4000,
+            isClosable: true,
+          });
+
+          if (response.success) setForgot(false);
+        } catch (err) {
+          console.error(err);
+          toast({
+            title: "Error!",
+            description: "An unexpected error occurred.",
+            status: "error",
+            duration: 4000,
+            isClosable: true,
+          });
+        }
       }}
     >
       <Form>
