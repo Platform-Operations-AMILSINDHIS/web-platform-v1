@@ -36,7 +36,12 @@ const WhatSection = ({ imageUrl }: sectionProps) => {
             zIndex: -1,
           }}
         />
-        <Flex direction={["column", "row"]} px={[10, 0]} gap={20} align={"center"}>
+        <Flex
+          direction={["column", "row"]}
+          px={[10, 0]}
+          gap={20}
+          align={"center"}
+        >
           <Image width={550} height={0} alt="" src={imageUrl} />
 
           <Flex flexDir="column" maxW="600px">
@@ -59,7 +64,7 @@ const WhatSection = ({ imageUrl }: sectionProps) => {
             {/* <Link href="/blog"> */}
             <Button
               onClick={() => {
-                router.push("/blog").catch(console.error);
+                router.push("/about").catch(console.error);
               }}
               rightIcon={<FaArrowCircleRight />}
               h="3rem"
