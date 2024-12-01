@@ -48,7 +48,7 @@
     {
       "image": "/images/what-we-offer/memberships.png",
       "name": "Memberships",
-      "href": "/memberships/khudabadi-amil-panchayat"
+      "href": "/memberships"
     },
     {
       "image": "/images/what-we-offer/donations.png",
@@ -73,7 +73,7 @@
     {
       "image": "/images/what-we-offer/connect.png",
       "name": "Connect",
-      "href": "/connecting/matrimony"
+      "href": "/about"
     }
   ],
 
