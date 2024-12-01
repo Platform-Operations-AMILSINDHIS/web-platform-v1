@@ -80,7 +80,17 @@ const Admin: React.FC<AdminProps> = ({
                 <Checkbox />
                 <Text>Remember me</Text>
               </Flex>
-              <Text onClick={() => setForgot(true)}>Forgot password ?</Text>
+              <Text
+                cursor="pointer"
+                _hover={{
+                  transition: "all 0.3s",
+                  color: "#FF4D00",
+                  textDecoration: "underline",
+                }}
+                onClick={() => setForgot(true)}
+              >
+                Forgot password ?
+              </Text>
             </Flex>
           </Flex>
           <Flex gap={3}>
