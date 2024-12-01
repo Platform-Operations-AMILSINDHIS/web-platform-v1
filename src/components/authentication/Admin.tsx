@@ -63,6 +63,7 @@ const Admin: React.FC<AdminProps> = ({
             <LabelledInput
               label="Enter password"
               name="password"
+              type="password"
               placeholder="********"
             />
 
