@@ -5,6 +5,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useAdminAtom } from "~/lib/atom";
 import { useState } from "react";
 import { AdminLoginValues } from "~/hooks/useForm";
+import AdminForgot from "~/components/authentication/AdminForgot";
 
 const AdminAuthPage = () => {
   const [{}, setAdminAtom] = useAdminAtom();
@@ -15,6 +16,7 @@ const AdminAuthPage = () => {
   const [loginStatus, setLoginStatus] = useState<boolean>(false);
 
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [forgotMode, setForgotMode] = useState<boolean>(false);
 
   const handleSubmit = async (values: AdminLoginValues) => {
     setSubmitting(true);
@@ -54,13 +56,18 @@ const AdminAuthPage = () => {
         borderColor="gray.200"
         w={500}
       >
-        <Admin
-          submitting={submitting}
-          errorMessage={errorMessage}
-          errorTrigger={errorTrigger}
-          loginStatus={loginStatus}
-          handleSubmit={handleSubmit}
-        />
+        {forgotMode === false ? (
+          <Admin
+            setForgot={setForgotMode}
+            submitting={submitting}
+            errorMessage={errorMessage}
+            errorTrigger={errorTrigger}
+            loginStatus={loginStatus}
+            handleSubmit={handleSubmit}
+          />
+        ) : (
+          <AdminForgot setForgot={setForgotMode} submitting={false} />
+        )}
       </Box>
     </Flex>
   );

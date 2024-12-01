@@ -4,11 +4,13 @@ import { Form, Formik } from "formik";
 import { LabelledInput } from "../forms";
 import { AdminLoginValidation } from "~/validations/AuthValidations";
 
-import React from "react";
+import React, { Dispatch } from "react";
 import { AdminLoginValues, adminInitialLoginValues } from "~/hooks/useForm";
+import { SetStateAction } from "jotai";
 
 interface AdminProps {
   handleSubmit: (values: AdminLoginValues) => Promise<void>;
+  setForgot: Dispatch<SetStateAction<boolean>>;
   submitting: boolean;
   errorTrigger: boolean;
   errorMessage: string;
@@ -21,6 +23,7 @@ const Admin: React.FC<AdminProps> = ({
   submitting,
   loginStatus,
   handleSubmit,
+  setForgot,
 }) => {
   return (
     <Formik
@@ -77,7 +80,7 @@ const Admin: React.FC<AdminProps> = ({
                 <Checkbox />
                 <Text>Remember me</Text>
               </Flex>
-              <Text>Forgot password ?</Text>
+              <Text onClick={() => setForgot(true)}>Forgot password ?</Text>
             </Flex>
           </Flex>
           <Flex gap={3}>
