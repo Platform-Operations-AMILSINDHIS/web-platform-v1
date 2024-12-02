@@ -363,10 +363,18 @@ export const sendDonationNotificationMail = async (
     amount: number;
     panCardUrl: string;
     addressProofUrl: string;
+    paymentTransactionID: string;
   }
 ) => {
-  const { donorName, email, phone, amount, panCardUrl, addressProofUrl } =
-    formData;
+  const {
+    donorName,
+    email,
+    phone,
+    amount,
+    panCardUrl,
+    addressProofUrl,
+    paymentTransactionID,
+  } = formData;
   const subject = `New Donation Received`;
 
   const html = `
@@ -378,6 +386,7 @@ export const sendDonationNotificationMail = async (
       <p>Amount: ${amount}</p>
       <p>PAN Card: ${panCardUrl}</p>
       <p>Address Proof: ${addressProofUrl}</p>
+      <p>Payment Transaction: ${paymentTransactionID}</p>
     </div>
   `;
 

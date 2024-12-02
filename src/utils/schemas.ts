@@ -86,8 +86,29 @@ export const donationsFormSchema = Yup.object().shape({
   donorName: Yup.string().required("Donor Name is required"),
   contactNumber: Yup.string().required("Contact Number is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
-  panCard: Yup.string().url().required("PAN Card URL is required"),
-  addressProof: Yup.string().url().required("Address Proof URL is required"),
+  panCard: Yup.string()
+    .test(
+      "panCardUrl",
+      "PAN card upload must be a valid URL with no special characters",
+      (value) => {
+        if (!value) return false;
+        return /^[a-zA-Z0-9_-]+$/.test(value.split("/").pop() || "");
+      }
+    )
+    .required("Pan card upload is required"),
+  addressProof: Yup.string()
+    .test(
+      "addressProofUrl",
+      "Address proof upload must be a valid URL with no special characters",
+      (value) => {
+        if (!value) return false;
+        return /^[a-zA-Z0-9_-]+$/.test(value.split("/").pop() || "");
+      }
+    )
+    .required("Address proof upload is required"),
+  paymentTransactionId: Yup.string().required(
+    "Enter your payment transaction id"
+  ),
 });
 
 export const matrimonyPersonalInfoSchema = Yup.object().shape({

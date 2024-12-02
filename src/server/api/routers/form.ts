@@ -359,32 +359,55 @@ export const formRouter = createTRPCRouter({
   donations: publicProcedure
     .input(Yup.object({ formData: donationsFormSchema }))
     .mutation(async ({ input }) => {
-      // .mutation(({ input }) => {
-      const { formData } = input;
+      try {
+        const { formData } = input;
 
-      console.log({ formData });
+        // Validate input (optional, but recommended)
+        if (!formData) {
+          return {
+            success: false,
+            error: "Invalid form data provided",
+          };
+        }
 
-      // Send response
-      // await sendRawJsonDataOnly("akshat.sabavat@gmail.com", formData);
-      // await sendRawJsonDataOnly("somesh.kar@gmail.com", formData);
-      // await sendDonationNotificationMail("akshat.sabavat@gmail.com", {
-      await sendDonationNotificationMail("amilsindhis@gmail.com", {
-        donorName: formData.donorName,
-        email: formData.email,
-        phone: formData.contactNumber,
-        amount: formData.amount,
-        panCardUrl: formData.panCard,
-        addressProofUrl: formData.addressProof,
-      });
+        // Validate specific fields if needed
+        if (!formData.email || !formData.donorName) {
+          return {
+            success: false,
+            error: "Missing required fields",
+          };
+        }
 
-      // Send confirmation mail
-      await sendDonationFormConfirmationMail(formData);
-      // await sendFormConfirmationMail({
-      //   to: formData.email,
-      //   formName: "Donations",
-      // });
+        // Existing logic for sending emails
+        await sendDonationNotificationMail("amilsindhis@gmail.com", {
+          donorName: formData.donorName,
+          email: formData.email,
+          phone: formData.contactNumber,
+          amount: formData.amount,
+          panCardUrl: formData.panCard,
+          addressProofUrl: formData.addressProof,
+          paymentTransactionID: formData.paymentTransactionId,
+        });
 
-      return { success: true };
+        await sendDonationFormConfirmationMail(formData);
+
+        return {
+          success: true,
+          error: null,
+        };
+      } catch (error) {
+        // Log the full error for server-side debugging
+        console.error("Donation form submission error:", error);
+
+        // Return a user-friendly error message
+        return {
+          success: false,
+          error:
+            error instanceof Error
+              ? error.message
+              : "An unexpected error occurred during form submission",
+        };
+      }
     }),
   matrimony: publicProcedure
     .input(Yup.object({ formData: matrimonyFormValuesSchema }))

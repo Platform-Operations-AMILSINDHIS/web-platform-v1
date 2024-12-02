@@ -29,9 +29,14 @@ import { toWords } from "~/utils/helper";
 import { api } from "~/utils/api";
 import { truncate } from "lodash";
 
+import QRImage from "../../../public/images/payments/qr_sbi.jpg";
+import Image from "next/image";
+
 const DonationsForm: React.FC = () => {
   const toast = useToast();
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [uploadedFilesCount, setUploadedFilesCount] = useState<number>(0);
+  const [paymentTransactionId, setPaymentTransactionId] = useState<string>("");
 
   const donationsFormMut = api.form.donations.useMutation();
   const { mutateAsync: fetchPresignedUrls } =
@@ -42,19 +47,13 @@ const DonationsForm: React.FC = () => {
     donorName: string;
     contactNumber: string;
     email: string;
+    paymentTransactionId: string;
   }>({
     amount: null,
     donorName: "",
     contactNumber: "",
     email: "",
-  });
-
-  const { handlePayment, paymentId, isPaying } = usePayment({
-    prefillDetails: {
-      name: form.donorName,
-      email: form.email,
-      contact: form.contactNumber,
-    },
+    paymentTransactionId: "",
   });
 
   const [panPresignedUrl, setPanPresignedUrl] = useState<string | null>(null);
@@ -64,8 +63,6 @@ const DonationsForm: React.FC = () => {
 
   const [panFilename, setPanFilename] = useState<string | null>(null);
   const [addressFilename, setAddressFilename] = useState<string | null>(null);
-
-  const [submitDisabled, setSubmitDisabled] = useState<boolean>(true);
 
   const {
     acceptedFiles: panCardAcceptedFiles,
@@ -86,7 +83,6 @@ const DonationsForm: React.FC = () => {
         .then((url) => {
           setPanPresignedUrl(url);
           setPanFilename(uniqueFilename);
-          setSubmitDisabled(false);
         })
         .catch((err) => console.error(err));
     },
@@ -111,13 +107,11 @@ const DonationsForm: React.FC = () => {
         .then((url) => {
           setAddressPresignedUrl(url);
           setAddressFilename(uniqueFilename);
-          setSubmitDisabled(false);
         })
         .catch((err) => console.error(err));
     },
   });
-
-  const handleSubmit = useCallback(async () => {
+  const handleSubmit = async () => {
     if (
       panCardAcceptedFiles.length > 0 &&
       panPresignedUrl !== null &&
@@ -127,55 +121,40 @@ const DonationsForm: React.FC = () => {
       const panFile = panCardAcceptedFiles[0]!;
       const addressProofFile = addressProofAcceptedFiles[0]!;
 
-      // Upload PAN Card
-      await axios
-        .put(panPresignedUrl, panFile.slice(), {
-          headers: { "Content-Type": panFile.type },
-        })
-        .then((response) => {
-          setUploadedFilesCount(uploadedFilesCount + 1);
-          console.log(response);
-          console.log("Successfully uploaded PAN Card file: ", panFilename);
-        })
-        .catch((err) => console.error(err));
-
-      // Upload Address Proof
-      await axios
-        .put(addressPresignedUrl, addressProofFile.slice(), {
-          headers: { "Content-Type": addressProofFile.type },
-        })
-        .then((response) => {
-          setUploadedFilesCount(uploadedFilesCount + 1);
-          console.log(response);
-          console.log(
-            "Successfully uploaded Address Proof file: ",
-            addressFilename
-          );
-        })
-        .catch((err) => console.error(err));
-
       try {
-        console.log(panFilename);
-        console.log(addressFilename);
+        // Upload PAN Card
+        setIsSubmitting(true);
+        await axios
+          .put(panPresignedUrl, panFile.slice(), {
+            headers: { "Content-Type": panFile.type },
+          })
+          .catch((err) => {
+            throw new Error(`PAN Card upload failed: ${err.message}`);
+          });
+
+        // Upload Address Proof
+        await axios
+          .put(addressPresignedUrl, addressProofFile.slice(), {
+            headers: { "Content-Type": addressProofFile.type },
+          })
+          .catch((err) => {
+            throw new Error(`Address Proof upload failed: ${err.message}`);
+          });
+
+        // Submit form with payment transaction ID
         const res = await donationsFormMut.mutateAsync({
           formData: {
             ...form,
             amount: form.amount!,
             panCard: `${env.NEXT_PUBLIC_R2_ACCESS_URL}/${panFilename}`,
             addressProof: `${env.NEXT_PUBLIC_R2_ACCESS_URL}/${addressFilename}`,
+            paymentTransactionId: form.paymentTransactionId,
           },
         });
 
+        // Handle specific server-side errors
         if (!res.success) {
-          toast({
-            title: "An error occurred.",
-            status: "error",
-            duration: 9000,
-            isClosable: true,
-          });
-
-          console.error("An error occurred while submitting the form");
-          return;
+          throw new Error(res.error || "Form submission failed");
         }
 
         toast({
@@ -185,10 +164,19 @@ const DonationsForm: React.FC = () => {
           duration: 9000,
           isClosable: true,
         });
+        setIsSubmitting(false);
       } catch (err: unknown) {
+        setIsSubmitting(false);
+        const errorMessage =
+          err instanceof Error
+            ? err.message
+            : typeof err === "string"
+            ? err
+            : "An unexpected error occurred";
+
         toast({
-          title: "An error occurred.",
-          description: err as string,
+          title: "Submission Error",
+          description: errorMessage,
           status: "error",
           duration: 9000,
           isClosable: true,
@@ -196,28 +184,8 @@ const DonationsForm: React.FC = () => {
 
         console.error(err);
       }
-
-      setSubmitDisabled(true);
     }
-  }, [
-    addressFilename,
-    addressPresignedUrl,
-    addressProofAcceptedFiles,
-    donationsFormMut,
-    form,
-    panCardAcceptedFiles,
-    panFilename,
-    panPresignedUrl,
-    toast,
-    uploadedFilesCount,
-  ]);
-
-  useEffect(() => {
-    if (paymentId) {
-      void handleSubmit();
-    }
-  }, [paymentId]);
-
+  };
   return (
     <Flex direction="column" alignItems="center" gap="2rem">
       <Flex w={["90%", "40%"]} mx="auto">
@@ -341,39 +309,41 @@ const DonationsForm: React.FC = () => {
         </GridItem>
       </Grid>
 
+      <Flex direction="column" alignItems="center" gap="1rem">
+        <Image src={QRImage} alt="Payment QR Code" width={300} height={300} />
+        <Text fontSize="md" textAlign="center">
+          Scan the QR code to make your donation. After payment, please enter
+          the transaction ID below.
+        </Text>
+
+        <Input
+          placeholder="Enter Transaction ID"
+          w="300px"
+          value={form.paymentTransactionId}
+          onChange={(e) =>
+            setForm({ ...form, paymentTransactionId: e.target.value })
+          }
+        />
+      </Flex>
+
       <Button
         h="3.25rem"
         w="15rem"
         colorScheme="yellow"
         rightIcon={<ArrowForwardIcon />}
-        onClick={() => {
-          if (!form.amount) {
-            toast({
-              title: "An error occurred.",
-              description: "Please enter a valid donation amount.",
-              status: "error",
-              duration: 9000,
-              isClosable: true,
-            });
-            return;
-          }
-
-          void handlePayment(form.amount * 100, "donation");
-        }}
+        onClick={handleSubmit}
         isDisabled={
-          panPresignedUrl === null ||
+          !form.amount ||
+          !form.donorName ||
+          !form.contactNumber ||
+          !form.email ||
+          !form.paymentTransactionId ||
           panCardAcceptedFiles.length === 0 ||
-          addressPresignedUrl === null ||
-          addressProofAcceptedFiles.length === 0 ||
-          submitDisabled
+          addressProofAcceptedFiles.length === 0
         }
-        isLoading={
-          (isPaying && !paymentId) ||
-          (0 < uploadedFilesCount && uploadedFilesCount < 1) ||
-          donationsFormMut.isLoading
-        }
+        isLoading={isSubmitting}
       >
-        Pay now
+        Confirm Donation
       </Button>
     </Flex>
   );
