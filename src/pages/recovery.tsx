@@ -33,8 +33,6 @@ const RecoveryPage = () => {
   const [ctaLabel, setCtaLabel] = useState<string>("View Password");
   const [email, setEmail] = useState<string>("");
 
-  const [redirectCountDown, setRedirectCountDown] = useState<number>(0);
-
   useEffect(() => {
     if (!router.isReady) return;
 
@@ -154,6 +152,7 @@ const RecoveryPage = () => {
           {"recoveryerror" in urlData ? (
             <Flex
               align={!activateResend ? "center" : "flex-start"}
+              width={{ base: "90%", md: "50%", lg: "40%" }}
               gap={3}
               flexDir="column"
             >
