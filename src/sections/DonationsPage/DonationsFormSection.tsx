@@ -164,6 +164,22 @@ const DonationsForm: React.FC = () => {
           duration: 9000,
           isClosable: true,
         });
+        setForm({
+          amount: null,
+          donorName: "",
+          contactNumber: "",
+          email: "",
+          paymentTransactionId: "",
+        });
+        // Reset file uploads
+        panCardAcceptedFiles.splice(0, panCardAcceptedFiles.length);
+        addressProofAcceptedFiles.splice(0, addressProofAcceptedFiles.length);
+
+        // Reset filenames and presigned URLs
+        setPanFilename(null);
+        setAddressFilename(null);
+        setPanPresignedUrl(null);
+        setAddressPresignedUrl(null);
         setIsSubmitting(false);
       } catch (err: unknown) {
         setIsSubmitting(false);
@@ -374,8 +390,8 @@ const DonationsFormSection = () => {
             fontWeight={500}
             color="yellow.700"
           >
-            No special charecters or spaces in file name only underscores
-            allowed
+            {`No special charecters or spaces in file name only " _ " and " - "
+            allowed`}
           </Text>
         </Box>
 
