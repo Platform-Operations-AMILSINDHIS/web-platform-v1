@@ -259,6 +259,7 @@ const DonationsForm: React.FC = () => {
       <Grid templateColumns={["1fr", "1fr 1fr"]} gap="2rem">
         <GridItem>
           <Text>Copy of PAN Card (Upload)</Text>
+
           <Spacer h="1rem" />
           <Flex
             h="8rem"
@@ -361,6 +362,20 @@ const DonationsFormSection = () => {
           <Text fontSize="lg">
             Fill out the fields below to complete your personal profile. Make
             sure to fill all the fields and not miss out any important details.
+          </Text>
+          <Spacer h="2rem" />
+          <Text
+            bg="yellow.100"
+            px={4}
+            py={2}
+            borderRadius={5}
+            border="solid 1.5px"
+            borderColor="yellow.500"
+            fontWeight={500}
+            color="yellow.700"
+          >
+            No special charecters or spaces in file name only underscores
+            allowed
           </Text>
         </Box>
 
