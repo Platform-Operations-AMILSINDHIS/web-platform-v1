@@ -129,8 +129,15 @@ const DonationsForm: React.FC = () => {
             headers: { "Content-Type": panFile.type },
           })
           .catch((err) => {
-            throw new Error(`PAN Card upload failed: ${err.message as string}`);
+            const message =
+              err && typeof err.message === "string"
+                ? err.message
+                : "An unknown error occurred";
+            throw new Error(`PAN Card upload failed: ${message}`);
           });
+        // .catch((err) => {
+        //   throw new Error(`PAN Card upload failed: ${err.message as string}`);
+        // });
 
         // Upload Address Proof
         await axios
@@ -138,9 +145,11 @@ const DonationsForm: React.FC = () => {
             headers: { "Content-Type": addressProofFile.type },
           })
           .catch((err) => {
-            throw new Error(
-              `Address Proof upload failed: ${err.message as string}`
-            );
+            const message =
+              err && typeof err.message === "string"
+                ? err.message
+                : "An unknown error occurred";
+            throw new Error(`Address Proof upload failed: ${message}`);
           });
 
         // Submit form with payment transaction ID
