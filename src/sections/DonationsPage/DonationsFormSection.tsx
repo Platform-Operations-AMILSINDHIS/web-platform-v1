@@ -129,7 +129,7 @@ const DonationsForm: React.FC = () => {
             headers: { "Content-Type": panFile.type },
           })
           .catch((err) => {
-            throw new Error(`PAN Card upload failed: ${err.message}`);
+            throw new Error(`PAN Card upload failed: ${err.message as string}`);
           });
 
         // Upload Address Proof
@@ -138,7 +138,9 @@ const DonationsForm: React.FC = () => {
             headers: { "Content-Type": addressProofFile.type },
           })
           .catch((err) => {
-            throw new Error(`Address Proof upload failed: ${err.message}`);
+            throw new Error(
+              `Address Proof upload failed: ${err.message as string}`
+            );
           });
 
         // Submit form with payment transaction ID
@@ -154,7 +156,7 @@ const DonationsForm: React.FC = () => {
 
         // Handle specific server-side errors
         if (!res.success) {
-          throw new Error(res.error || "Form submission failed");
+          throw new Error(res.error ?? "Form submission failed");
         }
 
         toast({
@@ -348,7 +350,7 @@ const DonationsForm: React.FC = () => {
         w="15rem"
         colorScheme="yellow"
         rightIcon={<ArrowForwardIcon />}
-        onClick={handleSubmit}
+        onClick={() => void handleSubmit()}
         isDisabled={
           !form.amount ||
           !form.donorName ||
