@@ -7,9 +7,55 @@ query pageBlogPost($id: String!) {
     blogType
     blogDisplayPicture {
       url
+      title
+      description
+      width
+      height
     }
     blogContent {
       json
+      links {
+        entries {
+          inline {
+            sys {
+              id
+            }
+            __typename
+            ... on BlogContentType {
+              blogTitle
+              author
+              dateOfBlog
+              blogTags
+              blogType
+            }
+          }
+          block {
+            sys {
+              id
+            }
+            __typename
+            ... on BlogContentType {
+              blogTitle
+              author
+              dateOfBlog
+              blogTags
+              blogType
+            }
+          }
+        }
+        assets {
+          block {
+            sys {
+              id
+            }
+            url
+            title
+            description
+            width
+            height
+          }
+        }
+      }
     }
   }
 }

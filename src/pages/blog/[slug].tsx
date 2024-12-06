@@ -14,6 +14,14 @@ import { client } from "~/lib/client";
 
 import type { PageBlogPostQuery } from "~/lib/__generated/sdk";
 
+type TypeColorMapping = Record<string, string>;
+
+const colorMapping: TypeColorMapping = {
+  Blog: "#FFA882",
+  Publication: "#D0FF82",
+  NewsLetter: "rgba(255, 31, 152, 0.27)",
+};
+
 export const getServerSideProps: GetServerSideProps<{
   post: PageBlogPostQuery;
 }> = async ({ params }) => {
@@ -23,14 +31,12 @@ export const getServerSideProps: GetServerSideProps<{
   const slug = (params?.slug as string) ?? "";
 
   const post = await client.pageBlogPost({ id: slug });
-  console.log({ post });
   return { props: { post } };
 };
 
 const BlogPostPage = ({
   post: { blogContentType },
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  console.log(blogContentType);
   return (
     <Layout
       title={
@@ -57,13 +63,19 @@ const BlogPostPage = ({
 
           {/* TODO: Check if content type is blog for this */}
           <Box
-            px="10px"
-            py="2px"
-            backgroundColor="#FF1F9845"
-            border="1px #FF1F9845"
-            borderRadius="15px"
+            bg={
+              colorMapping[
+                blogContentType?.blogType && blogContentType?.blogType[0]
+                  ? blogContentType.blogType[0]
+                  : ""
+              ] ?? "white"
+            }
+            fontWeight={500}
+            className={`rounded-full  px-3 py-1 text-xs`}
           >
-            <Text fontSize="xs">Blog</Text>
+            {blogContentType?.blogType && blogContentType?.blogType[0]
+              ? blogContentType.blogType[0]
+              : ""}
           </Box>
         </Flex>
 
@@ -102,6 +114,20 @@ const BlogPostPage = ({
         />
 
         <Spacer h="3rem" />
+
+        {/* Conditional PDF Render */}
+        {blogContentType?.blogType &&
+          blogContentType?.blogType[0] === "NewsLetter" &&
+          blogContentType?.blogContent?.links?.assets?.block[0]?.url && (
+            <Box mt="3rem">
+              <iframe
+                src={blogContentType.blogContent.links.assets.block[0].url}
+                width="100%"
+                height="600px"
+                style={{ border: "none" }}
+              />
+            </Box>
+          )}
 
         {/* Content */}
         <Box>

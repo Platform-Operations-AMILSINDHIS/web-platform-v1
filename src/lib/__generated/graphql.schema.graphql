@@ -1,3 +1,5 @@
+directive @contentSourceMaps on QUERY
+
 """Represents a binary file in a space. An asset can be any file type."""
 type Asset {
   contentType(locale: String): String
@@ -94,6 +96,7 @@ type AssetLinkingCollections {
   entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
   eventContentTypeCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EventContentTypeCollection
   eventImageSliderCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EventImageSliderCollection
+  matrimonyConveyorContactContentModelCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): MatrimonyConveyorContactContentModelCollection
   membersOfTheManagingCommitteeKapCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): MembersOfTheManagingCommitteeKapCollection
   membersOfYoungAmilPanchayatCommunityCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): MembersOfYoungAmilPanchayatCommunityCollection
   officeBearersCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): OfficeBearersCollection
@@ -126,7 +129,8 @@ enum AssetOrder {
 """
 This content type represents the content that will go on your blog page, select the type weather if it's samachar, publication or a regular blog [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType)
 """
-type BlogContentType implements Entry {
+type BlogContentType implements Entry & _Node {
+  _id: ID!
   author(locale: String): String
   blogContent(locale: String): BlogContentTypeBlogContent
   blogDisplayPicture(locale: String, preview: Boolean): Asset
@@ -164,9 +168,21 @@ type BlogContentTypeBlogContentLinks {
 }
 
 type BlogContentTypeBlogContentResources {
-  block: [ResourceLink!]!
-  hyperlink: [ResourceLink!]!
-  inline: [ResourceLink!]!
+  block: [BlogContentTypeBlogContentResourcesBlock!]!
+  hyperlink: [BlogContentTypeBlogContentResourcesHyperlink!]!
+  inline: [BlogContentTypeBlogContentResourcesInline!]!
+}
+
+type BlogContentTypeBlogContentResourcesBlock implements ResourceLink {
+  sys: ResourceSys!
+}
+
+type BlogContentTypeBlogContentResourcesHyperlink implements ResourceLink {
+  sys: ResourceSys!
+}
+
+type BlogContentTypeBlogContentResourcesInline implements ResourceLink {
+  sys: ResourceSys!
 }
 
 type BlogContentTypeCollection {
@@ -256,10 +272,26 @@ enum BlogContentTypeOrder {
 }
 
 type ContentfulMetadata {
+  concepts: [TaxonomyConcept]!
   tags: [ContentfulTag]!
 }
 
+input ContentfulMetadataConceptsDescendantsFilter {
+  id_contains_all: [String]
+  id_contains_none: [String]
+  id_contains_some: [String]
+}
+
+input ContentfulMetadataConceptsFilter {
+  descendants: ContentfulMetadataConceptsDescendantsFilter
+  id_contains_all: [String]
+  id_contains_none: [String]
+  id_contains_some: [String]
+}
+
 input ContentfulMetadataFilter {
+  concepts: ContentfulMetadataConceptsFilter
+  concepts_exists: Boolean
   tags: ContentfulMetadataTagsFilter
   tags_exists: Boolean
 }
@@ -272,7 +304,7 @@ input ContentfulMetadataTagsFilter {
 
 """
 Represents a tag entity for finding and organizing content easily.
-    Find out more here: https://www.contentful.com/developers/docs/references/content-delivery-api/#/reference/content-tags
+      Find out more here: https://www.contentful.com/developers/docs/references/content-delivery-api/#/reference/content-tags
 """
 type ContentfulTag {
   id: String
@@ -325,7 +357,8 @@ enum EntryOrder {
 """
 A content type for you to add your events, and the respective event data such as : Event location, event name, event venue and so on [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/eventContentType)
 """
-type EventContentType implements Entry {
+type EventContentType implements Entry & _Node {
+  _id: ID!
   contentfulMetadata: ContentfulMetadata!
   eventDates(locale: String): DateTime
   eventDescription(locale: String): EventContentTypeEventDescription
@@ -369,9 +402,21 @@ type EventContentTypeEventDescriptionLinks {
 }
 
 type EventContentTypeEventDescriptionResources {
-  block: [ResourceLink!]!
-  hyperlink: [ResourceLink!]!
-  inline: [ResourceLink!]!
+  block: [EventContentTypeEventDescriptionResourcesBlock!]!
+  hyperlink: [EventContentTypeEventDescriptionResourcesHyperlink!]!
+  inline: [EventContentTypeEventDescriptionResourcesInline!]!
+}
+
+type EventContentTypeEventDescriptionResourcesBlock implements ResourceLink {
+  sys: ResourceSys!
+}
+
+type EventContentTypeEventDescriptionResourcesHyperlink implements ResourceLink {
+  sys: ResourceSys!
+}
+
+type EventContentTypeEventDescriptionResourcesInline implements ResourceLink {
+  sys: ResourceSys!
 }
 
 input EventContentTypeFilter {
@@ -449,7 +494,8 @@ enum EventContentTypeOrder {
 """
 bunch of images you can add for changing of backdrop images [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/eventImageSlider)
 """
-type EventImageSlider implements Entry {
+type EventImageSlider implements Entry & _Node {
+  _id: ID!
   contentfulMetadata: ContentfulMetadata!
   imagesCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): AssetCollection
   linkedFrom(allowedLocales: [String]): EventImageSliderLinkingCollections
@@ -620,7 +666,8 @@ input ImageTransformOptions {
 """
 words by InduShani [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/induShaniWords)
 """
-type InduShaniWords implements Entry {
+type InduShaniWords implements Entry & _Node {
+  _id: ID!
   contentfulMetadata: ContentfulMetadata!
   herWords(locale: String): String
   linkedFrom(allowedLocales: [String]): InduShaniWordsLinkingCollections
@@ -669,9 +716,81 @@ The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://
 scalar JSON
 
 """
+Store or update information about the relevant matrimony conveyors [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/matrimonyConveyorContactContentModel)
+"""
+type MatrimonyConveyorContactContentModel implements Entry & _Node {
+  _id: ID!
+  contactImage(locale: String, preview: Boolean): Asset
+  contactInformation(locale: String): String
+  contactName(locale: String): String
+  contactRole(locale: String): String
+  contentfulMetadata: ContentfulMetadata!
+  linkedFrom(allowedLocales: [String]): MatrimonyConveyorContactContentModelLinkingCollections
+  sys: Sys!
+}
+
+type MatrimonyConveyorContactContentModelCollection {
+  items: [MatrimonyConveyorContactContentModel]!
+  limit: Int!
+  skip: Int!
+  total: Int!
+}
+
+input MatrimonyConveyorContactContentModelFilter {
+  AND: [MatrimonyConveyorContactContentModelFilter]
+  OR: [MatrimonyConveyorContactContentModelFilter]
+  contactImage_exists: Boolean
+  contactInformation: String
+  contactInformation_contains: String
+  contactInformation_exists: Boolean
+  contactInformation_in: [String]
+  contactInformation_not: String
+  contactInformation_not_contains: String
+  contactInformation_not_in: [String]
+  contactName: String
+  contactName_contains: String
+  contactName_exists: Boolean
+  contactName_in: [String]
+  contactName_not: String
+  contactName_not_contains: String
+  contactName_not_in: [String]
+  contactRole: String
+  contactRole_contains: String
+  contactRole_exists: Boolean
+  contactRole_in: [String]
+  contactRole_not: String
+  contactRole_not_contains: String
+  contactRole_not_in: [String]
+  contentfulMetadata: ContentfulMetadataFilter
+  sys: SysFilter
+}
+
+type MatrimonyConveyorContactContentModelLinkingCollections {
+  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+}
+
+enum MatrimonyConveyorContactContentModelOrder {
+  contactInformation_ASC
+  contactInformation_DESC
+  contactName_ASC
+  contactName_DESC
+  contactRole_ASC
+  contactRole_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+"""
 Managing community member details [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/membersOfTheManagingCommitteeKap)
 """
-type MembersOfTheManagingCommitteeKap implements Entry {
+type MembersOfTheManagingCommitteeKap implements Entry & _Node {
+  _id: ID!
   contentfulMetadata: ContentfulMetadata!
   linkedFrom(allowedLocales: [String]): MembersOfTheManagingCommitteeKapLinkingCollections
   mkapDisplayPicture(locale: String, preview: Boolean): Asset
@@ -731,7 +850,8 @@ enum MembersOfTheManagingCommitteeKapOrder {
 """
 [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/membersOfYoungAmilPanchayatCommunity)
 """
-type MembersOfYoungAmilPanchayatCommunity implements Entry {
+type MembersOfYoungAmilPanchayatCommunity implements Entry & _Node {
+  _id: ID!
   contentfulMetadata: ContentfulMetadata!
   linkedFrom(allowedLocales: [String]): MembersOfYoungAmilPanchayatCommunityLinkingCollections
   myacDisplayPicture(locale: String, preview: Boolean): Asset
@@ -791,7 +911,8 @@ enum MembersOfYoungAmilPanchayatCommunityOrder {
 """
 Updation of Office Bearers to be done here [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/officeBearers)
 """
-type OfficeBearers implements Entry {
+type OfficeBearers implements Entry & _Node {
+  _id: ID!
   contentfulMetadata: ContentfulMetadata!
   displayPicture(locale: String, preview: Boolean): Asset
   linkedFrom(allowedLocales: [String]): OfficeBearersLinkingCollections
@@ -851,7 +972,8 @@ enum OfficeBearersOrder {
 """
 Event content model type dedicated only towards past events [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/pastEventContentType)
 """
-type PastEventContentType implements Entry {
+type PastEventContentType implements Entry & _Node {
+  _id: ID!
   contentfulMetadata: ContentfulMetadata!
   linkedFrom(allowedLocales: [String]): PastEventContentTypeLinkingCollections
   pastEventDate(locale: String): DateTime
@@ -974,9 +1096,21 @@ type PastEventContentTypePastEventDescriptionLinks {
 }
 
 type PastEventContentTypePastEventDescriptionResources {
-  block: [ResourceLink!]!
-  hyperlink: [ResourceLink!]!
-  inline: [ResourceLink!]!
+  block: [PastEventContentTypePastEventDescriptionResourcesBlock!]!
+  hyperlink: [PastEventContentTypePastEventDescriptionResourcesHyperlink!]!
+  inline: [PastEventContentTypePastEventDescriptionResourcesInline!]!
+}
+
+type PastEventContentTypePastEventDescriptionResourcesBlock implements ResourceLink {
+  sys: ResourceSys!
+}
+
+type PastEventContentTypePastEventDescriptionResourcesHyperlink implements ResourceLink {
+  sys: ResourceSys!
+}
+
+type PastEventContentTypePastEventDescriptionResourcesInline implements ResourceLink {
+  sys: ResourceSys!
 }
 
 """
@@ -997,6 +1131,8 @@ type Query {
   eventImageSliderCollection(limit: Int = 100, locale: String, order: [EventImageSliderOrder], preview: Boolean, skip: Int = 0, where: EventImageSliderFilter): EventImageSliderCollection
   induShaniWords(id: String!, locale: String, preview: Boolean): InduShaniWords
   induShaniWordsCollection(limit: Int = 100, locale: String, order: [InduShaniWordsOrder], preview: Boolean, skip: Int = 0, where: InduShaniWordsFilter): InduShaniWordsCollection
+  matrimonyConveyorContactContentModel(id: String!, locale: String, preview: Boolean): MatrimonyConveyorContactContentModel
+  matrimonyConveyorContactContentModelCollection(limit: Int = 100, locale: String, order: [MatrimonyConveyorContactContentModelOrder], preview: Boolean, skip: Int = 0, where: MatrimonyConveyorContactContentModelFilter): MatrimonyConveyorContactContentModelCollection
   membersOfTheManagingCommitteeKap(id: String!, locale: String, preview: Boolean): MembersOfTheManagingCommitteeKap
   membersOfTheManagingCommitteeKapCollection(limit: Int = 100, locale: String, order: [MembersOfTheManagingCommitteeKapOrder], preview: Boolean, skip: Int = 0, where: MembersOfTheManagingCommitteeKapFilter): MembersOfTheManagingCommitteeKapCollection
   membersOfYoungAmilPanchayatCommunity(id: String!, locale: String, preview: Boolean): MembersOfYoungAmilPanchayatCommunity
@@ -1009,13 +1145,12 @@ type Query {
   termsAndConditionCollection(limit: Int = 100, locale: String, order: [TermsAndConditionOrder], preview: Boolean, skip: Int = 0, where: TermsAndConditionFilter): TermsAndConditionCollection
 }
 
-type ResourceLink {
+interface ResourceLink {
   sys: ResourceSys!
 }
 
 type ResourceSys {
   linkType: String!
-  type: String!
   urn: String!
 }
 
@@ -1023,6 +1158,9 @@ type Sys {
   environmentId: String!
   firstPublishedAt: DateTime
   id: String!
+
+  """The locale that was requested."""
+  locale: String
   publishedAt: DateTime
   publishedVersion: Int
   spaceId: String!
@@ -1066,10 +1204,19 @@ input SysFilter {
 }
 
 """
+Represents a tag entity for finding and organizing content easily.
+        Find out more here: https://www.contentful.com/developers/docs/references/content-delivery-api/#/reference/content-concepts
+"""
+type TaxonomyConcept {
+  id: String
+}
+
+"""
 T&C and Privacy Policy for the site
  [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/termsAndCondition)
 """
-type TermsAndCondition implements Entry {
+type TermsAndCondition implements Entry & _Node {
+  _id: ID!
   contentfulMetadata: ContentfulMetadata!
   linkedFrom(allowedLocales: [String]): TermsAndConditionLinkingCollections
   privacyPolicyContent(locale: String): TermsAndConditionPrivacyPolicyContent
@@ -1135,9 +1282,21 @@ type TermsAndConditionPrivacyPolicyContentLinks {
 }
 
 type TermsAndConditionPrivacyPolicyContentResources {
-  block: [ResourceLink!]!
-  hyperlink: [ResourceLink!]!
-  inline: [ResourceLink!]!
+  block: [TermsAndConditionPrivacyPolicyContentResourcesBlock!]!
+  hyperlink: [TermsAndConditionPrivacyPolicyContentResourcesHyperlink!]!
+  inline: [TermsAndConditionPrivacyPolicyContentResourcesInline!]!
+}
+
+type TermsAndConditionPrivacyPolicyContentResourcesBlock implements ResourceLink {
+  sys: ResourceSys!
+}
+
+type TermsAndConditionPrivacyPolicyContentResourcesHyperlink implements ResourceLink {
+  sys: ResourceSys!
+}
+
+type TermsAndConditionPrivacyPolicyContentResourcesInline implements ResourceLink {
+  sys: ResourceSys!
 }
 
 type TermsAndConditionTCContent {
@@ -1163,9 +1322,21 @@ type TermsAndConditionTCContentLinks {
 }
 
 type TermsAndConditionTCContentResources {
-  block: [ResourceLink!]!
-  hyperlink: [ResourceLink!]!
-  inline: [ResourceLink!]!
+  block: [TermsAndConditionTCContentResourcesBlock!]!
+  hyperlink: [TermsAndConditionTCContentResourcesHyperlink!]!
+  inline: [TermsAndConditionTCContentResourcesInline!]!
+}
+
+type TermsAndConditionTCContentResourcesBlock implements ResourceLink {
+  sys: ResourceSys!
+}
+
+type TermsAndConditionTCContentResourcesHyperlink implements ResourceLink {
+  sys: ResourceSys!
+}
+
+type TermsAndConditionTCContentResourcesInline implements ResourceLink {
+  sys: ResourceSys!
 }
 
 interface _Node {

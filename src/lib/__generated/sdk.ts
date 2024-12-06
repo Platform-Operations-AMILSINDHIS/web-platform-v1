@@ -185,6 +185,7 @@ export type AssetLinkingCollections = {
   entryCollection?: Maybe<EntryCollection>;
   eventContentTypeCollection?: Maybe<EventContentTypeCollection>;
   eventImageSliderCollection?: Maybe<EventImageSliderCollection>;
+  matrimonyConveyorContactContentModelCollection?: Maybe<MatrimonyConveyorContactContentModelCollection>;
   membersOfTheManagingCommitteeKapCollection?: Maybe<MembersOfTheManagingCommitteeKapCollection>;
   membersOfYoungAmilPanchayatCommunityCollection?: Maybe<MembersOfYoungAmilPanchayatCommunityCollection>;
   officeBearersCollection?: Maybe<OfficeBearersCollection>;
@@ -218,6 +219,14 @@ export type AssetLinkingCollectionsEventImageSliderCollectionArgs = {
   preview?: InputMaybe<Scalars["Boolean"]["input"]>;
   skip?: InputMaybe<Scalars["Int"]["input"]>;
 };
+
+export type AssetLinkingCollectionsMatrimonyConveyorContactContentModelCollectionArgs =
+  {
+    limit?: InputMaybe<Scalars["Int"]["input"]>;
+    locale?: InputMaybe<Scalars["String"]["input"]>;
+    preview?: InputMaybe<Scalars["Boolean"]["input"]>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+  };
 
 export type AssetLinkingCollectionsMembersOfTheManagingCommitteeKapCollectionArgs =
   {
@@ -273,21 +282,23 @@ export enum AssetOrder {
 }
 
 /** This content type represents the content that will go on your blog page, select the type weather if it's samachar, publication or a regular blog [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
-export type BlogContentType = Entry & {
-  __typename?: "BlogContentType";
-  author?: Maybe<Scalars["String"]["output"]>;
-  blogContent?: Maybe<BlogContentTypeBlogContent>;
-  blogDisplayPicture?: Maybe<Asset>;
-  blogSlug?: Maybe<Scalars["String"]["output"]>;
-  blogTags?: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  blogTitle?: Maybe<Scalars["String"]["output"]>;
-  blogType?: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  contentfulMetadata: ContentfulMetadata;
-  dateOfBlog?: Maybe<Scalars["DateTime"]["output"]>;
-  excerpt?: Maybe<Scalars["String"]["output"]>;
-  linkedFrom?: Maybe<BlogContentTypeLinkingCollections>;
-  sys: Sys;
-};
+export type BlogContentType = Entry &
+  _Node & {
+    __typename?: "BlogContentType";
+    _id: Scalars["ID"]["output"];
+    author?: Maybe<Scalars["String"]["output"]>;
+    blogContent?: Maybe<BlogContentTypeBlogContent>;
+    blogDisplayPicture?: Maybe<Asset>;
+    blogSlug?: Maybe<Scalars["String"]["output"]>;
+    blogTags?: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
+    blogTitle?: Maybe<Scalars["String"]["output"]>;
+    blogType?: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
+    contentfulMetadata: ContentfulMetadata;
+    dateOfBlog?: Maybe<Scalars["DateTime"]["output"]>;
+    excerpt?: Maybe<Scalars["String"]["output"]>;
+    linkedFrom?: Maybe<BlogContentTypeLinkingCollections>;
+    sys: Sys;
+  };
 
 /** This content type represents the content that will go on your blog page, select the type weather if it's samachar, publication or a regular blog [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/blogContentType) */
 export type BlogContentTypeAuthorArgs = {
@@ -368,9 +379,24 @@ export type BlogContentTypeBlogContentLinks = {
 
 export type BlogContentTypeBlogContentResources = {
   __typename?: "BlogContentTypeBlogContentResources";
-  block: Array<ResourceLink>;
-  hyperlink: Array<ResourceLink>;
-  inline: Array<ResourceLink>;
+  block: Array<BlogContentTypeBlogContentResourcesBlock>;
+  hyperlink: Array<BlogContentTypeBlogContentResourcesHyperlink>;
+  inline: Array<BlogContentTypeBlogContentResourcesInline>;
+};
+
+export type BlogContentTypeBlogContentResourcesBlock = ResourceLink & {
+  __typename?: "BlogContentTypeBlogContentResourcesBlock";
+  sys: ResourceSys;
+};
+
+export type BlogContentTypeBlogContentResourcesHyperlink = ResourceLink & {
+  __typename?: "BlogContentTypeBlogContentResourcesHyperlink";
+  sys: ResourceSys;
+};
+
+export type BlogContentTypeBlogContentResourcesInline = ResourceLink & {
+  __typename?: "BlogContentTypeBlogContentResourcesInline";
+  sys: ResourceSys;
 };
 
 export type BlogContentTypeCollection = {
@@ -484,10 +510,26 @@ export enum BlogContentTypeOrder {
 
 export type ContentfulMetadata = {
   __typename?: "ContentfulMetadata";
+  concepts: Array<Maybe<TaxonomyConcept>>;
   tags: Array<Maybe<ContentfulTag>>;
 };
 
+export type ContentfulMetadataConceptsDescendantsFilter = {
+  id_contains_all?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  id_contains_none?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  id_contains_some?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+};
+
+export type ContentfulMetadataConceptsFilter = {
+  descendants?: InputMaybe<ContentfulMetadataConceptsDescendantsFilter>;
+  id_contains_all?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  id_contains_none?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  id_contains_some?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+};
+
 export type ContentfulMetadataFilter = {
+  concepts?: InputMaybe<ContentfulMetadataConceptsFilter>;
+  concepts_exists?: InputMaybe<Scalars["Boolean"]["input"]>;
   tags?: InputMaybe<ContentfulMetadataTagsFilter>;
   tags_exists?: InputMaybe<Scalars["Boolean"]["input"]>;
 };
@@ -500,7 +542,7 @@ export type ContentfulMetadataTagsFilter = {
 
 /**
  * Represents a tag entity for finding and organizing content easily.
- *     Find out more here: https://www.contentful.com/developers/docs/references/content-delivery-api/#/reference/content-tags
+ *       Find out more here: https://www.contentful.com/developers/docs/references/content-delivery-api/#/reference/content-tags
  */
 export type ContentfulTag = {
   __typename?: "ContentfulTag";
@@ -540,20 +582,22 @@ export enum EntryOrder {
 }
 
 /** A content type for you to add your events, and the respective event data such as : Event location, event name, event venue and so on [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/eventContentType) */
-export type EventContentType = Entry & {
-  __typename?: "EventContentType";
-  contentfulMetadata: ContentfulMetadata;
-  eventDates?: Maybe<Scalars["DateTime"]["output"]>;
-  eventDescription?: Maybe<EventContentTypeEventDescription>;
-  eventDisplayImage?: Maybe<Asset>;
-  eventLocation?: Maybe<Scalars["String"]["output"]>;
-  eventSearchTags?: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  eventSlug?: Maybe<Scalars["String"]["output"]>;
-  eventTitle?: Maybe<Scalars["String"]["output"]>;
-  eventType?: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  linkedFrom?: Maybe<EventContentTypeLinkingCollections>;
-  sys: Sys;
-};
+export type EventContentType = Entry &
+  _Node & {
+    __typename?: "EventContentType";
+    _id: Scalars["ID"]["output"];
+    contentfulMetadata: ContentfulMetadata;
+    eventDates?: Maybe<Scalars["DateTime"]["output"]>;
+    eventDescription?: Maybe<EventContentTypeEventDescription>;
+    eventDisplayImage?: Maybe<Asset>;
+    eventLocation?: Maybe<Scalars["String"]["output"]>;
+    eventSearchTags?: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
+    eventSlug?: Maybe<Scalars["String"]["output"]>;
+    eventTitle?: Maybe<Scalars["String"]["output"]>;
+    eventType?: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
+    linkedFrom?: Maybe<EventContentTypeLinkingCollections>;
+    sys: Sys;
+  };
 
 /** A content type for you to add your events, and the respective event data such as : Event location, event name, event venue and so on [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/eventContentType) */
 export type EventContentTypeEventDatesArgs = {
@@ -637,9 +681,25 @@ export type EventContentTypeEventDescriptionLinks = {
 
 export type EventContentTypeEventDescriptionResources = {
   __typename?: "EventContentTypeEventDescriptionResources";
-  block: Array<ResourceLink>;
-  hyperlink: Array<ResourceLink>;
-  inline: Array<ResourceLink>;
+  block: Array<EventContentTypeEventDescriptionResourcesBlock>;
+  hyperlink: Array<EventContentTypeEventDescriptionResourcesHyperlink>;
+  inline: Array<EventContentTypeEventDescriptionResourcesInline>;
+};
+
+export type EventContentTypeEventDescriptionResourcesBlock = ResourceLink & {
+  __typename?: "EventContentTypeEventDescriptionResourcesBlock";
+  sys: ResourceSys;
+};
+
+export type EventContentTypeEventDescriptionResourcesHyperlink =
+  ResourceLink & {
+    __typename?: "EventContentTypeEventDescriptionResourcesHyperlink";
+    sys: ResourceSys;
+  };
+
+export type EventContentTypeEventDescriptionResourcesInline = ResourceLink & {
+  __typename?: "EventContentTypeEventDescriptionResourcesInline";
+  sys: ResourceSys;
 };
 
 export type EventContentTypeFilter = {
@@ -739,13 +799,15 @@ export enum EventContentTypeOrder {
 }
 
 /** bunch of images you can add for changing of backdrop images [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/eventImageSlider) */
-export type EventImageSlider = Entry & {
-  __typename?: "EventImageSlider";
-  contentfulMetadata: ContentfulMetadata;
-  imagesCollection?: Maybe<AssetCollection>;
-  linkedFrom?: Maybe<EventImageSliderLinkingCollections>;
-  sys: Sys;
-};
+export type EventImageSlider = Entry &
+  _Node & {
+    __typename?: "EventImageSlider";
+    _id: Scalars["ID"]["output"];
+    contentfulMetadata: ContentfulMetadata;
+    imagesCollection?: Maybe<AssetCollection>;
+    linkedFrom?: Maybe<EventImageSliderLinkingCollections>;
+    sys: Sys;
+  };
 
 /** bunch of images you can add for changing of backdrop images [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/eventImageSlider) */
 export type EventImageSliderImagesCollectionArgs = {
@@ -895,13 +957,15 @@ export type ImageTransformOptions = {
 };
 
 /** words by InduShani [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/induShaniWords) */
-export type InduShaniWords = Entry & {
-  __typename?: "InduShaniWords";
-  contentfulMetadata: ContentfulMetadata;
-  herWords?: Maybe<Scalars["String"]["output"]>;
-  linkedFrom?: Maybe<InduShaniWordsLinkingCollections>;
-  sys: Sys;
-};
+export type InduShaniWords = Entry &
+  _Node & {
+    __typename?: "InduShaniWords";
+    _id: Scalars["ID"]["output"];
+    contentfulMetadata: ContentfulMetadata;
+    herWords?: Maybe<Scalars["String"]["output"]>;
+    linkedFrom?: Maybe<InduShaniWordsLinkingCollections>;
+    sys: Sys;
+  };
 
 /** words by InduShani [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/induShaniWords) */
 export type InduShaniWordsHerWordsArgs = {
@@ -958,16 +1022,137 @@ export enum InduShaniWordsOrder {
   SysPublishedVersionDesc = "sys_publishedVersion_DESC",
 }
 
-/** Managing community member details [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/membersOfTheManagingCommitteeKap) */
-export type MembersOfTheManagingCommitteeKap = Entry & {
-  __typename?: "MembersOfTheManagingCommitteeKap";
-  contentfulMetadata: ContentfulMetadata;
-  linkedFrom?: Maybe<MembersOfTheManagingCommitteeKapLinkingCollections>;
-  mkapDisplayPicture?: Maybe<Asset>;
-  mkapName?: Maybe<Scalars["String"]["output"]>;
-  mkapPosition?: Maybe<Scalars["String"]["output"]>;
-  sys: Sys;
+/** Store or update information about the relevant matrimony conveyors [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/matrimonyConveyorContactContentModel) */
+export type MatrimonyConveyorContactContentModel = Entry &
+  _Node & {
+    __typename?: "MatrimonyConveyorContactContentModel";
+    _id: Scalars["ID"]["output"];
+    contactImage?: Maybe<Asset>;
+    contactInformation?: Maybe<Scalars["String"]["output"]>;
+    contactName?: Maybe<Scalars["String"]["output"]>;
+    contactRole?: Maybe<Scalars["String"]["output"]>;
+    contentfulMetadata: ContentfulMetadata;
+    linkedFrom?: Maybe<MatrimonyConveyorContactContentModelLinkingCollections>;
+    sys: Sys;
+  };
+
+/** Store or update information about the relevant matrimony conveyors [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/matrimonyConveyorContactContentModel) */
+export type MatrimonyConveyorContactContentModelContactImageArgs = {
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+  preview?: InputMaybe<Scalars["Boolean"]["input"]>;
 };
+
+/** Store or update information about the relevant matrimony conveyors [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/matrimonyConveyorContactContentModel) */
+export type MatrimonyConveyorContactContentModelContactInformationArgs = {
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+/** Store or update information about the relevant matrimony conveyors [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/matrimonyConveyorContactContentModel) */
+export type MatrimonyConveyorContactContentModelContactNameArgs = {
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+/** Store or update information about the relevant matrimony conveyors [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/matrimonyConveyorContactContentModel) */
+export type MatrimonyConveyorContactContentModelContactRoleArgs = {
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+/** Store or update information about the relevant matrimony conveyors [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/matrimonyConveyorContactContentModel) */
+export type MatrimonyConveyorContactContentModelLinkedFromArgs = {
+  allowedLocales?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+};
+
+export type MatrimonyConveyorContactContentModelCollection = {
+  __typename?: "MatrimonyConveyorContactContentModelCollection";
+  items: Array<Maybe<MatrimonyConveyorContactContentModel>>;
+  limit: Scalars["Int"]["output"];
+  skip: Scalars["Int"]["output"];
+  total: Scalars["Int"]["output"];
+};
+
+export type MatrimonyConveyorContactContentModelFilter = {
+  AND?: InputMaybe<
+    Array<InputMaybe<MatrimonyConveyorContactContentModelFilter>>
+  >;
+  OR?: InputMaybe<
+    Array<InputMaybe<MatrimonyConveyorContactContentModelFilter>>
+  >;
+  contactImage_exists?: InputMaybe<Scalars["Boolean"]["input"]>;
+  contactInformation?: InputMaybe<Scalars["String"]["input"]>;
+  contactInformation_contains?: InputMaybe<Scalars["String"]["input"]>;
+  contactInformation_exists?: InputMaybe<Scalars["Boolean"]["input"]>;
+  contactInformation_in?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]["input"]>>
+  >;
+  contactInformation_not?: InputMaybe<Scalars["String"]["input"]>;
+  contactInformation_not_contains?: InputMaybe<Scalars["String"]["input"]>;
+  contactInformation_not_in?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]["input"]>>
+  >;
+  contactName?: InputMaybe<Scalars["String"]["input"]>;
+  contactName_contains?: InputMaybe<Scalars["String"]["input"]>;
+  contactName_exists?: InputMaybe<Scalars["Boolean"]["input"]>;
+  contactName_in?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  contactName_not?: InputMaybe<Scalars["String"]["input"]>;
+  contactName_not_contains?: InputMaybe<Scalars["String"]["input"]>;
+  contactName_not_in?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]["input"]>>
+  >;
+  contactRole?: InputMaybe<Scalars["String"]["input"]>;
+  contactRole_contains?: InputMaybe<Scalars["String"]["input"]>;
+  contactRole_exists?: InputMaybe<Scalars["Boolean"]["input"]>;
+  contactRole_in?: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  contactRole_not?: InputMaybe<Scalars["String"]["input"]>;
+  contactRole_not_contains?: InputMaybe<Scalars["String"]["input"]>;
+  contactRole_not_in?: InputMaybe<
+    Array<InputMaybe<Scalars["String"]["input"]>>
+  >;
+  contentfulMetadata?: InputMaybe<ContentfulMetadataFilter>;
+  sys?: InputMaybe<SysFilter>;
+};
+
+export type MatrimonyConveyorContactContentModelLinkingCollections = {
+  __typename?: "MatrimonyConveyorContactContentModelLinkingCollections";
+  entryCollection?: Maybe<EntryCollection>;
+};
+
+export type MatrimonyConveyorContactContentModelLinkingCollectionsEntryCollectionArgs =
+  {
+    limit?: InputMaybe<Scalars["Int"]["input"]>;
+    locale?: InputMaybe<Scalars["String"]["input"]>;
+    preview?: InputMaybe<Scalars["Boolean"]["input"]>;
+    skip?: InputMaybe<Scalars["Int"]["input"]>;
+  };
+
+export enum MatrimonyConveyorContactContentModelOrder {
+  ContactInformationAsc = "contactInformation_ASC",
+  ContactInformationDesc = "contactInformation_DESC",
+  ContactNameAsc = "contactName_ASC",
+  ContactNameDesc = "contactName_DESC",
+  ContactRoleAsc = "contactRole_ASC",
+  ContactRoleDesc = "contactRole_DESC",
+  SysFirstPublishedAtAsc = "sys_firstPublishedAt_ASC",
+  SysFirstPublishedAtDesc = "sys_firstPublishedAt_DESC",
+  SysIdAsc = "sys_id_ASC",
+  SysIdDesc = "sys_id_DESC",
+  SysPublishedAtAsc = "sys_publishedAt_ASC",
+  SysPublishedAtDesc = "sys_publishedAt_DESC",
+  SysPublishedVersionAsc = "sys_publishedVersion_ASC",
+  SysPublishedVersionDesc = "sys_publishedVersion_DESC",
+}
+
+/** Managing community member details [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/membersOfTheManagingCommitteeKap) */
+export type MembersOfTheManagingCommitteeKap = Entry &
+  _Node & {
+    __typename?: "MembersOfTheManagingCommitteeKap";
+    _id: Scalars["ID"]["output"];
+    contentfulMetadata: ContentfulMetadata;
+    linkedFrom?: Maybe<MembersOfTheManagingCommitteeKapLinkingCollections>;
+    mkapDisplayPicture?: Maybe<Asset>;
+    mkapName?: Maybe<Scalars["String"]["output"]>;
+    mkapPosition?: Maybe<Scalars["String"]["output"]>;
+    sys: Sys;
+  };
 
 /** Managing community member details [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/membersOfTheManagingCommitteeKap) */
 export type MembersOfTheManagingCommitteeKapLinkedFromArgs = {
@@ -1051,15 +1236,17 @@ export enum MembersOfTheManagingCommitteeKapOrder {
 }
 
 /** [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/membersOfYoungAmilPanchayatCommunity) */
-export type MembersOfYoungAmilPanchayatCommunity = Entry & {
-  __typename?: "MembersOfYoungAmilPanchayatCommunity";
-  contentfulMetadata: ContentfulMetadata;
-  linkedFrom?: Maybe<MembersOfYoungAmilPanchayatCommunityLinkingCollections>;
-  myacDisplayPicture?: Maybe<Asset>;
-  myacName?: Maybe<Scalars["String"]["output"]>;
-  myacPosition?: Maybe<Scalars["String"]["output"]>;
-  sys: Sys;
-};
+export type MembersOfYoungAmilPanchayatCommunity = Entry &
+  _Node & {
+    __typename?: "MembersOfYoungAmilPanchayatCommunity";
+    _id: Scalars["ID"]["output"];
+    contentfulMetadata: ContentfulMetadata;
+    linkedFrom?: Maybe<MembersOfYoungAmilPanchayatCommunityLinkingCollections>;
+    myacDisplayPicture?: Maybe<Asset>;
+    myacName?: Maybe<Scalars["String"]["output"]>;
+    myacPosition?: Maybe<Scalars["String"]["output"]>;
+    sys: Sys;
+  };
 
 /** [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/membersOfYoungAmilPanchayatCommunity) */
 export type MembersOfYoungAmilPanchayatCommunityLinkedFromArgs = {
@@ -1147,15 +1334,17 @@ export enum MembersOfYoungAmilPanchayatCommunityOrder {
 }
 
 /** Updation of Office Bearers to be done here [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/officeBearers) */
-export type OfficeBearers = Entry & {
-  __typename?: "OfficeBearers";
-  contentfulMetadata: ContentfulMetadata;
-  displayPicture?: Maybe<Asset>;
-  linkedFrom?: Maybe<OfficeBearersLinkingCollections>;
-  officeBearerName?: Maybe<Scalars["String"]["output"]>;
-  officeBearerPosition?: Maybe<Scalars["String"]["output"]>;
-  sys: Sys;
-};
+export type OfficeBearers = Entry &
+  _Node & {
+    __typename?: "OfficeBearers";
+    _id: Scalars["ID"]["output"];
+    contentfulMetadata: ContentfulMetadata;
+    displayPicture?: Maybe<Asset>;
+    linkedFrom?: Maybe<OfficeBearersLinkingCollections>;
+    officeBearerName?: Maybe<Scalars["String"]["output"]>;
+    officeBearerPosition?: Maybe<Scalars["String"]["output"]>;
+    sys: Sys;
+  };
 
 /** Updation of Office Bearers to be done here [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/officeBearers) */
 export type OfficeBearersDisplayPictureArgs = {
@@ -1244,21 +1433,23 @@ export enum OfficeBearersOrder {
 }
 
 /** Event content model type dedicated only towards past events [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/pastEventContentType) */
-export type PastEventContentType = Entry & {
-  __typename?: "PastEventContentType";
-  contentfulMetadata: ContentfulMetadata;
-  linkedFrom?: Maybe<PastEventContentTypeLinkingCollections>;
-  pastEventDate?: Maybe<Scalars["DateTime"]["output"]>;
-  pastEventDescription?: Maybe<PastEventContentTypePastEventDescription>;
-  pastEventDisplayPicture?: Maybe<Asset>;
-  pastEventLocation?: Maybe<Scalars["String"]["output"]>;
-  pastEventName?: Maybe<Scalars["String"]["output"]>;
-  pastEventPicturesCollection?: Maybe<AssetCollection>;
-  pastEventSearchTags?: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  pastEventSlug?: Maybe<Scalars["String"]["output"]>;
-  pastEventType?: Maybe<Scalars["String"]["output"]>;
-  sys: Sys;
-};
+export type PastEventContentType = Entry &
+  _Node & {
+    __typename?: "PastEventContentType";
+    _id: Scalars["ID"]["output"];
+    contentfulMetadata: ContentfulMetadata;
+    linkedFrom?: Maybe<PastEventContentTypeLinkingCollections>;
+    pastEventDate?: Maybe<Scalars["DateTime"]["output"]>;
+    pastEventDescription?: Maybe<PastEventContentTypePastEventDescription>;
+    pastEventDisplayPicture?: Maybe<Asset>;
+    pastEventLocation?: Maybe<Scalars["String"]["output"]>;
+    pastEventName?: Maybe<Scalars["String"]["output"]>;
+    pastEventPicturesCollection?: Maybe<AssetCollection>;
+    pastEventSearchTags?: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
+    pastEventSlug?: Maybe<Scalars["String"]["output"]>;
+    pastEventType?: Maybe<Scalars["String"]["output"]>;
+    sys: Sys;
+  };
 
 /** Event content model type dedicated only towards past events [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/pastEventContentType) */
 export type PastEventContentTypeLinkedFromArgs = {
@@ -1456,10 +1647,28 @@ export type PastEventContentTypePastEventDescriptionLinks = {
 
 export type PastEventContentTypePastEventDescriptionResources = {
   __typename?: "PastEventContentTypePastEventDescriptionResources";
-  block: Array<ResourceLink>;
-  hyperlink: Array<ResourceLink>;
-  inline: Array<ResourceLink>;
+  block: Array<PastEventContentTypePastEventDescriptionResourcesBlock>;
+  hyperlink: Array<PastEventContentTypePastEventDescriptionResourcesHyperlink>;
+  inline: Array<PastEventContentTypePastEventDescriptionResourcesInline>;
 };
+
+export type PastEventContentTypePastEventDescriptionResourcesBlock =
+  ResourceLink & {
+    __typename?: "PastEventContentTypePastEventDescriptionResourcesBlock";
+    sys: ResourceSys;
+  };
+
+export type PastEventContentTypePastEventDescriptionResourcesHyperlink =
+  ResourceLink & {
+    __typename?: "PastEventContentTypePastEventDescriptionResourcesHyperlink";
+    sys: ResourceSys;
+  };
+
+export type PastEventContentTypePastEventDescriptionResourcesInline =
+  ResourceLink & {
+    __typename?: "PastEventContentTypePastEventDescriptionResourcesInline";
+    sys: ResourceSys;
+  };
 
 export type Query = {
   __typename?: "Query";
@@ -1475,6 +1684,8 @@ export type Query = {
   eventImageSliderCollection?: Maybe<EventImageSliderCollection>;
   induShaniWords?: Maybe<InduShaniWords>;
   induShaniWordsCollection?: Maybe<InduShaniWordsCollection>;
+  matrimonyConveyorContactContentModel?: Maybe<MatrimonyConveyorContactContentModel>;
+  matrimonyConveyorContactContentModelCollection?: Maybe<MatrimonyConveyorContactContentModelCollection>;
   membersOfTheManagingCommitteeKap?: Maybe<MembersOfTheManagingCommitteeKap>;
   membersOfTheManagingCommitteeKapCollection?: Maybe<MembersOfTheManagingCommitteeKapCollection>;
   membersOfYoungAmilPanchayatCommunity?: Maybe<MembersOfYoungAmilPanchayatCommunity>;
@@ -1577,6 +1788,23 @@ export type QueryInduShaniWordsCollectionArgs = {
   where?: InputMaybe<InduShaniWordsFilter>;
 };
 
+export type QueryMatrimonyConveyorContactContentModelArgs = {
+  id: Scalars["String"]["input"];
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+  preview?: InputMaybe<Scalars["Boolean"]["input"]>;
+};
+
+export type QueryMatrimonyConveyorContactContentModelCollectionArgs = {
+  limit?: InputMaybe<Scalars["Int"]["input"]>;
+  locale?: InputMaybe<Scalars["String"]["input"]>;
+  order?: InputMaybe<
+    Array<InputMaybe<MatrimonyConveyorContactContentModelOrder>>
+  >;
+  preview?: InputMaybe<Scalars["Boolean"]["input"]>;
+  skip?: InputMaybe<Scalars["Int"]["input"]>;
+  where?: InputMaybe<MatrimonyConveyorContactContentModelFilter>;
+};
+
 export type QueryMembersOfTheManagingCommitteeKapArgs = {
   id: Scalars["String"]["input"];
   locale?: InputMaybe<Scalars["String"]["input"]>;
@@ -1655,14 +1883,12 @@ export type QueryTermsAndConditionCollectionArgs = {
 };
 
 export type ResourceLink = {
-  __typename?: "ResourceLink";
   sys: ResourceSys;
 };
 
 export type ResourceSys = {
   __typename?: "ResourceSys";
   linkType: Scalars["String"]["output"];
-  type: Scalars["String"]["output"];
   urn: Scalars["String"]["output"];
 };
 
@@ -1671,6 +1897,8 @@ export type Sys = {
   environmentId: Scalars["String"]["output"];
   firstPublishedAt?: Maybe<Scalars["DateTime"]["output"]>;
   id: Scalars["String"]["output"];
+  /** The locale that was requested. */
+  locale?: Maybe<Scalars["String"]["output"]>;
   publishedAt?: Maybe<Scalars["DateTime"]["output"]>;
   publishedVersion?: Maybe<Scalars["Int"]["output"]>;
   spaceId: Scalars["String"]["output"];
@@ -1724,17 +1952,28 @@ export type SysFilter = {
 };
 
 /**
+ * Represents a tag entity for finding and organizing content easily.
+ *         Find out more here: https://www.contentful.com/developers/docs/references/content-delivery-api/#/reference/content-concepts
+ */
+export type TaxonomyConcept = {
+  __typename?: "TaxonomyConcept";
+  id?: Maybe<Scalars["String"]["output"]>;
+};
+
+/**
  * T&C and Privacy Policy for the site
  *  [See type definition](https://app.contentful.com/spaces/f0p9zov000x1/content_types/termsAndCondition)
  */
-export type TermsAndCondition = Entry & {
-  __typename?: "TermsAndCondition";
-  contentfulMetadata: ContentfulMetadata;
-  linkedFrom?: Maybe<TermsAndConditionLinkingCollections>;
-  privacyPolicyContent?: Maybe<TermsAndConditionPrivacyPolicyContent>;
-  sys: Sys;
-  tCContent?: Maybe<TermsAndConditionTcContent>;
-};
+export type TermsAndCondition = Entry &
+  _Node & {
+    __typename?: "TermsAndCondition";
+    _id: Scalars["ID"]["output"];
+    contentfulMetadata: ContentfulMetadata;
+    linkedFrom?: Maybe<TermsAndConditionLinkingCollections>;
+    privacyPolicyContent?: Maybe<TermsAndConditionPrivacyPolicyContent>;
+    sys: Sys;
+    tCContent?: Maybe<TermsAndConditionTcContent>;
+  };
 
 /**
  * T&C and Privacy Policy for the site
@@ -1832,10 +2071,28 @@ export type TermsAndConditionPrivacyPolicyContentLinks = {
 
 export type TermsAndConditionPrivacyPolicyContentResources = {
   __typename?: "TermsAndConditionPrivacyPolicyContentResources";
-  block: Array<ResourceLink>;
-  hyperlink: Array<ResourceLink>;
-  inline: Array<ResourceLink>;
+  block: Array<TermsAndConditionPrivacyPolicyContentResourcesBlock>;
+  hyperlink: Array<TermsAndConditionPrivacyPolicyContentResourcesHyperlink>;
+  inline: Array<TermsAndConditionPrivacyPolicyContentResourcesInline>;
 };
+
+export type TermsAndConditionPrivacyPolicyContentResourcesBlock =
+  ResourceLink & {
+    __typename?: "TermsAndConditionPrivacyPolicyContentResourcesBlock";
+    sys: ResourceSys;
+  };
+
+export type TermsAndConditionPrivacyPolicyContentResourcesHyperlink =
+  ResourceLink & {
+    __typename?: "TermsAndConditionPrivacyPolicyContentResourcesHyperlink";
+    sys: ResourceSys;
+  };
+
+export type TermsAndConditionPrivacyPolicyContentResourcesInline =
+  ResourceLink & {
+    __typename?: "TermsAndConditionPrivacyPolicyContentResourcesInline";
+    sys: ResourceSys;
+  };
 
 export type TermsAndConditionTcContent = {
   __typename?: "TermsAndConditionTCContent";
@@ -1865,9 +2122,24 @@ export type TermsAndConditionTcContentLinks = {
 
 export type TermsAndConditionTcContentResources = {
   __typename?: "TermsAndConditionTCContentResources";
-  block: Array<ResourceLink>;
-  hyperlink: Array<ResourceLink>;
-  inline: Array<ResourceLink>;
+  block: Array<TermsAndConditionTcContentResourcesBlock>;
+  hyperlink: Array<TermsAndConditionTcContentResourcesHyperlink>;
+  inline: Array<TermsAndConditionTcContentResourcesInline>;
+};
+
+export type TermsAndConditionTcContentResourcesBlock = ResourceLink & {
+  __typename?: "TermsAndConditionTCContentResourcesBlock";
+  sys: ResourceSys;
+};
+
+export type TermsAndConditionTcContentResourcesHyperlink = ResourceLink & {
+  __typename?: "TermsAndConditionTCContentResourcesHyperlink";
+  sys: ResourceSys;
+};
+
+export type TermsAndConditionTcContentResourcesInline = ResourceLink & {
+  __typename?: "TermsAndConditionTCContentResourcesInline";
+  sys: ResourceSys;
 };
 
 export type _Node = {
@@ -1998,10 +2270,131 @@ export type PageBlogPostQuery = {
     dateOfBlog?: any | null;
     blogTags?: Array<string | null> | null;
     blogType?: Array<string | null> | null;
-    blogDisplayPicture?: { __typename?: "Asset"; url?: string | null } | null;
+    blogDisplayPicture?: {
+      __typename?: "Asset";
+      url?: string | null;
+      title?: string | null;
+      description?: string | null;
+      width?: number | null;
+      height?: number | null;
+    } | null;
     blogContent?: {
       __typename?: "BlogContentTypeBlogContent";
       json: any;
+      links: {
+        __typename?: "BlogContentTypeBlogContentLinks";
+        entries: {
+          __typename?: "BlogContentTypeBlogContentEntries";
+          inline: Array<
+            | {
+                __typename: "BlogContentType";
+                blogTitle?: string | null;
+                author?: string | null;
+                dateOfBlog?: any | null;
+                blogTags?: Array<string | null> | null;
+                blogType?: Array<string | null> | null;
+                sys: { __typename?: "Sys"; id: string };
+              }
+            | {
+                __typename: "EventContentType";
+                sys: { __typename?: "Sys"; id: string };
+              }
+            | {
+                __typename: "EventImageSlider";
+                sys: { __typename?: "Sys"; id: string };
+              }
+            | {
+                __typename: "InduShaniWords";
+                sys: { __typename?: "Sys"; id: string };
+              }
+            | {
+                __typename: "MatrimonyConveyorContactContentModel";
+                sys: { __typename?: "Sys"; id: string };
+              }
+            | {
+                __typename: "MembersOfTheManagingCommitteeKap";
+                sys: { __typename?: "Sys"; id: string };
+              }
+            | {
+                __typename: "MembersOfYoungAmilPanchayatCommunity";
+                sys: { __typename?: "Sys"; id: string };
+              }
+            | {
+                __typename: "OfficeBearers";
+                sys: { __typename?: "Sys"; id: string };
+              }
+            | {
+                __typename: "PastEventContentType";
+                sys: { __typename?: "Sys"; id: string };
+              }
+            | {
+                __typename: "TermsAndCondition";
+                sys: { __typename?: "Sys"; id: string };
+              }
+            | null
+          >;
+          block: Array<
+            | {
+                __typename: "BlogContentType";
+                blogTitle?: string | null;
+                author?: string | null;
+                dateOfBlog?: any | null;
+                blogTags?: Array<string | null> | null;
+                blogType?: Array<string | null> | null;
+                sys: { __typename?: "Sys"; id: string };
+              }
+            | {
+                __typename: "EventContentType";
+                sys: { __typename?: "Sys"; id: string };
+              }
+            | {
+                __typename: "EventImageSlider";
+                sys: { __typename?: "Sys"; id: string };
+              }
+            | {
+                __typename: "InduShaniWords";
+                sys: { __typename?: "Sys"; id: string };
+              }
+            | {
+                __typename: "MatrimonyConveyorContactContentModel";
+                sys: { __typename?: "Sys"; id: string };
+              }
+            | {
+                __typename: "MembersOfTheManagingCommitteeKap";
+                sys: { __typename?: "Sys"; id: string };
+              }
+            | {
+                __typename: "MembersOfYoungAmilPanchayatCommunity";
+                sys: { __typename?: "Sys"; id: string };
+              }
+            | {
+                __typename: "OfficeBearers";
+                sys: { __typename?: "Sys"; id: string };
+              }
+            | {
+                __typename: "PastEventContentType";
+                sys: { __typename?: "Sys"; id: string };
+              }
+            | {
+                __typename: "TermsAndCondition";
+                sys: { __typename?: "Sys"; id: string };
+              }
+            | null
+          >;
+        };
+        assets: {
+          __typename?: "BlogContentTypeBlogContentAssets";
+          block: Array<{
+            __typename?: "Asset";
+            url?: string | null;
+            title?: string | null;
+            description?: string | null;
+            width?: number | null;
+            height?: number | null;
+            sys: { __typename?: "Sys"; id: string };
+          } | null>;
+        };
+      };
     } | null;
   } | null;
 };
@@ -2193,9 +2586,55 @@ export const PageBlogPostDocument = gql`
       blogType
       blogDisplayPicture {
         url
+        title
+        description
+        width
+        height
       }
       blogContent {
         json
+        links {
+          entries {
+            inline {
+              sys {
+                id
+              }
+              __typename
+              ... on BlogContentType {
+                blogTitle
+                author
+                dateOfBlog
+                blogTags
+                blogType
+              }
+            }
+            block {
+              sys {
+                id
+              }
+              __typename
+              ... on BlogContentType {
+                blogTitle
+                author
+                dateOfBlog
+                blogTags
+                blogType
+              }
+            }
+          }
+          assets {
+            block {
+              sys {
+                id
+              }
+              url
+              title
+              description
+              width
+              height
+            }
+          }
+        }
       }
     }
   }

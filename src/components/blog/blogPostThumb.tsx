@@ -60,7 +60,7 @@ const BlogPostThumb: React.FC<{
         <Box
           bg={colorMapping[type ?? ""] ?? "white"}
           fontWeight={500}
-          className={`rounded-full border border-[#1F2937] px-3 py-1 text-xs`}
+          className={`rounded-full  px-3 py-1 text-xs`}
         >
           {type}
         </Box>
