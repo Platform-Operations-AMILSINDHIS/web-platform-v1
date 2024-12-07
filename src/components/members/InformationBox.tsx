@@ -1,8 +1,5 @@
 import { Flex, Heading, Text, useDisclosure } from "@chakra-ui/react";
 import LinkButton from "../buttons/LinkButton";
-import ModalButton from "../buttons/ModalButtons";
-import KapModal from "../membership_modals/kapModal";
-import YacModal from "../membership_modals/yacModal";
 
 interface InformationBoxProps {
   identifier: string;
@@ -17,12 +14,7 @@ const InformationBox: React.FC<InformationBoxProps> = ({
   title,
   content,
   URL,
-  modalDisplayState,
 }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const handleModal = () => {
-    onOpen();
-  };
   return (
     <Flex
       px={10}

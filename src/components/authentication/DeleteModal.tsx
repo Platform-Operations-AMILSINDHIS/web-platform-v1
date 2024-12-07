@@ -7,7 +7,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import ModalLayout from "~/layouts/ModalLayout";
 import { useUserAtom } from "~/lib/atom";
 
@@ -30,7 +30,6 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
-    console.log(input);
     if (e.target.value === "") {
       setError(false);
     }

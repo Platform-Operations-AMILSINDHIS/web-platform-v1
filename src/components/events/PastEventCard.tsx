@@ -1,4 +1,4 @@
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
+import { Flex, Image, Text } from "@chakra-ui/react";
 import { truncate } from "lodash";
 import { PastEventContentType } from "~/lib/__generated/sdk";
 import { convertDateV2 } from "~/utils/helper";

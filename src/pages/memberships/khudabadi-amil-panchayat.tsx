@@ -10,7 +10,6 @@ import { RiErrorWarningFill } from "react-icons/ri";
 
 const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
   const [{ user }] = useUserAtom();
-  console.log({ user });
 
   return (
     <Layout title="KAP Membership Form">

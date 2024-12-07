@@ -35,7 +35,6 @@ const ProfilePage = () => {
     handleMatrimonyProfilesFetch,
     handleMatrimonyIdFetch,
     handleFetchProfileRequests,
-    handleDeleteMatrimonyProfile,
   } = useServerActions();
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);

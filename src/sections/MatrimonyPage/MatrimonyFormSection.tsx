@@ -34,7 +34,6 @@ const MatrimonyFormSection = () => {
       user_id
     );
     const response_result = response_data?.user_verification;
-    console.log({ response_result });
     response_result
       ? setSubmissionVerified(response_result)
       : setNoPending(true);

@@ -33,7 +33,7 @@ const BlogSlider: React.FC<BlogPostSliderProps> = ({ blogPosts, blogType }) => {
     (post) => post.blogType[0]?.toLowerCase() === blogType
   );
 
-  const { height, width } = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
   console.log(filteredBlogPosts);
 

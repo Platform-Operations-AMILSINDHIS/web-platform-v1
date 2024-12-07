@@ -10,7 +10,6 @@ import Layout from "~/components/layout";
 
 import HeroSection from "~/sections/EventsPage/HeroSection";
 import EventSlider from "~/components/events/EventSlider";
-import PerksSection from "~/sections/EventsPage/PerksSection";
 
 import { client } from "~/lib/client";
 import { Box } from "@chakra-ui/react";
@@ -30,7 +29,6 @@ const EventsPage = ({
   events,
   pastEvents,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  console.log({ events, pastEvents });
   return (
     <Layout title="Events">
       <Box mb={10}>

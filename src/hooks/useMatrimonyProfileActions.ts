@@ -60,7 +60,6 @@ const useMatrimonyProfileActions = ({
       setFetchStatus(notty.status);
       setSelectingProfile(false);
     }
-    console.log("Selected option:", selectedOption, notty);
   };
 
   const ProcessingRequestProfile = async (

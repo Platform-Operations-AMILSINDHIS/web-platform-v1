@@ -1,4 +1,3 @@
-import { Flex, Text } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import Layout from "~/components/layout";
 import HeroSection from "~/sections/MembersPage/HeroSection";

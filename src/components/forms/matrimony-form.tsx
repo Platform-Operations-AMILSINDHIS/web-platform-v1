@@ -235,7 +235,6 @@ const MatrimonyPersonalInformationSection: React.FC<
         initialValues={personalInfo}
         validationSchema={matrimonyPersonalInfoSchema}
         onSubmit={(values, actions) => {
-          console.log({ values });
           setPersonalInfo(values);
           actions.setSubmitting(false);
           setActiveStep(activeStep + 1);

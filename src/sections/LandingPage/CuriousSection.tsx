@@ -8,7 +8,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { EventThumb } from "~/components/events";
 
 import { EventCollectionQueryQuery } from "~/lib/__generated/sdk";
 import EventSlider from "~/components/events/EventSlider";

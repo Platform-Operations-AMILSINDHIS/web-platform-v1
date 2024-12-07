@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text, Heading, Flex } from "@chakra-ui/react";
+import { Text, Heading, Flex } from "@chakra-ui/react";
 
 const CommunityBox = () => {
   return (

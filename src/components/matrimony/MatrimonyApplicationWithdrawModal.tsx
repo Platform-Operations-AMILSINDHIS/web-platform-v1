@@ -1,12 +1,4 @@
-import {
-  Button,
-  Flex,
-  Icon,
-  Input,
-  Text,
-  Toast,
-  useToast,
-} from "@chakra-ui/react";
+import { Button, Flex, Icon, Text, useToast } from "@chakra-ui/react";
 import { IoIosWarning } from "react-icons/io";
 
 import ModalLayout from "~/layouts/ModalLayout";

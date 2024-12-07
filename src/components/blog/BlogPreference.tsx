@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { btnThemeDark, btnThemeLight } from "../buttons/BtnThemes";
 
@@ -38,8 +38,6 @@ const BlogPreference: React.FC<BlogPreferenceProps> = ({ blogType }) => {
 
   const handleActive = (type: string, index: number) => {
     setActiveType(index);
-    console.log(activeType);
-    console.log(type);
   };
 
   return (

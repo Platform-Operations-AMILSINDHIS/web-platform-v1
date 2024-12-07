@@ -11,14 +11,12 @@ export const getServerSideProps: GetServerSideProps<{
   const slug = (params?.slug as string) ?? "";
 
   const event = await client.eventDetail({ id: slug });
-  console.log({ event });
   return { props: { event } };
 };
 
 const EventDetailPage = ({
   event: { eventContentType },
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  console.log("hi");
   return (
     <Layout
       title={

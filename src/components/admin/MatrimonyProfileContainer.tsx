@@ -1,4 +1,4 @@
-import { Spinner, Text } from "@chakra-ui/react";
+import { Spinner } from "@chakra-ui/react";
 import MatrimonyProfileViewLayout from "~/layouts/MatrimonyProfileViewLayout";
 import { MatrimonyFormValues } from "~/types/forms/matrimony";
 import MatrimonyProfileView from "./MatrimonyProfileView";

@@ -3,7 +3,6 @@ import { useMemo } from "react";
 import TableLayout from "~/layouts/TableLayout";
 import { useProfileAtom } from "~/lib/atom";
 import { MatrimonyBufferDataType, Status } from "~/types/tables/dataBuffer";
-import { formatCreatedTime } from "~/utils/helper";
 import { formMembershipBufferDataTableHeaders } from "~/utils/tableHeaders";
 
 interface MatrimonyBufferTableProps {

@@ -1,4 +1,4 @@
-import React, { useState, type ChangeEvent, useEffect } from "react";
+import React, { useState, type ChangeEvent } from "react";
 import {
   Heading,
   Text,
@@ -375,7 +375,6 @@ export const PersonalInformationSection: React.FC<KAPFormSectionProps> = ({
               ))}
             </Grid>
             <Flex mt="2rem" w="100%" justifyContent="space-between">
-              <Box></Box>
               <Button
                 type="submit"
                 isDisabled={!(formik.isValid && formik.dirty)}

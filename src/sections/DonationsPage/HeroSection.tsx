@@ -1,4 +1,4 @@
-import { Flex, Box, Text, Spacer } from "@chakra-ui/react";
+import { Flex, Spacer } from "@chakra-ui/react";
 
 import LinkButton from "~/components/buttons/LinkButton";
 

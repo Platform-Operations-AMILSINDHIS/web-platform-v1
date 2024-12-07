@@ -10,8 +10,6 @@ import { RiErrorWarningFill } from "react-icons/ri";
 const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
   const [{ user }] = useUserAtom();
 
-  console.log(user?.age);
-
   return (
     <Layout title="YAC Membership Form">
       {user?.KAP_member === true ? (

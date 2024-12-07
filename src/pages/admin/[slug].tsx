@@ -23,8 +23,6 @@ const SlugPage = () => {
     KAPMembershipFormValues | MatrimonyFormValues
   >();
 
-  console.log({ selected_profile });
-
   const [isGeneratingID, setIsGeneratingID] = useState<boolean>(false);
   const [isSendingMail, setIsSendingMail] = useState<boolean>(false);
   const [isApprovingApplication, setIsApprovingApplication] =
@@ -42,9 +40,6 @@ const SlugPage = () => {
         selected_profile?.user_id ?? "",
         selected_profile?.formType ?? ""
       );
-
-      console.log({ response });
-      console.log("hi");
 
       if (response) {
         if (["KAP", "YAC"].includes(selected_profile?.formType)) {
@@ -99,11 +94,6 @@ const SlugPage = () => {
       setIsRejectingApplication
     );
   };
-
-  console.log({
-    selected_profile,
-    submissionValues,
-  });
 
   return (
     <>

@@ -4,7 +4,6 @@ import {
   ModalBody,
   ModalContent,
   ModalOverlay,
-  Text,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import Login from "./Login";

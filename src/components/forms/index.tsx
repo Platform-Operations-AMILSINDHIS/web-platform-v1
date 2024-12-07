@@ -1,4 +1,4 @@
-import { ChangeEvent, ChangeEventHandler, useState, useEffect } from "react";
+import { ChangeEventHandler, useState, useEffect } from "react";
 
 import {
   FormControl,
@@ -7,10 +7,7 @@ import {
   Flex,
   Select,
   Box,
-  Checkbox,
-  Text,
   InputGroup,
-  InputRightAddon,
   Icon,
   InputRightElement,
 } from "@chakra-ui/react";
@@ -21,7 +18,6 @@ import {
   FieldMetaProps,
   FormikHelpers,
 } from "formik";
-import { WarningIcon } from "@chakra-ui/icons";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export const camelCase = (str: string) =>
@@ -60,7 +56,6 @@ export const LabelledInput: React.FC<{
   required,
   selectOptions,
   isDisabled,
-  showPasswordOption,
 }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 

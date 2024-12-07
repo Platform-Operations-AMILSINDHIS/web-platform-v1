@@ -43,23 +43,6 @@ export const getServerSideProps: GetServerSideProps<{
   const otherMembers = await client.membersOfTheManagingCommitteeKapQuery();
   const yacMembers = await client.membersOfTheManagingCommitteeYacQuery();
 
-  // console.log({
-  //   induShaniWords: iswQ.induShaniWords?.herWords,
-  //   foundingMembers:
-  //     foundingMembersQ.officeBearersCollection?.items.map((ob) => ({
-  //       name: ob?.officeBearerName ?? "",
-  //       position: ob?.officeBearerPosition ?? "",
-  //       displayPictureUrl: ob?.displayPicture?.url ?? "",
-  //     })) ?? [],
-  //   otherMembers:
-  //     otherMembers.membersOfTheManagingCommitteeKapCollection?.items.map(
-  //       (ob) => ({
-  //         name: ob?.mkapName ?? "",
-  //         position: ob?.mkapPosition ?? "",
-  //         displayPictureUrl: ob?.mkapDisplayPicture ?? "",
-  //       })
-  //     ),
-  // });
   return {
     props: {
       induShaniWords: iswQ.induShaniWords?.herWords ?? "",

@@ -6,16 +6,7 @@ import {
   UnorderedList,
   ListItem,
   Spacer,
-  Grid,
-  GridItem,
 } from "@chakra-ui/react";
-import Image from "next/image";
-
-// import KT_Pic from "../../../public/images/Presidents/Mr._K.T._Shahani.jpg";
-// import Late_Dewan_Fatehchand_Asudomal_Jhangiani_pic from "../../../public/images/Presidents/Late_Dewan_Fatehchand_Asudomal_Jhangiani.jpg";
-// import Vishni_Malkani_pic from "../../../public/images/Presidents/Mrs._Vishni_Malkani.jpg";
-// import Kamla_Hiranand_pic from "../../../public/images/Presidents/Kamla_Hiranand.jpg";
-// import Indu_Shahani_pic from "../../../public/images/Presidents/Dr._Indu_Shahani.jpg";
 
 const PresidentsSection = () => {
   return (
@@ -102,9 +93,7 @@ const PresidentsSection = () => {
             direction={i % 2 === 0 ? "row" : "row-reverse"}
             justify="space-between"
           >
-            <Box>
-              {/* <Image width={250} height={100} alt="car"/> */}
-            </Box>
+            <Box>{/* <Image width={250} height={100} alt="car"/> */}</Box>
 
             <Box w="60%">
               <Text fontSize="2xl" fontWeight={500}>

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  Box,
   Button,
   Divider,
   Flex,
@@ -42,13 +41,6 @@ const EventDetailModule: React.FC<DetailModuleProps> = ({
   const toast = useToast();
   const rvspMut = api.event.rsvp.useMutation();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    isOpen: isEventShareModalOpen,
-    onOpen: onOpenEventShareModal,
-    onClose: onCloseEventShareModal,
-  } = useDisclosure();
-
-  const [clipBoardContent, SetClipBoardContent] = useState<string>("");
   const [rsvpDetails, setRsvpDetails] = useState<{
     name: string;
     email: string;

@@ -1,11 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import type {
-  NextPage,
-  GetServerSideProps,
-  GetStaticPaths,
-  InferGetServerSidePropsType,
-} from "next";
+import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { Box, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 

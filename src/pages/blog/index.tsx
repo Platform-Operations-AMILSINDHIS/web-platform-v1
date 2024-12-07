@@ -16,7 +16,6 @@ import "swiper/css/navigation";
 import HeroSection from "~/sections/BlogsPage/HeroSection";
 import BlogSlider from "~/components/blog/BlogSlider";
 import { Box, Flex } from "@chakra-ui/react";
-import { useUserAtom } from "~/lib/atom";
 
 export const getServerSideProps: GetServerSideProps<{
   posts: PageBlogPostCollectionQuery;

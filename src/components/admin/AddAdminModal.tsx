@@ -30,7 +30,6 @@ const AddAdminModal: React.FC<AddAdminModalProps> = ({
       setFormError("");
       setSubmitting(true);
       const response = await handleAddAdmin(email, password, username);
-      console.log(response);
       if (response.success) {
         setSubmitting(false);
         handleModal();

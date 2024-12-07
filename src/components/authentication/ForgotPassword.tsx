@@ -18,7 +18,6 @@ interface ForgotPasswordProps {
 }
 
 const ForgotPassword: React.FC<ForgotPasswordProps> = ({
-  setCloseModal,
   authStateHandleFunction,
 }) => {
   const toast = useToast();

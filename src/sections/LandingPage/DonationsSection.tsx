@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
 import Image from "next/image";
 
 import DonationImage from "../../../public/images/donations-and-memberships-section.png";
@@ -25,7 +25,11 @@ const DonationsSection = ({ imageUrl }: sectionProps) => {
           </Heading>
         </Box>
 
-        <Flex direction={["column", "row"]} align="center" justify={"space-between"}>
+        <Flex
+          direction={["column", "row"]}
+          align="center"
+          justify={"space-between"}
+        >
           <Box>
             <Image
               alt="donation pic"

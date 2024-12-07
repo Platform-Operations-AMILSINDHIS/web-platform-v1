@@ -1,8 +1,7 @@
 import axios from "axios";
-import usePayment from "~/hooks/usePayment";
 
 import { env } from "~/env.mjs";
-import { useEffect, useState, useCallback } from "react";
+import { useState } from "react";
 import {
   Flex,
   Box,
@@ -35,8 +34,6 @@ import Image from "next/image";
 const DonationsForm: React.FC = () => {
   const toast = useToast();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [uploadedFilesCount, setUploadedFilesCount] = useState<number>(0);
-  const [paymentTransactionId, setPaymentTransactionId] = useState<string>("");
 
   const donationsFormMut = api.form.donations.useMutation();
   const { mutateAsync: fetchPresignedUrls } =

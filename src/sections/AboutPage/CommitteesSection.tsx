@@ -1,6 +1,4 @@
 import {
-  Grid,
-  GridItem,
   Text,
   Box,
   Heading,
