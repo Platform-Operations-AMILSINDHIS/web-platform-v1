@@ -63,19 +63,11 @@ const BlogPostPage = ({
 
           {/* TODO: Check if content type is blog for this */}
           <Box
-            bg={
-              colorMapping[
-                blogContentType?.blogType && blogContentType?.blogType[0]
-                  ? blogContentType.blogType[0]
-                  : ""
-              ] ?? "white"
-            }
+            bg={colorMapping[blogContentType?.blogType?.[0] ?? ""] ?? "white"}
             fontWeight={500}
             className={`rounded-full  px-3 py-1 text-xs`}
           >
-            {blogContentType?.blogType && blogContentType?.blogType[0]
-              ? blogContentType.blogType[0]
-              : ""}
+            {blogContentType?.blogType?.[0] ?? ""}
           </Box>
         </Flex>
 
