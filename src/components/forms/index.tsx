@@ -10,6 +10,7 @@ import {
   InputGroup,
   Icon,
   InputRightElement,
+  useToast,
 } from "@chakra-ui/react";
 import {
   Field,
@@ -58,6 +59,7 @@ export const LabelledInput: React.FC<{
   isDisabled,
 }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const toast = useToast();
 
   return (
     <FormControl isDisabled={isDisabled} isRequired={required} fontWeight={500}>
@@ -179,8 +181,28 @@ export const LabelledInput: React.FC<{
                     // {...field}
                     type="date"
                     onChange={(e) => {
-                      void setFieldValue(field.name, new Date(e.target.value));
-                      console.log({ d: new Date(e.target.value) });
+                      const inputValue = e.target.value;
+
+                      // Check if the input value is a valid date format
+                      const isValidDate = !isNaN(
+                        new Date(inputValue).getTime()
+                      );
+
+                      if (isValidDate) {
+                        setFieldValue(field.name, new Date(inputValue));
+                        console.log({ d: new Date(inputValue) });
+                      } else {
+                        toast({
+                          title: "Invalid Date Input",
+                          description:
+                            "Please enter a valid charecter or click the calender icon to pick a date",
+                          status: "warning",
+                          duration: 3000,
+                          isClosable: true,
+                        });
+                        // Optionally, reset the input value if invalid
+                        e.target.value = "";
+                      }
                     }}
                     value={
                       field.value
