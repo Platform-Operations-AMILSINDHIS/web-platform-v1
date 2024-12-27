@@ -31,7 +31,7 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
           <Text>
             Note: You have already chosen to become a YAC member, if you wish to
             move to a KAP membership your YAC ID will be revoked and replaced
-            with a KAP ID, Hencing revoking your YAC previleges
+            with a KAP ID, Hence revoking your YAC previleges
           </Text>
         </Flex>
       ) : (
