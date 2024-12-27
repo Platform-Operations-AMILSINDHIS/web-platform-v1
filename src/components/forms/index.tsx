@@ -189,7 +189,9 @@ export const LabelledInput: React.FC<{
                       );
 
                       if (isValidDate) {
-                        setFieldValue(field.name, new Date(inputValue));
+                        setFieldValue(field.name, new Date(inputValue)).catch(
+                          (err) => console.log(err)
+                        );
                         console.log({ d: new Date(inputValue) });
                       } else {
                         toast({
