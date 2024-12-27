@@ -9,6 +9,11 @@ import {
 } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 
+const handleDownloadConstitution = () => {
+  const constitutionUrl = "/constitutions/KAPConstitution.pdf"; // Relative URL
+  window.open(constitutionUrl, "_blank");
+};
+
 const ConstitutionBox = () => {
   return (
     <Flex
@@ -53,7 +58,11 @@ const ConstitutionBox = () => {
 
         <Spacer h="2rem" />
 
-        <Button colorScheme="yellow" rightIcon={<ArrowForwardIcon />}>
+        <Button
+          onClick={handleDownloadConstitution}
+          colorScheme="yellow"
+          rightIcon={<ArrowForwardIcon />}
+        >
           Download Constitution
         </Button>
       </Flex>
