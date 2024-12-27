@@ -76,10 +76,6 @@ const Admin: React.FC<AdminProps> = ({
               justify="space-between"
               align="center"
             >
-              <Flex gap={2}>
-                <Checkbox />
-                <Text>Remember me</Text>
-              </Flex>
               <Text
                 cursor="pointer"
                 _hover={{
