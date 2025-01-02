@@ -722,7 +722,7 @@ export const YACMembershipPDF: React.FC<YACMembershipFormPDFProps> = ({
                 >
                   <Text style={{ fontSize: 8 }}>Surname</Text>
                   <Text style={{ fontSize: 8 }}>First Name</Text>
-                  <Text style={{ fontSize: 8 }}>Middle Name</Text>
+                  <Text style={{ fontSize: 8 }}>Mobile Number</Text>
                 </View>
                 <View
                   style={{
@@ -734,21 +734,21 @@ export const YACMembershipPDF: React.FC<YACMembershipFormPDFProps> = ({
                     style={{ ...styles.rightTextWithBorder, height: "33%" }}
                   >
                     <Text style={{ ...styles.fieldValue, fontSize: 8 }}>
-                      {yacForm.personalInfo.lastName.toUpperCase()}
+                      {yacForm.proposerInfo.lastName.toUpperCase()}
                     </Text>
                   </View>
                   <View
                     style={{ ...styles.rightTextWithBorder, height: "33%" }}
                   >
                     <Text style={{ ...styles.fieldValue, fontSize: 8 }}>
-                      {yacForm.personalInfo.firstName.toUpperCase()}
+                      {yacForm.proposerInfo.firstName.toUpperCase()}
                     </Text>
                   </View>
                   <View
                     style={{ ...styles.rightTextWithBorder, height: "33%" }}
                   >
                     <Text style={{ ...styles.fieldValue, fontSize: 8 }}>
-                      {yacForm.personalInfo.middleName?.toUpperCase() ?? ""}
+                      {yacForm.proposerInfo.mobileNumber.toUpperCase()}
                     </Text>
                   </View>
                 </View>

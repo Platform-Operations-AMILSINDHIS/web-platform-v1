@@ -664,8 +664,7 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
                 </Text>
                 <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
                   {/* TODO: Strike out whichever is not applicable */}
-                  admit me as Patron / Life-Member of The Khudabadi Amil
-                  Panchayat of Bombay.
+                  {`admit me as a ${kapForm.membershipInfo.membershipType} of The Khudabadi Amil Panchayat of Bombay.`}
                 </Text>
                 <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
                   I agree to abide by the Constitution and Rules of the
@@ -675,8 +674,13 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
                   force from time to time.
                 </Text>
                 <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                  I hereby enclose cheque / cash for Rs. 5000/- as membership
-                  fees.
+                  {`I hereby enclose cheque / cash for Rs. ${
+                    kapForm.membershipInfo.membershipType === "patron"
+                      ? 5000
+                      : kapForm.membershipInfo.membershipType === "life-member"
+                      ? 2500
+                      : ""
+                  }/- as membership fees.`}
                 </Text>
                 <Text
                   style={{
@@ -720,7 +724,7 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
                 >
                   <Text style={{ fontSize: 8 }}>Surname</Text>
                   <Text style={{ fontSize: 8 }}>First Name</Text>
-                  <Text style={{ fontSize: 8 }}>Middle Name</Text>
+                  <Text style={{ fontSize: 8 }}>Mobile number</Text>
                 </View>
                 <View
                   style={{
@@ -732,21 +736,21 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
                     style={{ ...styles.rightTextWithBorder, height: "33%" }}
                   >
                     <Text style={{ ...styles.fieldValue, fontSize: 8 }}>
-                      {kapForm.personalInfo.lastName.toUpperCase()}
+                      {kapForm.proposerInfo.lastName.toUpperCase()}
                     </Text>
                   </View>
                   <View
                     style={{ ...styles.rightTextWithBorder, height: "33%" }}
                   >
                     <Text style={{ ...styles.fieldValue, fontSize: 8 }}>
-                      {kapForm.personalInfo.firstName.toUpperCase()}
+                      {kapForm.proposerInfo.firstName.toUpperCase()}
                     </Text>
                   </View>
                   <View
                     style={{ ...styles.rightTextWithBorder, height: "33%" }}
                   >
                     <Text style={{ ...styles.fieldValue, fontSize: 8 }}>
-                      {kapForm.personalInfo.middleName?.toUpperCase() ?? ""}
+                      {kapForm.proposerInfo.mobileNumber}
                     </Text>
                   </View>
                 </View>
