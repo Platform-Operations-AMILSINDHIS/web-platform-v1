@@ -410,7 +410,7 @@ export const sendRsvpMailForEvent = async ({
 
     const html = `
   <div style="font-size: 16px;">
-      <p>Hey there thank you for showing intrest in our event, attached below is your uniquely generated RSVP token that is to be shown prior to entering the event</p>
+      <p>Hey there thank you for showing interest in our event ${eventTitle}, we will have your name entered in our logs when you attend the event and we can verify you</p>
   </div>
   `;
 

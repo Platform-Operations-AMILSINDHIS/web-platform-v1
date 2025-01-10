@@ -301,7 +301,10 @@ const DonationsForm: React.FC = () => {
           </Flex>
         </GridItem>
         <GridItem>
-          <Text>Copy of Address Proof (Upload)</Text>
+          <Text>
+            Copy of Address Proof{" "}
+            <span className="font-semibold text-red-500">{`(No Adhar copies)`}</span>
+          </Text>
           <Spacer h="1rem" />
           <Flex
             h="8rem"

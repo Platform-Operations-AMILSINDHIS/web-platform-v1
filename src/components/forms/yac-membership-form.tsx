@@ -376,7 +376,7 @@ export const PersonalInformationSection: React.FC<YACFormSectionProps> = ({
               <Box></Box>
               <Button
                 type="submit"
-                isDisabled={!(formik.isValid && formik.dirty)}
+                isDisabled={!formik.isValid}
                 colorScheme="orange"
                 rightIcon={<ArrowForwardIcon />}
                 size="lg"
@@ -487,7 +487,7 @@ export const AddressDetailsSection: React.FC = () => {
 
               <Button
                 type="submit"
-                isDisabled={!(formik.isValid && formik.dirty)}
+                isDisabled={!formik.isValid}
                 colorScheme="orange"
                 rightIcon={<ArrowForwardIcon />}
                 size="lg"
@@ -709,7 +709,7 @@ export const ProposerDetailsSection: React.FC<YACFormSectionProps> = () => {
 
               <Button
                 type="submit"
-                isDisabled={!formik.isValid || !formik.dirty}
+                isDisabled={!formik.isValid}
                 colorScheme="orange"
                 size="lg"
               >

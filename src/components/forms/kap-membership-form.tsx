@@ -377,7 +377,7 @@ export const PersonalInformationSection: React.FC<KAPFormSectionProps> = ({
             <Flex mt="2rem" w="100%" justifyContent="space-between">
               <Button
                 type="submit"
-                isDisabled={!(formik.isValid && formik.dirty)}
+                isDisabled={!formik.isValid}
                 colorScheme="orange"
                 rightIcon={<ArrowForwardIcon />}
                 size="lg"
@@ -488,7 +488,7 @@ export const AddressDetailsSection: React.FC = () => {
 
               <Button
                 type="submit"
-                isDisabled={!(formik.isValid && formik.dirty)}
+                isDisabled={!formik.isValid}
                 colorScheme="orange"
                 rightIcon={<ArrowForwardIcon />}
                 size="lg"
@@ -733,8 +733,8 @@ export const ProposerDetailsSection: React.FC<KAPFormSectionProps> = ({
                 type="submit"
                 isDisabled={
                   isMember
-                    ? !(formik.isValid && formik.dirty) || !membershipType
-                    : !(formik.isValid && formik.dirty)
+                    ? !formik.isValid || !membershipType
+                    : !formik.isValid
                 }
                 colorScheme="orange"
                 rightIcon={<ArrowForwardIcon />}

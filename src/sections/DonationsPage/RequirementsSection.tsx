@@ -29,7 +29,7 @@ const RequirementsSection = () => {
             {
               title: "Payment Methods",
               content:
-                "Payment can be processed using UPI, Credit Card, Debit Card and Net Banking",
+                "Payment can be made only in UPI by the QR code below, and we will not be accepting donations from NRE accounts and foreigners or foreign accounts",
             },
             {
               title: "Donation Reliefs",
