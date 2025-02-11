@@ -206,7 +206,7 @@ const useServerActions = () => {
     });
     setIsSendingMail(false);
     setIsApprovingApplication(false);
-    // window.location.href = "/admin";
+    window.location.href = "/admin";
     console.log(data);
   };
 
