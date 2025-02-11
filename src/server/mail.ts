@@ -26,25 +26,25 @@ import { MatrimonyFormValues } from "~/types/forms/matrimony";
 import { generateMatrimonyProfilePDF } from "./pdfs/matrimony-profile";
 // import generateMatrimonyProfilePDF from "./pdfs/profile-pdf";
 
-// const transporter = nodemailer.createTransport({
-//   host: "smtp.gmail.com",
-//   port: 465,
-//   secure: true,
-//   auth: {
-//     user: env.EMAIL_USER,
-//     pass: env.EMAIL_PASS,
-//   },
-// });
-
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
-  port: 587,
-  secure: false, // For STARTTLS
+  port: 465,
+  secure: true,
   auth: {
     user: env.EMAIL_USER,
     pass: env.EMAIL_PASS,
   },
 });
+
+// const transporter = nodemailer.createTransport({
+//   host: "smtp.gmail.com",
+//   port: 587,
+//   secure: false, // For STARTTLS
+//   auth: {
+//     user: env.EMAIL_USER,
+//     pass: env.EMAIL_PASS,
+//   },
+// });
 
 export const sendMail = async ({
   to,
