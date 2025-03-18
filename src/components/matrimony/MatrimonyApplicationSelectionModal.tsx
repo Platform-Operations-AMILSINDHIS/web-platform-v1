@@ -190,7 +190,7 @@ const MatrimonyApplicationSelectionModal: React.FC<
           </Select>
           {triggerError ? (
             <Text fontWeight={500} color="red" fontSize="small" pl={1}>
-              Please select a pofile name
+              Please select a profile name
             </Text>
           ) : (
             <></>
