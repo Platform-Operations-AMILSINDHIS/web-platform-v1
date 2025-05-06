@@ -100,7 +100,10 @@ const SlugPage = () => {
       {["KAP", "YAC"].includes(selected_profile?.formType) ? (
         <>
           {submissionValues ? (
-            <ProfileViewLayout submission={submissionValues}>
+            <ProfileViewLayout
+              formType={selected_profile?.formType}
+              submission={submissionValues}
+            >
               {/* Display only if isMember is not true (New Applicants) */}
               {!selected_profile?.isMember &&
                 (selected_profile?.status !== "PENDING" ? (

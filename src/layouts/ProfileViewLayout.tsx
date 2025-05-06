@@ -1,6 +1,10 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { KAPMembershipPDF } from "~/server/pdfs/kap-membership";
-import { KAPMembershipFormValues } from "~/types/forms/membership";
+import { YACMembershipPDF } from "~/server/pdfs/yac-membership";
+import {
+  KAPMembershipFormValues,
+  YACMembershipFormValues,
+} from "~/types/forms/membership";
 import dynamic from "next/dynamic";
 
 const PDFViewer = dynamic(
@@ -10,19 +14,30 @@ const PDFViewer = dynamic(
 
 interface ProfileViewLayoutProps {
   children: React.ReactNode;
-  submission: KAPMembershipFormValues;
+  submission: KAPMembershipFormValues | YACMembershipFormValues;
+  formType: string | null | undefined;
 }
 
 const ProfileViewLayout: React.FC<ProfileViewLayoutProps> = ({
   children,
   submission,
+  formType,
 }) => {
-  console.log({ submission, check: "true on layout component" });
   return (
     <Flex mb={10} p={10} w="full" justify="center">
       <Box bg="yellow" w={1120} h="80vh">
         <PDFViewer width="100%" height="100%">
-          <KAPMembershipPDF membershipNumber="#12345" kapForm={submission} />
+          {formType === "YAC" ? (
+            <YACMembershipPDF
+              membershipNumber="#12345"
+              yacForm={submission as YACMembershipFormValues}
+            />
+          ) : (
+            <KAPMembershipPDF
+              membershipNumber="#12345"
+              kapForm={submission as KAPMembershipFormValues}
+            />
+          )}
         </PDFViewer>
         {children}
       </Box>

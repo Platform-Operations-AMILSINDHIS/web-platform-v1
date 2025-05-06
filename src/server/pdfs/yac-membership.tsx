@@ -365,7 +365,9 @@ export const YACMembershipPDF: React.FC<YACMembershipFormPDFProps> = ({
             </View>
             <View style={{ ...styles.rightTextWithBorder, width: "15%" }}>
               <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                {yacForm.personalInfo.dateOfBirth.toLocaleDateString("en-IN")}
+                {new Date(yacForm.personalInfo.dateOfBirth).toLocaleDateString(
+                  "en-IN"
+                )}
               </Text>
             </View>
             <View
@@ -382,7 +384,7 @@ export const YACMembershipPDF: React.FC<YACMembershipFormPDFProps> = ({
               <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
                 {Math.floor(
                   (new Date().getTime() -
-                    yacForm.personalInfo.dateOfBirth.getTime()) /
+                    new Date(yacForm.personalInfo.dateOfBirth).getTime()) /
                     (1000 * 60 * 60 * 24 * 365)
                 )}
               </Text>
