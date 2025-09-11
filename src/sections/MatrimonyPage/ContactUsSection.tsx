@@ -2,7 +2,8 @@ import { Grid, Flex, Text, Heading, Box } from "@chakra-ui/react";
 import Image from "next/image";
 
 import Mrs_Lajwati_Thandani_image from "../../../public/images/matrimony/Mrs_Lajwati_Thandani.png";
-import Mrs_Nikita_Advani_image from "../../../public/images/matrimony/Mrs_Nikita_Advani.png";
+// import Mrs_Nikita_Advani_image from "../../../public/images/matrimony/Mrs_Nikita_Advani.png";
+import Mrs_Gita_Kaycee_image from "../../../public/images/matrimony/Mrs_Gita_Kaycee.jpg";
 
 const ContactUsSection = () => {
   return (
@@ -15,16 +16,16 @@ const ContactUsSection = () => {
       >
         {[
           {
-            image: Mrs_Nikita_Advani_image,
+            image: Mrs_Lajwati_Thandani_image,
             role: "Convener",
-            name: "Mrs. Nikita Advani",
-            contact: "Mobile: +919820783670",
+            name: "Mrs. Lajwanti Thadani",
+            contact: "Mobile: +91 99676 05943",
           },
           {
-            image: Mrs_Lajwati_Thandani_image,
+            image: Mrs_Gita_Kaycee_image,
             role: "Co-Convener",
-            name: "Mrs. Lajwanti Thadani",
-            contact: "Mobile: +919967605943",
+            name: "Mrs Gita Kaycee née Malkan",
+            contact: "Mobile: +91 98193 36685",
           },
         ].map(({ image, role, name, contact }, i) => (
           <Flex
