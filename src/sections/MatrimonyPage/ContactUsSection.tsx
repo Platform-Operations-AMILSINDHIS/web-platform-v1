@@ -24,7 +24,7 @@ const ContactUsSection = () => {
           {
             image: Mrs_Gita_Kaycee_image,
             role: "Co-Convener",
-            name: "Mrs Gita Kaycee née Malkan",
+            name: "Mrs Gita Kaycee née Malkani",
             contact: "Mobile: +91 98193 36685",
           },
         ].map(({ image, role, name, contact }, i) => (
