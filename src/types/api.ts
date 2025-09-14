@@ -15,6 +15,19 @@ export interface FetchMembershipSubmissionResponse {
   submission: MatrimonyFormValues;
 }
 
+export interface FetchProfileResponse {
+  account_name: string;
+  first_name: string;
+  last_name: string;
+  age: number;
+  gender: string;
+  email_id: string;
+  created_at: string;
+  membership_id: string;
+  KAP_member: boolean;
+  YAC_member: boolean;
+}
+
 export interface MatrimonySubmissionVerificationServerResponse {
   user_verification: boolean;
   user_matData: {

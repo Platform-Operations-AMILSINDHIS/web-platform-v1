@@ -3,6 +3,7 @@
 import { Flex, Spinner, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import MatrimonyProfileContainer from "~/components/admin/MatrimonyProfileContainer";
+import MemberProfileDetailDisplay from "~/components/admin/MemberProfileDetailDisplay";
 import LinkButton from "~/components/buttons/LinkButton";
 import useServerActions from "~/hooks/useServerActions";
 import ProfileViewLayout from "~/layouts/ProfileViewLayout";
@@ -14,6 +15,7 @@ import { Status } from "~/types/tables/dataBuffer";
 const SlugPage = () => {
   const [{ selected_profile }] = useProfileAtom();
   const {
+    handleFetchProfileDetails,
     handleFetchUserSubmission,
     handleAcceptingUserApplication,
     handleRejectingUserApplication,
@@ -23,6 +25,10 @@ const SlugPage = () => {
     KAPMembershipFormValues | MatrimonyFormValues
   >();
 
+  const [profileDetails, setProfileDetails] =
+    useState<FetchProfileResponse | null>(null);
+  const [isLoadingProfile, setIsLoadingProfile] = useState<boolean>(false);
+
   const [isGeneratingID, setIsGeneratingID] = useState<boolean>(false);
   const [isSendingMail, setIsSendingMail] = useState<boolean>(false);
   const [isApprovingApplication, setIsApprovingApplication] =
@@ -31,6 +37,27 @@ const SlugPage = () => {
     useState<boolean>(false);
 
   useEffect(() => {
+    const initiateFetch = async () => {
+      if (selected_profile?.user_id) {
+        setIsLoadingProfile(true);
+        try {
+          const response = await handleFetchProfileDetails(
+            selected_profile.user_id
+          );
+          console.log({ response });
+
+          if (response) {
+            setProfileDetails(response);
+          }
+        } catch (error) {
+          console.error("Error fetching profile details:", error);
+        } finally {
+          setIsLoadingProfile(false);
+        }
+      } else {
+        return;
+      }
+    };
     const handleSubmissionSlug = async () => {
       console.log({
         selected_profile_id: selected_profile?.user_id,
@@ -69,6 +96,7 @@ const SlugPage = () => {
     };
 
     handleSubmissionSlug();
+    initiateFetch();
   }, [selected_profile]);
 
   const handleApp = async (submissionValues: KAPMembershipFormValues) => {
@@ -97,6 +125,14 @@ const SlugPage = () => {
 
   return (
     <>
+      {/* Display Profile Details Card */}
+      {isLoadingProfile ? (
+        <Flex justify="center">
+          <Spinner size="lg" />
+        </Flex>
+      ) : profileDetails ? (
+        <MemberProfileDetailDisplay profileData={profileDetails} />
+      ) : null}
       {["KAP", "YAC"].includes(selected_profile?.formType) ? (
         <>
           {submissionValues ? (

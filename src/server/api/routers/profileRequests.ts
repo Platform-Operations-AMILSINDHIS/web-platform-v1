@@ -63,6 +63,37 @@ const profilRequests = createTRPCRouter({
     }
   }),
 
+  fetchProfileDetails: publicProcedure
+    .input(
+      Yup.object({
+        user_id: Yup.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      try {
+        const { user_id } = input;
+        if (user_id && user_id.length !== 0) {
+          const { data: ProfileFetchData, error: ProfileFetchError } =
+            await supabase
+              .from("general_accounts")
+              .select(
+                "account_name,first_name,last_name,age,gender,email_id,created_at,membership_id, KAP_member,YAC_member"
+              )
+              .eq("id", user_id);
+
+          if (ProfileFetchError) throw new Error(ProfileFetchError.details);
+
+          return {
+            profileData: ProfileFetchData,
+          };
+        } else {
+          throw new Error("Invalid User Id provided");
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }),
+
   acceptRequest: publicProcedure
     .input(
       Yup.object({

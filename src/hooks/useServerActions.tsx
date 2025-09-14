@@ -2,6 +2,7 @@
 import {
   DeleteResponseType,
   FetchMembershipSubmissionResponse,
+  FetchProfileResponse,
   FormBufferDataFetch,
   MatrimonyFormBufferDataFetch,
   MatrimonyIdFetchResponse,
@@ -27,6 +28,9 @@ const useServerActions = () => {
 
   // const verifyMembershipMut =
   //   api.matrimonyProfiles.verifyMemberStatus.useMutation();
+
+  const fetchUserProfileMut =
+    api.profileRequests.fetchProfileDetails.useMutation();
 
   const fetchUserSubmissionMut =
     api.formBuffer.fetchUserSubmission.useMutation();
@@ -136,6 +140,17 @@ const useServerActions = () => {
       formType: formType,
     });
     return response as FetchMembershipSubmissionResponse;
+  };
+
+  const handleFetchProfileDetails = async (
+    user_id: string
+  ): Promise<FetchProfileResponse> => {
+    const response = await fetchUserProfileMut.mutateAsync({
+      user_id: user_id,
+    });
+
+    console.log({ "Profile data": response?.profileData });
+    return response?.profileData[0] as FetchProfileResponse;
   };
 
   const handleAcceptingUserApplication = async (
@@ -366,6 +381,7 @@ const useServerActions = () => {
     handleMemberBufferFetch,
     handleMatrimonyBufferFetch,
     handleMatrimonyProfileFetch,
+    handleFetchProfileDetails,
     handleFetchFormBufferData,
     handleFetchUserSubmission,
     handleAcceptingUserApplication,
