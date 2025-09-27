@@ -157,6 +157,12 @@ const DonationsForm: React.FC = () => {
       // Upload PAN Card
       setIsSubmitting(true);
 
+      const panFile = panCardAcceptedFiles[0]!;
+      const addressFile = addressProofAcceptedFiles[0]!;
+
+      const panFileBase64 = await fileToBase64(panFile);
+      const addressFileBase64 = await fileToBase64(addressFile);
+
       // await axios
       //   .put(panPresignedUrl, panFile.slice(), {
       //     headers: { "Content-Type": panFile.type },

@@ -38,13 +38,22 @@ const donationRouter = createTRPCRouter({
         } = input;
 
         // Generating Unique file names for upload
-        const userId = `user-${Date.now()}`; // or use authenticated user ID
-        const panFileName = `${userId}/pan-${Date.now()}-${
+        const donarId = `donar-${Date.now()}`; // or use authenticated user ID
+        const panFileName = `${donarId}/pan-${Date.now()}-${
           input.panCardFile.fileName
         }`;
-        const addressFileName = `${userId}/address-${Date.now()}-${
+        const addressFileName = `${donarId}/address-${Date.now()}-${
           input.addressProofFile.fileName
         }`;
+
+        // Convert B64 to Buffer (Ready for S3)
+        const panFileBuffer = Buffer.from(panCardFile.data, "base64");
+        const addressProofFileBuffer = Buffer.from(
+          addressProofFile.data,
+          "base64"
+        );
+
+        // Upload to S3
       } catch (err) {}
     }),
 });
