@@ -69,6 +69,10 @@ const DonationsForm: React.FC = () => {
     maxFiles: 1,
     maxSize: 0.1 * 2 ** 30, // roughly 100MB
     multiple: false,
+    accept: {
+      "image/*": [".png", ".jpg", ".jpeg"],
+      "application/pdf": [".pdf"],
+    },
     onDropAccepted: (files, _event) => {
       const file = files[0] as File;
 
@@ -93,6 +97,10 @@ const DonationsForm: React.FC = () => {
     maxFiles: 1,
     maxSize: 0.1 * 2 ** 30, // roughly 100MB
     multiple: false,
+    accept: {
+      "image/*": [".png", ".jpg", ".jpeg"],
+      "application/pdf": [".pdf"],
+    },
     onDropAccepted: (files, _event) => {
       const file = files[0] as File;
 
@@ -108,99 +116,126 @@ const DonationsForm: React.FC = () => {
         .catch((err) => console.error(err));
     },
   });
+
+  // Helper function to convert file to base64
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const result = reader.result as string;
+        // Remove data:image/jpeg;base64, prefix
+        const base64Data = result.split(",")[1];
+        resolve(base64Data!);
+      };
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  // Form Submit
   const handleSubmit = async () => {
     if (
-      panCardAcceptedFiles.length > 0 &&
-      panPresignedUrl !== null &&
-      addressProofAcceptedFiles.length > 0 &&
-      addressPresignedUrl !== null
+      panCardAcceptedFiles.length === 0 ||
+      addressProofAcceptedFiles.length === 0 ||
+      !form.amount ||
+      !form.donorName ||
+      !form.email ||
+      !form.contactNumber ||
+      !form.paymentTransactionId
     ) {
-      const panFile = panCardAcceptedFiles[0]!;
-      const addressProofFile = addressProofAcceptedFiles[0]!;
+      toast({
+        title: "Missing Information",
+        description: "Please fill all fields and upload both documents",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
 
-      try {
-        // Upload PAN Card
-        setIsSubmitting(true);
-        await axios
-          .put(panPresignedUrl, panFile.slice(), {
-            headers: { "Content-Type": panFile.type },
-          })
-          .catch((err) => {
-            const message =
-              err instanceof Error ? err.message : "An unknown error occurred";
-            throw new Error(`PAN Card upload failed: ${message}`);
-          });
+    try {
+      // Upload PAN Card
+      setIsSubmitting(true);
 
-        // Upload Address Proof
-        await axios
-          .put(addressPresignedUrl, addressProofFile.slice(), {
-            headers: { "Content-Type": addressProofFile.type },
-          })
-          .catch((err) => {
-            const message =
-              err instanceof Error ? err.message : "An unknown error occurred";
-            throw new Error(`Address Proof upload failed: ${message}`);
-          });
+      // await axios
+      //   .put(panPresignedUrl, panFile.slice(), {
+      //     headers: { "Content-Type": panFile.type },
+      //   })
+      //   .catch((err) => {
+      //     const message =
+      //       err instanceof Error ? err.message : "An unknown error occurred";
+      //     throw new Error(`PAN Card upload failed: ${message}`);
+      //   });
 
-        // Submit form with payment transaction ID
-        const res = await donationsFormMut.mutateAsync({
-          formData: {
-            ...form,
-            amount: form.amount!,
-            panCard: `${env.NEXT_PUBLIC_R2_ACCESS_URL}/${panFilename}`,
-            addressProof: `${env.NEXT_PUBLIC_R2_ACCESS_URL}/${addressFilename}`,
-            paymentTransactionId: form.paymentTransactionId,
-          },
-        });
+      // // Upload Address Proof
+      // await axios
+      //   .put(addressPresignedUrl, addressProofFile.slice(), {
+      //     headers: { "Content-Type": addressProofFile.type },
+      //   })
+      //   .catch((err) => {
+      //     const message =
+      //       err instanceof Error ? err.message : "An unknown error occurred";
+      //     throw new Error(`Address Proof upload failed: ${message}`);
+      //   });
 
-        // Handle specific server-side errors
-        if (!res.success) {
-          throw new Error(res.error ?? "Form submission failed");
-        }
+      // Submit form with payment transaction ID
+      const res = await donationsFormMut.mutateAsync({
+        formData: {
+          ...form,
+          amount: form.amount!,
+          panCard: `${env.NEXT_PUBLIC_R2_ACCESS_URL}/${panFilename}`,
+          addressProof: `${env.NEXT_PUBLIC_R2_ACCESS_URL}/${addressFilename}`,
+          paymentTransactionId: form.paymentTransactionId,
+        },
+      });
 
-        toast({
-          title: "Form submitted.",
-          description: "Thank you for your contribution!",
-          status: "success",
-          duration: 9000,
-          isClosable: true,
-        });
-        setForm({
-          amount: null,
-          donorName: "",
-          contactNumber: "",
-          email: "",
-          paymentTransactionId: "",
-        });
-        // Reset file uploads
-        panCardAcceptedFiles.splice(0, panCardAcceptedFiles.length);
-        addressProofAcceptedFiles.splice(0, addressProofAcceptedFiles.length);
-
-        // Reset filenames and presigned URLs
-        setPanFilename(null);
-        setAddressFilename(null);
-        setPanPresignedUrl(null);
-        setAddressPresignedUrl(null);
-        setIsSubmitting(false);
-      } catch (err: unknown) {
-        setIsSubmitting(false);
-        const errorMessage =
-          err instanceof Error
-            ? err.message
-            : typeof err === "string"
-            ? err
-            : "An unexpected error occurred";
-
-        toast({
-          title: "Submission Error",
-          description: errorMessage,
-          status: "error",
-          duration: 9000,
-          isClosable: true,
-        });
-
-        console.error(err);
+      // Handle specific server-side errors
+      if (!res.success) {
+        throw new Error(res.error ?? "Form submission failed");
       }
+
+      toast({
+        title: "Form submitted.",
+        description: "Thank you for your contribution!",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+      setForm({
+        amount: null,
+        donorName: "",
+        contactNumber: "",
+        email: "",
+        paymentTransactionId: "",
+      });
+      // Reset file uploads
+      panCardAcceptedFiles.splice(0, panCardAcceptedFiles.length);
+      addressProofAcceptedFiles.splice(0, addressProofAcceptedFiles.length);
+
+      // Reset filenames and presigned URLs
+      setPanFilename(null);
+      setAddressFilename(null);
+      setPanPresignedUrl(null);
+      setAddressPresignedUrl(null);
+      setIsSubmitting(false);
+    } catch (err: unknown) {
+      setIsSubmitting(false);
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : typeof err === "string"
+          ? err
+          : "An unexpected error occurred";
+
+      toast({
+        title: "Submission Error",
+        description: errorMessage,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+
+      console.error(err);
     }
   };
   return (
