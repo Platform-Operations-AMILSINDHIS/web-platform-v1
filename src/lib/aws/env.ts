@@ -12,6 +12,11 @@ export const AWS_DONATIONS_REVIEWER_ACCESS_KEY_ID = assertValue(
   "Missing environment variable: AWS_DONATIONS_REVIEWER_ACCESS_KEY_ID"
 );
 
+export const AWS_DONOR_DOCUMENTS_BUCKET_NAME = assertValue(
+  process.env.AWS_DONOR_DOCUMENTS_BUCKET_NAME,
+  "Missing environment variable: AWS_DONOR_DOCUMENTS_BUCKET_NAME"
+);
+
 export const AWS_DONATIONS_REVIEWER_SECRET_ACCESS_KEY = assertValue(
   process.env.AWS_DONATIONS_REVIEWER_SECRET_ACCESS_KEY,
   "Missing environment variable: AWS_DONATIONS_REVIEWER_SECRET_ACCESS_KEY"

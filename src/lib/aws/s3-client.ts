@@ -22,4 +22,4 @@ const donationReviewerS3Client = new S3Client({
   },
 });
 
-export { donationReviewerS3Client, donationUploaderS3Client };
+export { donationUploaderS3Client, donationReviewerS3Client };

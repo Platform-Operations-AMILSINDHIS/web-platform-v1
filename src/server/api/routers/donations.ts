@@ -1,5 +1,8 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { donationUploaderS3Client } from "~/lib/aws/s3-client";
+import { AWS_DONOR_DOCUMENTS_BUCKET_NAME } from "~/lib/aws/env";
 
 const donationRouter = createTRPCRouter({
   uploadDonation: publicProcedure
@@ -38,11 +41,11 @@ const donationRouter = createTRPCRouter({
         } = input;
 
         // Generating Unique file names for upload
-        const donarId = `donar-${Date.now()}`; // or use authenticated user ID
-        const panFileName = `${donarId}/pan-${Date.now()}-${
+        const donorId = `donor-${Date.now()}`; // or use authenticated user ID
+        const panFileName = `${donorId}/pan-${Date.now()}-${
           input.panCardFile.fileName
         }`;
-        const addressFileName = `${donarId}/address-${Date.now()}-${
+        const addressFileName = `${donorId}/address-${Date.now()}-${
           input.addressProofFile.fileName
         }`;
 
@@ -52,6 +55,31 @@ const donationRouter = createTRPCRouter({
           addressProofFile.data,
           "base64"
         );
+
+        // Declare Put commands to S3
+        const PanCardS3Upload = new PutObjectCommand({
+          Bucket: AWS_DONOR_DOCUMENTS_BUCKET_NAME,
+          Key: panFileName,
+          Body: panFileBuffer,
+          ContentType: panCardFile.contentType,
+          ServerSideEncryption: "AES256",
+        });
+
+        const AddressProofS3Upload = new PutObjectCommand({
+          Bucket: AWS_DONOR_DOCUMENTS_BUCKET_NAME,
+          Key: addressFileName,
+          Body: addressProofFileBuffer,
+          ContentType: addressProofFile.contentType,
+          ServerSideEncryption: "AES256",
+        });
+
+        // Concurrent Upload
+        await Promise.all([
+          donationUploaderS3Client.send(PanCardS3Upload),
+          donationUploaderS3Client.send(AddressProofS3Upload),
+        ]);
+
+        console.log(`Donation documents uploaded for donor: ${donorName}`);
 
         // Upload to S3
       } catch (err) {}
