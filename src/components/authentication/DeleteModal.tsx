@@ -60,7 +60,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
           handleLogout();
         } else {
           toast({
-            title: "Ass",
+            title: "Something went wrong",
             description: result.message,
             status: "error",
             duration: 5000, // How long the toast will be displayed in milliseconds

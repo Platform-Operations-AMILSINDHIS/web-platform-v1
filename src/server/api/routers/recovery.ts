@@ -9,7 +9,7 @@ const recoveryRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       try {
         const { email } = input;
-        console.log(email);
+        console.log({ email_for_reset: email });
         const { error: ErrorInRecoverURL } =
           await supabase.auth.resetPasswordForEmail(email ?? "", {
             redirectTo: "https://amilsindhis.org/recovery",

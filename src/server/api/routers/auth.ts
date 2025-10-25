@@ -22,6 +22,19 @@ const authRouter = createTRPCRouter({
         });
 
       if (LoginError) {
+        // Validate and check for not confirmed accounts, RESEND CONFIRM EMAIL
+        const { code } = LoginError;
+        if (code === "email_not_confirmed") {
+          await supabase.auth.resend({
+            type: "signup",
+            email: email,
+          });
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message:
+              "You have not confirmed your email, please CHECK YOUR EMAIL ACCOUNT and click the confirmation link",
+          });
+        }
         throw new TRPCError({
           code: "UNAUTHORIZED",
           message: "Invalid Login Credentials",
