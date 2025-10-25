@@ -295,16 +295,42 @@ export const PersonalInformationSection: React.FC<KAPFormSectionProps> = ({
   const [activeStep, setActiveStep] = useAtom(activeStepAtom);
   const [personalInfo, setPersonalInfo] = useAtom(personalInfoAtom);
 
+  // Merging form with existing login data
+  const mergedInitialValues = {
+    firstName: user?.first_name || personalInfo.firstName || "",
+    middleName: personalInfo.middleName || "",
+    lastName: user?.last_name || personalInfo.lastName || "",
+    occupation: personalInfo.occupation || "",
+    dateOfBirth: personalInfo.dateOfBirth || "",
+    mobileNumber: personalInfo.mobileNumber || "",
+    emailId: user?.email_id || personalInfo.emailId || "",
+    maidenSurname: personalInfo.maidenSurname || "",
+    maidenName: personalInfo.maidenName || "",
+    fathersName: personalInfo.fathersName || "",
+    mothersName: personalInfo.mothersName || "",
+  };
+
+  // helper for field disabling
+  const isFieldDisabled = (field: string) => {
+    if (!user) return true; // block until user loads
+    if (user.KAP_member) return true; // lock all for KAP members
+
+    // Disable only specific fields that come from account
+    const lockedFields = ["firstName", "lastName", "emailId"];
+    return lockedFields.includes(field);
+  };
+
   return (
     <>
       <Heading>Khudabadi Amil Panchayat Application Form</Heading>
       <Text mt="1.5rem" maxW="2xl" color="#1F2937">
-        Fill out the fields below to complete your personal profile, make sure
+        Fill out the fields below to complete your personal profile. Make sure
         to fill all the fields and not miss out on any important details.
       </Text>
 
       <Formik
-        initialValues={personalInfo}
+        initialValues={mergedInitialValues}
+        enableReinitialize
         validationSchema={personalInfoSchema}
         onSubmit={(values, actions) => {
           setPersonalInfo(values);
@@ -314,36 +340,42 @@ export const PersonalInformationSection: React.FC<KAPFormSectionProps> = ({
       >
         {(formik) => (
           <Form>
+            {/* Personal details section */}
             <Grid
               mt="2rem"
               gap="2rem"
               templateColumns={["1fr", "repeat(3, 1fr)"]}
             >
               {[
-                { label: "First Name", required: true },
-                { label: "Middle Name" },
-                { label: "Last Name", required: true },
-                { label: "Occupation", required: true },
-                { label: "Date of Birth", inputType: "date", required: true },
-                { label: "Mobile Number", required: true },
-                { label: "Email ID", required: true },
-              ].map(({ label, inputType, required }, i) => (
+                { label: "First Name", name: "firstName", required: true },
+                { label: "Middle Name", name: "middleName" },
+                { label: "Last Name", name: "lastName", required: true },
+                { label: "Occupation", name: "occupation", required: true },
+                {
+                  label: "Date of Birth",
+                  name: "dateOfBirth",
+                  inputType: "date",
+                  required: true,
+                },
+                {
+                  label: "Mobile Number",
+                  name: "mobileNumber",
+                  required: true,
+                },
+                { label: "Email ID", name: "emailId", required: true },
+              ].map(({ label, name, inputType, required }, i) => (
                 <LabelledInput
                   key={i}
                   label={label}
+                  name={name}
                   type={inputType ? (inputType as InputType) : "text"}
                   required={required}
-                  isDisabled={
-                    user
-                      ? (user as userAtomBody)?.KAP_member
-                        ? true
-                        : false
-                      : true
-                  } // parameter to prevent interaction with first form phase
+                  isDisabled={isFieldDisabled(name)}
                 />
               ))}
             </Grid>
 
+            {/* Parent / Maiden details section */}
             <Grid
               mt="2rem"
               gap="2rem"
@@ -356,24 +388,19 @@ export const PersonalInformationSection: React.FC<KAPFormSectionProps> = ({
                   required: true,
                 },
                 { label: "Maiden Name", name: "maidenName", required: true },
-                { label: "Father's name", name: "fathersName", required: true },
-                { label: "Mother's name", name: "mothersName", required: true },
+                { label: "Father's Name", name: "fathersName", required: true },
+                { label: "Mother's Name", name: "mothersName", required: true },
               ].map(({ label, name, required }, i) => (
                 <LabelledInput
                   key={i}
                   label={label}
-                  name={name ?? label}
+                  name={name}
                   required={required}
-                  isDisabled={
-                    user
-                      ? (user as userAtomBody).KAP_member
-                        ? true
-                        : false
-                      : true
-                  } // parameter to prevent interaction with first form phase
+                  isDisabled={isFieldDisabled(name)}
                 />
               ))}
             </Grid>
+
             <Flex mt="2rem" w="100%" justifyContent="space-between">
               <Button
                 type="submit"
