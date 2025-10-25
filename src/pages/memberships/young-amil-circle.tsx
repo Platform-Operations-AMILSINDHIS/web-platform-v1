@@ -137,7 +137,7 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
               : { cursor: "not-allowed" }
           }
         >
-          <YoungAmilCircleMembershipForm user={user} />
+          {user ? <YoungAmilCircleMembershipForm user={user} /> : <></>}
         </Box>
       </Box>
       <Spacer h="5rem" />
