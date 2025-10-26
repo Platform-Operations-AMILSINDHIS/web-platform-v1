@@ -264,11 +264,7 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC<
           ].map(
             (FormSection, i) =>
               activeStep === i + 1 && (
-                <FormSection
-                  user={user as userAtomBody}
-                  key={i}
-                  isMember={isPrevMember}
-                />
+                <FormSection user={user} key={i} isMember={isPrevMember} />
               )
           )
         : [
@@ -279,9 +275,7 @@ const KhudabadiAmilPanchayatMembershipForm: React.FC<
             MembershipDetailsSection,
           ].map(
             (FormSection, i) =>
-              activeStep === i + 1 && (
-                <FormSection user={user as userAtomBody} key={i} />
-              )
+              activeStep === i + 1 && <FormSection user={user} key={i} />
           )}
 
       <Spacer h="2rem" />
@@ -297,17 +291,17 @@ export const PersonalInformationSection: React.FC<KAPFormSectionProps> = ({
 
   // Merging form with existing login data
   const mergedInitialValues = {
-    firstName: user?.first_name || personalInfo.firstName || "",
-    middleName: personalInfo.middleName || "",
-    lastName: user?.last_name || personalInfo.lastName || "",
-    occupation: personalInfo.occupation || "",
-    dateOfBirth: personalInfo.dateOfBirth || "",
-    mobileNumber: personalInfo.mobileNumber || "",
-    emailId: user?.email_id || personalInfo.emailId || "",
-    maidenSurname: personalInfo.maidenSurname || "",
-    maidenName: personalInfo.maidenName || "",
-    fathersName: personalInfo.fathersName || "",
-    mothersName: personalInfo.mothersName || "",
+    firstName: user?.first_name ?? personalInfo.firstName ?? "",
+    middleName: personalInfo.middleName ?? "",
+    lastName: user?.last_name ?? personalInfo.lastName ?? "",
+    occupation: personalInfo.occupation ?? "",
+    dateOfBirth: personalInfo.dateOfBirth ?? "",
+    mobileNumber: personalInfo.mobileNumber ?? "",
+    emailId: user?.email_id ?? personalInfo.emailId ?? "",
+    maidenSurname: personalInfo.maidenSurname ?? "",
+    maidenName: personalInfo.maidenName ?? "",
+    fathersName: personalInfo.fathersName ?? "",
+    mothersName: personalInfo.mothersName ?? "",
   };
 
   // helper for field disabling

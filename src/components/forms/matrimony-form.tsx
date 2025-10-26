@@ -198,7 +198,7 @@ const MatrimonyForm: React.FC<MatrimonyFormProps> = ({
         <>
           {activeStep === i + 1 && (
             <FormSection
-              user={user as userAtomBody}
+              user={user}
               submissionVerification={submissionVerification}
               approved={approved}
               key={i}
@@ -273,8 +273,7 @@ const MatrimonyPersonalInformationSection: React.FC<
                   type={inputType ? (inputType as InputType) : "text"}
                   isDisabled={
                     user
-                      ? !(user as userAtomBody).membership_id ||
-                        (user as userAtomBody).membership_id === ""
+                      ? !user.membership_id || user.membership_id === ""
                         ? true
                         : submissionVerification
                         ? true
@@ -329,8 +328,7 @@ const MatrimonyPersonalInformationSection: React.FC<
                     required={required}
                     isDisabled={
                       user
-                        ? !(user as userAtomBody).membership_id ||
-                          (user as userAtomBody).membership_id === ""
+                        ? !user.membership_id || user.membership_id === ""
                           ? true
                           : submissionVerification
                           ? true
@@ -374,8 +372,7 @@ const MatrimonyPersonalInformationSection: React.FC<
                   required={required}
                   isDisabled={
                     user
-                      ? !(user as userAtomBody).membership_id ||
-                        (user as userAtomBody).membership_id === ""
+                      ? !user.membership_id || user.membership_id === ""
                         ? true
                         : submissionVerification
                         ? true
@@ -421,8 +418,7 @@ const MatrimonyPersonalInformationSection: React.FC<
                   required={required}
                   isDisabled={
                     user
-                      ? !(user as userAtomBody).membership_id ||
-                        (user as userAtomBody).membership_id === ""
+                      ? !user.membership_id || user.membership_id === ""
                         ? true
                         : submissionVerification
                         ? true

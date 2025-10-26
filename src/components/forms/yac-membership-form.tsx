@@ -262,11 +262,7 @@ const YoungAmilCircleMembershipForm: React.FC<
           ].map(
             (FormSection, i) =>
               activeStep === i + 1 && (
-                <FormSection
-                  user={user as userAtomBody}
-                  key={i}
-                  isMemberYAC={isPrevMember}
-                />
+                <FormSection user={user} key={i} isMemberYAC={isPrevMember} />
               )
           )
         : [
@@ -277,9 +273,7 @@ const YoungAmilCircleMembershipForm: React.FC<
             PaymentSection,
           ].map(
             (FormSection, i) =>
-              activeStep === i + 1 && (
-                <FormSection user={user as userAtomBody} key={i} />
-              )
+              activeStep === i + 1 && <FormSection user={user} key={i} />
           )}
 
       <Spacer h="2rem" />
@@ -295,17 +289,17 @@ export const PersonalInformationSection: React.FC<YACFormSectionProps> = ({
 
   // ✅ Merge user info and local personal info
   const mergedInitialValues = {
-    firstName: user?.first_name || personalInfo.firstName || "",
-    middleName: personalInfo.middleName || "",
-    lastName: user?.last_name || personalInfo.lastName || "",
-    occupation: personalInfo.occupation || "",
-    dateOfBirth: personalInfo.dateOfBirth || "",
-    mobileNumber: personalInfo.mobileNumber || "",
-    emailId: user?.email_id || personalInfo.emailId || "",
-    maidenSurname: personalInfo.maidenSurname || "",
-    maidenName: personalInfo.maidenName || "",
-    fathersName: personalInfo.fathersName || "",
-    mothersName: personalInfo.mothersName || "",
+    firstName: user?.first_name ?? personalInfo.firstName ?? "",
+    middleName: personalInfo.middleName ?? "",
+    lastName: user?.last_name ?? personalInfo.lastName ?? "",
+    occupation: personalInfo.occupation ?? "",
+    dateOfBirth: personalInfo.dateOfBirth ?? "",
+    mobileNumber: personalInfo.mobileNumber ?? "",
+    emailId: user?.email_id ?? personalInfo.emailId ?? "",
+    maidenSurname: personalInfo.maidenSurname ?? "",
+    maidenName: personalInfo.maidenName ?? "",
+    fathersName: personalInfo.fathersName ?? "",
+    mothersName: personalInfo.mothersName ?? "",
   };
 
   // ✅ Determine disabled fields
