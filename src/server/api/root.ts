@@ -11,6 +11,7 @@ import profilRequests from "./routers/profileRequests";
 import recoveryRouter from "./routers/recovery";
 import adminRouter from "./routers/admin";
 import authRouter from "./routers/auth";
+import awsRouter from "./routers/aws";
 
 /**
  * This is the primary router for your server.
@@ -29,6 +30,7 @@ export const appRouter = createTRPCRouter({
   recovery: recoveryRouter,
   admin: adminRouter,
   auth: authRouter,
+  aws: awsRouter,
 });
 
 // export type definition of API
