@@ -11,7 +11,7 @@ import { FetchProfileResponse } from "~/types/api";
 
 interface MemberProfileDetailDisplayProps {
   profileData: FetchProfileResponse;
-  profileImageUrl: string;
+  profileImageUrl: string | null;
 }
 
 const MemberProfileDetailDisplay: React.FC<MemberProfileDetailDisplayProps> = ({
@@ -64,16 +64,20 @@ const MemberProfileDetailDisplay: React.FC<MemberProfileDetailDisplayProps> = ({
           gap={3}
         >
           <Flex gap={3}>
-            <img
-              src={profileImageUrl ?? "/placeholder-profile.png"}
-              alt={`${profileData.first_name} ${profileData.last_name}`}
-              style={{
-                width: "70px",
-                height: "70px",
-                objectFit: "cover",
-                borderRadius: "20%", // make circular
-              }}
-            />
+            {profileImageUrl ? (
+              <img
+                src={profileImageUrl}
+                alt={`${profileData.first_name} ${profileData.last_name}`}
+                style={{
+                  width: "70px",
+                  height: "70px",
+                  objectFit: "cover",
+                  borderRadius: "20%", // make circular
+                }}
+              />
+            ) : (
+              <></>
+            )}
             <Box>
               <Text fontSize="2xl" fontWeight="bold" color="gray.800">
                 {profileData.first_name} {profileData.last_name}

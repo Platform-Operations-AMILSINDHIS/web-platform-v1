@@ -49,6 +49,7 @@ const SlugPage = () => {
           );
 
           if (response) {
+            console.log({ response_slugPage: response });
             setProfileDetails(response.profileData);
             setProfilePicture(response.profileImageURL);
           }
