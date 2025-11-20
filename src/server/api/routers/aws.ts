@@ -18,7 +18,7 @@ const awsRouter = createTRPCRouter({
         const { is_admin, s3_key } = input;
         const activeClient = is_admin ? adminS3 : userS3;
 
-        const signedURL = getSignedUrl(
+        const signedURL = await getSignedUrl(
           activeClient,
           new GetObjectCommand({
             Bucket: "kap-application-images",

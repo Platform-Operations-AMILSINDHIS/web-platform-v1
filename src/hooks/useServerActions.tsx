@@ -32,6 +32,8 @@ const useServerActions = () => {
   const fetchUserProfileMut =
     api.profileRequests.fetchProfileDetails.useMutation();
 
+  const fetchProfileImage = api.aws.getS3ProfilePicture.useMutation();
+
   const fetchUserSubmissionMut =
     api.formBuffer.fetchUserSubmission.useMutation();
 
@@ -143,16 +145,48 @@ const useServerActions = () => {
   };
 
   const handleFetchProfileDetails = async (
-    user_id: string
-  ): Promise<FetchProfileResponse> => {
-    const response = await fetchUserProfileMut.mutateAsync({
-      user_id: user_id,
-    });
+    user_id: string,
+    is_admin: boolean
+  ): Promise<{
+    profileData: FetchProfileResponse;
+    profileImageURL: string | null;
+  }> => {
+    // Fetch profile details
+    const response = await fetchUserProfileMut.mutateAsync({ user_id });
 
-    console.log({ "Profile data": response?.profileData });
-    return response?.profileData[0] as FetchProfileResponse;
+    if (!response || !response.profileData || !response.profileData[0]) {
+      throw new Error("Could not fetch profile data");
+    }
+
+    const profile = response.profileData[0];
+    const s3Key = profile.application_s3_meta?.[0]?.s3_key ?? null;
+
+    // Initialize image URL
+    let profileImageURL: string | null = null;
+
+    // If S3 key exists → fetch signed URL
+    if (s3Key) {
+      try {
+        const awsS3Response = await fetchProfileImage.mutateAsync({
+          is_admin,
+          s3_key: s3Key,
+        });
+
+        profileImageURL = awsS3Response?.profilePictureSignedUrl ?? null;
+      } catch (err) {
+        console.log("⚠️ Error fetching signed URL:", err);
+        // Leave profileImageURL = null (fallback)
+      }
+    }
+
+    console.log({ "Profile data": profile });
+
+    // Return unified structure
+    return {
+      profileData: profile,
+      profileImageURL,
+    };
   };
-
   const handleAcceptingUserApplication = async (
     formType: string,
     to: string,

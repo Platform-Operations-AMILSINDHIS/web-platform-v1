@@ -25,8 +25,10 @@ const SlugPage = () => {
     KAPMembershipFormValues | MatrimonyFormValues
   >();
 
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
   const [profileDetails, setProfileDetails] =
     useState<FetchProfileResponse | null>(null);
+
   const [isLoadingProfile, setIsLoadingProfile] = useState<boolean>(false);
 
   const [isGeneratingID, setIsGeneratingID] = useState<boolean>(false);
@@ -42,12 +44,13 @@ const SlugPage = () => {
         setIsLoadingProfile(true);
         try {
           const response = await handleFetchProfileDetails(
-            selected_profile.user_id
+            selected_profile.user_id,
+            true
           );
-          console.log({ response });
 
           if (response) {
-            setProfileDetails(response);
+            setProfileDetails(response.profileData);
+            setProfilePicture(response.profileImageURL);
           }
         } catch (error) {
           console.error("Error fetching profile details:", error);
@@ -131,7 +134,10 @@ const SlugPage = () => {
           <Spinner size="lg" />
         </Flex>
       ) : profileDetails ? (
-        <MemberProfileDetailDisplay profileData={profileDetails} />
+        <MemberProfileDetailDisplay
+          profileData={profileDetails}
+          profileImageUrl={profilePicture}
+        />
       ) : null}
       {["KAP", "YAC"].includes(selected_profile?.formType) ? (
         <>
