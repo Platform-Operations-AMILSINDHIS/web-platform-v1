@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { S3Client } from "@aws-sdk/client-s3";
 
-// S3 CLIENT (MASTER SEED USER)
+// S3 CLIENT (MASTER USER)
 const masterS3 = new S3Client({
   region: "us-east-1",
   credentials: {
@@ -10,6 +10,7 @@ const masterS3 = new S3Client({
   },
 });
 
+// S3 CLIENT (ADMIN USER)
 const adminS3 = new S3Client({
   region: "us-east-1",
   credentials: {
@@ -17,3 +18,5 @@ const adminS3 = new S3Client({
     secretAccessKey: process.env.AWS_KAIK_SAK!,
   },
 });
+
+export { masterS3, adminS3 };
