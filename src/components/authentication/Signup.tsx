@@ -11,7 +11,7 @@ import { SignUpValidationSchema } from "~/validations/AuthValidations";
 interface SignupProps {
   setCloseModal: (input: boolean) => void;
   authStateHandleFunction: (
-    authState: "login" | "signup" | "forgotPassword"
+    authState: "login" | "signup" | "forgotPassword" | "addprofilepic"
   ) => void;
 }
 
@@ -24,6 +24,13 @@ const Signup: React.FC<SignupProps> = ({
 
   const dbUpdation = async (auth_id: string, values: Values) => {
     try {
+      toast({
+        title: "Registering Account details...",
+        description: "An activation link has been sent to your Email ID",
+        status: "loading",
+        duration: 2000, // How long the toast will be displayed in milliseconds
+        isClosable: true,
+      });
       const response = await axios.post("/api/auth/db", {
         email: values.email,
         account_name: values.accountName,
@@ -37,7 +44,14 @@ const Signup: React.FC<SignupProps> = ({
         password: values.password,
       });
 
-      console.log({ response });
+      // Pass on a profile picture to create from the form
+      toast({
+        title: "Account details registered, Saving profile picture....",
+        description: "An activation link has been sent to your Email ID",
+        status: "loading",
+        duration: 2000, // How long the toast will be displayed in milliseconds
+        isClosable: true,
+      });
     } catch (error: unknown) {
       alert(`Error occured during submission : ${error as string}`);
     }

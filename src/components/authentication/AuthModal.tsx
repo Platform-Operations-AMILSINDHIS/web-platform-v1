@@ -12,10 +12,10 @@ import ForgotPassword from "./ForgotPassword";
 
 interface AuthModalProps {
   modalState: boolean;
-  authState: "login" | "signup" | "forgotPassword";
+  authState: "login" | "signup" | "forgotPassword" | "addprofilepic";
   handleModal: () => void;
   authStateHandleFunction: (
-    authState: "login" | "signup" | "forgotPassword"
+    authState: "login" | "signup" | "forgotPassword" | "addprofilepic"
   ) => void;
 }
 
@@ -25,6 +25,8 @@ const AuthModal: React.FC<AuthModalProps> = ({
   handleModal,
   authStateHandleFunction,
 }) => {
+  // needs better handling next time for a carry on state
+  const [userId, setUserId] = useState<string>("");
   const [closeModal, setCloseModal] = useState(false);
   useEffect(() => {
     if (closeModal) {

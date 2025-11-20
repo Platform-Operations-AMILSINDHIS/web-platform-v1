@@ -35,21 +35,24 @@ const DBHandler = async (req: DBHandlerRequest, res: NextApiResponse) => {
 
   try {
     const hashed_password = await hasher(password);
-    const { data, error } = await supabase.from("general_accounts").insert([
-      {
-        email_id: email,
-        auth_id: authID,
-        password: hashed_password,
-        membership_id: null,
-        account_name,
-        KAP_member,
-        YAC_member,
-        age,
-        gender,
-        first_name,
-        last_name,
-      },
-    ]);
+    const { data, error } = await supabase
+      .from("general_accounts")
+      .insert([
+        {
+          email_id: email,
+          auth_id: authID,
+          password: hashed_password,
+          membership_id: null,
+          account_name,
+          KAP_member,
+          YAC_member,
+          age,
+          gender,
+          first_name,
+          last_name,
+        },
+      ])
+      .select();
 
     if (error) {
       console.log(error.message);
