@@ -1,6 +1,10 @@
 // Router for aws resource access + maipulations
 import * as Yup from "yup";
-import { GetObjectCommand } from "@aws-sdk/client-s3";
+import {
+  GetObjectCommand,
+  PutObjectAclCommand,
+  PutObjectCommand,
+} from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { adminS3, userS3 } from "~/lib/aws/s3";
 import { createTRPCRouter, publicProcedure } from "../trpc";
@@ -32,6 +36,35 @@ const awsRouter = createTRPCRouter({
       } catch (err) {
         console.log("Error generating signed URL:", err);
         throw new Error("Could not generate signed URL");
+      }
+    }),
+
+  // Upload is strictly for users as of now
+  getS3UploadURL: publicProcedure
+    .input(
+      Yup.object({
+        s3_key: Yup.string().required(),
+        content_type: Yup.string().required(), // e.g., 'image/jpeg', 'image/png'
+        file_size: Yup.number().optional(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      try {
+        const { content_type, s3_key, file_size } = input;
+
+        // Generate signed URL
+        const signedURL = await getSignedUrl(
+          userS3,
+          new PutObjectCommand({
+            Bucket: "kap-application-images",
+            Key: s3_key,
+            ContentType: content_type,
+          }),
+          { expiresIn: 60 * 10 } // 10 mins  to upload
+        );
+      } catch (err) {
+        console.log("Error generating upload URL:", err);
+        throw new Error("Could not generate upload URL");
       }
     }),
 });

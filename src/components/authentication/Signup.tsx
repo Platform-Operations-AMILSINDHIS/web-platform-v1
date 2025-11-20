@@ -1,15 +1,19 @@
+// Signup.tsx - Fixed validation logic
 import { Button, Flex, Text, useToast } from "@chakra-ui/react";
 import { Form, Formik, FormikHelpers } from "formik";
-import { useState } from "react";
+import { Dispatch, useState } from "react";
 
 import axios from "axios";
 
 import { Values, initialValues } from "~/hooks/useForm";
 import { LabelledInput } from "../forms";
 import { SignUpValidationSchema } from "~/validations/AuthValidations";
+import { SetStateAction } from "jotai";
 
 interface SignupProps {
   setCloseModal: (input: boolean) => void;
+  signUpFormValues: Values | null;
+  setSignUpFormValues: Dispatch<SetStateAction<Values | null>>;
   authStateHandleFunction: (
     authState: "login" | "signup" | "forgotPassword" | "addprofilepic"
   ) => void;
@@ -17,45 +21,11 @@ interface SignupProps {
 
 const Signup: React.FC<SignupProps> = ({
   setCloseModal,
+  signUpFormValues,
+  setSignUpFormValues,
   authStateHandleFunction,
 }) => {
   const [submitting, setSubmitting] = useState(false);
-  const toast = useToast();
-
-  const dbUpdation = async (auth_id: string, values: Values) => {
-    try {
-      toast({
-        title: "Registering Account details...",
-        description: "An activation link has been sent to your Email ID",
-        status: "loading",
-        duration: 2000, // How long the toast will be displayed in milliseconds
-        isClosable: true,
-      });
-      const response = await axios.post("/api/auth/db", {
-        email: values.email,
-        account_name: values.accountName,
-        KAP_member: false,
-        YAC_member: false,
-        age: values.age,
-        gender: values.gender,
-        first_name: values.firstName,
-        last_name: values.lastName,
-        authID: auth_id,
-        password: values.password,
-      });
-
-      // Pass on a profile picture to create from the form
-      toast({
-        title: "Account details registered, Saving profile picture....",
-        description: "An activation link has been sent to your Email ID",
-        status: "loading",
-        duration: 2000, // How long the toast will be displayed in milliseconds
-        isClosable: true,
-      });
-    } catch (error: unknown) {
-      alert(`Error occured during submission : ${error as string}`);
-    }
-  };
 
   const handleSubmit = async (
     values: Values,
@@ -63,53 +33,46 @@ const Signup: React.FC<SignupProps> = ({
   ) => {
     try {
       setSubmitting(true);
+      const isReturningFromNextStep = !!signUpFormValues;
 
-      const validateEmailResponse = await axios.post<{
-        trigger: boolean;
-        email_server_validate_message: string;
-      }>("/api/auth/signupvalidation/mail", {
-        email: values.email,
-      });
+      // Determine if email needs validation
+      // Only validate if: (1) first time submitting, or (2) email was changed after going back
+      const needsEmailValidation =
+        !isReturningFromNextStep ||
+        (isReturningFromNextStep && values.email !== signUpFormValues.email);
 
-      console.log({ validateEmailResponse });
-      const { trigger, email_server_validate_message } =
-        validateEmailResponse.data;
-      if (trigger) {
-        setErrors({ email: email_server_validate_message });
-        setSubmitting(false);
-        return;
+      // Validate email if needed
+      if (needsEmailValidation) {
+        const validateEmailResponse = await axios.post<{
+          trigger: boolean;
+          email_server_validate_message: string;
+        }>("/api/auth/signupvalidation/mail", {
+          email: values.email,
+        });
+
+        const { trigger, email_server_validate_message } =
+          validateEmailResponse.data;
+
+        if (trigger) {
+          setErrors({ email: email_server_validate_message });
+          setSubmitting(false);
+          return;
+        }
       }
 
-      const response = await axios.post<{ auth_id: string }>(
-        "/api/auth/signup",
-        {
-          email: values.email,
-          password: values.password,
-          phonenumber: values.phonenumber,
-        }
-      );
-
-      console.log(response.data);
-      const { auth_id } = response.data;
-
-      await dbUpdation(auth_id, values);
+      // All validations passed, save form values and move to next step
+      setSignUpFormValues(values);
+      authStateHandleFunction("addprofilepic");
       setSubmitting(false);
-      toast({
-        title: "Activate your account",
-        description: "An activation link has been sent to your Email ID",
-        status: "info",
-        duration: 5000, // How long the toast will be displayed in milliseconds
-        isClosable: true,
-      });
-      setCloseModal(true);
     } catch (err: unknown) {
-      alert(`Error occured during submission : ${err as string}`);
+      alert(`Error occurred: ${err as string}`);
+      setSubmitting(false);
     }
   };
 
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={signUpFormValues ? signUpFormValues : initialValues}
       onSubmit={handleSubmit}
       validationSchema={SignUpValidationSchema}
     >
@@ -184,7 +147,7 @@ const Signup: React.FC<SignupProps> = ({
               color="white"
               bg="#0E0E11"
             >
-              Create account
+              Next
             </Button>
             <Button
               onClick={() => authStateHandleFunction("login")}
