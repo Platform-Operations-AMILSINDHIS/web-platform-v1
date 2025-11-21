@@ -62,6 +62,8 @@ const awsRouter = createTRPCRouter({
           }),
           { expiresIn: 60 * 10 } // 10 mins  to upload
         );
+
+        return { uploadUrl: signedURL };
       } catch (err) {
         console.log("Error generating upload URL:", err);
         throw new Error("Could not generate upload URL");

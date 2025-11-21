@@ -121,7 +121,6 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({
       const { auth_id } = response.data;
 
       await dbUpdation(auth_id, signUpFormValues);
-
       toast({
         title: "Activate your account",
         description: "An activation link has been sent to your Email ID",
