@@ -76,6 +76,55 @@ const actions = createTRPCRouter({
       throw err; // Re-throw for handling at the call site
     }
   }),
+
+  saveProfilePicture: publicProcedure
+    .input(
+      Yup.object({
+        user_id: Yup.string().uuid().required(),
+        s3_key: Yup.string().required(),
+        file_type: Yup.string()
+          .oneOf(["profile_image", "matrimony_image", "document"])
+          .required(),
+        file_name: Yup.string().required(),
+        content_type: Yup.string().required(),
+        file_size: Yup.number().positive().required(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      try {
+        const {
+          user_id,
+          s3_key,
+          file_type,
+          file_name,
+          content_type,
+          file_size,
+        } = input;
+
+        const { data, error } = await supabase
+          .from("application_s3_meta")
+          .insert({
+            user_id,
+            s3_key,
+            file_type,
+            file_name,
+            content_type,
+            file_size,
+          })
+          .select()
+          .single();
+
+        if (error) {
+          console.error("Error saving S3 metadata:", error);
+          throw new Error("Failed to save file metadata");
+        }
+
+        return { success: true, data };
+      } catch (err) {
+        console.error("Error in saveProfilePicture:", err);
+        throw new Error("Failed to save profile picture metadata");
+      }
+    }),
 });
 
 export default actions;

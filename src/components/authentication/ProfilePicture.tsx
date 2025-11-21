@@ -17,6 +17,7 @@ import {
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import useAWS from "~/hooks/useAWS";
 
 interface ProfilePictureProps {
   signUpFormValues: Values | null;
@@ -32,6 +33,8 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({
   signUpFormValues,
 }) => {
   const toast = useToast();
+  const { handleUploadImageToS3 } = useAWS();
+
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [preview, setPreview] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -61,13 +64,13 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({
     };
   }, [preview]);
 
-  const dbUpdation = async (auth_id: string, values: Values) => {
+  const dbUpdation = async (auth_id: string, values: Values, file: File) => {
     try {
       toast({
         title: "Registering Account details...",
         description: "An activation link has been sent to your Email ID",
         status: "loading",
-        duration: 2000,
+        duration: 1000,
         isClosable: true,
       });
 
@@ -84,28 +87,45 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({
         password: values.password,
       });
 
+      // Validate DB response
+      if (!response.data?.data || response.data.data.length === 0) {
+        throw new Error("Failed to create user account in database");
+      }
+
+      const userId = response.data.data[0].id;
+      if (!userId) {
+        throw new Error("User ID not returned from database");
+      }
+
       toast({
         title: "Account details registered, Saving profile picture....",
         description: "An activation link has been sent to your Email ID",
         status: "loading",
-        duration: 2000,
+        duration: 1000,
         isClosable: true,
       });
 
-      const user_id = await response.data[0].id;
+      // Create S3 Key + Upload
+      const s3_key = `users/${userId}/profile/profile.jpg`;
+      const uploadStatus = await handleUploadImageToS3(file, s3_key);
 
-      // TODO: Upload profile picture to S3
-      // const formData = new FormData();
-      // formData.append('file', file);
-      // formData.append('user_id', user_id);
-      // await axios.post('/api/upload/profile', formData);
+      if (!uploadStatus)
+        throw new Error(`Something went wrong while uploading profile image`);
+
+      toast({
+        title: "Account registered, & Profile picture saved",
+        description: "An activation link has been sent to your Email ID",
+        status: "loading",
+        duration: 1000,
+        isClosable: true,
+      });
     } catch (error: unknown) {
       alert(`Error occured during submission : ${error as string}`);
     }
   };
 
   const handleCreateAccount = async () => {
-    if (!signUpFormValues) return;
+    if (!signUpFormValues || !file) return;
 
     setSubmitting(true);
     try {
@@ -120,7 +140,7 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({
 
       const { auth_id } = response.data;
 
-      await dbUpdation(auth_id, signUpFormValues);
+      await dbUpdation(auth_id, signUpFormValues, file);
       toast({
         title: "Activate your account",
         description: "An activation link has been sent to your Email ID",

@@ -14,7 +14,6 @@ import {
   MembershipFormBufferDataFetch,
   ProfileRequestsFetchResponse,
   RequestResponse,
-  verifyMemberStatusResponse,
 } from "~/types/api";
 import { MatrimonyFormValues } from "~/types/forms/matrimony";
 
@@ -33,7 +32,6 @@ const useServerActions = () => {
     api.profileRequests.fetchProfileDetails.useMutation();
 
   const fetchProfileImage = api.aws.getS3ProfilePicture.useMutation();
-  const uploadImageSignedURL = api.aws.getS3UploadURL.useMutation();
 
   const fetchUserSubmissionMut =
     api.formBuffer.fetchUserSubmission.useMutation();
