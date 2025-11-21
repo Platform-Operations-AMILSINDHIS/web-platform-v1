@@ -28,6 +28,8 @@ const useServerActions = () => {
   // const verifyMembershipMut =
   //   api.matrimonyProfiles.verifyMemberStatus.useMutation();
 
+  const uploadUserProfilePicMut = api.actions.saveProfilePicture.useMutation();
+
   const fetchUserProfileMut =
     api.profileRequests.fetchProfileDetails.useMutation();
 
@@ -130,6 +132,31 @@ const useServerActions = () => {
     const { data } = await fetchAllBufferResponse();
     const formBufferData = data?.form_buffer;
     return formBufferData as FormBufferDataFetch[];
+  };
+
+  // In ProfilePicture.tsx, add this handler function
+
+  const handleSaveUserProfilePicture = async (
+    userId: string,
+    s3_key: string,
+    file: File
+  ) => {
+    try {
+      await uploadUserProfilePicMut.mutateAsync({
+        user_id: userId,
+        s3_key: s3_key,
+        file_type: "profile_image",
+        file_name: file.name,
+        content_type: file.type,
+        file_size: file.size,
+      });
+
+      console.log("Profile picture metadata saved to database ✔");
+      return true;
+    } catch (error) {
+      console.error("Error saving profile metadata:", error);
+      throw new Error("Failed to save profile picture metadata");
+    }
   };
 
   const handleFetchUserSubmission = async (
@@ -415,6 +442,7 @@ const useServerActions = () => {
     handleMemberBufferFetch,
     handleMatrimonyBufferFetch,
     handleMatrimonyProfileFetch,
+    handleSaveUserProfilePicture,
     handleFetchProfileDetails,
     handleFetchFormBufferData,
     handleFetchUserSubmission,

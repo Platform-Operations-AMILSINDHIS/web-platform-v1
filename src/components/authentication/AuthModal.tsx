@@ -54,6 +54,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
           ) : authState === "addprofilepic" ? (
             <ProfilePicture
               signUpFormValues={signUpFormValues}
+              setSignUpFormValues={setSignUpFormValues}
               authStateHandleFunction={authStateHandleFunction}
               setCloseModal={setCloseModal}
             />
@@ -61,7 +62,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
             <Signup
               signUpFormValues={signUpFormValues}
               authStateHandleFunction={authStateHandleFunction}
-              setSignUpFormValues={setSignUpFormValues} // <-- PASS VALUES UP
+              setSignUpFormValues={setSignUpFormValues}
               setCloseModal={setCloseModal}
             />
           )}

@@ -15,12 +15,15 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { SetStateAction } from "jotai";
+import { Dispatch, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import useAWS from "~/hooks/useAWS";
+import useServerActions from "~/hooks/useServerActions";
 
 interface ProfilePictureProps {
   signUpFormValues: Values | null;
+  setSignUpFormValues: (input: Values | null) => void;
   setCloseModal: (input: boolean) => void;
   authStateHandleFunction: (
     authState: "login" | "signup" | "forgotPassword" | "addprofilepic"
@@ -29,11 +32,13 @@ interface ProfilePictureProps {
 
 const ProfilePicture: React.FC<ProfilePictureProps> = ({
   authStateHandleFunction,
+  setSignUpFormValues,
   setCloseModal,
   signUpFormValues,
 }) => {
   const toast = useToast();
   const { handleUploadImageToS3 } = useAWS();
+  const { handleSaveUserProfilePicture } = useServerActions();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [preview, setPreview] = useState<string | null>(null);
@@ -67,8 +72,7 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({
   const dbUpdation = async (auth_id: string, values: Values, file: File) => {
     try {
       toast({
-        title: "Registering Account details...",
-        description: "An activation link has been sent to your Email ID",
+        title: "Registering account details...",
         status: "loading",
         duration: 1000,
         isClosable: true,
@@ -98,13 +102,11 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({
       }
 
       toast({
-        title: "Account details registered, Saving profile picture....",
-        description: "An activation link has been sent to your Email ID",
+        title: "Account created! Uploading profile picture...",
         status: "loading",
         duration: 1000,
         isClosable: true,
       });
-
       // Create S3 Key + Upload
       const s3_key = `users/${userId}/profile/profile.jpg`;
       const uploadStatus = await handleUploadImageToS3(file, s3_key);
@@ -112,13 +114,18 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({
       if (!uploadStatus)
         throw new Error(`Something went wrong while uploading profile image`);
 
+      await handleSaveUserProfilePicture(userId, s3_key, file);
+
       toast({
-        title: "Account registered, & Profile picture saved",
-        description: "An activation link has been sent to your Email ID",
-        status: "loading",
-        duration: 1000,
+        title: "Success!",
+        description: "Account registered & profile picture saved",
+        status: "success",
+        duration: 2000,
         isClosable: true,
       });
+
+      // remove all form values
+      setSignUpFormValues(null);
     } catch (error: unknown) {
       alert(`Error occured during submission : ${error as string}`);
     }
