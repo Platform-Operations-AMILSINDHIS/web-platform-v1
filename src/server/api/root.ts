@@ -10,6 +10,7 @@ import matrimonyProfiles from "./routers/matrimonyProfiles";
 import profilRequests from "./routers/profileRequests";
 import recoveryRouter from "./routers/recovery";
 import adminRouter from "./routers/admin";
+import profileRouter from "./routers/profile";
 import authRouter from "./routers/auth";
 import awsRouter from "./routers/aws";
 
@@ -29,6 +30,7 @@ export const appRouter = createTRPCRouter({
   profileRequests: profilRequests,
   recovery: recoveryRouter,
   admin: adminRouter,
+  profile: profileRouter,
   auth: authRouter,
   aws: awsRouter,
 });
