@@ -30,7 +30,8 @@ const profileRouter = createTRPCRouter({
           form_buffer (
             formType,
             submission,
-            isMember
+            isMember,
+            status
           )
         `
         )
