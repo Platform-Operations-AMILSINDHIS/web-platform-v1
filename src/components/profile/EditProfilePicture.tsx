@@ -247,7 +247,7 @@ const EditProfilePicture: React.FC<EditProfilePictureProps> = ({
                 _hover={{ bg: "#E64500" }}
                 isDisabled={!file || !preview}
                 isLoading={submitting}
-                onClick={handleUpdateProfilePicture}
+                onClick={() => void handleUpdateProfilePicture()}
               >
                 Update Picture
               </Button>

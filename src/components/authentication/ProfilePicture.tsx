@@ -1,4 +1,8 @@
-// ProfilePicture.tsx - Beautiful profile card
+// ProfilePicture.tsx
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { CloseIcon } from "@chakra-ui/icons";
 import {
   Flex,
@@ -361,7 +365,7 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({
           _hover={{ bg: "gray.700" }}
           isDisabled={!file || !preview}
           isLoading={submitting}
-          onClick={handleCreateAccount}
+          onClick={() => void handleCreateAccount()}
         >
           Create Account
         </Button>

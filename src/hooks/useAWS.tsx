@@ -61,13 +61,13 @@ const useAWS = (props?: Partial<useAWSProps>) => {
       if (!s3_key) return;
       try {
         setFetchingProfileImageError("");
-        setIsFetchingProfileImage(false);
+        setIsFetchingProfileImage(true);
         const { profilePictureSignedUrl } =
           await fetchImageSignedURL.mutateAsync({
             is_admin: false,
             s3_key: s3_key,
           });
-        if (!uploadImageSignedURL) {
+        if (!profilePictureSignedUrl) {
           setFetchingProfileImageError(
             "Could Not retrieve Profile Image details"
           );
@@ -85,7 +85,7 @@ const useAWS = (props?: Partial<useAWSProps>) => {
       }
     };
 
-    handleFetchProfileImageURL();
+    void handleFetchProfileImageURL();
   }, [s3_key]);
 
   return {

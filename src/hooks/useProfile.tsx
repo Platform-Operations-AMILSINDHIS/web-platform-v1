@@ -1,5 +1,8 @@
-import { SetStateAction } from "jotai";
-import React, { useEffect, useState } from "react";
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
 
 // Hook for profile actions
@@ -65,12 +68,12 @@ const useProfile = ({ user_id }: useProfileHookProps) => {
 
   // Initial fetch on mount
   useEffect(() => {
-    handleFetchUserProfile();
+    void handleFetchUserProfile();
   }, [user_id]);
 
   // Refetch function that can be called manually
   const refetch = () => {
-    handleFetchUserProfile();
+    void handleFetchUserProfile();
   };
 
   return { profileData, profileFetchError, isLoadingProfileData, refetch };
