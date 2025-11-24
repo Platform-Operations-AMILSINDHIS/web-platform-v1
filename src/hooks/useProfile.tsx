@@ -39,34 +39,41 @@ const useProfile = ({ user_id }: useProfileHookProps) => {
   const [isLoadingProfileData, setIsLoadingProfileData] =
     useState<boolean>(false);
 
-  useEffect(() => {
+  // Extract fetch logic into a separate function so it can be reused
+  const handleFetchUserProfile = async (): Promise<void> => {
     if (!user_id) return;
-    const handleFetchUserProfile = async (): Promise<void> => {
-      try {
-        setProfileFetchError("");
-        setIsLoadingProfileData(true);
-        const data = await fetchUserProfileDataMut.mutateAsync({
-          user_id: user_id as string,
-        });
+    try {
+      setProfileFetchError("");
+      setIsLoadingProfileData(true);
+      const data = await fetchUserProfileDataMut.mutateAsync({
+        user_id: user_id as string,
+      });
 
-        if (!data) {
-          setProfileFetchError("No profile data found for this user.");
-          setProfileData(null);
-        }
-
+      if (!data) {
+        setProfileFetchError("No profile data found for this user.");
+        setProfileData(null);
+      } else {
         setProfileData(data);
-      } catch (err: any) {
-        console.log(err);
-        setProfileFetchError("Failed to fetch profile data.");
-      } finally {
-        setIsLoadingProfileData(false);
       }
-    };
+    } catch (err: any) {
+      console.log(err);
+      setProfileFetchError("Failed to fetch profile data.");
+    } finally {
+      setIsLoadingProfileData(false);
+    }
+  };
 
+  // Initial fetch on mount
+  useEffect(() => {
     handleFetchUserProfile();
   }, [user_id]);
 
-  return { profileData, profileFetchError, isLoadingProfileData };
+  // Refetch function that can be called manually
+  const refetch = () => {
+    handleFetchUserProfile();
+  };
+
+  return { profileData, profileFetchError, isLoadingProfileData, refetch };
 };
 
 export default useProfile;

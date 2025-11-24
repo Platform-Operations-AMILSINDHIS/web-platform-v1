@@ -2,6 +2,8 @@
 import supabase from "~/pages/api/auth/supabase";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import * as Yup from "yup";
+import { DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { userS3 } from "~/lib/aws/s3";
 
 const actions = createTRPCRouter({
   generateMembershipID: publicProcedure
@@ -101,7 +103,64 @@ const actions = createTRPCRouter({
           file_size,
         } = input;
 
-        const { data, error } = await supabase
+        // Check for existing row for this file type
+        const { data: existingData, error: fetchError } = await supabase
+          .from("application_s3_meta")
+          .select("*")
+          .eq("user_id", user_id)
+          .eq("file_type", file_type)
+          .single();
+
+        if (fetchError && fetchError.code !== "PGRST116") {
+          // PGRST116 = no rows returned, which is fine
+          console.error("Error validating S3 File meta:", fetchError);
+          throw new Error("Error while validating S3 File meta");
+        }
+
+        // If record exists, delete old S3 file and update row
+        if (existingData) {
+          const oldS3Key = existingData.s3_key;
+
+          // Delete old file from S3 (only if it's different from new one)
+          if (oldS3Key !== s3_key) {
+            try {
+              await userS3.send(
+                new DeleteObjectCommand({
+                  Bucket: "kap-application-images",
+                  Key: oldS3Key,
+                })
+              );
+              console.log(`Deleted old S3 file: ${oldS3Key}`);
+            } catch (s3Error) {
+              console.error("Error deleting old S3 file:", s3Error);
+              // Continue anyway - don't fail the whole operation
+            }
+          }
+
+          // Update existing record
+          const { data: updateData, error: updateError } = await supabase
+            .from("application_s3_meta")
+            .update({
+              s3_key,
+              file_name,
+              content_type,
+              file_size,
+              updated_at: new Date().toISOString(),
+            })
+            .eq("id", existingData.id)
+            .select()
+            .single();
+
+          if (updateError) {
+            console.error("Error updating S3 metadata:", updateError);
+            throw new Error("Failed to update file metadata");
+          }
+
+          return { success: true, data: updateData, action: "updated" };
+        }
+
+        // No existing record - insert new one
+        const { data: insertData, error: insertError } = await supabase
           .from("application_s3_meta")
           .insert({
             user_id,
@@ -114,12 +173,12 @@ const actions = createTRPCRouter({
           .select()
           .single();
 
-        if (error) {
-          console.error("Error saving S3 metadata:", error);
+        if (insertError) {
+          console.error("Error saving S3 metadata:", insertError);
           throw new Error("Failed to save file metadata");
         }
 
-        return { success: true, data };
+        return { success: true, data: insertData, action: "created" };
       } catch (err) {
         console.error("Error in saveProfilePicture:", err);
         throw new Error("Failed to save profile picture metadata");
