@@ -78,14 +78,14 @@ const MemberProfileDetailDisplay: React.FC<MemberProfileDetailDisplayProps> = ({
             ) : (
               <></>
             )}
-            <Box>
+            <Flex flexDir={"column"}>
               <Text fontSize="2xl" fontWeight="bold" color="gray.800">
                 {profileData.first_name} {profileData.last_name}
               </Text>
-              <Text fontSize="md" color="gray.600" mt={1}>
+              <Text fontSize="md" color="gray.600">
                 @{profileData.account_name}
               </Text>
-            </Box>
+            </Flex>
           </Flex>
           <Flex gap={2} flexWrap="wrap">
             {getMembershipBadges()}
