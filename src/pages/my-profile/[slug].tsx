@@ -195,7 +195,7 @@ const MyProfilePage = () => {
                     color="gray.700"
                     _hover={{ bg: "gray.50" }}
                   >
-                    Matrimony Profiles
+                    Matrimony Profile
                   </Button>
                   <Button
                     size="md"

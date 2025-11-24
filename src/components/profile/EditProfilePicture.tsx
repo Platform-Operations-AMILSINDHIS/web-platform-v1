@@ -140,25 +140,27 @@ const EditProfilePicture: React.FC<EditProfilePictureProps> = ({
         <ModalHeader
           bgGradient="linear(to-r, #FF4D00, #FF8C42)"
           color="white"
-          fontSize="2xl"
-          fontWeight="bold"
+          fontSize="xl"
+          fontWeight={600}
         >
           Update Profile Picture
         </ModalHeader>
         <ModalCloseButton color="white" />
 
         <ModalBody py={8} px={6}>
-          <VStack spacing={6}>
-            <Text
-              fontWeight={500}
-              color="gray.600"
-              textAlign="center"
-              fontSize="md"
-            >
-              {preview
-                ? "Your new profile picture looks great!"
-                : "Upload a new picture for your profile"}
-            </Text>
+          <VStack spacing={4}>
+            {preview ? (
+              <Text
+                fontWeight={500}
+                color="gray.600"
+                textAlign="center"
+                fontSize="md"
+              >
+                Your new profile picture looks great
+              </Text>
+            ) : (
+              <></>
+            )}
 
             {/* Profile Picture Preview */}
             {preview ? (
@@ -246,7 +248,6 @@ const EditProfilePicture: React.FC<EditProfilePictureProps> = ({
                 isDisabled={!file || !preview}
                 isLoading={submitting}
                 onClick={handleUpdateProfilePicture}
-                size="lg"
               >
                 Update Picture
               </Button>
@@ -256,7 +257,6 @@ const EditProfilePicture: React.FC<EditProfilePictureProps> = ({
                 variant="outline"
                 borderColor="gray.300"
                 _hover={{ bg: "gray.50" }}
-                size="lg"
               >
                 Cancel
               </Button>
