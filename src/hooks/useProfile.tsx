@@ -1,5 +1,5 @@
 import { SetStateAction } from "jotai";
-import { Dispatch, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { api } from "~/utils/api";
 
 // Hook for profile actions
@@ -27,37 +27,46 @@ interface ProfileData {
   }[];
 }
 
-const useProfile = () => {
+interface useProfileHookProps {
+  user_id: string | string[] | undefined; // defined by slug
+}
+
+const useProfile = ({ user_id }: useProfileHookProps) => {
   const fetchUserProfileDataMut = api.profile.getProfileDetails.useMutation();
+
+  const [profileData, setProfileData] = useState<ProfileData | null>(null);
+  const [profileFetchError, setProfileFetchError] = useState<string>("");
   const [isLoadingProfileData, setIsLoadingProfileData] =
     useState<boolean>(false);
 
-  const handleFetchUserProfile = async (
-    user_id: string,
-    setErrorMessage: Dispatch<SetStateAction<string>>
-  ): Promise<ProfileData | null> => {
-    try {
-      setIsLoadingProfileData(true);
-      const data = await fetchUserProfileDataMut.mutateAsync({
-        user_id: user_id,
-      });
+  useEffect(() => {
+    if (!user_id) return;
+    const handleFetchUserProfile = async (): Promise<void> => {
+      try {
+        setProfileFetchError("");
+        setIsLoadingProfileData(true);
+        const data = await fetchUserProfileDataMut.mutateAsync({
+          user_id: user_id as string,
+        });
 
-      if (!data) {
-        setErrorMessage("No profile data found for this user.");
-        return null;
+        if (!data) {
+          setProfileFetchError("No profile data found for this user.");
+          setProfileData(null);
+        }
+
+        setProfileData(data);
+      } catch (err: any) {
+        console.log(err);
+        setProfileFetchError("Failed to fetch profile data.");
+      } finally {
+        setIsLoadingProfileData(false);
       }
+    };
 
-      return data as ProfileData;
-    } catch (err: any) {
-      console.log(err);
-      setErrorMessage("Failed to fetch profile data.");
-      return null;
-    } finally {
-      setIsLoadingProfileData(false);
-    }
-  };
+    handleFetchUserProfile();
+  }, [user_id]);
 
-  return { handleFetchUserProfile };
+  return { profileData, profileFetchError, isLoadingProfileData };
 };
 
 export default useProfile;

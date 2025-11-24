@@ -22,6 +22,7 @@ import { useState } from "react";
 
 import useRecovery from "~/hooks/UseRecovery";
 import DeleteModal from "../authentication/DeleteModal";
+import { FaUserShield } from "react-icons/fa";
 
 interface AccountOptionsPopoverProps {
   children: React.ReactNode;
@@ -98,20 +99,14 @@ const AccountOptionsPopover: React.FC<AccountOptionsPopoverProps> = ({
         <PopoverBody className="shadow-xl" color="gray.600">
           <Flex gap={2} flexDir="column">
             <Flex
-              color="red.400"
-              _hover={{ color: "red.500", cursor: "pointer" }}
+              _hover={{ color: "gray.800", cursor: "pointer" }}
               gap={2}
               align="center"
-              onClick={() => onOpen()}
+              onClick={() => (window.location.href = `/my-profile/${user?.id}`)}
             >
-              <Icon boxSize={4} as={FaTrash}></Icon>
-              <Text>Delete Account</Text>
+              <Icon boxSize={4} as={FaUserShield}></Icon>
+              <Text>My Profile</Text>
             </Flex>
-            <DeleteModal
-              handleLogout={() => void handleLogout()}
-              handleModal={onClose}
-              modalState={isOpen}
-            />
             <Flex
               _hover={{ color: "gray.800", cursor: "pointer" }}
               gap={2}
@@ -142,6 +137,21 @@ const AccountOptionsPopover: React.FC<AccountOptionsPopoverProps> = ({
               <Icon boxSize={4} as={MdOutlineLogout}></Icon>
               <Text onClick={() => void handleLogout()}>Sign Out</Text>
             </Flex>
+            <Flex
+              color="red.400"
+              _hover={{ color: "red.500", cursor: "pointer" }}
+              gap={2}
+              align="center"
+              onClick={() => onOpen()}
+            >
+              <Icon boxSize={4} as={FaTrash}></Icon>
+              <Text>Delete Account</Text>
+            </Flex>
+            <DeleteModal
+              handleLogout={() => void handleLogout()}
+              handleModal={onClose}
+              modalState={isOpen}
+            />
           </Flex>
         </PopoverBody>
       </PopoverContent>
