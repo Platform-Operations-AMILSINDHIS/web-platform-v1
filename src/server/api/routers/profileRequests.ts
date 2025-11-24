@@ -1,7 +1,7 @@
 /* eslint-disable */
+import * as Yup from "yup";
 import supabase from "~/pages/api/auth/supabase";
 import { createTRPCRouter, publicProcedure } from "../trpc";
-import * as Yup from "yup";
 import {
   sendDeclineRequestMail,
   sendMatrimonyProfileMail,
@@ -77,8 +77,30 @@ const profilRequests = createTRPCRouter({
             await supabase
               .from("general_accounts")
               .select(
-                "account_name,first_name,last_name,age,gender,email_id,created_at,membership_id, KAP_member,YAC_member"
+                `
+                  id,
+                  account_name,
+                  first_name,
+                  last_name,
+                  age,
+                  gender,
+                  email_id,
+                  created_at,
+                  membership_id,
+                  KAP_member,
+                  YAC_member,
+
+                  application_s3_meta (
+                    s3_key,
+                    file_type,
+                    file_name,
+                    content_type,
+                    file_size
+                  )
+                `
               )
+              .eq("id", user_id)
+              .eq("application_s3_meta.file_type", "profile_image")
               .eq("id", user_id);
 
           if (ProfileFetchError) throw new Error(ProfileFetchError.details);

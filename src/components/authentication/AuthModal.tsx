@@ -6,16 +6,20 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
+
 import Login from "./Login";
 import Signup from "./Signup";
 import ForgotPassword from "./ForgotPassword";
+import ProfilePicture from "./ProfilePicture";
+
+import { Values } from "~/hooks/useForm";
 
 interface AuthModalProps {
   modalState: boolean;
-  authState: "login" | "signup" | "forgotPassword";
+  authState: "login" | "signup" | "forgotPassword" | "addprofilepic";
   handleModal: () => void;
   authStateHandleFunction: (
-    authState: "login" | "signup" | "forgotPassword"
+    authState: "login" | "signup" | "forgotPassword" | "addprofilepic"
   ) => void;
 }
 
@@ -25,12 +29,13 @@ const AuthModal: React.FC<AuthModalProps> = ({
   handleModal,
   authStateHandleFunction,
 }) => {
+  const [signUpFormValues, setSignUpFormValues] = useState<Values | null>(null);
   const [closeModal, setCloseModal] = useState(false);
+
   useEffect(() => {
-    if (closeModal) {
-      handleModal();
-    }
+    if (closeModal) handleModal();
   }, [closeModal]);
+
   return (
     <Modal onClose={handleModal} isOpen={modalState}>
       <ModalOverlay />
@@ -46,9 +51,18 @@ const AuthModal: React.FC<AuthModalProps> = ({
               authStateHandleFunction={authStateHandleFunction}
               setCloseModal={setCloseModal}
             />
+          ) : authState === "addprofilepic" ? (
+            <ProfilePicture
+              signUpFormValues={signUpFormValues}
+              setSignUpFormValues={setSignUpFormValues}
+              authStateHandleFunction={authStateHandleFunction}
+              setCloseModal={setCloseModal}
+            />
           ) : (
             <Signup
+              signUpFormValues={signUpFormValues}
               authStateHandleFunction={authStateHandleFunction}
+              setSignUpFormValues={setSignUpFormValues}
               setCloseModal={setCloseModal}
             />
           )}

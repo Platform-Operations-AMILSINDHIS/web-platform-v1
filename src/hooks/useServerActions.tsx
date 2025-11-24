@@ -14,7 +14,6 @@ import {
   MembershipFormBufferDataFetch,
   ProfileRequestsFetchResponse,
   RequestResponse,
-  verifyMemberStatusResponse,
 } from "~/types/api";
 import { MatrimonyFormValues } from "~/types/forms/matrimony";
 
@@ -29,8 +28,12 @@ const useServerActions = () => {
   // const verifyMembershipMut =
   //   api.matrimonyProfiles.verifyMemberStatus.useMutation();
 
+  const uploadUserProfilePicMut = api.actions.saveProfilePicture.useMutation();
+
   const fetchUserProfileMut =
     api.profileRequests.fetchProfileDetails.useMutation();
+
+  const fetchProfileImage = api.aws.getS3ProfilePicture.useMutation();
 
   const fetchUserSubmissionMut =
     api.formBuffer.fetchUserSubmission.useMutation();
@@ -131,6 +134,31 @@ const useServerActions = () => {
     return formBufferData as FormBufferDataFetch[];
   };
 
+  // In ProfilePicture.tsx, add this handler function
+
+  const handleSaveUserProfilePicture = async (
+    userId: string,
+    s3_key: string,
+    file: File
+  ) => {
+    try {
+      await uploadUserProfilePicMut.mutateAsync({
+        user_id: userId,
+        s3_key: s3_key,
+        file_type: "profile_image",
+        file_name: file.name,
+        content_type: file.type,
+        file_size: file.size,
+      });
+
+      console.log("Profile picture metadata saved to database ✔");
+      return true;
+    } catch (error) {
+      console.error("Error saving profile metadata:", error);
+      throw new Error("Failed to save profile picture metadata");
+    }
+  };
+
   const handleFetchUserSubmission = async (
     user_id: string,
     formType: string
@@ -143,14 +171,47 @@ const useServerActions = () => {
   };
 
   const handleFetchProfileDetails = async (
-    user_id: string
-  ): Promise<FetchProfileResponse> => {
-    const response = await fetchUserProfileMut.mutateAsync({
-      user_id: user_id,
-    });
+    user_id: string,
+    is_admin: boolean
+  ): Promise<{
+    profileData: FetchProfileResponse;
+    profileImageURL: string | null;
+  }> => {
+    // Fetch profile details
+    const response = await fetchUserProfileMut.mutateAsync({ user_id });
 
-    console.log({ "Profile data": response?.profileData });
-    return response?.profileData[0] as FetchProfileResponse;
+    if (!response || !response.profileData || !response.profileData[0]) {
+      throw new Error("Could not fetch profile data");
+    }
+
+    const profile = response.profileData[0];
+    const s3Key = profile.application_s3_meta?.[0]?.s3_key ?? null;
+
+    // Initialize image URL
+    let profileImageURL: string | null = null;
+
+    // If S3 key exists → fetch signed URL
+    if (s3Key) {
+      try {
+        const awsS3Response = await fetchProfileImage.mutateAsync({
+          is_admin,
+          s3_key: s3Key,
+        });
+
+        profileImageURL = awsS3Response?.profilePictureSignedUrl ?? null;
+      } catch (err) {
+        console.log("⚠️ Error fetching signed URL:", err);
+        // Leave profileImageURL = null (fallback)
+      }
+    }
+
+    console.log({ "Profile data": profile });
+
+    // Return unified structure
+    return {
+      profileData: profile,
+      profileImageURL,
+    };
   };
 
   const handleAcceptingUserApplication = async (
@@ -381,6 +442,7 @@ const useServerActions = () => {
     handleMemberBufferFetch,
     handleMatrimonyBufferFetch,
     handleMatrimonyProfileFetch,
+    handleSaveUserProfilePicture,
     handleFetchProfileDetails,
     handleFetchFormBufferData,
     handleFetchUserSubmission,

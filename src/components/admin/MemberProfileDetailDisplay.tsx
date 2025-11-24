@@ -11,10 +11,12 @@ import { FetchProfileResponse } from "~/types/api";
 
 interface MemberProfileDetailDisplayProps {
   profileData: FetchProfileResponse;
+  profileImageUrl: string | null;
 }
 
 const MemberProfileDetailDisplay: React.FC<MemberProfileDetailDisplayProps> = ({
   profileData,
+  profileImageUrl,
 }) => {
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -61,14 +63,30 @@ const MemberProfileDetailDisplay: React.FC<MemberProfileDetailDisplayProps> = ({
           flexWrap="wrap"
           gap={3}
         >
-          <Box>
-            <Text fontSize="2xl" fontWeight="bold" color="gray.800">
-              {profileData.first_name} {profileData.last_name}
-            </Text>
-            <Text fontSize="md" color="gray.600" mt={1}>
-              @{profileData.account_name}
-            </Text>
-          </Box>
+          <Flex gap={3}>
+            {profileImageUrl ? (
+              <img
+                src={profileImageUrl}
+                alt={`${profileData.first_name} ${profileData.last_name}`}
+                style={{
+                  width: "70px",
+                  height: "70px",
+                  objectFit: "cover",
+                  borderRadius: "20%", // make circular
+                }}
+              />
+            ) : (
+              <></>
+            )}
+            <Flex flexDir={"column"}>
+              <Text fontSize="2xl" fontWeight="bold" color="gray.800">
+                {profileData.first_name} {profileData.last_name}
+              </Text>
+              <Text fontSize="md" color="gray.600">
+                @{profileData.account_name}
+              </Text>
+            </Flex>
+          </Flex>
           <Flex gap={2} flexWrap="wrap">
             {getMembershipBadges()}
           </Flex>

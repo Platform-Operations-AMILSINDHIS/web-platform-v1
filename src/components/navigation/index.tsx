@@ -46,12 +46,12 @@ const Navigation: React.FC<NavigationProps> = ({
   } = useDisclosure();
 
   const [authState, setAuthState] = useState<
-    "login" | "signup" | "forgotPassword"
+    "login" | "signup" | "forgotPassword" | "addprofilepic"
   >("login");
   const [{ user }] = useUserAtom();
 
   const authStateHandleFunction = (
-    authType: "login" | "signup" | "forgotPassword"
+    authType: "login" | "signup" | "forgotPassword" | "addprofilepic"
   ) => {
     setAuthState(authType);
     onAuthOpen();

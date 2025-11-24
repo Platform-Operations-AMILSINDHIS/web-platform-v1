@@ -1,3 +1,4 @@
+// DBHandler.ts - Fixed with proper error handling
 import { NextApiRequest, NextApiResponse } from "next";
 import supabase from "./supabase";
 import hasher from "~/utils/hasher";
@@ -35,34 +36,54 @@ const DBHandler = async (req: DBHandlerRequest, res: NextApiResponse) => {
 
   try {
     const hashed_password = await hasher(password);
-    const { data, error } = await supabase.from("general_accounts").insert([
-      {
-        email_id: email,
-        auth_id: authID,
-        password: hashed_password,
-        membership_id: null,
-        account_name,
-        KAP_member,
-        YAC_member,
-        age,
-        gender,
-        first_name,
-        last_name,
-      },
-    ]);
+    const { data, error } = await supabase
+      .from("general_accounts")
+      .insert([
+        {
+          email_id: email,
+          auth_id: authID,
+          password: hashed_password,
+          membership_id: null,
+          account_name,
+          KAP_member,
+          YAC_member,
+          age,
+          gender,
+          first_name,
+          last_name,
+        },
+      ])
+      .select();
 
     if (error) {
-      console.log(error.message);
-      throw error;
+      console.error("Database insertion error:", error.message);
+      return res.status(500).json({
+        message: "Failed to create user account",
+        error: error.message,
+        authenticated: false,
+      });
     }
 
-    res.status(200).send({
+    // Validate data exists
+    if (!data || data.length === 0) {
+      return res.status(500).json({
+        message: "User creation failed - no data returned",
+        authenticated: false,
+      });
+    }
+
+    return res.status(200).json({
       message: "User added to database",
       data,
       authenticated: true,
     });
   } catch (error) {
-    console.log(error);
+    console.error("Unexpected error in DBHandler:", error);
+    return res.status(500).json({
+      message: "Internal server error",
+      error: error instanceof Error ? error.message : "Unknown error",
+      authenticated: false,
+    });
   }
 };
 
