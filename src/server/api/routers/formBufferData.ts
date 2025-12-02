@@ -4,6 +4,7 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 
 import * as Yup from "yup";
 import { sendDescisionMail, sendMatrimonyDescisionMail } from "~/server/mail";
+import { TRPCError } from "@trpc/server";
 
 const formBufferData = createTRPCRouter({
   fetchAllBuffer: publicProcedure.query(async () => {
@@ -66,35 +67,61 @@ const formBufferData = createTRPCRouter({
   }),
 
   fetchApprovedMatrimonyApplicants: publicProcedure.query(async () => {
-    try {
-      const {
-        data: approvedMatrimonyApplicants,
-        error: approvedMatrimonyApplicantsFetchError,
-      } = await supabase
-        .from("form_buffer")
-        .select(
-          `
-          *,
-          application_s3_meta:user_id (
-            s3_key,
-            file_type,
-            file_name,
-            content_type
-          )
-        `
-        )
-        .eq("formType", "MATRIMONY")
-        .eq("status", "APPROVED");
+    // First, get the approved matrimony applicants
+    const {
+      data: approvedMatrimonyApplicants,
+      error: approvedMatrimonyApplicantsFetchError,
+    } = await supabase
+      .from("form_buffer")
+      .select("*")
+      .eq("formType", "MATRIMONY")
+      .eq("status", "APPROVED");
 
-      if (approvedMatrimonyApplicantsFetchError)
-        throw approvedMatrimonyApplicantsFetchError;
-
-      return approvedMatrimonyApplicants;
-    } catch (err) {
-      console.log(
-        `Error while fetching approved matrimony applicants : ${err}`
+    if (approvedMatrimonyApplicantsFetchError) {
+      console.error(
+        `Error while fetching approved matrimony applicants:`,
+        approvedMatrimonyApplicantsFetchError
       );
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Failed to fetch approved matrimony applicants",
+        cause: approvedMatrimonyApplicantsFetchError,
+      });
     }
+
+    if (
+      !approvedMatrimonyApplicants ||
+      approvedMatrimonyApplicants.length === 0
+    ) {
+      return [];
+    }
+
+    // Get all user_ids
+    const userIds = approvedMatrimonyApplicants.map((app) => app.user_id);
+
+    // Fetch associated S3 metadata
+    const { data: s3MetaData, error: s3MetaError } = await supabase
+      .from("application_s3_meta")
+      .select("*")
+      .in("user_id", userIds);
+
+    if (s3MetaError) {
+      console.error("Error fetching S3 metadata:", s3MetaError);
+      // Still return the applicants without S3 data
+      return approvedMatrimonyApplicants.map((app) => ({
+        ...app,
+        application_s3_meta: [],
+      }));
+    }
+
+    // Combine the data
+    const combinedData = approvedMatrimonyApplicants.map((applicant) => ({
+      ...applicant,
+      application_s3_meta:
+        s3MetaData?.filter((meta) => meta.user_id === applicant.user_id) ?? [],
+    }));
+
+    return combinedData;
   }),
 
   fetchUserSubmission: publicProcedure

@@ -1,12 +1,22 @@
-import { Box, Button, Flex, Grid, Icon, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, Icon, Image, Text } from "@chakra-ui/react";
 import { MdFemale, MdMale } from "react-icons/md";
+import { FaUserCircle } from "react-icons/fa";
 import ModalLayout from "~/layouts/ModalLayout";
 import { MatrimonyFormValues } from "~/types/forms/matrimony";
 import { formatPDFAge } from "~/utils/helper";
 import { btnThemeLight } from "../buttons/BtnThemes";
 
+interface ApplicationS3Meta {
+  s3_key: string;
+  file_type: string;
+  file_name: string;
+  content_type: string;
+}
+
 interface MatrimonyProfileViewModalProps {
   submission: MatrimonyFormValues | undefined;
+  profileMedia: ApplicationS3Meta[];
+  profilePictureURL: string;
   modalState: boolean;
   modalHeader: string;
   handleModal: () => void;
@@ -14,6 +24,8 @@ interface MatrimonyProfileViewModalProps {
 
 const MatrimonyProfileViewModal: React.FC<MatrimonyProfileViewModalProps> = ({
   submission,
+  profileMedia,
+  profilePictureURL,
   handleModal,
   modalHeader,
   modalState,
@@ -26,37 +38,75 @@ const MatrimonyProfileViewModal: React.FC<MatrimonyProfileViewModalProps> = ({
       modalSize="3xl"
     >
       <Flex flexDir="column">
-        <Flex flexDir="column">
-          <Flex align="center" justify="space-between">
-            <Text fontWeight={700} fontSize="xl">
-              {`${submission?.personalInfo?.firstName} ${submission?.personalInfo.middleName} ${submission?.personalInfo.lastName},`}{" "}
-              <span style={{ fontSize: "medium", color: "gray.100" }}>
-                {formatPDFAge(submission?.personalInfo.dateAndTimeOfBirth)}
-              </span>
-            </Text>
+        {/* Profile Picture and Name Section */}
+        <Flex gap={4} align="flex-start">
+          {/* Profile Picture */}
+          {profilePictureURL ? (
+            <Image
+              src={profilePictureURL}
+              alt="Profile"
+              boxSize="110px"
+              borderRadius="full"
+              border="4px solid white"
+              boxShadow="xl"
+              objectFit="cover"
+            />
+          ) : (
             <Flex
-              borderRadius={5}
-              fontSize="small"
-              bg={
-                submission?.personalInfo.gender === "Male" ? "blue.200" : "pink"
-              }
-              px={2}
-              py={0}
+              w="150px"
+              h="150px"
+              minW="150px"
+              bg="gray.100"
+              borderRadius={10}
               align="center"
-              gap={1}
+              justify="center"
             >
-              <Text fontWeight={600}>{submission?.personalInfo.gender}</Text>
-              <Icon
-                boxSize={3}
-                as={
-                  submission?.personalInfo.gender === "Male" ? MdMale : MdFemale
-                }
-              />
+              <Icon as={FaUserCircle} boxSize="80px" color="gray.400" />
             </Flex>
+          )}
+
+          {/* Name, Age, Gender, Occupation */}
+          <Flex flexDir="column" flex={1}>
+            <Flex align="center" justify="space-between">
+              <Text fontWeight={700} fontSize="xl">
+                {`${submission?.personalInfo?.firstName} ${submission?.personalInfo.middleName} ${submission?.personalInfo.lastName},`}{" "}
+                <span
+                  style={{ fontSize: "medium", color: "rgba(0, 0, 0, 0.51)" }}
+                >
+                  {formatPDFAge(submission?.personalInfo.dateAndTimeOfBirth)}
+                </span>
+              </Text>
+              <Flex
+                borderRadius={5}
+                fontSize="small"
+                bg={
+                  submission?.personalInfo.gender === "Male"
+                    ? "blue.200"
+                    : "pink"
+                }
+                px={2}
+                py={0}
+                align="center"
+                gap={1}
+              >
+                <Text fontWeight={600}>{submission?.personalInfo.gender}</Text>
+                <Icon
+                  boxSize={3}
+                  as={
+                    submission?.personalInfo.gender === "Male"
+                      ? MdMale
+                      : MdFemale
+                  }
+                />
+              </Flex>
+            </Flex>
+            <Text mt={"-1px"} fontWeight={500}>
+              {submission?.personalInfo.occupation}
+            </Text>
+            <Text fontWeight={500} color="gray.500">
+              {submission?.personalInfo.placeOfBirth}
+            </Text>
           </Flex>
-          <Text mt={"-1px"} fontWeight={500}>
-            {submission?.personalInfo.occupation}
-          </Text>
         </Flex>
 
         <Flex flexDir="column" mt={5} gap={2}>

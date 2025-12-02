@@ -15,6 +15,13 @@ import MatrimonyProfileCard from "./MatrimonyProfileCard";
 import MatrimonyProfileViewModal from "./MatrimonyProfileViewModal";
 import { MatrimonyFormValues } from "~/types/forms/matrimony";
 
+interface ApplicationS3Meta {
+  s3_key: string;
+  file_type: string;
+  file_name: string;
+  content_type: string;
+}
+
 interface MatrimonyProfilesViewProps {
   isLoggedIn: boolean;
   matrimonyProfiles: MatrimonyProfilesFetchResponse[];
@@ -35,9 +42,17 @@ const MatrimonyProfilesView: React.FC<MatrimonyProfilesViewProps> = ({
   } = useDisclosure();
 
   const [profileView, setProfileView] = useState<MatrimonyFormValues>();
+  const [profileMedia, setProfileMedia] = useState<ApplicationS3Meta[]>([]);
+  const [profilePictureURL, setProfilePictureURL] = useState<string>("");
 
-  const handleViewProfile = (submission: MatrimonyFormValues) => {
+  const handleViewProfile = (
+    submission: MatrimonyFormValues,
+    profileMedia: ApplicationS3Meta[],
+    profilePictureURL: string
+  ) => {
     setProfileView(submission);
+    setProfileMedia(profileMedia);
+    setProfilePictureURL(profilePictureURL);
     onOpenProfileView();
   };
 
@@ -72,20 +87,13 @@ const MatrimonyProfilesView: React.FC<MatrimonyProfilesViewProps> = ({
                 )
                 .map((profile, index) => {
                   return (
-                    <Box key={index}>
-                      <MatrimonyProfileViewModal
-                        handleModal={onCloseProfileView}
-                        modalHeader="Profile View"
-                        modalState={isProfileViewOpen}
-                        submission={profileView}
-                      />
-                      <MatrimonyProfileCard
-                        profileRequests={profileRequests}
-                        handleOpenModal={handleViewProfile}
-                        submission={profile.submission}
-                        key={index}
-                      />
-                    </Box>
+                    <MatrimonyProfileCard
+                      profileRequests={profileRequests}
+                      handleOpenModal={handleViewProfile}
+                      submission={profile.submission}
+                      profileMedia={profile.application_s3_meta ?? []}
+                      key={index}
+                    />
                   );
                 })}
             </Grid>
@@ -96,6 +104,14 @@ const MatrimonyProfilesView: React.FC<MatrimonyProfilesViewProps> = ({
       ) : (
         <></>
       )}
+      <MatrimonyProfileViewModal
+        handleModal={onCloseProfileView}
+        modalHeader="Profile View"
+        modalState={isProfileViewOpen}
+        submission={profileView}
+        profileMedia={profileMedia}
+        profilePictureURL={profilePictureURL}
+      />
     </Box>
   );
 };
