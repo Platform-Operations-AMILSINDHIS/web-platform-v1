@@ -66,6 +66,12 @@ export interface MatrimonyProfilesFetchResponse {
   status: string;
   submission: MatrimonyFormValues;
   user_id: string;
+  application_s3_meta: {
+    s3_key: string;
+    file_type: string;
+    file_name: string;
+    content_type: string;
+  }[];
 }
 
 export interface MatrimonyIdFetchResponse {

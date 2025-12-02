@@ -177,7 +177,7 @@ const MyProfilePage = () => {
                       <Badge
                         position="absolute"
                         bottom="2"
-                        left="50%"
+                        left="80%"
                         transform="translateX(-50%)"
                         colorScheme="green"
                         fontSize="xs"

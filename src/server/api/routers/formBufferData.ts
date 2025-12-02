@@ -4,7 +4,6 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 
 import * as Yup from "yup";
 import { sendDescisionMail, sendMatrimonyDescisionMail } from "~/server/mail";
-import { boolean } from "zod";
 
 const formBufferData = createTRPCRouter({
   fetchAllBuffer: publicProcedure.query(async () => {
@@ -73,9 +72,19 @@ const formBufferData = createTRPCRouter({
         error: approvedMatrimonyApplicantsFetchError,
       } = await supabase
         .from("form_buffer")
-        .select("*")
-        .eq("status", "APPROVED")
-        .eq("formType", "MATRIMONY");
+        .select(
+          `
+          *,
+          application_s3_meta:user_id (
+            s3_key,
+            file_type,
+            file_name,
+            content_type
+          )
+        `
+        )
+        .eq("formType", "MATRIMONY")
+        .eq("status", "APPROVED");
 
       if (approvedMatrimonyApplicantsFetchError)
         throw approvedMatrimonyApplicantsFetchError;
