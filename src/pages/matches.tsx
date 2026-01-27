@@ -1,6 +1,6 @@
 import { useDisclosure } from "@chakra-ui/react";
 import { FormikHelpers } from "formik";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { MatrimonyLoginValues } from "~/hooks/useForm";
 import { useUserAtom } from "~/lib/atom";
 
@@ -68,13 +68,18 @@ const ProfilePage = () => {
     setIsLoggedIn(true);
   };
 
-  const handleCloseSelectProfileModal = (
+  const handleCloseSelectProfileModal = async (
     setProfileMatID: (profileMatID: string | undefined) => void,
     setFetchStatus: (status: boolean) => void
   ) => {
     setFetchStatus(false);
     setProfileMatID("");
     onCloseSelectionModal();
+
+    // Refresh both lists
+    if (user) {
+      await Promise.all([fetchProfiles(), fetchProfileRequests(user.email_id)]);
+    }
   };
 
   const fetchProfiles = async () => {
@@ -117,6 +122,8 @@ const ProfilePage = () => {
       .then(() => console.log("done"))
       .catch((err) => console.log(err));
   }, [matrimonyProfiles, isLoggedIn, user]);
+
+  console.log({ matrimonyProfiles, profilesRequested });
 
   return (
     <ProfilesViewLayout

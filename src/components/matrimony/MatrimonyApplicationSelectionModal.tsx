@@ -30,7 +30,7 @@ interface MatrimonyApplicationSelectionModalProps {
   handleCloseSelectionModal: (
     setProfileMatID: (profileMatID: string | undefined) => void,
     setFetchStatus: (status: boolean) => void
-  ) => void;
+  ) => Promise<void>;
 }
 
 const MatrimonyApplicationSelectionModal: React.FC<
@@ -109,7 +109,7 @@ const MatrimonyApplicationSelectionModal: React.FC<
     );
 
     setRequesting(false);
-    handleCloseSelectionModal(setProfileMatID, setFetchStatus);
+    await handleCloseSelectionModal(setProfileMatID, setFetchStatus);
     toast({
       title: "Profile Request Sent",
       description:
