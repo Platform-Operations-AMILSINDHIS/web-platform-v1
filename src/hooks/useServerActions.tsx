@@ -309,6 +309,8 @@ const useServerActions = () => {
       user_id: user_id,
     });
 
+    console.log({ subres_data: data, user_id });
+
     return data as MatrimonySubmissionVerificationServerResponse;
   };
 

@@ -355,10 +355,10 @@ const formBufferData = createTRPCRouter({
           .select("*")
           .eq("user_id", user_id)
           .eq("formType", "MATRIMONY")
-          .eq("Status", "PENDING");
+          .eq("status", "PENDING");
 
         if (fetchError) throw fetchError;
-
+        console.log({ fetchedData });
         if (fetchedData.length > 0) {
           return {
             user_verification: true,
