@@ -47,21 +47,29 @@ const profilRequests = createTRPCRouter({
       }
     }),
 
-  fetchAllRequests: publicProcedure.query(async () => {
-    try {
-      const { data: RequestData, error: FetchError } = await supabase
-        .from("profile_requests")
-        .select("*");
+  fetchAllRequests: publicProcedure
+    .input(
+      Yup.object({
+        email_id: Yup.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      try {
+        const { email_id } = input;
+        const { data: RequestData, error: FetchError } = await supabase
+          .from("profile_requests")
+          .select("*")
+          .eq("email_id", email_id);
 
-      if (FetchError) throw FetchError;
+        if (FetchError) throw FetchError;
 
-      return {
-        requests: RequestData,
-      };
-    } catch (err) {
-      console.log(err);
-    }
-  }),
+        return {
+          requests: RequestData,
+        };
+      } catch (err) {
+        console.log(err);
+      }
+    }),
 
   fetchProfileDetails: publicProcedure
     .input(

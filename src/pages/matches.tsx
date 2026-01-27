@@ -46,6 +46,8 @@ const ProfilePage = () => {
   >([]);
   const [profilesRequested, setProfilesRequested] = useState<string[]>([]);
 
+  console.log({ user });
+
   const handleFormSubmit = async (
     values: MatrimonyLoginValues,
     { setErrors }: FormikHelpers<MatrimonyLoginValues>
@@ -82,8 +84,9 @@ const ProfilePage = () => {
     }
   };
 
-  const fetchProfileRequests = async () => {
-    const data = await handleFetchProfileRequests();
+  const fetchProfileRequests = async (email_id: string) => {
+    const data = await handleFetchProfileRequests(email_id);
+    console.log({ profile_requests_data: data });
 
     if (data.length > 0 && isLoggedIn) {
       // Create a new Set to efficiently store unique requested IDs
@@ -104,14 +107,16 @@ const ProfilePage = () => {
 
   useEffect(() => {
     const fetchPageData = async () => {
-      await fetchProfiles();
-      await fetchProfileRequests();
+      if (user) {
+        await fetchProfiles();
+        await fetchProfileRequests(user.email_id);
+      }
     };
 
     fetchPageData()
       .then(() => console.log("done"))
       .catch((err) => console.log(err));
-  }, [matrimonyProfiles, isLoggedIn]);
+  }, [matrimonyProfiles, isLoggedIn, user]);
 
   return (
     <ProfilesViewLayout

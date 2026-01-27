@@ -76,6 +76,9 @@ const useServerActions = () => {
   const deleteMatrimonyProfileMut =
     api.matrimonyProfiles.deleteProfile.useMutation();
 
+  const fetchMatProfileRequestsMut =
+    api.profileRequests.fetchAllRequests.useMutation();
+
   const { refetch: fetchAllBufferResponse } =
     api.formBuffer.fetchAllBuffer.useQuery(undefined, {
       enabled: false,
@@ -92,11 +95,6 @@ const useServerActions = () => {
 
   const { refetch: fetchApprovedMatrimonyApplications } =
     api.formBuffer.fetchApprovedMatrimonyApplicants.useQuery(undefined, {
-      enabled: false,
-    });
-
-  const { refetch: fetchMatProfileRequests } =
-    api.profileRequests.fetchAllRequests.useQuery(undefined, {
       enabled: false,
     });
 
@@ -371,10 +369,12 @@ const useServerActions = () => {
     console.log(data);
   };
 
-  const handleFetchProfileRequests = async (): Promise<
-    ProfileRequestsFetchResponse[]
-  > => {
-    const { data } = await fetchMatProfileRequests();
+  const handleFetchProfileRequests = async (
+    email_id: string
+  ): Promise<ProfileRequestsFetchResponse[]> => {
+    const data = await fetchMatProfileRequestsMut.mutateAsync({
+      email_id: email_id,
+    });
     const profileRequests = data?.requests;
     return profileRequests as ProfileRequestsFetchResponse[];
   };
