@@ -32,14 +32,21 @@ const MatrimonyProfileCard: React.FC<MatrimonyProfileCardProps> = ({
 }) => {
   const [profilePictureURL, setProfilePictureURL] = useState<string>("");
 
-  // Find profile image from media
-  const profilePictureS3Key = profileMedia.find(
-    (media) => media.file_type === "profile_image"
-  )?.s3_key;
+  // Prefer matrimony images, fallback to profile image
+  // Priority: matrimony/1.jpg > any matrimony_image > profile_image
+  const matrimonyImages = profileMedia.filter(
+    (media) => media.file_type === "matrimony_image"
+  );
+  
+  const coverImageS3Key =
+    matrimonyImages.find((img) => img.s3_key.endsWith("/matrimony/1.jpg"))
+      ?.s3_key ||
+    matrimonyImages[0]?.s3_key ||
+    profileMedia.find((media) => media.file_type === "profile_image")?.s3_key;
 
-  // Fetch signed URL if profile picture exists
+  // Fetch signed URL for cover image
   const { profileImageSignedURL } = useAWS({
-    s3_key: profilePictureS3Key,
+    s3_key: coverImageS3Key,
   });
 
   // Update profile picture URL when signed URL is available

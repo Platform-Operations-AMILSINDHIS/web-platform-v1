@@ -29,6 +29,7 @@ const useServerActions = () => {
   //   api.matrimonyProfiles.verifyMemberStatus.useMutation();
 
   const uploadUserProfilePicMut = api.actions.saveProfilePicture.useMutation();
+  const deleteMatrimonyImageMut = api.actions.deleteMatrimonyImage.useMutation();
 
   const fetchUserProfileMut =
     api.profileRequests.fetchProfileDetails.useMutation();
@@ -154,6 +155,29 @@ const useServerActions = () => {
     } catch (error) {
       console.error("Error saving profile metadata:", error);
       throw new Error("Failed to save profile picture metadata");
+    }
+  };
+
+  const handleSaveMatrimonyImage = async (
+    userId: string,
+    s3_key: string,
+    file: File
+  ) => {
+    try {
+      await uploadUserProfilePicMut.mutateAsync({
+        user_id: userId,
+        s3_key: s3_key,
+        file_type: "matrimony_image",
+        file_name: file.name,
+        content_type: file.type,
+        file_size: file.size,
+      });
+
+      console.log("Matrimony image metadata saved to database ✔");
+      return true;
+    } catch (error) {
+      console.error("Error saving matrimony image metadata:", error);
+      throw new Error("Failed to save matrimony image metadata");
     }
   };
 
@@ -429,6 +453,23 @@ const useServerActions = () => {
     return deleteProfileResponse as unknown as DeleteResponseType;
   };
 
+  const handleDeleteMatrimonyImage = async (
+    user_id: string,
+    s3_key: string
+  ) => {
+    try {
+      await deleteMatrimonyImageMut.mutateAsync({
+        user_id,
+        s3_key,
+      });
+      console.log("Matrimony image deleted successfully ✔");
+      return true;
+    } catch (error) {
+      console.error("Error deleting matrimony image:", error);
+      throw new Error("Failed to delete matrimony image");
+    }
+  };
+
   // uncomment to use isMember boolean and verify through that
 
   // const handleIsMemberVerifiedCheck = async (
@@ -445,6 +486,8 @@ const useServerActions = () => {
     handleMatrimonyBufferFetch,
     handleMatrimonyProfileFetch,
     handleSaveUserProfilePicture,
+    handleSaveMatrimonyImage,
+    handleDeleteMatrimonyImage,
     handleFetchProfileDetails,
     handleFetchFormBufferData,
     handleFetchUserSubmission,

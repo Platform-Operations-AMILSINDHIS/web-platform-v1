@@ -27,10 +27,13 @@ import Layout from "~/components/layout";
 import useAWS from "~/hooks/useAWS";
 import useProfile from "~/hooks/useProfile";
 import EditProfilePicture from "~/components/profile/EditProfilePicture";
+import EditMatrimonyImages from "~/components/profile/EditMatrimonyImages";
+import { useUserAtom } from "~/lib/atom";
 
 const MyProfilePage = () => {
   const router = useRouter();
   const { slug } = router.query;
+  const [{ user: loggedInUser }] = useUserAtom();
   const { profileData, isLoadingProfileData, profileFetchError, refetch } =
     useProfile({
       user_id: slug as string,
@@ -38,6 +41,10 @@ const MyProfilePage = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showMatrimonyProfile, setShowMatrimonyProfile] = useState(false);
+
+  // Access control: only allow viewing own profile or admin
+  const isOwnProfile = loggedInUser?.id === slug;
+  const canViewProfile = isOwnProfile; // Add admin check if needed
 
   // Extract S3 key from profile data
   const profileImageMeta = profileData?.application_s3_meta?.find(
@@ -58,6 +65,18 @@ const MyProfilePage = () => {
   };
 
   console.log({ profileData, profileImageSignedURL });
+
+  if (!canViewProfile) {
+    return (
+      <Layout title="MyProfile">
+        <Flex justify="center" align="center" minH="80vh">
+          <Text color="red.500" fontSize="lg">
+            You don't have permission to view this profile
+          </Text>
+        </Flex>
+      </Layout>
+    );
+  }
 
   if (profileFetchError) {
     return (
@@ -480,6 +499,17 @@ const MyProfilePage = () => {
                             Status: {matrimonyStatus}
                           </Badge>
                         </Box>
+                      )}
+
+                      {/* Matrimony Images - Only show if approved */}
+                      {matrimonyStatus === "APPROVED" && slug && (
+                        <EditMatrimonyImages
+                          userId={slug as string}
+                          existingImages={
+                            profileData?.application_s3_meta || []
+                          }
+                          onSuccess={refetch}
+                        />
                       )}
 
                       {/* Matrimony Personal Information */}

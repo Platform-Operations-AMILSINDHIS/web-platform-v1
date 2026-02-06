@@ -1,10 +1,12 @@
-import { Box, Button, Flex, Grid, Icon, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, Icon, Image, Text, HStack } from "@chakra-ui/react";
 import { MdFemale, MdMale } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
+import { useEffect, useState } from "react";
 import ModalLayout from "~/layouts/ModalLayout";
 import { MatrimonyFormValues } from "~/types/forms/matrimony";
 import { formatPDFAge } from "~/utils/helper";
 import { btnThemeLight } from "../buttons/BtnThemes";
+import useAWS from "~/hooks/useAWS";
 
 interface ApplicationS3Meta {
   s3_key: string;
@@ -30,6 +32,28 @@ const MatrimonyProfileViewModal: React.FC<MatrimonyProfileViewModalProps> = ({
   modalHeader,
   modalState,
 }) => {
+  // Extract matrimony images
+  const matrimonyImages = profileMedia.filter(
+    (media) => media.file_type === "matrimony_image"
+  );
+
+  // Sort matrimony images by slot number (1, 2, 3)
+  const sortedMatrimonyImages = matrimonyImages.sort((a, b) => {
+    const getSlotNumber = (s3_key: string) => {
+      const match = s3_key.match(/\/matrimony\/(\d)\.jpg$/);
+      return match ? parseInt(match[1]) : 999;
+    };
+    return getSlotNumber(a.s3_key) - getSlotNumber(b.s3_key);
+  });
+
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+  // Determine which images to show
+  const imagesToShow =
+    sortedMatrimonyImages.length > 0
+      ? sortedMatrimonyImages
+      : profileMedia.filter((media) => media.file_type === "profile_image");
+
   return (
     <ModalLayout
       handleModal={handleModal}
@@ -38,30 +62,31 @@ const MatrimonyProfileViewModal: React.FC<MatrimonyProfileViewModalProps> = ({
       modalSize="3xl"
     >
       <Flex flexDir="column">
+        {/* Image Gallery Section */}
+        {imagesToShow.length > 0 && (
+          <Box mb={4}>
+            <MatrimonyImageGallery
+              images={imagesToShow}
+              selectedIndex={selectedImageIndex}
+              onSelectImage={setSelectedImageIndex}
+            />
+          </Box>
+        )}
+
         {/* Profile Picture and Name Section */}
         <Flex gap={4} align="flex-start">
-          {/* Profile Picture */}
-          {profilePictureURL ? (
-            <Image
-              src={profilePictureURL}
-              alt="Profile"
-              boxSize="110px"
-              borderRadius="full"
-              border="4px solid white"
-              boxShadow="xl"
-              objectFit="cover"
-            />
-          ) : (
+          {/* Compact profile indicator - removed large profile picture since we have gallery */}
+          {!imagesToShow.length && (
             <Flex
-              w="150px"
-              h="150px"
-              minW="150px"
+              w="80px"
+              h="80px"
+              minW="80px"
               bg="gray.100"
-              borderRadius={10}
+              borderRadius="full"
               align="center"
               justify="center"
             >
-              <Icon as={FaUserCircle} boxSize="80px" color="gray.400" />
+              <Icon as={FaUserCircle} boxSize="50px" color="gray.400" />
             </Flex>
           )}
 
@@ -186,6 +211,109 @@ const MatrimonyProfileViewModal: React.FC<MatrimonyProfileViewModalProps> = ({
         </Box>
       </Flex>
     </ModalLayout>
+  );
+};
+
+interface MatrimonyImageGalleryProps {
+  images: ApplicationS3Meta[];
+  selectedIndex: number;
+  onSelectImage: (index: number) => void;
+}
+
+const MatrimonyImageGallery: React.FC<MatrimonyImageGalleryProps> = ({
+  images,
+  selectedIndex,
+  onSelectImage,
+}) => {
+  const selectedImage = images[selectedIndex];
+  const { profileImageSignedURL: mainImageUrl } = useAWS({
+    s3_key: selectedImage?.s3_key,
+  });
+
+  return (
+    <Box>
+      {/* Main Image */}
+      <Box
+        mb={3}
+        borderRadius="lg"
+        overflow="hidden"
+        bg="gray.100"
+        h="300px"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        {mainImageUrl ? (
+          <Image
+            src={mainImageUrl}
+            alt="Matrimony profile"
+            objectFit="cover"
+            w="100%"
+            h="100%"
+          />
+        ) : (
+          <Icon as={FaUserCircle} boxSize="100px" color="gray.400" />
+        )}
+      </Box>
+
+      {/* Thumbnails - only show if multiple images */}
+      {images.length > 1 && (
+        <HStack spacing={2} justify="center">
+          {images.map((image, index) => (
+            <ThumbnailImage
+              key={image.s3_key}
+              s3_key={image.s3_key}
+              isSelected={index === selectedIndex}
+              onClick={() => onSelectImage(index)}
+            />
+          ))}
+        </HStack>
+      )}
+    </Box>
+  );
+};
+
+interface ThumbnailImageProps {
+  s3_key: string;
+  isSelected: boolean;
+  onClick: () => void;
+}
+
+const ThumbnailImage: React.FC<ThumbnailImageProps> = ({
+  s3_key,
+  isSelected,
+  onClick,
+}) => {
+  const { profileImageSignedURL } = useAWS({ s3_key });
+
+  return (
+    <Box
+      w="80px"
+      h="80px"
+      borderRadius="md"
+      overflow="hidden"
+      cursor="pointer"
+      border="3px solid"
+      borderColor={isSelected ? "orange.500" : "gray.300"}
+      _hover={{ borderColor: "orange.400" }}
+      onClick={onClick}
+      bg="gray.100"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+    >
+      {profileImageSignedURL ? (
+        <Image
+          src={profileImageSignedURL}
+          alt="Thumbnail"
+          objectFit="cover"
+          w="100%"
+          h="100%"
+        />
+      ) : (
+        <Icon as={FaUserCircle} boxSize="40px" color="gray.400" />
+      )}
+    </Box>
   );
 };
 

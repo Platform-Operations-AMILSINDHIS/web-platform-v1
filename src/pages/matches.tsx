@@ -112,7 +112,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     const fetchPageData = async () => {
-      if (user) {
+      if (user && isLoggedIn) {
         await fetchProfiles();
         await fetchProfileRequests(user.email_id);
       }
@@ -121,7 +121,8 @@ const ProfilePage = () => {
     fetchPageData()
       .then(() => console.log("done"))
       .catch((err) => console.log(err));
-  }, [matrimonyProfiles, isLoggedIn, user]);
+    // Only refetch when user or isLoggedIn changes, not on matrimonyProfiles change
+  }, [isLoggedIn, user?.id]);
 
   console.log({ matrimonyProfiles, profilesRequested });
 

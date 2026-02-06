@@ -286,7 +286,8 @@ const formBufferData = createTRPCRouter({
         const { data: _, error: formBufferError } = await supabase
           .from("form_buffer")
           .update({ status: "APPROVED" })
-          .eq("user_id", user_id);
+          .eq("user_id", user_id)
+          .eq("formType", "MATRIMONY");
 
         if (formBufferError) throw formBufferError;
 
