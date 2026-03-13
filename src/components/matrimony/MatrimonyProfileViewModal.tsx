@@ -41,7 +41,7 @@ const MatrimonyProfileViewModal: React.FC<MatrimonyProfileViewModalProps> = ({
   const sortedMatrimonyImages = matrimonyImages.sort((a, b) => {
     const getSlotNumber = (s3_key: string) => {
       const match = s3_key.match(/\/matrimony\/(\d)\.jpg$/);
-      return match ? parseInt(match[1]) : 999;
+      return match?.[1] ? parseInt(match[1]) : 999;
     };
     return getSlotNumber(a.s3_key) - getSlotNumber(b.s3_key);
   });
