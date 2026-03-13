@@ -22,14 +22,18 @@ import {
 } from "../../mail";
 
 import supabase from "~/pages/api/auth/supabase";
-import { TRPCClientError } from "@trpc/client";
+import { TRPCError } from "@trpc/server";
 
 const getLastMembershipNums = async () => {
   const { data, error } = await supabase
     .from("general_accounts")
     .select("membership_id");
   if (error) {
-    throw new Error("Failed to fetch data");
+    console.error("Error fetching membership IDs:", error);
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to fetch membership data",
+    });
   }
 
   const allMembershipIds =
@@ -120,7 +124,10 @@ export const formRouter = createTRPCRouter({
       const userId = await getUserIdByEmail(formData.personalInfo.emailId);
 
       if (!userId)
-        throw new TRPCClientError("Email does not exist in user database");
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Email does not exist in user database",
+        });
 
       // check for duplicate payment ID
 
@@ -129,15 +136,19 @@ export const formRouter = createTRPCRouter({
         .select("paymentID")
         .eq("paymentID", paymentId);
 
-      if (paymentIDfetchError)
-        throw new TRPCClientError(
-          "Issue verifying paymentId, try submitting again"
-        );
+      if (paymentIDfetchError) {
+        console.error("Error verifying paymentId:", paymentIDfetchError);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Issue verifying paymentId, try submitting again",
+        });
+      }
 
       if (paymentID.length > 0)
-        throw new TRPCClientError(
-          "Duplicate paymentIds detected, please enter the right payment ID"
-        );
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: "Duplicate paymentIds detected, please enter the right payment ID",
+        });
 
       const { error } = await supabase.from("form_buffer").insert({
         user_id: userId,
@@ -146,7 +157,13 @@ export const formRouter = createTRPCRouter({
         paymentID: paymentId,
       });
 
-      if (error) console.error(error);
+      if (error) {
+        console.error("Error inserting KAP form buffer:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to submit form",
+        });
+      }
 
       await syncDOBToAccount(userId, formData.personalInfo.dateOfBirth);
 
@@ -218,7 +235,10 @@ export const formRouter = createTRPCRouter({
       const userId = await getUserIdByEmail(formData.personalInfo.emailId);
 
       if (!userId)
-        throw new TRPCClientError("Email does not exist in user database");
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Email does not exist in user database",
+        });
 
       const { error } = await supabase.from("form_buffer").insert({
         user_id: userId,
@@ -227,7 +247,13 @@ export const formRouter = createTRPCRouter({
         isMember: true,
       });
 
-      if (error) console.error(error);
+      if (error) {
+        console.error("Error inserting KAP prev form buffer:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to submit form",
+        });
+      }
 
       await syncDOBToAccount(userId, formData.personalInfo.dateOfBirth);
 
@@ -261,7 +287,10 @@ export const formRouter = createTRPCRouter({
       const userId = await getUserIdByEmail(formData.personalInfo.emailId);
 
       if (!userId)
-        throw new TRPCClientError("Email does not exist in user database");
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Email does not exist in user database",
+        });
 
       // check for duplicate payment ID
 
@@ -270,15 +299,19 @@ export const formRouter = createTRPCRouter({
         .select("paymentID")
         .eq("paymentID", paymentId);
 
-      if (paymentIDfetchError)
-        throw new TRPCClientError(
-          "Issue verifying paymentId, try submitting again"
-        );
+      if (paymentIDfetchError) {
+        console.error("Error verifying paymentId:", paymentIDfetchError);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Issue verifying paymentId, try submitting again",
+        });
+      }
 
       if (paymentID.length > 0)
-        throw new TRPCClientError(
-          "Duplicate paymentIds detected, please enter the right payment ID"
-        );
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: "Duplicate paymentIds detected, please enter the right payment ID",
+        });
 
       const { error } = await supabase.from("form_buffer").insert({
         user_id: userId,
@@ -287,7 +320,13 @@ export const formRouter = createTRPCRouter({
         paymentID: paymentId,
       });
 
-      if (error) console.error(error);
+      if (error) {
+        console.error("Error inserting YAC form buffer:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to submit form",
+        });
+      }
 
       await syncDOBToAccount(userId, formData.personalInfo.dateOfBirth);
 
@@ -337,7 +376,10 @@ export const formRouter = createTRPCRouter({
       const userId = await getUserIdByEmail(formData.personalInfo.emailId);
 
       if (!userId)
-        throw new TRPCClientError("Email does not exist in user database");
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Email does not exist in user database",
+        });
 
       const { error } = await supabase.from("form_buffer").insert({
         user_id: userId,
@@ -346,7 +388,13 @@ export const formRouter = createTRPCRouter({
         isMember: true,
       });
 
-      if (error) console.error(error);
+      if (error) {
+        console.error("Error inserting YAC prev form buffer:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to submit form",
+        });
+      }
 
       await syncDOBToAccount(userId, formData.personalInfo.dateOfBirth);
 
@@ -450,7 +498,13 @@ export const formRouter = createTRPCRouter({
         submission: formData,
       });
 
-      if (BufferError) throw BufferError;
+      if (BufferError) {
+        console.error("Error inserting matrimony form buffer:", BufferError);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to submit form",
+        });
+      }
 
       if (userId) {
         await syncDOBToAccount(

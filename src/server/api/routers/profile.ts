@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 import { createTRPCRouter, publicProcedure } from "../trpc";
-import { TRPCClientError } from "@trpc/client";
+import { TRPCError } from "@trpc/server";
 import supabase from "~/lib/supabase/client";
 
 const profileRouter = createTRPCRouter({
@@ -10,7 +10,10 @@ const profileRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       const { user_id } = input;
 
-      if (!user_id) throw new TRPCClientError("User ID is required");
+      if (!user_id) throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "User ID is required",
+      });
       // Query for all user DATA
       const { data, error } = await supabase
         .from("general_accounts")
@@ -41,7 +44,13 @@ const profileRouter = createTRPCRouter({
         )
         .eq("id", user_id)
         .single(); // expects only one row
-      if (error) throw new TRPCClientError(error.message);
+      if (error) {
+        console.error("Error fetching profile details:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: error.message,
+        });
+      }
       return data;
     }),
 
@@ -73,7 +82,13 @@ const profileRouter = createTRPCRouter({
         })
         .eq("id", user_id);
 
-      if (error) throw new TRPCClientError(error.message);
+      if (error) {
+        console.error("Error updating profile:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: error.message,
+        });
+      }
       return { success: true };
     }),
 });

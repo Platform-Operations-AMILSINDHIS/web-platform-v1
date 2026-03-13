@@ -63,13 +63,15 @@ const SlugPage = () => {
       }
     };
     const handleSubmissionSlug = async () => {
+      if (!selected_profile?.user_id) return;
+      
       console.log({
         selected_profile_id: selected_profile?.user_id,
         check: "true",
       });
       const response = await handleFetchUserSubmission(
-        selected_profile?.user_id ?? "",
-        selected_profile?.formType ?? ""
+        selected_profile.user_id,
+        selected_profile.formType ?? ""
       );
 
       if (response) {

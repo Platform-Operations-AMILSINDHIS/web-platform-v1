@@ -72,8 +72,16 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
     const matrimony_profile_data = await handleMatrimonyProfileFetch(
       matrimony_id
     );
+    
+    const userId = matrimony_profile_data[0]?.user_id;
+    if (!userId) {
+      console.error("Could not find user_id for matrimony profile:", matrimony_id);
+      setAcceptingRequest(false);
+      return;
+    }
+
     const requested_profile_buffer_data = await handleFetchUserSubmission(
-      matrimony_profile_data[0]?.user_id ?? "",
+      userId,
       "MATRIMONY"
     );
 

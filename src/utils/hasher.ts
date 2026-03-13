@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 const hasher = async (password: string) => {
   const saltRounds = 10;
   try {
