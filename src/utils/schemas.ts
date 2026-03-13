@@ -12,7 +12,7 @@ export const personalInfoSchema = Yup.object().shape({
   middleName: Yup.string(),
   lastName: Yup.string().required("Last Name is required"),
   occupation: Yup.string().required("Occupation is required"),
-  dateOfBirth: Yup.date().required("Date of Birth is required"),
+  dateOfBirth: Yup.string().required("Date of Birth is required"),
   mobileNumber: Yup.string()
     .matches(
       /^(?:\+\d{1,3}[-\s]?)?(?:\d{1,4}[-\s]?)?(?:\(\d{1,4}\))?(?:[\d\s]{10,})$/,

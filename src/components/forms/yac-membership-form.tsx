@@ -122,7 +122,7 @@ const yacFormAtom = atom<YACMembershipFormValues>({
     middleName: "",
     lastName: "",
     occupation: "",
-    dateOfBirth: new Date(),
+    dateOfBirth: "",
     mobileNumber: "",
     emailId: "",
     maidenSurname: "",

@@ -129,7 +129,7 @@ const kapFormAtom = atom<KAPMembershipFormValues>({
     middleName: "",
     lastName: "",
     occupation: "",
-    dateOfBirth: new Date(),
+    dateOfBirth: "",
     mobileNumber: "",
     emailId: "",
     maidenSurname: "",

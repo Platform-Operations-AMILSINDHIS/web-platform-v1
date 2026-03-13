@@ -15,7 +15,7 @@ export interface PersonalInfo {
   middleName?: string;
   lastName: string;
   occupation: string;
-  dateOfBirth: Date;
+  dateOfBirth: string;
   mobileNumber: string;
   emailId: string;
   maidenSurname: string;
