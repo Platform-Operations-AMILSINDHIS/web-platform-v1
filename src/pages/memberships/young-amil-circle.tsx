@@ -6,9 +6,15 @@ import type { NextPage } from "next";
 import { Box, Flex, Icon, Spacer, Text } from "@chakra-ui/react";
 import { useUserAtom } from "~/lib/atom";
 import { RiErrorWarningFill } from "react-icons/ri";
+import { calculateAge } from "~/utils/helper";
 
 const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
   const [{ user }] = useUserAtom();
+  const userAge = user ? calculateAge(user.date_of_birth) : null;
+
+  // Out of range when age is known and outside 16–30; if DOB is null, allow through
+  const isAgeOutOfRange =
+    userAge !== null && (userAge < 16 || userAge > 30);
 
   return (
     <Layout title="YAC Membership Form">
@@ -27,7 +33,7 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
             boxSize={5}
             as={RiErrorWarningFill}
           />
-          {!(user.age <= 16 || user.age >= 30) ? (
+          {!isAgeOutOfRange ? (
             <Text>
               Note: You have already chosen to become a KAP member, if you wish
               to move to a YAC membership your KAP ID will be revoked and
@@ -61,10 +67,7 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
       <Box position="relative">
         <Box
           display={
-            !user ||
-            ((user.age <= 16 || user.age >= 30) && user.YAC_member != true)
-              ? ""
-              : "none"
+            !user || (isAgeOutOfRange && user.YAC_member != true) ? "" : "none"
           }
           left="50%"
           top="50%"
@@ -74,7 +77,7 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
           position="absolute"
         >
           {user ? (
-            (user.age <= 16 || user.age >= 30) && user.YAC_member != true ? (
+            isAgeOutOfRange && user.YAC_member != true ? (
               <>
                 <Flex
                   boxShadow="rgba(0, 0, 0, 0.24) 0px 3px 8px;"
@@ -94,12 +97,12 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
                     ) : (
                       <Text>Age Requirement not met</Text>
                     )}
-                    {user.age > 30 ? (
+                    {userAge !== null && userAge > 30 ? (
                       <Text textAlign="center">
                         You need to be below 30 years of age to be eligible for
                         YAC member application
                       </Text>
-                    ) : user.age < 16 ? (
+                    ) : userAge !== null && userAge < 16 ? (
                       <Text textAlign="center">
                         You need to be atleast 16 years of age to be eligible
                         for YAC member application
@@ -122,16 +125,10 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
           )}
         </Box>
         <Box
-          filter={
-            user
-              ? user.age <= 16 || user.age >= 30
-                ? "blur(2px)"
-                : ""
-              : "blur(2px)"
-          }
+          filter={user ? (isAgeOutOfRange ? "blur(2px)" : "") : "blur(2px)"}
           _hover={
             user
-              ? user.age <= 16 || user.age >= 30
+              ? isAgeOutOfRange
                 ? { cursor: "not-allowed" }
                 : {}
               : { cursor: "not-allowed" }

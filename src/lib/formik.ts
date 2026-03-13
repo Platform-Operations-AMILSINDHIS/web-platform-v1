@@ -5,7 +5,7 @@ interface Values {
   accountName: string;
   isKAPMember: false;
   isYACMember: false;
-  age: number;
+  dateOfBirth: string;
   gender: string;
   firstName: string;
   lastName: string;
@@ -18,7 +18,7 @@ const initialValues: Values = {
   accountName: "",
   isKAPMember: false,
   isYACMember: false,
-  age: 0,
+  dateOfBirth: "",
   gender: "",
   firstName: "",
   lastName: "",

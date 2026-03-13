@@ -7,7 +7,7 @@ interface userAtomBody {
   account_name: string;
   gender: string;
   membership_id: string;
-  age: number;
+  date_of_birth: string | null;
   KAP_member: boolean;
   YAC_member: boolean;
 }

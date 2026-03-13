@@ -90,7 +90,7 @@ const profilRequests = createTRPCRouter({
                   account_name,
                   first_name,
                   last_name,
-                  age,
+                  date_of_birth,
                   gender,
                   email_id,
                   created_at,

@@ -27,7 +27,7 @@ export interface FetchProfileResponse {
   account_name: string;
   first_name: string;
   last_name: string;
-  age: number;
+  date_of_birth: string | null;
   gender: string;
   email_id: string;
   created_at: string;

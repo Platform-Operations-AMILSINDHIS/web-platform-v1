@@ -130,10 +130,9 @@ const Signup: React.FC<SignupProps> = ({
             />
 
             <LabelledInput
-              type="number"
-              label="Enter your age"
-              name="age"
-              placeholder="0"
+              type="date"
+              label="Date of birth"
+              name="dateOfBirth"
             />
           </Flex>
 

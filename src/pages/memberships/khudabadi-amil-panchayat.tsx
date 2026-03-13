@@ -7,9 +7,15 @@ import KhudabadiAmilPanchayatMembershipForm from "~/components/forms/kap-members
 import UserBlockModal from "~/components/authentication/UserBlockModal";
 import { useUserAtom } from "~/lib/atom";
 import { RiErrorWarningFill } from "react-icons/ri";
+import { calculateAge } from "~/utils/helper";
 
 const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
   const [{ user }] = useUserAtom();
+  const userAge = user ? calculateAge(user.date_of_birth) : null;
+
+  // Under age when age is known and below 21; if DOB is null, allow through
+  const isUnderAge = userAge !== null && userAge < 21;
+  const isEligible = user && !isUnderAge && user.KAP_member !== true;
 
   return (
     <Layout title="KAP Membership Form">
@@ -39,9 +45,7 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
       )}
       <Box position="relative">
         <Box
-          display={
-            user && user.age >= 21 && user.KAP_member != true ? "none" : ""
-          }
+          display={isEligible ? "none" : ""}
           left="50%"
           top="50%"
           transform="translate(-50%,-95%)"
@@ -50,7 +54,7 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
           position="absolute"
         >
           {user ? (
-            user.age >= 21 && user.KAP_member != true ? (
+            isEligible ? (
               <></>
             ) : (
               <Flex
@@ -87,40 +91,10 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
           ) : (
             <UserBlockModal />
           )}
-
-          {/* <Flex
-              boxShadow="rgba(0, 0, 0, 0.24) 0px 3px 8px;"
-              border="1px solid"
-              borderColor="gray.200"
-              padding={5}
-              borderRadius={20}
-              bg={"white"}
-              justify="center"
-              align="center"
-              h={250}
-              w={500}
-            >
-              <Flex gap={2} px={10} align="center" flexDir="column">
-                <Text fontWeight={600} textAlign="center" fontSize="xl">
-                  Age Requirement not met
-                </Text>
-                <Text textAlign="center">
-                  You need to be atleast 21 years of age to be eligible for KAP
-                  member application
-                </Text>
-              </Flex>
-            </Flex>
-          )} */}
         </Box>
         <Box
-          filter={
-            user && user.age >= 21 && user.KAP_member != true ? "" : "blur(2px)"
-          }
-          _hover={
-            user && user.age >= 21 && user.KAP_member != true
-              ? {}
-              : { cursor: "not-allowed" }
-          }
+          filter={isEligible ? "" : "blur(2px)"}
+          _hover={isEligible ? {} : { cursor: "not-allowed" }}
         >
           {user ? <KhudabadiAmilPanchayatMembershipForm user={user} /> : <></>}
         </Box>

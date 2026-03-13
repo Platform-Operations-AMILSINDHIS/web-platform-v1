@@ -251,23 +251,23 @@ const formBufferData = createTRPCRouter({
       }
     }),
 
-  fetchApplicantAge: publicProcedure
+  fetchApplicantDOB: publicProcedure
     .input(Yup.object({ user_id: Yup.string() }))
     .mutation(async ({ input }) => {
       try {
         const { user_id } = input;
-        const { data: applicantAge, error: ErrorFetchingAge } = await supabase
+        const { data: applicantDOB, error: ErrorFetchingDOB } = await supabase
           .from("general_accounts")
-          .select("age")
+          .select("date_of_birth")
           .eq("id", user_id);
 
-        if (ErrorFetchingAge) throw ErrorFetchingAge;
+        if (ErrorFetchingDOB) throw ErrorFetchingDOB;
 
         return {
-          DB_response: applicantAge,
+          DB_response: applicantDOB,
         };
       } catch (err) {
-        console.log(`Error while fetching user_age: ${err}`);
+        console.log(`Error while fetching user date_of_birth: ${err}`);
       }
     }),
 

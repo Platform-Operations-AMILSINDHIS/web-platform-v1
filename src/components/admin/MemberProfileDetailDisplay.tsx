@@ -8,6 +8,7 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import { FetchProfileResponse } from "~/types/api";
+import { calculateAge } from "~/utils/helper";
 
 interface MemberProfileDetailDisplayProps {
   profileData: FetchProfileResponse;
@@ -111,7 +112,23 @@ const MemberProfileDetailDisplay: React.FC<MemberProfileDetailDisplayProps> = ({
                 Age
               </Text>
               <Text fontSize="md" color="gray.800" fontWeight="semibold">
-                {profileData.age} years
+                {profileData.date_of_birth
+                  ? `${calculateAge(profileData.date_of_birth) ?? "—"} years`
+                  : "N/A"}
+              </Text>
+            </Box>
+
+            <Box minW="160px">
+              <Text fontSize="sm" color="gray.500" fontWeight="medium">
+                Date of Birth
+              </Text>
+              <Text fontSize="md" color="gray.800" fontWeight="semibold">
+                {profileData.date_of_birth
+                  ? new Date(profileData.date_of_birth).toLocaleDateString(
+                      "en-IN",
+                      { day: "numeric", month: "short", year: "numeric" }
+                    )
+                  : "N/A"}
               </Text>
             </Box>
 

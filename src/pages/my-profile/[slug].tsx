@@ -28,7 +28,9 @@ import useAWS from "~/hooks/useAWS";
 import useProfile from "~/hooks/useProfile";
 import EditProfilePicture from "~/components/profile/EditProfilePicture";
 import EditMatrimonyImages from "~/components/profile/EditMatrimonyImages";
+import EditProfileModal from "~/components/profile/EditProfileModal";
 import { useUserAtom } from "~/lib/atom";
+import { calculateAge } from "~/utils/helper";
 
 const MyProfilePage = () => {
   const router = useRouter();
@@ -40,6 +42,11 @@ const MyProfilePage = () => {
     });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isEditProfileOpen,
+    onOpen: onEditProfileOpen,
+    onClose: onEditProfileClose,
+  } = useDisclosure();
   const [showMatrimonyProfile, setShowMatrimonyProfile] = useState(false);
 
   // Access control: only allow viewing own profile or admin
@@ -141,6 +148,34 @@ const MyProfilePage = () => {
   const lastName = profileData?.last_name || personalInfo?.lastName;
   const email = profileData?.email_id;
   const accountName = profileData?.account_name;
+
+  // Build pre-fill data for the edit profile modal.
+  // Priority: latest form submission personalInfo → general_accounts fields
+  const getEditModalInitialData = () => {
+    const latestForm = profileData?.form_buffer
+      ?.slice()
+      .sort(
+        (a: any, b: any) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      )[0];
+    const pi = latestForm?.submission?.personalInfo;
+
+    return {
+      first_name: profileData?.first_name ?? pi?.firstName ?? "",
+      last_name: profileData?.last_name ?? pi?.lastName ?? "",
+      account_name: profileData?.account_name ?? "",
+      gender:
+        profileData?.gender ??
+        pi?.gender ??
+        "",
+      date_of_birth:
+        profileData?.date_of_birth ??
+        pi?.dateOfBirth ??
+        pi?.dateAndTimeOfBirth ??
+        "",
+      email_id: profileData?.email_id ?? "",
+    };
+  };
 
   const handleMatrimonyProfileClick = () => {
     setShowMatrimonyProfile(!showMatrimonyProfile);
@@ -252,6 +287,16 @@ const MyProfilePage = () => {
                   </Button>
                   <Button
                     size="md"
+                    variant="outline"
+                    borderColor="#FF4D00"
+                    color="#FF4D00"
+                    _hover={{ bg: "#FF4D00", color: "white" }}
+                    onClick={onEditProfileOpen}
+                  >
+                    Edit Profile
+                  </Button>
+                  <Button
+                    size="md"
                     bg="#FF4D00"
                     color="white"
                     _hover={{ bg: "#E64500" }}
@@ -277,6 +322,16 @@ const MyProfilePage = () => {
                 <Text color="gray.600" fontSize="md">
                   {email}
                 </Text>
+                {profileData?.date_of_birth && (
+                  <Text color="gray.500" fontSize="sm" mt={1}>
+                    {new Date(profileData.date_of_birth).toLocaleDateString(
+                      "en-IN",
+                      { day: "numeric", month: "long", year: "numeric" }
+                    )}{" "}
+                    &middot;{" "}
+                    {calculateAge(profileData.date_of_birth)} years old
+                  </Text>
+                )}
               </Flex>
 
               <Divider borderColor="gray.200" borderWidth="1px" my={4} />
@@ -822,6 +877,17 @@ const MyProfilePage = () => {
           userName={`${firstName} ${lastName}`}
           onSuccess={handleProfilePictureSuccess}
         />
+
+        {/* Edit Profile Details Modal */}
+        {profileData && (
+          <EditProfileModal
+            isOpen={isEditProfileOpen}
+            onClose={onEditProfileClose}
+            userId={slug as string}
+            initialData={getEditModalInitialData()}
+            onSuccess={refetch}
+          />
+        )}
       </Box>
     </Layout>
   );

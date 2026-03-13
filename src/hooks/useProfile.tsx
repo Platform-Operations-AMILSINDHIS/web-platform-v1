@@ -12,7 +12,10 @@ interface ProfileData {
   account_name: string;
   first_name: string;
   last_name: string;
+  gender: string | null;
+  date_of_birth: string | null;
   membership_id: string | null;
+  created_at: string | null;
 
   // From application_s3_meta
   application_s3_meta: {
@@ -28,6 +31,7 @@ interface ProfileData {
     submission: any;
     isMember: any;
     status: string;
+    created_at: string;
   }[];
 }
 

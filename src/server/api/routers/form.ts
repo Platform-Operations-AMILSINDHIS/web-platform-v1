@@ -88,6 +88,22 @@ async function getUserIdByEmail(emailId: string): Promise<string | null> {
   return (data?.[0]?.id as string) ?? null;
 }
 
+async function syncDOBToAccount(
+  userId: string,
+  dob: string | Date | null | undefined
+): Promise<void> {
+  if (!userId || !dob) return;
+  const dobString =
+    dob instanceof Date ? dob.toISOString().slice(0, 10) : String(dob).slice(0, 10);
+  // Only update if date_of_birth is not already set on the account
+  const { error } = await supabase
+    .from("general_accounts")
+    .update({ date_of_birth: dobString })
+    .eq("id", userId)
+    .is("date_of_birth", null);
+  if (error) console.error("Error syncing DOB to account:", error);
+}
+
 export const formRouter = createTRPCRouter({
   kapMembership: publicProcedure
     .input(
@@ -131,6 +147,8 @@ export const formRouter = createTRPCRouter({
       });
 
       if (error) console.error(error);
+
+      await syncDOBToAccount(userId, formData.personalInfo.dateOfBirth);
 
       // // Membership ID Logic
       // const { lastKapMembershipIdNum, lastPatronMembershipIdNum } =
@@ -210,6 +228,9 @@ export const formRouter = createTRPCRouter({
       });
 
       if (error) console.error(error);
+
+      await syncDOBToAccount(userId, formData.personalInfo.dateOfBirth);
+
       await sendRawJsonDataWithPDF(
         "amilsindhis@gmail.com",
         formData,
@@ -268,6 +289,8 @@ export const formRouter = createTRPCRouter({
 
       if (error) console.error(error);
 
+      await syncDOBToAccount(userId, formData.personalInfo.dateOfBirth);
+
       // // Membership ID Logic
       // const { lastYacMembershipIdNum } = await getLastMembershipNums();
       // const membershipId = `Y${(lastYacMembershipIdNum + 1)
@@ -324,6 +347,8 @@ export const formRouter = createTRPCRouter({
       });
 
       if (error) console.error(error);
+
+      await syncDOBToAccount(userId, formData.personalInfo.dateOfBirth);
 
       // // Membership ID Logic
       // const { lastYacMembershipIdNum } = await getLastMembershipNums();
@@ -426,6 +451,13 @@ export const formRouter = createTRPCRouter({
       });
 
       if (BufferError) throw BufferError;
+
+      if (userId) {
+        await syncDOBToAccount(
+          userId,
+          formData.personalInfo.dateAndTimeOfBirth
+        );
+      }
 
       // Send response
       // await sendRawJsonDataOnly("akshat.sabavat@gmail.com", formData);

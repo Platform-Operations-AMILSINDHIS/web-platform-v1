@@ -20,7 +20,10 @@ const profileRouter = createTRPCRouter({
           account_name,
           first_name,
           last_name,
+          gender,
+          date_of_birth,
           membership_id,
+          created_at,
           application_s3_meta (
             s3_key,
             file_type,
@@ -31,7 +34,8 @@ const profileRouter = createTRPCRouter({
             formType,
             submission,
             isMember,
-            status
+            status,
+            created_at
           )
         `
         )
@@ -39,6 +43,38 @@ const profileRouter = createTRPCRouter({
         .single(); // expects only one row
       if (error) throw new TRPCClientError(error.message);
       return data;
+    }),
+
+  // Update general_accounts fields — email is explicitly excluded for safety
+  updateProfile: publicProcedure
+    .input(
+      Yup.object({
+        user_id: Yup.string().required("User ID is required"),
+        first_name: Yup.string().required("First name is required"),
+        last_name: Yup.string().required("Last name is required"),
+        account_name: Yup.string().required("Account name is required"),
+        gender: Yup.string().required("Gender is required"),
+        date_of_birth: Yup.string()
+          .required("Date of birth is required"),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const { user_id, first_name, last_name, account_name, gender, date_of_birth } =
+        input;
+
+      const { error } = await supabase
+        .from("general_accounts")
+        .update({
+          first_name,
+          last_name,
+          account_name,
+          gender,
+          date_of_birth,
+        })
+        .eq("id", user_id);
+
+      if (error) throw new TRPCClientError(error.message);
+      return { success: true };
     }),
 });
 

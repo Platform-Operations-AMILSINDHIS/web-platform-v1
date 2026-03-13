@@ -31,7 +31,7 @@ const Login: React.FC<LoginProps> = ({
     setUserAtom({
       user: {
         account_name: userObject.account_name,
-        age: userObject.age,
+        date_of_birth: userObject.date_of_birth,
         auth_id: userObject.auth_id,
         id: userObject.id,
         membership_id: userObject.membership_id,
@@ -64,7 +64,7 @@ const Login: React.FC<LoginProps> = ({
           id: userHit.id ?? "",
           account_name: userHit.account_name ?? "",
           membership_id: userHit.membership_id ?? "",
-          age: userHit.age ?? 0,
+          date_of_birth: userHit.date_of_birth ?? null,
           email_id: userHit.email_id ?? "",
           first_name: userHit.first_name ?? "",
           gender: userHit.gender ?? "",

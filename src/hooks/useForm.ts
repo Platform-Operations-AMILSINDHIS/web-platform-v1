@@ -20,7 +20,7 @@ export interface Values extends SignupValues {
   accountName: string;
   isKAPMember: false;
   isYACMember: false;
-  age: number;
+  dateOfBirth: string;
   gender: string;
   firstName: string;
   lastName: string;
@@ -49,7 +49,7 @@ export const initialValues: Values = {
   accountName: "",
   isKAPMember: false,
   isYACMember: false,
-  age: 0,
+  dateOfBirth: "",
   gender: "",
   firstName: "",
   lastName: "",

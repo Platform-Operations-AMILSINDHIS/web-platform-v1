@@ -4,6 +4,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { CloseIcon } from "@chakra-ui/icons";
+import { Values } from "~/hooks/useForm";
+import { calculateAge } from "~/utils/helper";
 import {
   Flex,
   Box,
@@ -87,7 +89,7 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({
         account_name: values.accountName,
         KAP_member: false,
         YAC_member: false,
-        age: values.age,
+        date_of_birth: values.dateOfBirth,
         gender: values.gender,
         first_name: values.firstName,
         last_name: values.lastName,
@@ -271,7 +273,9 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({
                 py={1}
                 borderRadius="full"
               >
-                {signUpFormValues.age} years
+                {signUpFormValues.dateOfBirth
+                  ? `${calculateAge(signUpFormValues.dateOfBirth) ?? "—"} years`
+                  : "DOB not set"}
               </Badge>
             </HStack>
 
