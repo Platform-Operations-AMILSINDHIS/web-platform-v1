@@ -1,7 +1,7 @@
 /* eslint-disable */
+import * as Yup from "yup";
 import supabase from "~/pages/api/auth/supabase";
 import { createTRPCRouter, publicProcedure } from "../trpc";
-import * as Yup from "yup";
 import {
   sendDeclineRequestMail,
   sendMatrimonyProfileMail,
@@ -47,21 +47,29 @@ const profilRequests = createTRPCRouter({
       }
     }),
 
-  fetchAllRequests: publicProcedure.query(async () => {
-    try {
-      const { data: RequestData, error: FetchError } = await supabase
-        .from("profile_requests")
-        .select("*");
+  fetchAllRequests: publicProcedure
+    .input(
+      Yup.object({
+        email_id: Yup.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      try {
+        const { email_id } = input;
+        const { data: RequestData, error: FetchError } = await supabase
+          .from("profile_requests")
+          .select("*")
+          .eq("email_id", email_id);
 
-      if (FetchError) throw FetchError;
+        if (FetchError) throw FetchError;
 
-      return {
-        requests: RequestData,
-      };
-    } catch (err) {
-      console.log(err);
-    }
-  }),
+        return {
+          requests: RequestData,
+        };
+      } catch (err) {
+        console.log(err);
+      }
+    }),
 
   fetchProfileDetails: publicProcedure
     .input(
@@ -77,8 +85,30 @@ const profilRequests = createTRPCRouter({
             await supabase
               .from("general_accounts")
               .select(
-                "account_name,first_name,last_name,age,gender,email_id,created_at,membership_id, KAP_member,YAC_member"
+                `
+                  id,
+                  account_name,
+                  first_name,
+                  last_name,
+                  age,
+                  gender,
+                  email_id,
+                  created_at,
+                  membership_id,
+                  KAP_member,
+                  YAC_member,
+
+                  application_s3_meta (
+                    s3_key,
+                    file_type,
+                    file_name,
+                    content_type,
+                    file_size
+                  )
+                `
               )
+              .eq("id", user_id)
+              .eq("application_s3_meta.file_type", "profile_image")
               .eq("id", user_id);
 
           if (ProfileFetchError) throw new Error(ProfileFetchError.details);
@@ -179,6 +209,101 @@ const profilRequests = createTRPCRouter({
       throw new Error("Unable to process request");
     }
   }),
+
+  fetchAllRequestsWithAvatars: publicProcedure
+    .input(
+      Yup.object({
+        email_id: Yup.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      try {
+        const { email_id } = input;
+
+        // Fetch all profile requests
+        const { data: RequestData, error: FetchError } = await supabase
+          .from("profile_requests")
+          .select("*")
+          .eq("email_id", email_id);
+
+        if (FetchError) throw FetchError;
+
+        if (!RequestData || RequestData.length === 0) {
+          return { requests: [] };
+        }
+
+        // Collect all unique matrimony IDs
+        const matrimonyIds = new Set<string>();
+        RequestData.forEach((req) => {
+          if (req.requestee_id) matrimonyIds.add(req.requestee_id);
+          if (req.requested_id) matrimonyIds.add(req.requested_id);
+        });
+
+        // Fetch matrimony_profiles to map matrimony_id -> user_id
+        const { data: matrimonyProfiles, error: matrimonyError } =
+          await supabase
+            .from("matrimony_profiles")
+            .select("matrimony_id, user_id")
+            .in("matrimony_id", Array.from(matrimonyIds));
+
+        if (matrimonyError) throw matrimonyError;
+
+        // Create matrimony_id -> user_id map
+        const matrimonyIdToUserId = new Map<string, string>();
+        matrimonyProfiles?.forEach((profile) => {
+          matrimonyIdToUserId.set(profile.matrimony_id, profile.user_id);
+        });
+
+        // Collect all user_ids
+        const userIds = Array.from(
+          new Set(matrimonyProfiles?.map((p) => p.user_id) || [])
+        );
+
+        // Fetch profile images for all users
+        const { data: s3MetaData, error: s3Error } = await supabase
+          .from("application_s3_meta")
+          .select("user_id, s3_key, file_type")
+          .in("user_id", userIds)
+          .eq("file_type", "profile_image");
+
+        if (s3Error) throw s3Error;
+
+        // Create user_id -> s3_key map
+        const userIdToS3Key = new Map<string, string>();
+        s3MetaData?.forEach((meta) => {
+          userIdToS3Key.set(meta.user_id, meta.s3_key);
+        });
+
+        // Enrich request data with avatar s3_keys
+        const enrichedRequests = RequestData.map((request) => {
+          const requesteeUserId = matrimonyIdToUserId.get(
+            request.requestee_id
+          );
+          const requestedUserId = matrimonyIdToUserId.get(
+            request.requested_id
+          );
+
+          return {
+            ...request,
+            requestee_user_id: requesteeUserId || null,
+            requested_user_id: requestedUserId || null,
+            requestee_profile_s3_key: requesteeUserId
+              ? userIdToS3Key.get(requesteeUserId) || null
+              : null,
+            requested_profile_s3_key: requestedUserId
+              ? userIdToS3Key.get(requestedUserId) || null
+              : null,
+          };
+        });
+
+        return {
+          requests: enrichedRequests,
+        };
+      } catch (err) {
+        console.log("Error fetching requests with avatars:", err);
+        throw new Error("Failed to fetch profile requests with avatars");
+      }
+    }),
 });
 
 export default profilRequests;

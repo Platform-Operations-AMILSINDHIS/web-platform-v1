@@ -1,6 +1,6 @@
 import { useDisclosure } from "@chakra-ui/react";
 import { FormikHelpers } from "formik";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { MatrimonyLoginValues } from "~/hooks/useForm";
 import { useUserAtom } from "~/lib/atom";
 
@@ -46,6 +46,8 @@ const ProfilePage = () => {
   >([]);
   const [profilesRequested, setProfilesRequested] = useState<string[]>([]);
 
+  console.log({ user });
+
   const handleFormSubmit = async (
     values: MatrimonyLoginValues,
     { setErrors }: FormikHelpers<MatrimonyLoginValues>
@@ -66,13 +68,18 @@ const ProfilePage = () => {
     setIsLoggedIn(true);
   };
 
-  const handleCloseSelectProfileModal = (
+  const handleCloseSelectProfileModal = async (
     setProfileMatID: (profileMatID: string | undefined) => void,
     setFetchStatus: (status: boolean) => void
   ) => {
     setFetchStatus(false);
     setProfileMatID("");
     onCloseSelectionModal();
+
+    // Refresh both lists
+    if (user) {
+      await Promise.all([fetchProfiles(), fetchProfileRequests(user.email_id)]);
+    }
   };
 
   const fetchProfiles = async () => {
@@ -82,8 +89,9 @@ const ProfilePage = () => {
     }
   };
 
-  const fetchProfileRequests = async () => {
-    const data = await handleFetchProfileRequests();
+  const fetchProfileRequests = async (email_id: string) => {
+    const data = await handleFetchProfileRequests(email_id);
+    console.log({ profile_requests_data: data });
 
     if (data.length > 0 && isLoggedIn) {
       // Create a new Set to efficiently store unique requested IDs
@@ -104,14 +112,19 @@ const ProfilePage = () => {
 
   useEffect(() => {
     const fetchPageData = async () => {
-      await fetchProfiles();
-      await fetchProfileRequests();
+      if (user && isLoggedIn) {
+        await fetchProfiles();
+        await fetchProfileRequests(user.email_id);
+      }
     };
 
     fetchPageData()
       .then(() => console.log("done"))
       .catch((err) => console.log(err));
-  }, [matrimonyProfiles, isLoggedIn]);
+    // Only refetch when user or isLoggedIn changes, not on matrimonyProfiles change
+  }, [isLoggedIn, user?.id]);
+
+  console.log({ matrimonyProfiles, profilesRequested });
 
   return (
     <ProfilesViewLayout

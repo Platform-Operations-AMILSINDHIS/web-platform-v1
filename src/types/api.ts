@@ -15,6 +15,14 @@ export interface FetchMembershipSubmissionResponse {
   submission: MatrimonyFormValues;
 }
 
+export interface S3Meta {
+  s3_key: string;
+  file_type: "profile_image" | "matrimony_image" | "document";
+  file_name: string;
+  content_type: string | null;
+  file_size: number | null;
+}
+
 export interface FetchProfileResponse {
   account_name: string;
   first_name: string;
@@ -26,6 +34,8 @@ export interface FetchProfileResponse {
   membership_id: string;
   KAP_member: boolean;
   YAC_member: boolean;
+
+  application_s3_meta: S3Meta[];
 }
 
 export interface MatrimonySubmissionVerificationServerResponse {
@@ -56,6 +66,12 @@ export interface MatrimonyProfilesFetchResponse {
   status: string;
   submission: MatrimonyFormValues;
   user_id: string;
+  application_s3_meta: {
+    s3_key: string;
+    file_type: string;
+    file_name: string;
+    content_type: string;
+  }[];
 }
 
 export interface MatrimonyIdFetchResponse {

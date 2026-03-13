@@ -10,6 +10,7 @@ import Link from "next/link";
 
 const MatrimonyFormSection = () => {
   const [{ user }] = useUserAtom();
+  console.log({ user });
   const {
     handleUserMatrimonySubmissionVerification,
     handleUserMatrimonyApprovalVerification,
@@ -37,6 +38,8 @@ const MatrimonyFormSection = () => {
     response_result
       ? setSubmissionVerified(response_result)
       : setNoPending(true);
+
+    console.log({ submission_status: response_data.user_matData });
 
     if (noPending) {
       const approval_verification_response =

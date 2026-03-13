@@ -34,6 +34,8 @@ const MembershipBufferTable: React.FC<MembershipBufferTableProps> = ({
       return fullName.includes(lowercaseSearchTerm);
     });
   }, [membershipBufferData, searchTerm]);
+
+  console.log({ filteredData });
   return (
     <TableLayout tableHeaders={formMembershipBufferDataTableHeaders}>
       {filteredData

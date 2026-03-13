@@ -7,11 +7,11 @@ const UserBlockModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [displayState, setDisplayState] = useState(false);
   const [authState, setAuthState] = useState<
-    "login" | "signup" | "forgotPassword"
+    "login" | "signup" | "forgotPassword" | "addprofilepic"
   >("login");
 
   const authStateHandleFunction = (
-    authType: "login" | "signup" | "forgotPassword"
+    authType: "login" | "signup" | "forgotPassword" | "addprofilepic"
   ) => {
     setAuthState(authType);
     onOpen();

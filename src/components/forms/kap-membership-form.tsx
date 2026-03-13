@@ -868,6 +868,11 @@ const MembershipDetailsSection: React.FC = () => {
   //   }
   // }, [paymentId]);
 
+  const canSubmit =
+    membershipInfo.membershipType !== null &&
+    paymentID.trim().length > 0 &&
+    !isPaying;
+
   return (
     <>
       <Heading>Type of Membership</Heading>
@@ -901,6 +906,8 @@ const MembershipDetailsSection: React.FC = () => {
                   ? 250000
                   : 0
               );
+              // reset payment ID
+              setPaymentID("");
             }}
           >
             <Icon size="40px" />
@@ -960,6 +967,7 @@ const MembershipDetailsSection: React.FC = () => {
       <Input
         placeholder="Enter Payment ID"
         value={paymentID}
+        isDisabled={membershipInfo.membershipType === null}
         onChange={(e) => setPaymentID(e.target.value)}
         mb="2rem"
       />
@@ -980,7 +988,11 @@ const MembershipDetailsSection: React.FC = () => {
           type="submit"
           // uncomment below disable logic when moving to razorpay
           // isDisabled={paymentAmount === 0 || isPaying}
-          isDisabled={paymentID === "" || isPaying}
+          isDisabled={
+            paymentID === "" ||
+            isPaying ||
+            membershipInfo.membershipType === null
+          }
           isLoading={isPaying}
           colorScheme="orange"
           leftIcon={<FaRupeeSign />}
