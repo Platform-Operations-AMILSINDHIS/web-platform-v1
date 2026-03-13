@@ -91,7 +91,7 @@ const awsRouter = createTRPCRouter({
       try {
         // declaring SES command
         const command = new SendEmailCommand({
-          Source: source, // must match your verified SES domain
+          Source: `${source}@amilsindhis.org`, // must match your verified SES domain
           Destination: {
             ToAddresses: [to],
           },
