@@ -289,13 +289,18 @@ export const PersonalInformationSection: React.FC<KAPFormSectionProps> = ({
   const [activeStep, setActiveStep] = useAtom(activeStepAtom);
   const [personalInfo, setPersonalInfo] = useAtom(personalInfoAtom);
 
+  // Pre-fill dateOfBirth from the user's account if available
+  const accountDOB = user?.date_of_birth
+    ? String(user.date_of_birth).slice(0, 10)
+    : undefined;
+
   // Merging form with existing login data
   const mergedInitialValues = {
     firstName: user?.first_name ?? personalInfo.firstName ?? "",
     middleName: personalInfo.middleName ?? "",
     lastName: user?.last_name ?? personalInfo.lastName ?? "",
     occupation: personalInfo.occupation ?? "",
-    dateOfBirth: personalInfo.dateOfBirth ?? "",
+    dateOfBirth: accountDOB ?? personalInfo.dateOfBirth ?? "",
     mobileNumber: personalInfo.mobileNumber ?? "",
     emailId: user?.email_id ?? personalInfo.emailId ?? "",
     maidenSurname: personalInfo.maidenSurname ?? "",
@@ -309,8 +314,10 @@ export const PersonalInformationSection: React.FC<KAPFormSectionProps> = ({
     if (!user) return true; // block until user loads
     if (user.KAP_member) return true; // lock all for KAP members
 
-    // Disable only specific fields that come from account
+    // Lock fields that are sourced from the core account profile
     const lockedFields = ["firstName", "lastName", "emailId"];
+    // Also lock dateOfBirth if the account already has it set (prevents age manipulation)
+    if (field === "dateOfBirth" && !!accountDOB) return true;
     return lockedFields.includes(field);
   };
 

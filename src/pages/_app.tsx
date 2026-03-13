@@ -6,6 +6,7 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { Provider as JotaiProvider } from "jotai";
 
 import { api } from "~/utils/api";
+import useUserStatusSync from "~/hooks/useUserStatusSync";
 
 import "~/styles/globals.css";
 import "~/styles/fonts.css";
@@ -23,6 +24,12 @@ const theme = extendTheme({
   },
 });
 
+/** Mounts app-wide effects that require Jotai + Chakra context. */
+const AppEffects = () => {
+  useUserStatusSync();
+  return null;
+};
+
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
@@ -31,6 +38,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
       <ChakraProvider theme={theme}>
         <JotaiProvider>
+          <AppEffects />
           <Component {...pageProps} />
         </JotaiProvider>
       </ChakraProvider>

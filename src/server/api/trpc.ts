@@ -14,6 +14,8 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 import { getServerAuthSession } from "~/server/auth";
 import { prisma } from "~/server/db";
+import supabase from "~/pages/api/auth/supabase";
+import { formatPDFAge } from "~/utils/helper";
 
 /**
  * 1. CONTEXT
@@ -128,3 +130,112 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
+
+/**
+ * Membership guard: verifies KAP_member = true for the given userId.
+ * Throws FORBIDDEN if not a KAP member.
+ */
+export const requireKAPMember = async (userId: string): Promise<void> => {
+  const { data, error } = await supabase
+    .from("general_accounts")
+    .select("KAP_member")
+    .eq("id", userId)
+    .single();
+
+  if (error || !data?.KAP_member) {
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: "This action requires an active KAP membership.",
+    });
+  }
+};
+
+/**
+ * Membership guard: verifies YAC_member = true for the given userId.
+ * Throws FORBIDDEN if not a YAC member.
+ */
+export const requireYACMember = async (userId: string): Promise<void> => {
+  const { data, error } = await supabase
+    .from("general_accounts")
+    .select("YAC_member")
+    .eq("id", userId)
+    .single();
+
+  if (error || !data?.YAC_member) {
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: "This action requires an active YAC membership.",
+    });
+  }
+};
+
+/**
+ * Membership guard: verifies the user has an approved matrimony profile.
+ * Throws FORBIDDEN if no profile found.
+ */
+export const requireMatrimonyMember = async (userId: string): Promise<void> => {
+  const { data, error } = await supabase
+    .from("matrimony_profiles")
+    .select("matrimony_id")
+    .eq("user_id", userId)
+    .maybeSingle();
+
+  if (error || !data) {
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: "This action requires an approved matrimony profile.",
+    });
+  }
+};
+
+/**
+ * Age eligibility guard: fetches the user's date_of_birth from the database
+ * and verifies it meets the age requirement for the given membership type.
+ * - KAP: age >= 21
+ * - YAC: age between 16 and 30 (inclusive)
+ * Throws FORBIDDEN if ineligible, BAD_REQUEST if DOB is missing.
+ */
+export const verifyAgeForMembership = async (
+  userId: string,
+  type: "KAP" | "YAC"
+): Promise<{ age: number; dob: string }> => {
+  const { data, error } = await supabase
+    .from("general_accounts")
+    .select("date_of_birth")
+    .eq("id", userId)
+    .single();
+
+  if (error || !data) {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: "User account not found.",
+    });
+  }
+
+  const dob = data.date_of_birth as string | null;
+  if (!dob) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message:
+        "Date of birth is not set on your account. Please update your profile before applying.",
+    });
+  }
+
+  const age = formatPDFAge(dob);
+
+  if (type === "KAP" && age < 21) {
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: `KAP membership requires age 21 or older. Your current age: ${age}.`,
+    });
+  }
+
+  if (type === "YAC" && (age < 16 || age > 30)) {
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: `YAC membership requires age between 16 and 30. Your current age: ${age}.`,
+    });
+  }
+
+  return { age, dob };
+};

@@ -3,6 +3,7 @@ import {
   createTRPCRouter,
   publicProcedure,
   protectedProcedure,
+  verifyAgeForMembership,
 } from "~/server/api/trpc";
 
 import {
@@ -129,6 +130,9 @@ export const formRouter = createTRPCRouter({
           message: "Email does not exist in user database",
         });
 
+      // Backend age eligibility check — KAP requires age >= 21
+      await verifyAgeForMembership(userId, "KAP");
+
       // check for duplicate payment ID
 
       const { data: paymentID, error: paymentIDfetchError } = await supabase
@@ -240,6 +244,9 @@ export const formRouter = createTRPCRouter({
           message: "Email does not exist in user database",
         });
 
+      // Backend age eligibility check — KAP requires age >= 21
+      await verifyAgeForMembership(userId, "KAP");
+
       const { error } = await supabase.from("form_buffer").insert({
         user_id: userId,
         formType: "KAP",
@@ -291,6 +298,9 @@ export const formRouter = createTRPCRouter({
           code: "NOT_FOUND",
           message: "Email does not exist in user database",
         });
+
+      // Backend age eligibility check — YAC requires age between 16 and 30
+      await verifyAgeForMembership(userId, "YAC");
 
       // check for duplicate payment ID
 
@@ -380,6 +390,9 @@ export const formRouter = createTRPCRouter({
           code: "NOT_FOUND",
           message: "Email does not exist in user database",
         });
+
+      // Backend age eligibility check — YAC requires age between 16 and 30
+      await verifyAgeForMembership(userId, "YAC");
 
       const { error } = await supabase.from("form_buffer").insert({
         user_id: userId,
@@ -485,12 +498,28 @@ export const formRouter = createTRPCRouter({
   matrimony: publicProcedure
     .input(Yup.object({ formData: matrimonyFormValuesSchema }))
     .mutation(async ({ input }) => {
-      // .mutation(({ input }) => {
       const { formData } = input;
 
       const userId = await getUserIdByEmail(formData.personalInfo.emailId);
 
       console.log({ formData });
+
+      // Backend check — prevent duplicate matrimony submissions for already-approved applicants
+      if (userId) {
+        const { data: existingMatrimonyProfile } = await supabase
+          .from("matrimony_profiles")
+          .select("matrimony_id")
+          .eq("user_id", userId)
+          .maybeSingle();
+
+        if (existingMatrimonyProfile) {
+          throw new TRPCError({
+            code: "CONFLICT",
+            message:
+              "You already have an approved matrimony profile. You cannot submit another application.",
+          });
+        }
+      }
 
       const { error: BufferError } = await supabase.from("form_buffer").insert({
         user_id: userId,

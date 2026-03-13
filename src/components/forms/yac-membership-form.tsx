@@ -287,13 +287,18 @@ export const PersonalInformationSection: React.FC<YACFormSectionProps> = ({
   const [activeStep, setActiveStep] = useAtom(activeStepAtom);
   const [personalInfo, setPersonalInfo] = useAtom(personalInfoAtom);
 
-  // ✅ Merge user info and local personal info
+  // Pre-fill dateOfBirth from the user's account if available
+  const accountDOB = user?.date_of_birth
+    ? String(user.date_of_birth).slice(0, 10)
+    : undefined;
+
+  // Merge user info and local personal info
   const mergedInitialValues = {
     firstName: user?.first_name ?? personalInfo.firstName ?? "",
     middleName: personalInfo.middleName ?? "",
     lastName: user?.last_name ?? personalInfo.lastName ?? "",
     occupation: personalInfo.occupation ?? "",
-    dateOfBirth: personalInfo.dateOfBirth ?? "",
+    dateOfBirth: accountDOB ?? personalInfo.dateOfBirth ?? "",
     mobileNumber: personalInfo.mobileNumber ?? "",
     emailId: user?.email_id ?? personalInfo.emailId ?? "",
     maidenSurname: personalInfo.maidenSurname ?? "",
@@ -302,13 +307,15 @@ export const PersonalInformationSection: React.FC<YACFormSectionProps> = ({
     mothersName: personalInfo.mothersName ?? "",
   };
 
-  // ✅ Determine disabled fields
+  // Determine disabled fields
   const isFieldDisabled = (field: string) => {
     if (!user) return true; // wait for user
     if (user.YAC_member) return true; // fully lock if YAC member
 
-    // lock fields that come from user account
+    // Lock fields sourced from the core account profile
     const lockedFields = ["firstName", "lastName", "emailId"];
+    // Also lock dateOfBirth if the account already has it set (prevents age manipulation)
+    if (field === "dateOfBirth" && !!accountDOB) return true;
     return lockedFields.includes(field);
   };
 

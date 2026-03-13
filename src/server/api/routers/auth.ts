@@ -6,6 +6,7 @@ import { TRPCError } from "@trpc/server";
 
 const authRouter = createTRPCRouter({
   login: publicProcedure
+    .input(Yup.object({ email: Yup.string().required(), password: Yup.string().required() }))
     .mutation(async ({ input }) => {
       try {
         const { email, password } = input;

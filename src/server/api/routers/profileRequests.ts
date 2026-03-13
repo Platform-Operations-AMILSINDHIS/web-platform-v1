@@ -1,12 +1,13 @@
 /* eslint-disable */
 import * as Yup from "yup";
 import supabase from "~/pages/api/auth/supabase";
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { createTRPCRouter, publicProcedure, requireMatrimonyMember } from "../trpc";
 import {
   sendDeclineRequestMail,
   sendMatrimonyProfileMail,
 } from "~/server/mail";
 import { matrimonyFormValuesSchema } from "~/utils/schemas";
+import { TRPCError } from "@trpc/server";
 
 const profilRequests = createTRPCRouter({
   addRequest: publicProcedure
@@ -29,6 +30,22 @@ const profilRequests = createTRPCRouter({
           email_id,
         } = input;
 
+        // Verify the requestee has an approved matrimony profile
+        if (requestee_id) {
+          const { data: requesteeProfile } = await supabase
+            .from("matrimony_profiles")
+            .select("matrimony_id")
+            .eq("matrimony_id", requestee_id)
+            .maybeSingle();
+
+          if (!requesteeProfile) {
+            throw new TRPCError({
+              code: "FORBIDDEN",
+              message: "You must have an approved matrimony profile to send profile requests.",
+            });
+          }
+        }
+
         const { data, error } = await supabase.from("profile_requests").insert([
           {
             requested_id: requested_id,
@@ -44,6 +61,11 @@ const profilRequests = createTRPCRouter({
         return { status: true };
       } catch (err) {
         console.log(err);
+        if (err instanceof TRPCError) throw err;
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to send profile request",
+        });
       }
     }),
 
