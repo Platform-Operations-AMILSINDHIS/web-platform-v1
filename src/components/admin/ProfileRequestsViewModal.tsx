@@ -1,10 +1,23 @@
-import { Avatar, Button, Flex, Icon, Text, useToast, VStack, HStack, Box } from "@chakra-ui/react";
+import {
+  Avatar,
+  Badge,
+  Box,
+  Button,
+  Divider,
+  Flex,
+  Icon,
+  Spinner,
+  Text,
+  Tooltip,
+  useToast,
+  VStack,
+} from "@chakra-ui/react";
+import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
 import ModalLayout from "~/layouts/ModalLayout";
 import { ProfileRequestsDataType } from "~/types/requests";
 import { HiArrowNarrowRight } from "react-icons/hi";
 import useServerActions from "~/hooks/useServerActions";
-import { useEffect, useState } from "react";
-import { api } from "~/utils/api";
+import { useState } from "react";
 import useAWS from "~/hooks/useAWS";
 
 interface ProfileRequestsViewModalProps {
@@ -13,10 +26,21 @@ interface ProfileRequestsViewModalProps {
   matrimonyProfileRequests: ProfileRequestsDataType[];
 }
 
-interface EnrichedRequest extends ProfileRequestsDataType {
-  requestee_profile_s3_key?: string | null;
-  requested_profile_s3_key?: string | null;
-}
+const formatRelativeTime = (dateString: string): string => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / (1000 * 60));
+  if (diffMins < 1) return "Just now";
+  if (diffMins < 60) return `${diffMins}m ago`;
+  const diffHours = Math.floor(diffMins / 60);
+  if (diffHours < 24) return `${diffHours}h ago`;
+  const diffDays = Math.floor(diffHours / 24);
+  if (diffDays === 1) return "Yesterday";
+  if (diffDays < 7) return `${diffDays}d ago`;
+  if (diffDays < 30) return `${Math.floor(diffDays / 7)}w ago`;
+  return `${Math.floor(diffDays / 30)}mo ago`;
+};
 
 const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
   handleModal,
@@ -30,36 +54,10 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
     handleDeclineMatrimonyProfileRequest,
   } = useServerActions();
   const toast = useToast();
-  const fetchRequestsWithAvatars =
-    api.profileRequests.fetchAllRequestsWithAvatars.useMutation();
 
-  const [acceptingRequest, setAcceptingRequest] = useState<boolean>(false);
-  const [decliningRequest, setDecliningRequest] = useState<boolean>(false);
-
-  const [acceptedRequestID, setAcceptedRequestID] = useState<number>(0);
-  const [declinedRequestID, setDeclinedRequestID] = useState<number>(0);
-
-  const [enrichedRequests, setEnrichedRequests] = useState<EnrichedRequest[]>(
-    []
-  );
-
-  // Fetch enriched requests with avatar data when modal opens
-  useEffect(() => {
-    if (modalState && matrimonyProfileRequests.length > 0) {
-      const email_id = matrimonyProfileRequests[0]?.email_id;
-      if (email_id) {
-        fetchRequestsWithAvatars
-          .mutateAsync({ email_id })
-          .then((data) => {
-            setEnrichedRequests(data?.requests || []);
-          })
-          .catch((err) => {
-            console.error("Error fetching requests with avatars:", err);
-            setEnrichedRequests(matrimonyProfileRequests);
-          });
-      }
-    }
-  }, [modalState, matrimonyProfileRequests]);
+  const [acceptingRequestId, setAcceptingRequestId] = useState<number | null>(null);
+  const [decliningRequestId, setDecliningRequestId] = useState<number | null>(null);
+  const [processedIds, setProcessedIds] = useState<Set<number>>(new Set());
 
   const handleAcceptRequest = async (
     matrimony_id: string,
@@ -68,40 +66,27 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
     requested_id: string,
     requested_name: string
   ) => {
-    setAcceptingRequest(true);
-    const matrimony_profile_data = await handleMatrimonyProfileFetch(
-      matrimony_id
-    );
-    
-    const userId = matrimony_profile_data[0]?.user_id;
-    if (!userId) {
-      console.error("Could not find user_id for matrimony profile:", matrimony_id);
-      setAcceptingRequest(false);
-      return;
-    }
-
-    const requested_profile_buffer_data = await handleFetchUserSubmission(
-      userId,
-      "MATRIMONY"
-    );
-
-    if (requested_profile_buffer_data) {
-      const { message, toastType } = await handleAcceptMatrimonyProfileRequest(
-        requested_profile_buffer_data.submission,
-        email_id,
-        id,
-        requested_id,
-        requested_name
-      );
-      setAcceptingRequest(false);
-      setAcceptedRequestID(id);
-      toast({
-        title: "Server Action",
-        description: message,
-        status: toastType as "success",
-        duration: 3000,
-        isClosable: true,
-      });
+    setAcceptingRequestId(id);
+    try {
+      const matrimony_profile_data = await handleMatrimonyProfileFetch(matrimony_id);
+      const userId = matrimony_profile_data[0]?.user_id;
+      if (!userId) {
+        toast({ title: "Error", description: "Could not find user profile", status: "error", duration: 3000 });
+        return;
+      }
+      const requested_profile_buffer_data = await handleFetchUserSubmission(userId, "MATRIMONY");
+      if (requested_profile_buffer_data) {
+        const { message, toastType } = await handleAcceptMatrimonyProfileRequest(
+          requested_profile_buffer_data.submission,
+          email_id, id, requested_id, requested_name
+        );
+        setProcessedIds((prev) => new Set(prev).add(id));
+        toast({ title: "Request Accepted", description: message, status: toastType as "success", duration: 3000, isClosable: true });
+      }
+    } catch (err) {
+      toast({ title: "Error", description: "Failed to accept request", status: "error", duration: 3000 });
+    } finally {
+      setAcceptingRequestId(null);
     }
   };
 
@@ -111,178 +96,201 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
     requested_id: string,
     requested_name: string
   ) => {
-    setDecliningRequest(true);
-    const { message, toastType } = await handleDeclineMatrimonyProfileRequest(
-      email_id,
-      id,
-      requested_id,
-      requested_name
-    );
-    setDecliningRequest(false);
-    setDeclinedRequestID(id);
-    toast({
-      title: "Server Action",
-      description: message,
-      status: toastType as "error",
-      duration: 3000,
-      isClosable: true,
-    });
+    setDecliningRequestId(id);
+    try {
+      const { message, toastType } = await handleDeclineMatrimonyProfileRequest(
+        email_id, id, requested_id, requested_name
+      );
+      setProcessedIds((prev) => new Set(prev).add(id));
+      toast({ title: "Request Declined", description: message, status: toastType as "error", duration: 3000, isClosable: true });
+    } catch (err) {
+      toast({ title: "Error", description: "Failed to decline request", status: "error", duration: 3000 });
+    } finally {
+      setDecliningRequestId(null);
+    }
   };
+
+  const pendingRequests = matrimonyProfileRequests.filter((r) => !processedIds.has(r.id));
 
   return (
     <ModalLayout
-      modalSize="3xl"
+      modalSize="4xl"
       handleModal={handleModal}
       modalState={modalState}
       modalHeader="Profile Requests"
     >
-      <Flex p={2} gap={3} flexDir="column">
-        {(enrichedRequests.length > 0
-          ? enrichedRequests
-          : matrimonyProfileRequests
-        ).map((request, index) => {
-          return (
-            <Box
-              key={index}
-              borderWidth="1px"
-              borderColor="gray.200"
-              borderRadius="lg"
-              p={4}
-              bg="white"
-              _hover={{ boxShadow: "md" }}
-              transition="all 0.2s"
-            >
-              <Flex justify="space-between" align="center" gap={4}>
-                {/* Requestee (person making the request) */}
-                <Flex flex={1} align="center" gap={3}>
-                  <ProfileAvatar
-                    s3_key={
-                      "requestee_profile_s3_key" in request
-                        ? request.requestee_profile_s3_key
-                        : undefined
-                    }
-                    name={request.requestee_name}
-                  />
-                  <VStack align="start" spacing={0}>
-                    <Text fontSize="md" fontWeight={600}>
-                      {request.requestee_name}
-                    </Text>
-                    <Text
-                      fontSize="xs"
-                      fontWeight={600}
-                      color="green.600"
-                      bg="green.50"
-                      px={2}
-                      py={0.5}
-                      borderRadius="md"
-                    >
-                      {request.requestee_id}
-                    </Text>
-                  </VStack>
-                </Flex>
-
-                {/* Arrow */}
-                <Icon
-                  as={HiArrowNarrowRight}
-                  boxSize={6}
-                  color="gray.400"
-                  flexShrink={0}
-                />
-
-                {/* Requested (person being requested) */}
-                <Flex flex={1} align="center" gap={3}>
-                  <ProfileAvatar
-                    s3_key={
-                      "requested_profile_s3_key" in request
-                        ? request.requested_profile_s3_key
-                        : undefined
-                    }
-                    name={request.requested_name}
-                  />
-                  <VStack align="start" spacing={0}>
-                    <Text fontSize="md" fontWeight={600}>
-                      {request.requested_name}
-                    </Text>
-                    <Text
-                      fontSize="xs"
-                      fontWeight={600}
-                      color="green.600"
-                      bg="green.50"
-                      px={2}
-                      py={0.5}
-                      borderRadius="md"
-                    >
-                      {request.requested_id}
-                    </Text>
-                  </VStack>
-                </Flex>
-
-                {/* Action Buttons */}
-                <HStack spacing={2} flexShrink={0}>
-                  <Button
-                    onClick={() =>
-                      void handleAcceptRequest(
-                        request.requested_id,
-                        request.email_id,
-                        request.id,
-                        request.requested_id,
-                        request.requested_name
-                      )
-                    }
-                    isLoading={
-                      acceptedRequestID === request.id ? acceptingRequest : false
-                    }
-                    size="sm"
-                    variant="none"
-                    bg={acceptedRequestID === request.id ? "green.500" : "white"}
-                    border="1px solid"
-                    borderColor="green.500"
-                    color={
-                      acceptedRequestID === request.id ? "white" : "green.500"
-                    }
-                    _hover={{
-                      bg: "green.500",
-                      color: "white",
-                    }}
-                  >
-                    {acceptedRequestID === request.id ? "Accepted" : "Accept"}
-                  </Button>
-                  <Button
-                    onClick={() =>
-                      void handleDeclineRequest(
-                        request.email_id,
-                        request.id,
-                        request.requested_id,
-                        request.requested_name
-                      )
-                    }
-                    isLoading={decliningRequest}
-                    size="sm"
-                    variant="none"
-                    bg={declinedRequestID === request.id ? "red.500" : "white"}
-                    border="1px solid"
-                    borderColor="red.500"
-                    color={declinedRequestID === request.id ? "white" : "red.500"}
-                    _hover={{ bg: "red.500", color: "white" }}
-                  >
-                    {declinedRequestID === request.id ? "Declined" : "Decline"}
-                  </Button>
-                </HStack>
-              </Flex>
-            </Box>
-          );
-        })}
-      </Flex>
-      <Flex my={2}>
-        <Button
-          _hover={{
-            bg: "gray.700",
-          }}
-          color="white"
-          bg="#0E0E11"
-          onClick={handleModal}
+      {/* Count header */}
+      <Flex align="center" gap={3} mb={4}>
+        <Badge
+          colorScheme={pendingRequests.length > 0 ? "orange" : "gray"}
+          variant="solid"
+          borderRadius="full"
+          fontSize="sm"
+          px={3}
+          py={1}
         >
-          Return
+          {pendingRequests.length} Pending
+        </Badge>
+        <Text fontSize="sm" color="gray.400">
+          {matrimonyProfileRequests.length} total request{matrimonyProfileRequests.length !== 1 ? "s" : ""}
+        </Text>
+      </Flex>
+
+      {/* Empty state */}
+      {pendingRequests.length === 0 && (
+        <Flex
+          direction="column"
+          align="center"
+          justify="center"
+          py={12}
+          gap={3}
+          color="gray.400"
+        >
+          <Text fontSize="3xl">💌</Text>
+          <Text fontWeight="semibold" fontSize="md" color="gray.500">
+            No pending profile requests
+          </Text>
+          <Text fontSize="sm">
+            All requests have been reviewed.
+          </Text>
+        </Flex>
+      )}
+
+      {/* Request cards */}
+      <Flex gap={3} flexDir="column">
+        {pendingRequests.map((request) => (
+          <Box
+            key={request.id}
+            borderWidth="1px"
+            borderColor="gray.200"
+            borderRadius="xl"
+            p={4}
+            bg="white"
+            boxShadow="sm"
+            _hover={{ boxShadow: "md", borderColor: "orange.200" }}
+            transition="all 0.2s"
+          >
+            {/* Timestamp + email row */}
+            <Flex justify="space-between" align="center" mb={3}>
+              <Flex align="center" gap={2}>
+                <Text fontSize="xs" color="gray.400">
+                  From:
+                </Text>
+                <Text fontSize="xs" color="gray.600" fontWeight="medium">
+                  {request.email_id}
+                </Text>
+              </Flex>
+              <Tooltip
+                label={new Date(request.created_at).toLocaleString("en-IN")}
+                placement="top"
+                hasArrow
+              >
+                <Text fontSize="xs" color="gray.400" cursor="default">
+                  {formatRelativeTime(request.created_at)}
+                </Text>
+              </Tooltip>
+            </Flex>
+
+            <Divider mb={3} borderColor="gray.100" />
+
+            {/* Two-column person layout */}
+            <Flex align="center" gap={3}>
+              {/* Requestee */}
+              <Flex flex={1} align="center" gap={3} minW={0}>
+                <ProfileAvatar
+                  s3_key={request.requestee_profile_s3_key ?? request.requestee_matrimony_s3_key ?? null}
+                  name={request.requestee_name}
+                  size="lg"
+                />
+                <VStack align="start" spacing={0.5} minW={0}>
+                  <Text fontSize="sm" fontWeight="semibold" color="gray.800" noOfLines={1}>
+                    {request.requestee_name}
+                  </Text>
+                  <Badge colorScheme="purple" variant="subtle" borderRadius="full" fontSize="xs" px={2}>
+                    {request.requestee_id}
+                  </Badge>
+                  <Text fontSize="xs" color="gray.400">Requester</Text>
+                </VStack>
+              </Flex>
+
+              {/* Arrow */}
+              <Flex flexDir="column" align="center" flexShrink={0} gap={1}>
+                <Icon as={HiArrowNarrowRight} boxSize={6} color="orange.400" />
+                <Text fontSize="9px" color="gray.300" textTransform="uppercase" letterSpacing="wide">
+                  requested
+                </Text>
+              </Flex>
+
+              {/* Requested */}
+              <Flex flex={1} align="center" gap={3} minW={0}>
+                <ProfileAvatar
+                  s3_key={request.requested_profile_s3_key ?? request.requested_matrimony_s3_key ?? null}
+                  name={request.requested_name}
+                  size="lg"
+                />
+                <VStack align="start" spacing={0.5} minW={0}>
+                  <Text fontSize="sm" fontWeight="semibold" color="gray.800" noOfLines={1}>
+                    {request.requested_name}
+                  </Text>
+                  <Badge colorScheme="green" variant="subtle" borderRadius="full" fontSize="xs" px={2}>
+                    {request.requested_id}
+                  </Badge>
+                  <Text fontSize="xs" color="gray.400">Requested Profile</Text>
+                </VStack>
+              </Flex>
+
+              {/* Action buttons */}
+              <Flex flexDir="column" gap={2} flexShrink={0}>
+                <Button
+                  size="sm"
+                  colorScheme="green"
+                  leftIcon={acceptingRequestId === request.id ? <Spinner size="xs" /> : <CheckIcon />}
+                  isLoading={acceptingRequestId === request.id}
+                  isDisabled={decliningRequestId === request.id}
+                  onClick={() =>
+                    void handleAcceptRequest(
+                      request.requested_id,
+                      request.email_id,
+                      request.id,
+                      request.requested_id,
+                      request.requested_name
+                    )
+                  }
+                >
+                  Accept
+                </Button>
+                <Button
+                  size="sm"
+                  colorScheme="red"
+                  variant="outline"
+                  leftIcon={decliningRequestId === request.id ? <Spinner size="xs" /> : <CloseIcon boxSize={2.5} />}
+                  isLoading={decliningRequestId === request.id}
+                  isDisabled={acceptingRequestId === request.id}
+                  onClick={() =>
+                    void handleDeclineRequest(
+                      request.email_id,
+                      request.id,
+                      request.requested_id,
+                      request.requested_name
+                    )
+                  }
+                >
+                  Decline
+                </Button>
+              </Flex>
+            </Flex>
+          </Box>
+        ))}
+      </Flex>
+
+      <Flex my={3} justify="flex-end">
+        <Button
+          variant="ghost"
+          color="gray.500"
+          onClick={handleModal}
+          size="sm"
+        >
+          Close
         </Button>
       </Flex>
     </ModalLayout>
@@ -292,19 +300,22 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
 interface ProfileAvatarProps {
   s3_key?: string | null;
   name: string;
+  size?: string;
 }
 
-const ProfileAvatar: React.FC<ProfileAvatarProps> = ({ s3_key, name }) => {
+const ProfileAvatar: React.FC<ProfileAvatarProps> = ({ s3_key, name, size = "md" }) => {
   const { profileImageSignedURL } = useAWS({
     s3_key: s3_key || undefined,
   });
 
   return (
     <Avatar
-      size="md"
+      size={size}
       src={profileImageSignedURL || undefined}
       name={name}
-      bg="purple.500"
+      bg="purple.400"
+      borderRadius="lg"
+      flexShrink={0}
     />
   );
 };

@@ -80,6 +80,9 @@ const useServerActions = () => {
   const fetchMatProfileRequestsMut =
     api.profileRequests.fetchAllRequests.useMutation();
 
+  const fetchAllProfileRequestsAdminMut =
+    api.profileRequests.fetchAllRequestsAdmin.useMutation();
+
   const { refetch: fetchAllBufferResponse } =
     api.formBuffer.fetchAllBuffer.useQuery(undefined, {
       enabled: false,
@@ -405,6 +408,11 @@ const useServerActions = () => {
     return profileRequests as ProfileRequestsFetchResponse[];
   };
 
+  const handleFetchAllProfileRequestsAdmin = async (): Promise<ProfileRequestsFetchResponse[]> => {
+    const data = await fetchAllProfileRequestsAdminMut.mutateAsync();
+    return (data?.requests ?? []) as ProfileRequestsFetchResponse[];
+  };
+
   const handleAcceptMatrimonyProfileRequest = async (
     submission: MatrimonyFormValues,
     email_id: string,
@@ -502,6 +510,7 @@ const useServerActions = () => {
     handleMatrimonyIdFetch,
     handleMatrimonyRequestProfile,
     handleFetchProfileRequests,
+    handleFetchAllProfileRequestsAdmin,
     handleAcceptMatrimonyProfileRequest,
     handleDeclineMatrimonyProfileRequest,
     handleDeleteMatrimonyProfile,

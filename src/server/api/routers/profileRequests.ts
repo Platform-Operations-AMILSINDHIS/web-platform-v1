@@ -326,6 +326,85 @@ const profilRequests = createTRPCRouter({
         throw new Error("Failed to fetch profile requests with avatars");
       }
     }),
+
+  fetchAllRequestsAdmin: publicProcedure.mutation(async () => {
+    try {
+      // Fetch ALL profile requests — no email_id filter (admin view)
+      const { data: RequestData, error: FetchError } = await supabase
+        .from("profile_requests")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (FetchError) throw FetchError;
+      if (!RequestData || RequestData.length === 0) return { requests: [] };
+
+      // Collect all unique matrimony IDs
+      const matrimonyIds = new Set<string>();
+      RequestData.forEach((req) => {
+        if (req.requestee_id) matrimonyIds.add(req.requestee_id);
+        if (req.requested_id) matrimonyIds.add(req.requested_id);
+      });
+
+      // Fetch matrimony_profiles to map matrimony_id -> user_id
+      const { data: matrimonyProfiles, error: matrimonyError } = await supabase
+        .from("matrimony_profiles")
+        .select("matrimony_id, user_id")
+        .in("matrimony_id", Array.from(matrimonyIds));
+
+      if (matrimonyError) throw matrimonyError;
+
+      const matrimonyIdToUserId = new Map<string, string>();
+      matrimonyProfiles?.forEach((p) => {
+        matrimonyIdToUserId.set(p.matrimony_id, p.user_id);
+      });
+
+      const userIds = Array.from(new Set(matrimonyProfiles?.map((p) => p.user_id) || []));
+
+      if (userIds.length === 0) {
+        return { requests: RequestData.map((r) => ({ ...r, requestee_profile_s3_key: null, requested_profile_s3_key: null, requestee_matrimony_s3_key: null, requested_matrimony_s3_key: null })) };
+      }
+
+      // Fetch profile images and matrimony images for all users
+      const { data: s3MetaData, error: s3Error } = await supabase
+        .from("application_s3_meta")
+        .select("user_id, s3_key, file_type")
+        .in("user_id", userIds)
+        .in("file_type", ["profile_image", "matrimony_image"]);
+
+      if (s3Error) throw s3Error;
+
+      const userIdToProfileKey = new Map<string, string>();
+      const userIdToMatrimonyKey = new Map<string, string>();
+      s3MetaData?.forEach((meta) => {
+        if (meta.file_type === "profile_image") userIdToProfileKey.set(meta.user_id, meta.s3_key);
+        if (meta.file_type === "matrimony_image" && !userIdToMatrimonyKey.has(meta.user_id)) {
+          userIdToMatrimonyKey.set(meta.user_id, meta.s3_key);
+        }
+      });
+
+      const enrichedRequests = RequestData.map((request) => {
+        const requesteeUserId = matrimonyIdToUserId.get(request.requestee_id);
+        const requestedUserId = matrimonyIdToUserId.get(request.requested_id);
+        return {
+          ...request,
+          requestee_user_id: requesteeUserId || null,
+          requested_user_id: requestedUserId || null,
+          requestee_profile_s3_key: requesteeUserId ? userIdToProfileKey.get(requesteeUserId) || null : null,
+          requested_profile_s3_key: requestedUserId ? userIdToProfileKey.get(requestedUserId) || null : null,
+          requestee_matrimony_s3_key: requesteeUserId ? userIdToMatrimonyKey.get(requesteeUserId) || null : null,
+          requested_matrimony_s3_key: requestedUserId ? userIdToMatrimonyKey.get(requestedUserId) || null : null,
+        };
+      });
+
+      return { requests: enrichedRequests };
+    } catch (err) {
+      console.error("Error fetching all requests (admin):", err);
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Failed to fetch all profile requests",
+      });
+    }
+  }),
 });
 
 export default profilRequests;

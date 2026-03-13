@@ -1,7 +1,9 @@
 "use-client";
 import {
+  Badge,
   Box,
   Button,
+  Divider,
   Flex,
   Spinner,
   Text,
@@ -10,10 +12,10 @@ import {
 import { useEffect, useState } from "react";
 import BufferSearch from "~/components/admin/BufferSearch";
 import DropDown from "~/components/admin/DropDown";
+import AdminHelpDrawer from "~/components/admin/AdminHelpDrawer";
 import MatrimonyBufferTable from "~/components/admin/MatrimonyBufferTable";
 import MembershipBufferTable from "~/components/admin/MembershipBufferTable";
 import ProfileRequestsViewModal from "~/components/admin/ProfileRequestsViewModal";
-import { btnThemeLight } from "~/components/buttons/BtnThemes";
 import useRealTime from "~/hooks/useRealTime";
 import useServerActions from "~/hooks/useServerActions";
 import AdminPageLayout from "~/layouts/AdminPageLayout";
@@ -26,6 +28,22 @@ import {
   MembershipBufferDataType,
 } from "~/types/tables/dataBuffer";
 
+interface LabeledDropDownProps {
+  label: string;
+  isSelected: string;
+  setIsSelected: (v: string) => void;
+  menuItems: string[];
+}
+
+const LabeledDropDown: React.FC<LabeledDropDownProps> = ({ label, isSelected, setIsSelected, menuItems }) => (
+  <Flex flexDir="column" gap={1}>
+    <Text fontSize="10px" fontWeight="semibold" color="gray.400" textTransform="uppercase" letterSpacing="wider" px={0.5}>
+      {label}
+    </Text>
+    <DropDown isSelected={isSelected} setIsSelected={setIsSelected} MenuItems={menuItems} />
+  </Flex>
+);
+
 const AdminPage = () => {
   const [{ admin }, setAdminAtom] = useAdminAtom();
   const {
@@ -36,18 +54,12 @@ const AdminPage = () => {
   const {
     handleMemberBufferFetch,
     handleMatrimonyBufferFetch,
-    handleFetchProfileRequests,
+    handleFetchAllProfileRequestsAdmin,
   } = useServerActions();
 
-  const [membershipBufferData, setMembershipBufferData] = useState<
-    MembershipBufferDataType[]
-  >([]);
-  const [matrimonyBufferData, setMatrimonyBufferData] = useState<
-    MatrimonyBufferDataType[]
-  >([]);
-  const [profileRequestsData, setProfileRequestsData] = useState<
-    ProfileRequestsDataType[]
-  >([]);
+  const [membershipBufferData, setMembershipBufferData] = useState<MembershipBufferDataType[]>([]);
+  const [matrimonyBufferData, setMatrimonyBufferData] = useState<MatrimonyBufferDataType[]>([]);
+  const [profileRequestsData, setProfileRequestsData] = useState<ProfileRequestsDataType[]>([]);
 
   const [isLoadingMemBuf, setIsLoadingMemBuf] = useState<boolean>(false);
   const [isLoadingMatBuf, setIsLoadingMatBuf] = useState<boolean>(false);
@@ -61,21 +73,19 @@ const AdminPage = () => {
   const handleFetch = async () => {
     const allMemBufferData = await handleMemberBufferFetch();
     const allMatBufferData = await handleMatrimonyBufferFetch();
-    const allProfileRequestsData = await handleFetchProfileRequests();
+    const allProfileRequestsData = await handleFetchAllProfileRequestsAdmin();
     setMatrimonyBufferData(allMatBufferData);
     setMembershipBufferData(allMemBufferData);
     setProfileRequestsData(allProfileRequestsData);
   };
 
-  // seperated calls for real time reaction to changes made to specific tables
-  // please refactor and optimize code below for later stages
   const handleRealTimeMemAndMatDataFetch = async () => {
     const allMemBufferData = await handleMemberBufferFetch();
     setMembershipBufferData(allMemBufferData);
   };
 
   const handleRealTimeProfileDataFetch = async () => {
-    const allProfileRequestsData = await handleFetchProfileRequests();
+    const allProfileRequestsData = await handleFetchAllProfileRequestsAdmin();
     setProfileRequestsData(allProfileRequestsData);
   };
 
@@ -91,109 +101,118 @@ const AdminPage = () => {
     async function f() {
       await handleFetch();
     }
-
     f().catch(console.error);
   }, []);
 
   useEffect(() => {
-    if (membershipBufferData && membershipBufferData.length > 0) {
-      setIsLoadingMemBuf(false);
-    } else {
-      setIsLoadingMemBuf(true);
-    }
+    setIsLoadingMemBuf(!(membershipBufferData && membershipBufferData.length > 0));
   }, [membershipBufferData]);
 
   useEffect(() => {
-    if (matrimonyBufferData && matrimonyBufferData.length > 0) {
-      setIsLoadingMatBuf(false);
-    } else {
-      setIsLoadingMatBuf(true);
-    }
+    setIsLoadingMatBuf(!(matrimonyBufferData && matrimonyBufferData.length > 0));
   }, [matrimonyBufferData]);
 
   return (
     <AdminPageLayout handleAdminLogout={handleAdminLogout} admin={admin}>
-      <Flex justify="space-between" align="center" w="full" mb={8}>
-        <BufferSearch setSearchTerm={setSearchTerm} />
-        <Flex alignItems="center" gap={3}>
-          <Box position="relative">
-            <Box
-              fontSize="small"
-              borderRadius={5}
-              p={1}
-              px={2}
-              color="white"
-              fontWeight={600}
-              top={-3}
-              left={-2}
-              bg="#FF4D00"
-              position="absolute"
-              zIndex={1}
-            >
-              {profileRequestsData.length}
-            </Box>
-            <Button
-              onClick={onOpenProfileRequestsModal}
-              style={btnThemeLight}
-              size="md"
-              fontSize="small"
-            >
-              Profile Requests
-            </Button>
-            <ProfileRequestsViewModal
-              matrimonyProfileRequests={profileRequestsData}
-              handleModal={onCloseProfileRequestsModal}
-              modalState={isProfileRequestsModalOpen}
-            />
+      {/* Toolbar */}
+      <Box
+        bg="white"
+        borderRadius="xl"
+        border="1px solid"
+        borderColor="gray.100"
+        boxShadow="sm"
+        px={5}
+        py={4}
+        mb={6}
+      >
+        {/* Row 1: Search + primary controls */}
+        <Flex justify="space-between" align="flex-end" gap={4} flexWrap="wrap">
+          <Box flex={1} minW="240px" maxW="380px">
+            <Text fontSize="10px" fontWeight="semibold" color="gray.400" textTransform="uppercase" letterSpacing="wider" mb={1} px={0.5}>
+              Search
+            </Text>
+            <BufferSearch setSearchTerm={setSearchTerm} />
           </Box>
-          <DropDown
-            isSelected={isSelected}
-            setIsSelected={setIsSelected}
-            MenuItems={["Matrimony", "Memberships"]}
-          />
-          <DropDown
-            isSelected={statusType}
-            setIsSelected={setStatusType}
-            MenuItems={["Approved", "Pending", "All"]}
-          />
-          {isSelected === "Memberships" ? (
-            <Flex align="center" gap={2}>
-              <Text
-                borderRadius={5}
-                py={2.5}
-                px={4}
-                fontWeight={700}
-                bg="yellow.200"
-                fontSize="sm"
-              >
-                {`Member Applicants control →`}
+
+          <Flex align="flex-end" gap={3} flexWrap="wrap">
+            {/* Profile Requests button with badge */}
+            <Flex flexDir="column" gap={1}>
+              <Text fontSize="10px" fontWeight="semibold" color="gray.400" textTransform="uppercase" letterSpacing="wider" px={0.5}>
+                Requests
               </Text>
-              <DropDown
+              <Button
+                onClick={onOpenProfileRequestsModal}
+                size="md"
+                fontSize="sm"
+                variant="outline"
+                borderColor="gray.200"
+                color="gray.700"
+                _hover={{ borderColor: "#FF4D00", color: "#FF4D00" }}
+                transition="all 0.15s"
+                rightIcon={
+                  <Badge
+                    colorScheme={profileRequestsData.length > 0 ? "orange" : "gray"}
+                    borderRadius="full"
+                    fontSize="xs"
+                    px={1.5}
+                  >
+                    {profileRequestsData.length}
+                  </Badge>
+                }
+              >
+                Profile Requests
+              </Button>
+            </Flex>
+
+            <Divider orientation="vertical" h="52px" borderColor="gray.200" />
+
+            <LabeledDropDown
+              label="View"
+              isSelected={isSelected}
+              setIsSelected={setIsSelected}
+              menuItems={["Memberships", "Matrimony"]}
+            />
+            <LabeledDropDown
+              label="Status"
+              isSelected={statusType}
+              setIsSelected={setStatusType}
+              menuItems={["All", "Approved", "Pending"]}
+            />
+          </Flex>
+        </Flex>
+
+        {/* Row 2: Member-specific filters (only when Memberships is selected) */}
+        {isSelected === "Memberships" && (
+          <>
+            <Divider my={3} borderColor="gray.100" />
+            <Flex align="flex-end" gap={3} flexWrap="wrap">
+              <Text fontSize="xs" color="gray.400" fontWeight="medium" pb={2} mr={1}>
+                Member filters:
+              </Text>
+              <LabeledDropDown
+                label="Applicant Type"
                 isSelected={applicantType}
                 setIsSelected={setapplicantType}
-                MenuItems={[
-                  "New applicants",
-                  "Current Members",
-                  "All applicants",
-                ]}
+                menuItems={["All applicants", "New applicants", "Current Members"]}
               />
-              <DropDown
+              <LabeledDropDown
+                label="Membership"
                 isSelected={membershipType}
                 setIsSelected={setMembershipType}
-                MenuItems={["KAP members", "YAC members", "All members"]}
+                menuItems={["All members", "KAP members", "YAC members"]}
               />
             </Flex>
-          ) : (
-            <></>
-          )}
-        </Flex>
-      </Flex>
+          </>
+        )}
+      </Box>
+
+      {/* Table area */}
       {isSelected === "Memberships" ? (
         <Box>
           {isLoadingMemBuf ? (
-            <Flex gap={2} align="center">
-              <Spinner color="#FF4D00" boxSize={4} />
-              <Text>Fetching Data...</Text>
+            <Flex gap={3} align="center" py={10} justify="center">
+              <Spinner color="#FF4D00" boxSize={5} />
+              <Text color="gray.500" fontSize="sm">Loading membership applications…</Text>
             </Flex>
           ) : (
             <MembershipBufferTable
@@ -208,7 +227,10 @@ const AdminPage = () => {
       ) : (
         <Box>
           {isLoadingMatBuf ? (
-            <Spinner />
+            <Flex gap={3} align="center" py={10} justify="center">
+              <Spinner color="#FF4D00" boxSize={5} />
+              <Text color="gray.500" fontSize="sm">Loading matrimony applications…</Text>
+            </Flex>
           ) : (
             <MatrimonyBufferTable
               searchTerm={searchTerm}
@@ -218,6 +240,14 @@ const AdminPage = () => {
           )}
         </Box>
       )}
+
+      <ProfileRequestsViewModal
+        matrimonyProfileRequests={profileRequestsData}
+        handleModal={onCloseProfileRequestsModal}
+        modalState={isProfileRequestsModalOpen}
+      />
+
+      <AdminHelpDrawer />
     </AdminPageLayout>
   );
 };

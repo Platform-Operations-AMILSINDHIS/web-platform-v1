@@ -788,6 +788,7 @@ const MembershipDetailsSection: React.FC = () => {
 
   const [paymentAmount, setPaymentAmount] = useState<number>(0);
   const [isPaying, setIsPaying] = useState<boolean>(false);
+  const [photoConsent, setPhotoConsent] = useState<boolean>(false);
 
   // comment/delete state out below if moving to Razorpay gateway partially/completely respectively
   const [paymentID, setPaymentID] = useState<string>("");
@@ -981,6 +982,16 @@ const MembershipDetailsSection: React.FC = () => {
 
       <Spacer h="2rem" />
 
+      <Checkbox
+        isChecked={photoConsent}
+        onChange={(e) => setPhotoConsent(e.target.checked)}
+        colorScheme="orange"
+        mb="2rem"
+      >
+        I consent to my photographs being used for matrimony-related purposes by
+        The Khudabadi Amil Panchayat.
+      </Checkbox>
+
       <Flex w="100%" justifyContent="space-between">
         <Button
           colorScheme="orange"
@@ -993,24 +1004,17 @@ const MembershipDetailsSection: React.FC = () => {
 
         <Button
           type="submit"
-          // uncomment below disable logic when moving to razorpay
-          // isDisabled={paymentAmount === 0 || isPaying}
           isDisabled={
             paymentID === "" ||
             isPaying ||
-            membershipInfo.membershipType === null
+            membershipInfo.membershipType === null ||
+            !photoConsent
           }
           isLoading={isPaying}
           colorScheme="orange"
           leftIcon={<FaRupeeSign />}
           size="lg"
           onClick={() => {
-            // setIsPaying(true);
-
-            // uncomment logic below when moving to razor pay dashboard
-            // void handlePayment(paymentAmount, "kap_membership").catch(
-            //   console.error
-            // );
             setIsPaying(true);
             handleSubmit();
           }}
@@ -1027,6 +1031,7 @@ const ConfirmDetailsSection: React.FC<KAPFormSectionProps> = () => {
   const formMut = api.form.kapMembershipPrev.useMutation(); // using a different mutation for prev member form submission
   const [activeStep, setActiveStep] = useAtom(activeStepAtom);
   const [submittingState, setSubmittingState] = useState<boolean>(false);
+  const [photoConsent, setPhotoConsent] = useState<boolean>(false);
 
   const [formState] = useAtom(atom((get) => get(kapFormAtom)));
 
@@ -1186,6 +1191,17 @@ const ConfirmDetailsSection: React.FC<KAPFormSectionProps> = () => {
           </AlertDescription>
         </Box>
       </Alert>
+
+      <Checkbox
+        isChecked={photoConsent}
+        onChange={(e) => setPhotoConsent(e.target.checked)}
+        colorScheme="orange"
+        mb="6"
+      >
+        I consent to my photographs being used for matrimony-related purposes by
+        The Khudabadi Amil Panchayat.
+      </Checkbox>
+
       <Flex w="100%" justifyContent="space-between">
         <Button
           colorScheme="orange"
@@ -1201,6 +1217,7 @@ const ConfirmDetailsSection: React.FC<KAPFormSectionProps> = () => {
           size="lg"
           onClick={handleSubmit}
           isLoading={submittingState}
+          isDisabled={!photoConsent}
         >
           Confirm & Submit
         </Button>

@@ -763,6 +763,7 @@ export const PaymentSection: React.FC<YACFormSectionProps> = ({
 
   const [isPaying, setIsPaying] = useState<boolean>(false);
   const [paymentID, setPaymentID] = useState<string>("");
+  const [photoConsent, setPhotoConsent] = useState<boolean>(false);
 
   const handleSubmit = async () => {
     setIsPaying(true);
@@ -854,6 +855,16 @@ export const PaymentSection: React.FC<YACFormSectionProps> = ({
 
       <Spacer h="2rem" />
 
+      <Checkbox
+        isChecked={photoConsent}
+        onChange={(e) => setPhotoConsent(e.target.checked)}
+        colorScheme="orange"
+        mb="2rem"
+      >
+        I consent to my photographs being used for matrimony-related purposes by
+        The Khudabadi Amil Panchayat.
+      </Checkbox>
+
       <Flex w="100%" justifyContent="space-between">
         <Button
           colorScheme="orange"
@@ -867,7 +878,7 @@ export const PaymentSection: React.FC<YACFormSectionProps> = ({
 
         <Button
           onClick={() => void handleSubmit()}
-          isDisabled={paymentID === "" || isPaying}
+          isDisabled={paymentID === "" || isPaying || !photoConsent}
           isLoading={isPaying}
           colorScheme="orange"
           leftIcon={<FaRupeeSign />}
@@ -885,6 +896,7 @@ const ConfirmDetailsSection: React.FC<YACFormSectionProps> = () => {
   const formMut = api.form.yacMembershipPrev.useMutation(); // using a different mutation for prev member form submission
   const [activeStep, setActiveStep] = useAtom(activeStepAtom);
   const [submittingState, setSubmittingState] = useState<boolean>(false);
+  const [photoConsent, setPhotoConsent] = useState<boolean>(false);
 
   const [formState] = useAtom(atom((get) => get(yacFormAtom)));
 
@@ -1044,6 +1056,17 @@ const ConfirmDetailsSection: React.FC<YACFormSectionProps> = () => {
           </AlertDescription>
         </Box>
       </Alert>
+
+      <Checkbox
+        isChecked={photoConsent}
+        onChange={(e) => setPhotoConsent(e.target.checked)}
+        colorScheme="orange"
+        mb="6"
+      >
+        I consent to my photographs being used for matrimony-related purposes by
+        The Khudabadi Amil Panchayat.
+      </Checkbox>
+
       <Flex w="100%" justifyContent="space-between">
         <Button
           colorScheme="orange"
@@ -1059,6 +1082,7 @@ const ConfirmDetailsSection: React.FC<YACFormSectionProps> = () => {
           size="lg"
           onClick={handleSubmit}
           isLoading={submittingState}
+          isDisabled={!photoConsent}
         >
           Confirm & Submit
         </Button>

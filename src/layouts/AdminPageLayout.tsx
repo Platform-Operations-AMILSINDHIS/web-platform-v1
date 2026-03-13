@@ -1,5 +1,5 @@
 import { WarningIcon } from "@chakra-ui/icons";
-import { Box, Button, Flex, Icon, Text, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, Divider, Flex, Icon, Text, useDisclosure } from "@chakra-ui/react";
 import AddAdminModal from "~/components/admin/AddAdminModal";
 import { adminAtomBody } from "~/types/atoms/admin";
 
@@ -21,48 +21,60 @@ const AdminPageLayout: React.FC<AdminPageLayoutProps> = ({
   } = useDisclosure();
 
   return (
-    <Flex justify="center" h="100vh" w="full">
-      <AddAdminModal
-        handleModal={onAdminAddClose}
-        modalState={isAdminAddOpen}
-      />
+    <Flex justify="center" minH="100vh" w="full" bg="gray.50">
+      <AddAdminModal handleModal={onAdminAddClose} modalState={isAdminAddOpen} />
       {admin !== null ? (
-        <Flex minW={1200} gap={5} p={5} flexDir="column">
-          <Flex justify="space-between" align="center" w="full">
-            <Text fontWeight={600} fontSize="xx-large">
-              Hey there,{" "}
-              <span
-                style={{
-                  color: "#FF4D00",
-                }}
-              >
-                {admin?.admin_username ?? ""}
-              </span>
-            </Text>
-            <Flex flexDir="row" gap={3}>
-              <Button
-                onClick={handleAdminLogout}
-                color="white"
-                bg="#FF4D00"
-                variant="none"
-              >
-                {" "}
-                Sign out
-              </Button>
+        <Flex w="full" maxW="1400px" gap={0} px={6} py={0} flexDir="column">
+          {/* Top nav bar */}
+          <Flex
+            justify="space-between"
+            align="center"
+            w="full"
+            py={4}
+            mb={2}
+          >
+            <Flex flexDir="column" gap={0.5}>
+              <Text fontSize="xs" color="gray.400" fontWeight="medium" textTransform="uppercase" letterSpacing="wider">
+                Admin Dashboard
+              </Text>
+              <Text fontWeight={700} fontSize="2xl" lineHeight="shorter" color="gray.800">
+                Hey,{" "}
+                <Text as="span" color="#FF4D00">
+                  {admin?.admin_username ?? ""}
+                </Text>
+              </Text>
+            </Flex>
+
+            <Flex flexDir="row" gap={2} align="center">
               <Button
                 onClick={onAdminAddOpen}
-                color="#00162B"
-                bg="white"
-                border="1px solid"
-                variant="none"
-                _hover={{ color: "white", bg: "#00162B" }}
+                size="sm"
+                variant="outline"
+                borderColor="gray.200"
+                color="gray.700"
+                fontWeight="medium"
+                _hover={{ borderColor: "#00162B", bg: "#00162B", color: "white" }}
+                transition="all 0.15s"
               >
-                {" "}
                 Add Admin
+              </Button>
+              <Button
+                onClick={handleAdminLogout}
+                size="sm"
+                bg="#FF4D00"
+                color="white"
+                fontWeight="medium"
+                _hover={{ bg: "#E03A00" }}
+                transition="all 0.15s"
+              >
+                Sign out
               </Button>
             </Flex>
           </Flex>
-          <Box mt={3}>{children}</Box>
+
+          <Divider borderColor="gray.200" mb={5} />
+
+          <Box pb={10}>{children}</Box>
         </Flex>
       ) : (
         <Flex w="full" h="100vh" justify="center" align="center">
@@ -74,8 +86,8 @@ const AdminPageLayout: React.FC<AdminPageLayoutProps> = ({
               </Text>
             </Flex>
             <Text w={500} textAlign="center" fontWeight={400}>
-              You have gained unauthorized access to this page please contact
-              the site admin or login with a verified admin account
+              You have gained unauthorized access to this page. Please contact
+              the site admin or login with a verified admin account.
             </Text>
             <Flex gap={2} flexDir="row">
               <Button
@@ -88,7 +100,7 @@ const AdminPageLayout: React.FC<AdminPageLayoutProps> = ({
               </Button>
               <Button
                 onClick={() => (window.location.href = "/")}
-                _hover={{ bg: "green.500" }}
+                _hover={{ bg: "gray.800" }}
                 bg="black"
                 color="white"
               >

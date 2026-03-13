@@ -1,23 +1,23 @@
 const formMembershipBufferDataTableHeaders = [
   "Sno.",
-  "User ID",
   "Type",
   "Status",
   "Name",
   "Email ID",
   "Mobile no.",
-  "",
+  "Submitted",
+  "Actions",
 ];
 
 const formMatrimonyBufferDataTableHeaders = [
   "Sno.",
-  "User ID",
   "Type",
-  "Registered At",
+  "Status",
   "Name",
   "Email ID",
   "Mobile no.",
-  "",
+  "Submitted",
+  "Actions",
 ];
 
 export {

@@ -1,9 +1,28 @@
-import { Button, Flex, Td, Text, Tr } from "@chakra-ui/react";
-import { useMemo } from "react";
+import {
+  Badge,
+  Button,
+  Flex,
+  Td,
+  Text,
+  Tr,
+  IconButton,
+  useDisclosure,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
+  useToast,
+  Tooltip,
+} from "@chakra-ui/react";
+import { useRef, useState, useMemo } from "react";
+import { DeleteIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import TableLayout from "~/layouts/TableLayout";
 import { useProfileAtom } from "~/lib/atom";
 import { MembershipBufferDataType, Status } from "~/types/tables/dataBuffer";
 import { formMembershipBufferDataTableHeaders } from "~/utils/tableHeaders";
+import { api } from "~/utils/api";
 
 interface MembershipBufferTableProps {
   membershipBufferData: MembershipBufferDataType[];
@@ -13,6 +32,19 @@ interface MembershipBufferTableProps {
   applicantType: string;
 }
 
+const formatRelativeTime = (dateString: string): string => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  if (diffDays === 0) return "Today";
+  if (diffDays === 1) return "Yesterday";
+  if (diffDays < 7) return `${diffDays}d ago`;
+  if (diffDays < 30) return `${Math.floor(diffDays / 7)}w ago`;
+  if (diffDays < 365) return `${Math.floor(diffDays / 30)}mo ago`;
+  return `${Math.floor(diffDays / 365)}y ago`;
+};
+
 const MembershipBufferTable: React.FC<MembershipBufferTableProps> = ({
   membershipBufferData,
   filterState,
@@ -21,89 +53,146 @@ const MembershipBufferTable: React.FC<MembershipBufferTableProps> = ({
   searchTerm,
 }) => {
   const [, setProfileAtom] = useProfileAtom();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [pendingDeleteId, setPendingDeleteId] = useState<number | null>(null);
+  const cancelRef = useRef<HTMLButtonElement>(null);
+  const toast = useToast();
+
+  const deleteEntry = api.formBuffer.deleteFormBufferEntry.useMutation({
+    onSuccess: () => {
+      toast({ title: "Entry deleted", status: "success", duration: 3000, isClosable: true });
+      onClose();
+    },
+    onError: (err) => {
+      toast({ title: "Failed to delete", description: err.message, status: "error", duration: 4000, isClosable: true });
+      onClose();
+    },
+  });
+
+  const handleDeleteClick = (id: number) => {
+    setPendingDeleteId(id);
+    onOpen();
+  };
+
+  const confirmDelete = () => {
+    if (pendingDeleteId !== null) {
+      deleteEntry.mutate({ id: pendingDeleteId });
+    }
+  };
 
   const filteredData = useMemo(() => {
-    if (!searchTerm || searchTerm.trim() === "") {
-      return membershipBufferData;
+    let data = membershipBufferData;
+
+    if (searchTerm && searchTerm.trim() !== "") {
+      const lower = searchTerm.toLowerCase();
+      data = data.filter((buffer) => {
+        const fullName = `${buffer?.submission.personalInfo.firstName} ${buffer?.submission.personalInfo.lastName}`.toLowerCase();
+        return fullName.includes(lower);
+      });
     }
 
-    const lowercaseSearchTerm = searchTerm.toLowerCase();
-    return membershipBufferData.filter((buffer) => {
-      const fullName =
-        `${buffer?.submission.personalInfo.firstName} ${buffer?.submission.personalInfo.lastName}`.toLowerCase();
-      return fullName.includes(lowercaseSearchTerm);
-    });
-  }, [membershipBufferData, searchTerm]);
+    data = data.filter((buffer) =>
+      filterState === "All"
+        ? true
+        : filterState === "Approved"
+        ? buffer.status === Status.APPROVED
+        : buffer.status === Status.PENDING
+    );
 
-  console.log({ filteredData });
+    data = data.filter((buffer) =>
+      applicantType === "All applicants"
+        ? true
+        : applicantType === "New applicants"
+        ? buffer.isMember === false
+        : buffer.isMember === true
+    );
+
+    data = data.filter((buffer) =>
+      membershipType === "All members"
+        ? true
+        : membershipType === "KAP members"
+        ? buffer.formType === "KAP"
+        : buffer.formType === "YAC"
+    );
+
+    return data;
+  }, [membershipBufferData, searchTerm, filterState, applicantType, membershipType]);
+
   return (
-    <TableLayout tableHeaders={formMembershipBufferDataTableHeaders}>
-      {filteredData
-        .filter((buffer) =>
-          filterState === "All"
-            ? buffer.status === Status.APPROVED || Status.PENDING
-            : filterState === "Approved"
-            ? buffer.status === Status.APPROVED
-            : buffer.status === Status.PENDING
-        )
-        .filter((buffer) =>
-          applicantType === "All applicants"
-            ? buffer.isMember === true || buffer.isMember == false
-            : applicantType === "New applicants"
-            ? buffer.isMember === false
-            : buffer.isMember === true
-        )
-        .filter((buffer) =>
-          membershipType === "All members"
-            ? buffer.formType === "KAP" || buffer.formType === "YAC"
-            : membershipType === "KAP members"
-            ? buffer.formType === "KAP"
-            : buffer.formType === "YAC"
-        )
-        .map((buffer, index) => {
-          return (
-            <Tr fontSize="sm" key={index}>
-              <Td>{index + 1}</Td>
-              <Td>{`${buffer?.user_id.substring(0, 10)}...`}</Td>
-              <Td>{buffer?.formType}</Td>
-              <Td
-                fontSize="small"
-                fontWeight={600}
-                color={
-                  buffer?.status === Status.APPROVED
-                    ? "green.500"
-                    : "yellow.500"
-                }
+    <>
+      <Flex justify="space-between" align="center" mb={2} px={1}>
+        <Text fontSize="sm" color="gray.500">
+          Showing{" "}
+          <Text as="span" fontWeight="semibold" color="gray.700">
+            {filteredData.length}
+          </Text>{" "}
+          of{" "}
+          <Text as="span" fontWeight="semibold" color="gray.700">
+            {membershipBufferData.length}
+          </Text>{" "}
+          entries
+        </Text>
+      </Flex>
+
+      <TableLayout tableHeaders={formMembershipBufferDataTableHeaders}>
+        {filteredData.map((buffer, index) => (
+          <Tr
+            fontSize="sm"
+            key={buffer?.id ?? index}
+            _hover={{ bg: "orange.50", transition: "background 0.15s" }}
+            cursor="default"
+          >
+            <Td color="gray.400" fontWeight="medium">{index + 1}</Td>
+            <Td>
+              <Badge
+                colorScheme={buffer?.formType === "KAP" ? "purple" : "blue"}
+                variant="subtle"
+                borderRadius="full"
+                px={2}
               >
-                <Text
-                  textAlign="center"
-                  p={1}
-                  px={3}
-                  borderRadius={20}
-                  bg={
-                    buffer?.status === Status.APPROVED
-                      ? "green.100"
-                      : "yellow.100"
-                  }
-                  border="1px solid"
-                >
-                  {buffer?.status}
+                {buffer?.formType}
+              </Badge>
+            </Td>
+            <Td>
+              <Badge
+                colorScheme={buffer?.status === Status.APPROVED ? "green" : "yellow"}
+                variant="subtle"
+                borderRadius="full"
+                px={2}
+              >
+                {buffer?.status}
+              </Badge>
+            </Td>
+            <Td>
+              <Text fontWeight="medium">
+                {`${buffer?.submission.personalInfo.firstName} ${buffer?.submission.personalInfo.lastName}`}
+              </Text>
+              {buffer?.isMember && (
+                <Text fontSize="xs" color="orange.500" fontWeight="semibold">
+                  Existing Member
                 </Text>
-              </Td>
-              <Td as={Flex} gap={1}>
-                <Text>{`${buffer?.submission.personalInfo.firstName} ${buffer?.submission.personalInfo.lastName}`}</Text>
-                <Text color="orange.500" fontWeight="bold">{`${
-                  buffer?.isMember ? `(Member)` : ``
-                }`}</Text>
-              </Td>
-              <Td>{buffer?.submission.personalInfo.emailId}</Td>
-              <Td>{`+91 ${buffer?.submission.personalInfo.mobileNumber}`}</Td>
-              <Td>
+              )}
+            </Td>
+            <Td color="gray.600" fontSize="xs">{buffer?.submission.personalInfo.emailId}</Td>
+            <Td color="gray.600" fontSize="xs">{`+91 ${buffer?.submission.personalInfo.mobileNumber}`}</Td>
+            <Td>
+              <Tooltip
+                label={buffer?.created_at ? new Date(buffer.created_at).toLocaleString("en-IN") : ""}
+                placement="top"
+                hasArrow
+              >
+                <Text fontSize="xs" color="gray.500" cursor="default">
+                  {buffer?.created_at ? formatRelativeTime(buffer.created_at) : "—"}
+                </Text>
+              </Tooltip>
+            </Td>
+            <Td>
+              <Flex align="center" gap={1}>
                 <Button
-                  _hover={{ color: "#FF4D00" }}
-                  color="gray.500"
-                  variant="none"
-                  size="small"
+                  size="xs"
+                  variant="ghost"
+                  colorScheme="orange"
+                  rightIcon={<ExternalLinkIcon />}
                   onClick={() => {
                     window.location.href = `/admin/${buffer?.user_id}.${buffer?.formType}`;
                     setProfileAtom({
@@ -118,44 +207,44 @@ const MembershipBufferTable: React.FC<MembershipBufferTableProps> = ({
                     });
                   }}
                 >
-                  View Profile
+                  View
                 </Button>
-              </Td>
-            </Tr>
-          );
-        })}
-    </TableLayout>
+                <IconButton
+                  aria-label="Delete entry"
+                  icon={<DeleteIcon />}
+                  size="xs"
+                  variant="ghost"
+                  colorScheme="red"
+                  onClick={() => handleDeleteClick(buffer?.id)}
+                />
+              </Flex>
+            </Td>
+          </Tr>
+        ))}
+      </TableLayout>
+
+      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Entry
+            </AlertDialogHeader>
+            <AlertDialogBody>
+              Are you sure you want to delete this submission? This action cannot be undone.
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button colorScheme="red" onClick={confirmDelete} ml={3} isLoading={deleteEntry.isLoading}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+    </>
   );
 };
-
-// Add later
-{
-  /* <Td
-onMouseEnter={() => setIsHovered(true)}
-onMouseLeave={() => setIsHovered(false)}
-pos={"relative"}
->
-{isHovered && (
-  <Text
-    pos="absolute"
-    top={-3}
-    left={0}
-    bg="yellow.200"
-    color="black"
-    fontWeight={600}
-    px={2}
-    py={1}
-    borderRadius="md"
-    zIndex="1"
-  >
-    {`${buffer?.user_id}`} {/* Full user ID */
-}
-// </Text>
-// )}
-
-{
-  /* <>{`${buffer?.user_id.substring(0, 10)}...`}</> */
-}
-// </Td> */}
 
 export default MembershipBufferTable;

@@ -511,6 +511,35 @@ const formBufferData = createTRPCRouter({
       }
     }),
 
+  deleteFormBufferEntry: publicProcedure
+    .input(Yup.object({ id: Yup.number().required() }))
+    .mutation(async ({ input }) => {
+      try {
+        const { id } = input;
+        const { error } = await supabase
+          .from("form_buffer")
+          .delete()
+          .eq("id", id);
+
+        if (error) {
+          console.error("Error deleting form buffer entry:", error);
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to delete entry",
+          });
+        }
+
+        return { success: true };
+      } catch (err) {
+        if (err instanceof TRPCError) throw err;
+        console.error("Unexpected error in deleteFormBufferEntry:", err);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "An unexpected error occurred",
+        });
+      }
+    }),
+
   deleteMatrimonyFormBufferData: publicProcedure
     .input(Yup.object({ user_id: Yup.string() }))
     .mutation(async ({ input }) => {

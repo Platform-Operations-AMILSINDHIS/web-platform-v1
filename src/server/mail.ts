@@ -34,14 +34,22 @@ export const sendMail = async ({
   subject,
   html,
   attachments,
+  cc,
   source = "no-reply",
 }: SendMailType & { source?: string }) => {
+  const ccAddresses = cc
+    ? Array.isArray(cc)
+      ? cc
+      : [cc]
+    : [];
+
   try {
     if (attachments && attachments.length > 0) {
-      // Use nodemailer to build the raw MIME message
+      // Use nodemailer to build the raw MIME message (supports CC natively)
       const mailOptions = {
         from: `${source}@amilsindhis.org`,
         to,
+        cc: ccAddresses.length > 0 ? ccAddresses : undefined,
         subject,
         html,
         attachments,
@@ -72,6 +80,7 @@ export const sendMail = async ({
       Source: `${source}@amilsindhis.org`,
       Destination: {
         ToAddresses: [to],
+        CcAddresses: ccAddresses.length > 0 ? ccAddresses : undefined,
       },
       Message: {
         Subject: {
@@ -177,6 +186,7 @@ export const sendMatrimonyProfileMail = async (
     html,
     subject,
     to,
+    cc: "amilsindhis@gmail.com",
     attachments: [
       {
         filename: `${requested_name}(${requested_matrimony_id}).pdf`,
