@@ -34,7 +34,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
 
   useEffect(() => {
     if (closeModal) handleModal();
-  }, [closeModal]);
+  }, [closeModal, handleModal]);
 
   return (
     <Modal onClose={handleModal} isOpen={modalState}>
@@ -63,7 +63,6 @@ const AuthModal: React.FC<AuthModalProps> = ({
               signUpFormValues={signUpFormValues}
               authStateHandleFunction={authStateHandleFunction}
               setSignUpFormValues={setSignUpFormValues}
-              setCloseModal={setCloseModal}
             />
           )}
         </ModalBody>

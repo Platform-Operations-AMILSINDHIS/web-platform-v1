@@ -103,7 +103,98 @@ const actions = createTRPCRouter({
           file_size,
         } = input;
 
-        // Check for existing row for this file type
+        // Special handling for matrimony_image (supports up to 3 images)
+        if (file_type === "matrimony_image") {
+          // Verify user has approved matrimony profile
+          const { data: matrimonyProfile, error: matrimonyError } =
+            await supabase
+              .from("matrimony_profiles")
+              .select("*")
+              .eq("user_id", user_id)
+              .single();
+
+          if (matrimonyError || !matrimonyProfile) {
+            throw new Error(
+              "Only approved matrimony applicants can upload matrimony images"
+            );
+          }
+
+          // Check for existing row with this specific s3_key
+          const { data: existingData, error: fetchError } = await supabase
+            .from("application_s3_meta")
+            .select("*")
+            .eq("user_id", user_id)
+            .eq("file_type", file_type)
+            .eq("s3_key", s3_key)
+            .maybeSingle();
+
+          if (fetchError) {
+            console.error("Error validating S3 File meta:", fetchError);
+            throw new Error("Error while validating S3 File meta");
+          }
+
+          // If record exists, update it
+          if (existingData) {
+            const { data: updateData, error: updateError } = await supabase
+              .from("application_s3_meta")
+              .update({
+                file_name,
+                content_type,
+                file_size,
+                updated_at: new Date().toISOString(),
+              })
+              .eq("id", existingData.id)
+              .select()
+              .single();
+
+            if (updateError) {
+              console.error("Error updating S3 metadata:", updateError);
+              throw new Error("Failed to update file metadata");
+            }
+
+            return { success: true, data: updateData, action: "updated" };
+          }
+
+          // Count existing matrimony images for this user
+          const { data: existingImages, error: countError } = await supabase
+            .from("application_s3_meta")
+            .select("id")
+            .eq("user_id", user_id)
+            .eq("file_type", "matrimony_image");
+
+          if (countError) {
+            throw new Error("Failed to check existing matrimony images");
+          }
+
+          if (existingImages && existingImages.length >= 3) {
+            throw new Error(
+              "Maximum of 3 matrimony images allowed. Please delete an existing image first."
+            );
+          }
+
+          // Insert new matrimony image
+          const { data: insertData, error: insertError } = await supabase
+            .from("application_s3_meta")
+            .insert({
+              user_id,
+              s3_key,
+              file_type,
+              file_name,
+              content_type,
+              file_size,
+            })
+            .select()
+            .single();
+
+          if (insertError) {
+            console.error("Error saving S3 metadata:", insertError);
+            throw new Error("Failed to save file metadata");
+          }
+
+          return { success: true, data: insertData, action: "created" };
+        }
+
+        // Original logic for profile_image and document (single row per type)
         const { data: existingData, error: fetchError } = await supabase
           .from("application_s3_meta")
           .select("*")
@@ -182,6 +273,77 @@ const actions = createTRPCRouter({
       } catch (err) {
         console.error("Error in saveProfilePicture:", err);
         throw new Error("Failed to save profile picture metadata");
+      }
+    }),
+
+  deleteMatrimonyImage: publicProcedure
+    .input(
+      Yup.object({
+        user_id: Yup.string().uuid().required(),
+        s3_key: Yup.string().required(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      try {
+        const { user_id, s3_key } = input;
+
+        // Verify user has approved matrimony profile
+        const { data: matrimonyProfile, error: matrimonyError } =
+          await supabase
+            .from("matrimony_profiles")
+            .select("*")
+            .eq("user_id", user_id)
+            .single();
+
+        if (matrimonyError || !matrimonyProfile) {
+          throw new Error(
+            "Only approved matrimony applicants can delete matrimony images"
+          );
+        }
+
+        // Find the metadata row
+        const { data: metaData, error: fetchError } = await supabase
+          .from("application_s3_meta")
+          .select("*")
+          .eq("user_id", user_id)
+          .eq("s3_key", s3_key)
+          .eq("file_type", "matrimony_image")
+          .single();
+
+        if (fetchError || !metaData) {
+          throw new Error("Matrimony image not found");
+        }
+
+        // Delete from S3
+        try {
+          await userS3.send(
+            new DeleteObjectCommand({
+              Bucket: "kap-application-images",
+              Key: s3_key,
+            })
+          );
+          console.log(`Deleted S3 file: ${s3_key}`);
+        } catch (s3Error) {
+          console.error("Error deleting S3 file:", s3Error);
+          // Continue anyway - we still want to delete the metadata
+        }
+
+        // Delete metadata row
+        const { error: deleteError } = await supabase
+          .from("application_s3_meta")
+          .delete()
+          .eq("id", metaData.id);
+
+        if (deleteError) {
+          throw new Error("Failed to delete image metadata");
+        }
+
+        return { success: true, message: "Matrimony image deleted successfully" };
+      } catch (err) {
+        console.error("Error in deleteMatrimonyImage:", err);
+        throw new Error(
+          err instanceof Error ? err.message : "Failed to delete matrimony image"
+        );
       }
     }),
 });

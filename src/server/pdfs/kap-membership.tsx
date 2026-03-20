@@ -365,8 +365,11 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
             </View>
             <View style={{ ...styles.rightTextWithBorder, width: "15%" }}>
               <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                {/* To be fixed later  */}
-                {formatPDFDate(kapForm?.personalInfo?.dateOfBirth)}
+                {formatPDFDate(
+                  kapForm?.personalInfo?.dateOfBirth
+                    ? new Date(kapForm.personalInfo.dateOfBirth)
+                    : new Date()
+                )}
               </Text>
             </View>
             <View

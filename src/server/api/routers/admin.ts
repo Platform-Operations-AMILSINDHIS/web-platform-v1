@@ -1,14 +1,14 @@
 /* eslint-disable */
 import * as Yup from "yup";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import supabase from "~/pages/api/auth/supabase";
-import { TRPCClientError } from "@trpc/client";
+import { TRPCError } from "@trpc/server";
 import { sendAdminEntryMail } from "~/server/mail";
 
 const adminRouter = createTRPCRouter({
   login: publicProcedure
-    .input(Yup.object({ email: Yup.string(), password: Yup.string() }))
+    .input(Yup.object({ email: Yup.string().required(), password: Yup.string().required() }))
     .mutation(async ({ input }) => {
       try {
         const { email, password } = input;
@@ -17,17 +17,23 @@ const adminRouter = createTRPCRouter({
           .select("*")
           .eq("admin_email", email);
 
-        if (LoginError) throw new Error("Error during login");
+        if (LoginError) {
+          console.error("Database error during admin login:", LoginError);
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Database error during login",
+          });
+        }
 
-        if (FetchedAdmin.length > 0) {
+        if (FetchedAdmin && FetchedAdmin.length > 0) {
           const isPasswordValid = await bcrypt.compare(
-            password ?? "",
+            password,
             FetchedAdmin[0].admin_password
           );
           if (isPasswordValid) {
             return {
               loginStatus: true,
-              message: "",
+              message: "Login successful",
               redirect: "/admin",
               admin: FetchedAdmin[0],
             };
@@ -47,7 +53,14 @@ const adminRouter = createTRPCRouter({
             admin: null,
           };
         }
-      } catch (err) {}
+      } catch (err) {
+        console.error("Admin Login Error:", err);
+        if (err instanceof TRPCError) throw err;
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: err instanceof Error ? err.message : "An unexpected error occurred",
+        });
+      }
     }),
 
   forgotPasswordAdmin: publicProcedure
@@ -67,19 +80,25 @@ const adminRouter = createTRPCRouter({
             .from("admin_accounts")
             .update({ admin_password: hashed_new_password })
             .eq("admin_email", email);
-        if (ErrorUpdateAdminPwd)
-          throw new Error("Error while updating password");
+        if (ErrorUpdateAdminPwd) {
+          console.error("Error updating admin password:", ErrorUpdateAdminPwd);
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Error while updating password",
+          });
+        }
 
         return {
           success: true,
-          message: `Password updated for ${email} Signin again`,
+          message: `Password updated for ${email}. Please sign in again.`,
         };
       } catch (err) {
-        console.log(err);
-        return {
-          success: false,
-          message: `An error occurred while updating password`,
-        };
+        console.error("Forgot Password Admin Error:", err);
+        if (err instanceof TRPCError) throw err;
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: err instanceof Error ? err.message : "An unexpected error occurred",
+        });
       }
     }),
 
@@ -128,7 +147,11 @@ const adminRouter = createTRPCRouter({
         });
 
         if (error) {
-          throw new TRPCClientError("Error adding admin account");
+          console.error("Error adding admin account:", error);
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Error adding admin account",
+          });
         }
 
         return {
@@ -136,11 +159,12 @@ const adminRouter = createTRPCRouter({
           message: "Admin account created successfully",
         };
       } catch (err) {
-        console.error(err);
-        return {
-          success: false,
-          message: `An error occurred while adding the admin`,
-        };
+        console.error("Add Admin Error:", err);
+        if (err instanceof TRPCError) throw err;
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: err instanceof Error ? err.message : "An unexpected error occurred",
+        });
       }
     }),
 });

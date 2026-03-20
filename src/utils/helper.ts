@@ -114,6 +114,13 @@ export const formatPDFAge = (dateString: Date | unknown | any) => {
   return age;
 };
 
+export const calculateAge = (
+  dateOfBirth: string | Date | null | undefined
+): number | null => {
+  if (!dateOfBirth) return null;
+  return formatPDFAge(dateOfBirth);
+};
+
 export const camelCaseToSpaces = (str: string) => {
   return str.replace(/([A-Z])/g, " $1").replace(/^./, function (str) {
     return str.toUpperCase();

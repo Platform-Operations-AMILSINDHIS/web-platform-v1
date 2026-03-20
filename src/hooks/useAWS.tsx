@@ -86,7 +86,7 @@ const useAWS = (props?: Partial<useAWSProps>) => {
     };
 
     void handleFetchProfileImageURL();
-  }, [s3_key]);
+  }, [s3_key, fetchImageSignedURL]);
 
   return {
     // Handlers

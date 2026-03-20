@@ -5,7 +5,8 @@ import ModalLayout from "~/layouts/ModalLayout";
 import { AddAdminValidation } from "~/validations/AuthValidations";
 import { LabelledInput } from "../forms";
 import useAdminAuth from "~/hooks/useAdminAuth";
-import { AddAdminInitialValues, AddAdminValues } from "~/hooks/useForm";
+import { AddAdminInitialValues } from "~/hooks/useForm";
+import type { AddAdminValues } from "~/hooks/useForm";
 import { useState } from "react";
 import { TRPCError } from "@trpc/server";
 

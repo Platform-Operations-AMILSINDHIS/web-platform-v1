@@ -3,6 +3,7 @@ import {
   createTRPCRouter,
   publicProcedure,
   protectedProcedure,
+  verifyAgeForMembership,
 } from "~/server/api/trpc";
 
 import {
@@ -22,14 +23,18 @@ import {
 } from "../../mail";
 
 import supabase from "~/pages/api/auth/supabase";
-import { TRPCClientError } from "@trpc/client";
+import { TRPCError } from "@trpc/server";
 
 const getLastMembershipNums = async () => {
   const { data, error } = await supabase
     .from("general_accounts")
     .select("membership_id");
   if (error) {
-    throw new Error("Failed to fetch data");
+    console.error("Error fetching membership IDs:", error);
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to fetch membership data",
+    });
   }
 
   const allMembershipIds =
@@ -88,6 +93,22 @@ async function getUserIdByEmail(emailId: string): Promise<string | null> {
   return (data?.[0]?.id as string) ?? null;
 }
 
+async function syncDOBToAccount(
+  userId: string,
+  dob: string | Date | null | undefined
+): Promise<void> {
+  if (!userId || !dob) return;
+  const dobString =
+    dob instanceof Date ? dob.toISOString().slice(0, 10) : String(dob).slice(0, 10);
+  // Only update if date_of_birth is not already set on the account
+  const { error } = await supabase
+    .from("general_accounts")
+    .update({ date_of_birth: dobString })
+    .eq("id", userId)
+    .is("date_of_birth", null);
+  if (error) console.error("Error syncing DOB to account:", error);
+}
+
 export const formRouter = createTRPCRouter({
   kapMembership: publicProcedure
     .input(
@@ -104,7 +125,13 @@ export const formRouter = createTRPCRouter({
       const userId = await getUserIdByEmail(formData.personalInfo.emailId);
 
       if (!userId)
-        throw new TRPCClientError("Email does not exist in user database");
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Email does not exist in user database",
+        });
+
+      // Backend age eligibility check — KAP requires age >= 21
+      await verifyAgeForMembership(userId, "KAP");
 
       // check for duplicate payment ID
 
@@ -113,15 +140,19 @@ export const formRouter = createTRPCRouter({
         .select("paymentID")
         .eq("paymentID", paymentId);
 
-      if (paymentIDfetchError)
-        throw new TRPCClientError(
-          "Issue verifying paymentId, try submitting again"
-        );
+      if (paymentIDfetchError) {
+        console.error("Error verifying paymentId:", paymentIDfetchError);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Issue verifying paymentId, try submitting again",
+        });
+      }
 
       if (paymentID.length > 0)
-        throw new TRPCClientError(
-          "Duplicate paymentIds detected, please enter the right payment ID"
-        );
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: "Duplicate paymentIds detected, please enter the right payment ID",
+        });
 
       const { error } = await supabase.from("form_buffer").insert({
         user_id: userId,
@@ -130,7 +161,15 @@ export const formRouter = createTRPCRouter({
         paymentID: paymentId,
       });
 
-      if (error) console.error(error);
+      if (error) {
+        console.error("Error inserting KAP form buffer:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to submit form",
+        });
+      }
+
+      await syncDOBToAccount(userId, formData.personalInfo.dateOfBirth);
 
       // // Membership ID Logic
       // const { lastKapMembershipIdNum, lastPatronMembershipIdNum } =
@@ -200,7 +239,13 @@ export const formRouter = createTRPCRouter({
       const userId = await getUserIdByEmail(formData.personalInfo.emailId);
 
       if (!userId)
-        throw new TRPCClientError("Email does not exist in user database");
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Email does not exist in user database",
+        });
+
+      // Backend age eligibility check — KAP requires age >= 21
+      await verifyAgeForMembership(userId, "KAP");
 
       const { error } = await supabase.from("form_buffer").insert({
         user_id: userId,
@@ -209,7 +254,16 @@ export const formRouter = createTRPCRouter({
         isMember: true,
       });
 
-      if (error) console.error(error);
+      if (error) {
+        console.error("Error inserting KAP prev form buffer:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to submit form",
+        });
+      }
+
+      await syncDOBToAccount(userId, formData.personalInfo.dateOfBirth);
+
       await sendRawJsonDataWithPDF(
         "amilsindhis@gmail.com",
         formData,
@@ -240,7 +294,13 @@ export const formRouter = createTRPCRouter({
       const userId = await getUserIdByEmail(formData.personalInfo.emailId);
 
       if (!userId)
-        throw new TRPCClientError("Email does not exist in user database");
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Email does not exist in user database",
+        });
+
+      // Backend age eligibility check — YAC requires age between 16 and 30
+      await verifyAgeForMembership(userId, "YAC");
 
       // check for duplicate payment ID
 
@@ -249,15 +309,19 @@ export const formRouter = createTRPCRouter({
         .select("paymentID")
         .eq("paymentID", paymentId);
 
-      if (paymentIDfetchError)
-        throw new TRPCClientError(
-          "Issue verifying paymentId, try submitting again"
-        );
+      if (paymentIDfetchError) {
+        console.error("Error verifying paymentId:", paymentIDfetchError);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Issue verifying paymentId, try submitting again",
+        });
+      }
 
       if (paymentID.length > 0)
-        throw new TRPCClientError(
-          "Duplicate paymentIds detected, please enter the right payment ID"
-        );
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: "Duplicate paymentIds detected, please enter the right payment ID",
+        });
 
       const { error } = await supabase.from("form_buffer").insert({
         user_id: userId,
@@ -266,7 +330,15 @@ export const formRouter = createTRPCRouter({
         paymentID: paymentId,
       });
 
-      if (error) console.error(error);
+      if (error) {
+        console.error("Error inserting YAC form buffer:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to submit form",
+        });
+      }
+
+      await syncDOBToAccount(userId, formData.personalInfo.dateOfBirth);
 
       // // Membership ID Logic
       // const { lastYacMembershipIdNum } = await getLastMembershipNums();
@@ -314,7 +386,13 @@ export const formRouter = createTRPCRouter({
       const userId = await getUserIdByEmail(formData.personalInfo.emailId);
 
       if (!userId)
-        throw new TRPCClientError("Email does not exist in user database");
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Email does not exist in user database",
+        });
+
+      // Backend age eligibility check — YAC requires age between 16 and 30
+      await verifyAgeForMembership(userId, "YAC");
 
       const { error } = await supabase.from("form_buffer").insert({
         user_id: userId,
@@ -323,7 +401,15 @@ export const formRouter = createTRPCRouter({
         isMember: true,
       });
 
-      if (error) console.error(error);
+      if (error) {
+        console.error("Error inserting YAC prev form buffer:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to submit form",
+        });
+      }
+
+      await syncDOBToAccount(userId, formData.personalInfo.dateOfBirth);
 
       // // Membership ID Logic
       // const { lastYacMembershipIdNum } = await getLastMembershipNums();
@@ -412,12 +498,28 @@ export const formRouter = createTRPCRouter({
   matrimony: publicProcedure
     .input(Yup.object({ formData: matrimonyFormValuesSchema }))
     .mutation(async ({ input }) => {
-      // .mutation(({ input }) => {
       const { formData } = input;
 
       const userId = await getUserIdByEmail(formData.personalInfo.emailId);
 
       console.log({ formData });
+
+      // Backend check — prevent duplicate matrimony submissions for already-approved applicants
+      if (userId) {
+        const { data: existingMatrimonyProfile } = await supabase
+          .from("matrimony_profiles")
+          .select("matrimony_id")
+          .eq("user_id", userId)
+          .maybeSingle();
+
+        if (existingMatrimonyProfile) {
+          throw new TRPCError({
+            code: "CONFLICT",
+            message:
+              "You already have an approved matrimony profile. You cannot submit another application.",
+          });
+        }
+      }
 
       const { error: BufferError } = await supabase.from("form_buffer").insert({
         user_id: userId,
@@ -425,7 +527,20 @@ export const formRouter = createTRPCRouter({
         submission: formData,
       });
 
-      if (BufferError) throw BufferError;
+      if (BufferError) {
+        console.error("Error inserting matrimony form buffer:", BufferError);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to submit form",
+        });
+      }
+
+      if (userId) {
+        await syncDOBToAccount(
+          userId,
+          formData.personalInfo.dateAndTimeOfBirth
+        );
+      }
 
       // Send response
       // await sendRawJsonDataOnly("akshat.sabavat@gmail.com", formData);

@@ -29,6 +29,7 @@ const useServerActions = () => {
   //   api.matrimonyProfiles.verifyMemberStatus.useMutation();
 
   const uploadUserProfilePicMut = api.actions.saveProfilePicture.useMutation();
+  const deleteMatrimonyImageMut = api.actions.deleteMatrimonyImage.useMutation();
 
   const fetchUserProfileMut =
     api.profileRequests.fetchProfileDetails.useMutation();
@@ -76,6 +77,12 @@ const useServerActions = () => {
   const deleteMatrimonyProfileMut =
     api.matrimonyProfiles.deleteProfile.useMutation();
 
+  const fetchMatProfileRequestsMut =
+    api.profileRequests.fetchAllRequests.useMutation();
+
+  const fetchAllProfileRequestsAdminMut =
+    api.profileRequests.fetchAllRequestsAdmin.useMutation();
+
   const { refetch: fetchAllBufferResponse } =
     api.formBuffer.fetchAllBuffer.useQuery(undefined, {
       enabled: false,
@@ -92,11 +99,6 @@ const useServerActions = () => {
 
   const { refetch: fetchApprovedMatrimonyApplications } =
     api.formBuffer.fetchApprovedMatrimonyApplicants.useQuery(undefined, {
-      enabled: false,
-    });
-
-  const { refetch: fetchMatProfileRequests } =
-    api.profileRequests.fetchAllRequests.useQuery(undefined, {
       enabled: false,
     });
 
@@ -156,6 +158,29 @@ const useServerActions = () => {
     } catch (error) {
       console.error("Error saving profile metadata:", error);
       throw new Error("Failed to save profile picture metadata");
+    }
+  };
+
+  const handleSaveMatrimonyImage = async (
+    userId: string,
+    s3_key: string,
+    file: File
+  ) => {
+    try {
+      await uploadUserProfilePicMut.mutateAsync({
+        user_id: userId,
+        s3_key: s3_key,
+        file_type: "matrimony_image",
+        file_name: file.name,
+        content_type: file.type,
+        file_size: file.size,
+      });
+
+      console.log("Matrimony image metadata saved to database ✔");
+      return true;
+    } catch (error) {
+      console.error("Error saving matrimony image metadata:", error);
+      throw new Error("Failed to save matrimony image metadata");
     }
   };
 
@@ -311,6 +336,8 @@ const useServerActions = () => {
       user_id: user_id,
     });
 
+    console.log({ subres_data: data, user_id });
+
     return data as MatrimonySubmissionVerificationServerResponse;
   };
 
@@ -371,12 +398,19 @@ const useServerActions = () => {
     console.log(data);
   };
 
-  const handleFetchProfileRequests = async (): Promise<
-    ProfileRequestsFetchResponse[]
-  > => {
-    const { data } = await fetchMatProfileRequests();
+  const handleFetchProfileRequests = async (
+    email_id: string
+  ): Promise<ProfileRequestsFetchResponse[]> => {
+    const data = await fetchMatProfileRequestsMut.mutateAsync({
+      email_id: email_id,
+    });
     const profileRequests = data?.requests;
     return profileRequests as ProfileRequestsFetchResponse[];
+  };
+
+  const handleFetchAllProfileRequestsAdmin = async (): Promise<ProfileRequestsFetchResponse[]> => {
+    const data = await fetchAllProfileRequestsAdminMut.mutateAsync();
+    return (data?.requests ?? []) as ProfileRequestsFetchResponse[];
   };
 
   const handleAcceptMatrimonyProfileRequest = async (
@@ -427,6 +461,23 @@ const useServerActions = () => {
     return deleteProfileResponse as unknown as DeleteResponseType;
   };
 
+  const handleDeleteMatrimonyImage = async (
+    user_id: string,
+    s3_key: string
+  ) => {
+    try {
+      await deleteMatrimonyImageMut.mutateAsync({
+        user_id,
+        s3_key,
+      });
+      console.log("Matrimony image deleted successfully ✔");
+      return true;
+    } catch (error) {
+      console.error("Error deleting matrimony image:", error);
+      throw new Error("Failed to delete matrimony image");
+    }
+  };
+
   // uncomment to use isMember boolean and verify through that
 
   // const handleIsMemberVerifiedCheck = async (
@@ -443,6 +494,8 @@ const useServerActions = () => {
     handleMatrimonyBufferFetch,
     handleMatrimonyProfileFetch,
     handleSaveUserProfilePicture,
+    handleSaveMatrimonyImage,
+    handleDeleteMatrimonyImage,
     handleFetchProfileDetails,
     handleFetchFormBufferData,
     handleFetchUserSubmission,
@@ -457,6 +510,7 @@ const useServerActions = () => {
     handleMatrimonyIdFetch,
     handleMatrimonyRequestProfile,
     handleFetchProfileRequests,
+    handleFetchAllProfileRequestsAdmin,
     handleAcceptMatrimonyProfileRequest,
     handleDeclineMatrimonyProfileRequest,
     handleDeleteMatrimonyProfile,

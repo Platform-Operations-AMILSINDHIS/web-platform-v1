@@ -65,7 +65,7 @@ import {
 import paymentQRCode from "../../../public/images/payments/qr_sbi.jpg";
 
 import { api } from "~/utils/api";
-import { userAtomBody } from "~/types/atoms/users";
+import type { userAtomBody } from "~/types/atoms/users";
 import Image from "next/image";
 
 const steps = [
@@ -129,7 +129,7 @@ const kapFormAtom = atom<KAPMembershipFormValues>({
     middleName: "",
     lastName: "",
     occupation: "",
-    dateOfBirth: new Date(),
+    dateOfBirth: "",
     mobileNumber: "",
     emailId: "",
     maidenSurname: "",
@@ -289,13 +289,18 @@ export const PersonalInformationSection: React.FC<KAPFormSectionProps> = ({
   const [activeStep, setActiveStep] = useAtom(activeStepAtom);
   const [personalInfo, setPersonalInfo] = useAtom(personalInfoAtom);
 
+  // Pre-fill dateOfBirth from the user's account if available
+  const accountDOB = user?.date_of_birth
+    ? String(user.date_of_birth).slice(0, 10)
+    : undefined;
+
   // Merging form with existing login data
   const mergedInitialValues = {
     firstName: user?.first_name ?? personalInfo.firstName ?? "",
     middleName: personalInfo.middleName ?? "",
     lastName: user?.last_name ?? personalInfo.lastName ?? "",
     occupation: personalInfo.occupation ?? "",
-    dateOfBirth: personalInfo.dateOfBirth ?? "",
+    dateOfBirth: accountDOB ?? personalInfo.dateOfBirth ?? "",
     mobileNumber: personalInfo.mobileNumber ?? "",
     emailId: user?.email_id ?? personalInfo.emailId ?? "",
     maidenSurname: personalInfo.maidenSurname ?? "",
@@ -309,8 +314,10 @@ export const PersonalInformationSection: React.FC<KAPFormSectionProps> = ({
     if (!user) return true; // block until user loads
     if (user.KAP_member) return true; // lock all for KAP members
 
-    // Disable only specific fields that come from account
+    // Lock fields that are sourced from the core account profile
     const lockedFields = ["firstName", "lastName", "emailId"];
+    // Also lock dateOfBirth if the account already has it set (prevents age manipulation)
+    if (field === "dateOfBirth" && !!accountDOB) return true;
     return lockedFields.includes(field);
   };
 
@@ -781,6 +788,7 @@ const MembershipDetailsSection: React.FC = () => {
 
   const [paymentAmount, setPaymentAmount] = useState<number>(0);
   const [isPaying, setIsPaying] = useState<boolean>(false);
+  const [photoConsent, setPhotoConsent] = useState<boolean>(false);
 
   // comment/delete state out below if moving to Razorpay gateway partially/completely respectively
   const [paymentID, setPaymentID] = useState<string>("");
@@ -868,6 +876,12 @@ const MembershipDetailsSection: React.FC = () => {
   //   }
   // }, [paymentId]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const canSubmit =
+    membershipInfo.membershipType !== null &&
+    paymentID.trim().length > 0 &&
+    !isPaying;
+
   return (
     <>
       <Heading>Type of Membership</Heading>
@@ -901,6 +915,8 @@ const MembershipDetailsSection: React.FC = () => {
                   ? 250000
                   : 0
               );
+              // reset payment ID
+              setPaymentID("");
             }}
           >
             <Icon size="40px" />
@@ -960,11 +976,22 @@ const MembershipDetailsSection: React.FC = () => {
       <Input
         placeholder="Enter Payment ID"
         value={paymentID}
+        isDisabled={membershipInfo.membershipType === null}
         onChange={(e) => setPaymentID(e.target.value)}
         mb="2rem"
       />
 
       <Spacer h="2rem" />
+
+      <Checkbox
+        isChecked={photoConsent}
+        onChange={(e) => setPhotoConsent(e.target.checked)}
+        colorScheme="orange"
+        mb="2rem"
+      >
+        I consent to my photographs being used for matrimony-related purposes by
+        The Khudabadi Amil Panchayat.
+      </Checkbox>
 
       <Flex w="100%" justifyContent="space-between">
         <Button
@@ -978,20 +1005,17 @@ const MembershipDetailsSection: React.FC = () => {
 
         <Button
           type="submit"
-          // uncomment below disable logic when moving to razorpay
-          // isDisabled={paymentAmount === 0 || isPaying}
-          isDisabled={paymentID === "" || isPaying}
+          isDisabled={
+            paymentID === "" ||
+            isPaying ||
+            membershipInfo.membershipType === null ||
+            !photoConsent
+          }
           isLoading={isPaying}
           colorScheme="orange"
           leftIcon={<FaRupeeSign />}
           size="lg"
           onClick={() => {
-            // setIsPaying(true);
-
-            // uncomment logic below when moving to razor pay dashboard
-            // void handlePayment(paymentAmount, "kap_membership").catch(
-            //   console.error
-            // );
             setIsPaying(true);
             handleSubmit();
           }}
@@ -1008,6 +1032,7 @@ const ConfirmDetailsSection: React.FC<KAPFormSectionProps> = () => {
   const formMut = api.form.kapMembershipPrev.useMutation(); // using a different mutation for prev member form submission
   const [activeStep, setActiveStep] = useAtom(activeStepAtom);
   const [submittingState, setSubmittingState] = useState<boolean>(false);
+  const [photoConsent, setPhotoConsent] = useState<boolean>(false);
 
   const [formState] = useAtom(atom((get) => get(kapFormAtom)));
 
@@ -1167,6 +1192,17 @@ const ConfirmDetailsSection: React.FC<KAPFormSectionProps> = () => {
           </AlertDescription>
         </Box>
       </Alert>
+
+      <Checkbox
+        isChecked={photoConsent}
+        onChange={(e) => setPhotoConsent(e.target.checked)}
+        colorScheme="orange"
+        mb="6"
+      >
+        I consent to my photographs being used for matrimony-related purposes by
+        The Khudabadi Amil Panchayat.
+      </Checkbox>
+
       <Flex w="100%" justifyContent="space-between">
         <Button
           colorScheme="orange"
@@ -1182,6 +1218,7 @@ const ConfirmDetailsSection: React.FC<KAPFormSectionProps> = () => {
           size="lg"
           onClick={handleSubmit}
           isLoading={submittingState}
+          isDisabled={!photoConsent}
         >
           Confirm & Submit
         </Button>

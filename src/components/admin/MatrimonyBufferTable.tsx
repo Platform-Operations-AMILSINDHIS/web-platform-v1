@@ -1,9 +1,29 @@
-import { Button, Td, Text, Tr } from "@chakra-ui/react";
-import { useMemo } from "react";
+import {
+  Badge,
+  Button,
+  Flex,
+  Td,
+  Text,
+  Tr,
+  IconButton,
+  useDisclosure,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
+  useToast,
+  Tooltip,
+} from "@chakra-ui/react";
+import { useRef, useState, useMemo } from "react";
+import { DeleteIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import TableLayout from "~/layouts/TableLayout";
 import { useProfileAtom } from "~/lib/atom";
-import { MatrimonyBufferDataType, Status } from "~/types/tables/dataBuffer";
-import { formMembershipBufferDataTableHeaders } from "~/utils/tableHeaders";
+import type { MatrimonyBufferDataType } from "~/types/tables/dataBuffer";
+import { Status } from "~/types/tables/dataBuffer";
+import { formMatrimonyBufferDataTableHeaders } from "~/utils/tableHeaders";
+import { api } from "~/utils/api";
 
 interface MatrimonyBufferTableProps {
   matrimonyBufferData: MatrimonyBufferDataType[];
@@ -11,71 +31,139 @@ interface MatrimonyBufferTableProps {
   searchTerm: string;
 }
 
+const formatRelativeTime = (dateString: string): string => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  if (diffDays === 0) return "Today";
+  if (diffDays === 1) return "Yesterday";
+  if (diffDays < 7) return `${diffDays}d ago`;
+  if (diffDays < 30) return `${Math.floor(diffDays / 7)}w ago`;
+  if (diffDays < 365) return `${Math.floor(diffDays / 30)}mo ago`;
+  return `${Math.floor(diffDays / 365)}y ago`;
+};
+
 const MatrimonyBufferTable: React.FC<MatrimonyBufferTableProps> = ({
   matrimonyBufferData,
   filterState,
   searchTerm,
 }) => {
   const [, setProfileAtom] = useProfileAtom();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [pendingDeleteId, setPendingDeleteId] = useState<number | null>(null);
+  const cancelRef = useRef<HTMLButtonElement>(null);
+  const toast = useToast();
+
+  const deleteEntry = api.formBuffer.deleteFormBufferEntry.useMutation({
+    onSuccess: () => {
+      toast({ title: "Entry deleted", status: "success", duration: 3000, isClosable: true });
+      onClose();
+    },
+    onError: (err) => {
+      toast({ title: "Failed to delete", description: err.message, status: "error", duration: 4000, isClosable: true });
+      onClose();
+    },
+  });
+
+  const handleDeleteClick = (id: number) => {
+    setPendingDeleteId(id);
+    onOpen();
+  };
+
+  const confirmDelete = () => {
+    if (pendingDeleteId !== null) {
+      deleteEntry.mutate({ id: pendingDeleteId });
+    }
+  };
 
   const filteredData = useMemo(() => {
-    if (!searchTerm || searchTerm.trim() === "") {
-      return matrimonyBufferData;
+    let data = matrimonyBufferData;
+
+    if (searchTerm && searchTerm.trim() !== "") {
+      const lower = searchTerm.toLowerCase();
+      data = data.filter((buffer) => {
+        const fullName = `${buffer?.submission.personalInfo.firstName} ${buffer?.submission.personalInfo.lastName}`.toLowerCase();
+        return fullName.includes(lower);
+      });
     }
 
-    const lowercaseSearchTerm = searchTerm.toLowerCase();
-    return matrimonyBufferData.filter((buffer) => {
-      const fullName =
-        `${buffer?.submission.personalInfo.firstName} ${buffer?.submission.personalInfo.lastName}`.toLowerCase();
-      return fullName.includes(lowercaseSearchTerm);
-    });
-  }, [matrimonyBufferData, searchTerm]);
+    data = data.filter((buffer) =>
+      filterState === "All"
+        ? true
+        : filterState === "Approved"
+        ? buffer.status === Status.APPROVED
+        : buffer.status === Status.PENDING
+    );
+
+    return data;
+  }, [matrimonyBufferData, searchTerm, filterState]);
 
   return (
-    <TableLayout tableHeaders={formMembershipBufferDataTableHeaders}>
-      {filteredData
-        .filter((buffer) =>
-          filterState === "All"
-            ? buffer.status === Status.APPROVED || Status.PENDING
-            : filterState === "Approved"
-            ? buffer.status === Status.APPROVED
-            : buffer.status === Status.PENDING
-        )
-        .map((buffer, index) => {
-          return (
-            <Tr fontSize="sm" key={index}>
-              <Td>{index + 1}</Td>
-              <Td>{`${buffer?.user_id.substring(0, 20)}...`}</Td>
-              <Td>{buffer?.formType}</Td>
-              <Td
-                fontSize="small"
-                fontWeight={600}
-                color={
-                  buffer?.status === Status.APPROVED
-                    ? "green.500"
-                    : "yellow.500"
-                }
+    <>
+      <Flex justify="space-between" align="center" mb={2} px={1}>
+        <Text fontSize="sm" color="gray.500">
+          Showing{" "}
+          <Text as="span" fontWeight="semibold" color="gray.700">
+            {filteredData.length}
+          </Text>{" "}
+          of{" "}
+          <Text as="span" fontWeight="semibold" color="gray.700">
+            {matrimonyBufferData.length}
+          </Text>{" "}
+          entries
+        </Text>
+      </Flex>
+
+      <TableLayout tableHeaders={formMatrimonyBufferDataTableHeaders}>
+        {filteredData.map((buffer, index) => (
+          <Tr
+            fontSize="sm"
+            key={buffer?.id ?? index}
+            _hover={{ bg: "orange.50", transition: "background 0.15s" }}
+            cursor="default"
+          >
+            <Td color="gray.400" fontWeight="medium">{index + 1}</Td>
+            <Td>
+              <Badge colorScheme="pink" variant="subtle" borderRadius="full" px={2}>
+                {buffer?.formType}
+              </Badge>
+            </Td>
+            <Td>
+              <Badge
+                colorScheme={buffer?.status === Status.APPROVED ? "green" : "yellow"}
+                variant="subtle"
+                borderRadius="full"
+                px={2}
               >
-                <Text
-                  textAlign="center"
-                  p={1}
-                  px={3}
-                  borderRadius={20}
-                  bg={
-                    buffer?.status === Status.APPROVED
-                      ? "green.100"
-                      : "yellow.100"
-                  }
-                  border="1px solid"
-                >
-                  {buffer?.status}
+                {buffer?.status}
+              </Badge>
+            </Td>
+            <Td>
+              <Text fontWeight="medium">
+                {`${buffer?.submission.personalInfo.firstName} ${buffer?.submission.personalInfo.lastName}`}
+              </Text>
+            </Td>
+            <Td color="gray.600" fontSize="xs">{buffer?.submission.personalInfo.emailId}</Td>
+            <Td color="gray.600" fontSize="xs">{`+91 ${buffer?.submission.personalInfo.mobileNumber}`}</Td>
+            <Td>
+              <Tooltip
+                label={buffer?.created_at ? new Date(buffer.created_at).toLocaleString("en-IN") : ""}
+                placement="top"
+                hasArrow
+              >
+                <Text fontSize="xs" color="gray.500" cursor="default">
+                  {buffer?.created_at ? formatRelativeTime(buffer.created_at) : "—"}
                 </Text>
-              </Td>
-              <Td>{`${buffer?.submission.personalInfo.firstName} ${buffer?.submission.personalInfo.lastName}`}</Td>
-              <Td>{buffer?.submission.personalInfo.emailId}</Td>
-              <Td>{`+91 ${buffer?.submission.personalInfo.mobileNumber}`}</Td>
-              <Td>
+              </Tooltip>
+            </Td>
+            <Td>
+              <Flex align="center" gap={1}>
                 <Button
+                  size="xs"
+                  variant="ghost"
+                  colorScheme="orange"
+                  rightIcon={<ExternalLinkIcon />}
                   onClick={() => {
                     window.location.href = `/admin/${buffer?.user_id}.${buffer?.formType}`;
                     setProfileAtom({
@@ -87,18 +175,44 @@ const MatrimonyBufferTable: React.FC<MatrimonyBufferTableProps> = ({
                       },
                     });
                   }}
-                  _hover={{ color: "#FF4D00" }}
-                  color="gray.500"
-                  variant="none"
-                  size="small"
                 >
-                  View Profile
+                  View
                 </Button>
-              </Td>
-            </Tr>
-          );
-        })}
-    </TableLayout>
+                <IconButton
+                  aria-label="Delete entry"
+                  icon={<DeleteIcon />}
+                  size="xs"
+                  variant="ghost"
+                  colorScheme="red"
+                  onClick={() => handleDeleteClick(buffer?.id)}
+                />
+              </Flex>
+            </Td>
+          </Tr>
+        ))}
+      </TableLayout>
+
+      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Entry
+            </AlertDialogHeader>
+            <AlertDialogBody>
+              Are you sure you want to delete this submission? This action cannot be undone.
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button colorScheme="red" onClick={confirmDelete} ml={3} isLoading={deleteEntry.isLoading}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+    </>
   );
 };
 

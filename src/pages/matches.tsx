@@ -1,15 +1,14 @@
 import { useDisclosure } from "@chakra-ui/react";
-import { FormikHelpers } from "formik";
-import { useEffect, useState } from "react";
-import { MatrimonyLoginValues } from "~/hooks/useForm";
+import type { MatrimonyLoginValues } from "~/hooks/useForm";
+import React, { useCallback, useEffect, useState } from "react";
+import type { FormikHelpers } from "formik";
 import { useUserAtom } from "~/lib/atom";
 
 import useServerActions from "~/hooks/useServerActions";
 import ProfilesViewLayout from "~/layouts/ProfilesViewLayout";
 import MatrimonyAuthModal from "~/components/authentication/MatrimonyAuthModal";
-import {
+import type {
   MatrimonyProfilesFetchResponse,
-  ProfileRequestsFetchResponse,
 } from "~/types/api";
 import MatrimonyProfilesView from "~/components/matrimony/MatrimonyProfilesView";
 import MatrimonyApplicationWithdrawModal from "~/components/matrimony/MatrimonyApplicationWithdrawModal";
@@ -46,6 +45,8 @@ const ProfilePage = () => {
   >([]);
   const [profilesRequested, setProfilesRequested] = useState<string[]>([]);
 
+  console.log({ user });
+
   const handleFormSubmit = async (
     values: MatrimonyLoginValues,
     { setErrors }: FormikHelpers<MatrimonyLoginValues>
@@ -66,24 +67,16 @@ const ProfilePage = () => {
     setIsLoggedIn(true);
   };
 
-  const handleCloseSelectProfileModal = (
-    setProfileMatID: (profileMatID: string | undefined) => void,
-    setFetchStatus: (status: boolean) => void
-  ) => {
-    setFetchStatus(false);
-    setProfileMatID("");
-    onCloseSelectionModal();
-  };
-
-  const fetchProfiles = async () => {
+  const fetchProfiles = useCallback(async () => {
     const data = await handleMatrimonyProfilesFetch();
     if (data.length > 0 && isLoggedIn) {
       setMatrimonyProfiles(data);
     }
-  };
+  }, [handleMatrimonyProfilesFetch, isLoggedIn]);
 
-  const fetchProfileRequests = async () => {
-    const data = await handleFetchProfileRequests();
+  const fetchProfileRequests = useCallback(async (email_id: string) => {
+    const data = await handleFetchProfileRequests(email_id);
+    console.log({ profile_requests_data: data });
 
     if (data.length > 0 && isLoggedIn) {
       // Create a new Set to efficiently store unique requested IDs
@@ -98,20 +91,39 @@ const ProfilePage = () => {
 
       setProfilesRequested(uniqueRequestedIds);
 
-      console.log({ profilesRequested });
+      console.log({ profilesRequested: uniqueRequestedIds });
+    }
+  }, [handleFetchProfileRequests, isLoggedIn]);
+
+  const handleCloseSelectProfileModal = async (
+    setProfileMatID: (profileMatID: string | undefined) => void,
+    setFetchStatus: (status: boolean) => void
+  ) => {
+    setFetchStatus(false);
+    setProfileMatID("");
+    onCloseSelectionModal();
+
+    // Refresh both lists
+    if (user) {
+      await Promise.all([fetchProfiles(), fetchProfileRequests(user.email_id)]);
     }
   };
 
   useEffect(() => {
     const fetchPageData = async () => {
-      await fetchProfiles();
-      await fetchProfileRequests();
+      if (user && isLoggedIn) {
+        await fetchProfiles();
+        await fetchProfileRequests(user.email_id);
+      }
     };
 
     fetchPageData()
       .then(() => console.log("done"))
       .catch((err) => console.log(err));
-  }, [matrimonyProfiles, isLoggedIn]);
+    // Only refetch when user or isLoggedIn changes, not on matrimonyProfiles change
+  }, [isLoggedIn, user, fetchProfiles, fetchProfileRequests]);
+
+  console.log({ matrimonyProfiles, profilesRequested });
 
   return (
     <ProfilesViewLayout

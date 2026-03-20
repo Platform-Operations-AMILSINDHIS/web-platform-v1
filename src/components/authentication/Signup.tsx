@@ -1,17 +1,19 @@
 // Signup.tsx - Fixed validation logic
-import { Button, Flex, Text, useToast } from "@chakra-ui/react";
-import { Form, Formik, FormikHelpers } from "formik";
-import { Dispatch, useState } from "react";
+import { Button, Flex, Text } from "@chakra-ui/react";
+import { Form, Formik } from "formik";
+import type { FormikHelpers } from "formik";
+import { useState } from "react";
+import type { Dispatch } from "react";
 
 import axios from "axios";
 
-import { Values, initialValues } from "~/hooks/useForm";
+import { initialValues } from "~/hooks/useForm";
+import type { Values } from "~/hooks/useForm";
 import { LabelledInput } from "../forms";
 import { SignUpValidationSchema } from "~/validations/AuthValidations";
-import { SetStateAction } from "jotai";
+import type { SetStateAction } from "jotai";
 
 interface SignupProps {
-  setCloseModal: (input: boolean) => void;
   signUpFormValues: Values | null;
   setSignUpFormValues: Dispatch<SetStateAction<Values | null>>;
   authStateHandleFunction: (
@@ -20,7 +22,6 @@ interface SignupProps {
 }
 
 const Signup: React.FC<SignupProps> = ({
-  setCloseModal,
   signUpFormValues,
   setSignUpFormValues,
   authStateHandleFunction,
@@ -130,10 +131,9 @@ const Signup: React.FC<SignupProps> = ({
             />
 
             <LabelledInput
-              type="number"
-              label="Enter your age"
-              name="age"
-              placeholder="0"
+              type="date"
+              label="Date of birth"
+              name="dateOfBirth"
             />
           </Flex>
 

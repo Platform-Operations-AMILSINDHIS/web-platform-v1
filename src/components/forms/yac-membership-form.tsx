@@ -67,7 +67,7 @@ import { type InputType } from "./kap-membership-form";
 import paymentQRCode from "../../../public/images/payments/qr_sbi.jpg";
 
 import { api } from "~/utils/api";
-import { userAtomBody } from "~/types/atoms/users";
+import type { userAtomBody } from "~/types/atoms/users";
 import Image from "next/image";
 
 const steps = [
@@ -122,7 +122,7 @@ const yacFormAtom = atom<YACMembershipFormValues>({
     middleName: "",
     lastName: "",
     occupation: "",
-    dateOfBirth: new Date(),
+    dateOfBirth: "",
     mobileNumber: "",
     emailId: "",
     maidenSurname: "",
@@ -176,7 +176,7 @@ const activeStepAtom = atom<number>(1);
 
 const YoungAmilCircleMembershipForm: React.FC<
   YoungAmilCircleMembershipFormProps
-> = ({ user, isMemberYAC }) => {
+> = ({ user }) => {
   // const toast = useToast();
 
   // const { activeStep, setActiveStep } = useSteps({
@@ -262,7 +262,7 @@ const YoungAmilCircleMembershipForm: React.FC<
           ].map(
             (FormSection, i) =>
               activeStep === i + 1 && (
-                <FormSection user={user} key={i} isMemberYAC={isPrevMember} />
+                <FormSection user={user} key={i} />
               )
           )
         : [
@@ -287,13 +287,18 @@ export const PersonalInformationSection: React.FC<YACFormSectionProps> = ({
   const [activeStep, setActiveStep] = useAtom(activeStepAtom);
   const [personalInfo, setPersonalInfo] = useAtom(personalInfoAtom);
 
-  // ✅ Merge user info and local personal info
+  // Pre-fill dateOfBirth from the user's account if available
+  const accountDOB = user?.date_of_birth
+    ? String(user.date_of_birth).slice(0, 10)
+    : undefined;
+
+  // Merge user info and local personal info
   const mergedInitialValues = {
     firstName: user?.first_name ?? personalInfo.firstName ?? "",
     middleName: personalInfo.middleName ?? "",
     lastName: user?.last_name ?? personalInfo.lastName ?? "",
     occupation: personalInfo.occupation ?? "",
-    dateOfBirth: personalInfo.dateOfBirth ?? "",
+    dateOfBirth: accountDOB ?? personalInfo.dateOfBirth ?? "",
     mobileNumber: personalInfo.mobileNumber ?? "",
     emailId: user?.email_id ?? personalInfo.emailId ?? "",
     maidenSurname: personalInfo.maidenSurname ?? "",
@@ -302,13 +307,15 @@ export const PersonalInformationSection: React.FC<YACFormSectionProps> = ({
     mothersName: personalInfo.mothersName ?? "",
   };
 
-  // ✅ Determine disabled fields
+  // Determine disabled fields
   const isFieldDisabled = (field: string) => {
     if (!user) return true; // wait for user
     if (user.YAC_member) return true; // fully lock if YAC member
 
-    // lock fields that come from user account
+    // Lock fields sourced from the core account profile
     const lockedFields = ["firstName", "lastName", "emailId"];
+    // Also lock dateOfBirth if the account already has it set (prevents age manipulation)
+    if (field === "dateOfBirth" && !!accountDOB) return true;
     return lockedFields.includes(field);
   };
 
@@ -684,7 +691,7 @@ export const ProposerDetailsSection: React.FC<YACFormSectionProps> = () => {
       <Formik
         initialValues={proposerInfo}
         validationSchema={proposerInfoSchema}
-        onSubmit={(values, actions) => {
+        onSubmit={(values) => {
           setProposerInfo(values);
           setActiveStep(activeStep + 1);
         }}
@@ -756,6 +763,7 @@ export const PaymentSection: React.FC<YACFormSectionProps> = ({
 
   const [isPaying, setIsPaying] = useState<boolean>(false);
   const [paymentID, setPaymentID] = useState<string>("");
+  const [photoConsent, setPhotoConsent] = useState<boolean>(false);
 
   const handleSubmit = async () => {
     setIsPaying(true);
@@ -847,6 +855,16 @@ export const PaymentSection: React.FC<YACFormSectionProps> = ({
 
       <Spacer h="2rem" />
 
+      <Checkbox
+        isChecked={photoConsent}
+        onChange={(e) => setPhotoConsent(e.target.checked)}
+        colorScheme="orange"
+        mb="2rem"
+      >
+        I consent to my photographs being used for matrimony-related purposes by
+        The Khudabadi Amil Panchayat.
+      </Checkbox>
+
       <Flex w="100%" justifyContent="space-between">
         <Button
           colorScheme="orange"
@@ -860,7 +878,7 @@ export const PaymentSection: React.FC<YACFormSectionProps> = ({
 
         <Button
           onClick={() => void handleSubmit()}
-          isDisabled={paymentID === "" || isPaying}
+          isDisabled={paymentID === "" || isPaying || !photoConsent}
           isLoading={isPaying}
           colorScheme="orange"
           leftIcon={<FaRupeeSign />}
@@ -878,6 +896,7 @@ const ConfirmDetailsSection: React.FC<YACFormSectionProps> = () => {
   const formMut = api.form.yacMembershipPrev.useMutation(); // using a different mutation for prev member form submission
   const [activeStep, setActiveStep] = useAtom(activeStepAtom);
   const [submittingState, setSubmittingState] = useState<boolean>(false);
+  const [photoConsent, setPhotoConsent] = useState<boolean>(false);
 
   const [formState] = useAtom(atom((get) => get(yacFormAtom)));
 
@@ -1037,6 +1056,17 @@ const ConfirmDetailsSection: React.FC<YACFormSectionProps> = () => {
           </AlertDescription>
         </Box>
       </Alert>
+
+      <Checkbox
+        isChecked={photoConsent}
+        onChange={(e) => setPhotoConsent(e.target.checked)}
+        colorScheme="orange"
+        mb="6"
+      >
+        I consent to my photographs being used for matrimony-related purposes by
+        The Khudabadi Amil Panchayat.
+      </Checkbox>
+
       <Flex w="100%" justifyContent="space-between">
         <Button
           colorScheme="orange"
@@ -1052,6 +1082,7 @@ const ConfirmDetailsSection: React.FC<YACFormSectionProps> = () => {
           size="lg"
           onClick={handleSubmit}
           isLoading={submittingState}
+          isDisabled={!photoConsent}
         >
           Confirm & Submit
         </Button>

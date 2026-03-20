@@ -27,7 +27,7 @@ export interface FetchProfileResponse {
   account_name: string;
   first_name: string;
   last_name: string;
-  age: number;
+  date_of_birth: string | null;
   gender: string;
   email_id: string;
   created_at: string;
@@ -66,6 +66,12 @@ export interface MatrimonyProfilesFetchResponse {
   status: string;
   submission: MatrimonyFormValues;
   user_id: string;
+  application_s3_meta: {
+    s3_key: string;
+    file_type: string;
+    file_name: string;
+    content_type: string;
+  }[];
 }
 
 export interface MatrimonyIdFetchResponse {

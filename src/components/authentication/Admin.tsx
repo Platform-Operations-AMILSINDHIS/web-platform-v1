@@ -1,12 +1,14 @@
-import { Box, Button, Checkbox, Flex, Icon, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Icon, Text } from "@chakra-ui/react";
 import { AiFillLock } from "react-icons/ai";
 import { Form, Formik } from "formik";
 import { LabelledInput } from "../forms";
 import { AdminLoginValidation } from "~/validations/AuthValidations";
 
-import React, { Dispatch } from "react";
-import { AdminLoginValues, adminInitialLoginValues } from "~/hooks/useForm";
-import { SetStateAction } from "jotai";
+import React from "react";
+import type { Dispatch } from "react";
+import { adminInitialLoginValues } from "~/hooks/useForm";
+import type { AdminLoginValues } from "~/hooks/useForm";
+import type { SetStateAction } from "jotai";
 
 interface AdminProps {
   handleSubmit: (values: AdminLoginValues) => Promise<void>;

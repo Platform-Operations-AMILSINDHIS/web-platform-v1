@@ -7,6 +7,7 @@ export interface SendMailType {
   subject: string;
   html: string;
   attachments?: Attachment[];
+  cc?: string | string[];
 }
 
 export interface RSVPMailType {

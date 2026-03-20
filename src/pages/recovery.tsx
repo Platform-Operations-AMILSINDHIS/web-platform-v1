@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { RecoveryPasswordValues } from "~/hooks/useForm";
+import type { RecoveryPasswordValues } from "~/hooks/useForm";
 import { useUserAtom } from "~/lib/atom";
 
 import Recovery from "~/components/authentication/Recovery";
@@ -64,7 +64,7 @@ const RecoveryPage = () => {
         .then(() => console.log("moved back to home"))
         .catch((err) => console.log(err));
     }
-  }, [router.isReady, router.asPath]);
+  }, [router.isReady, router.asPath, router]);
 
   const handlePasswordReset = async (values: RecoveryPasswordValues) => {
     try {
@@ -147,7 +147,7 @@ const RecoveryPage = () => {
 
   return (
     <Flex justify="center" align="center" w="full" h="100vh">
-      {"recoveryaccess_token" && "refresh_token" in urlData ? (
+      {"recoveryaccess_token" in urlData && "refresh_token" in urlData ? (
         <Flex borderRadius={15} p={5} gap={3}>
           {"recoveryerror" in urlData ? (
             <Flex

@@ -23,7 +23,7 @@ const useRealTime = (onUpdate: () => Promise<void>, tableName: string) => {
     return () => {
       void supabase.removeChannel(channel);
     };
-  }, [onUpdate]);
+  }, [onUpdate, tableName]);
 };
 
 export default useRealTime;

@@ -8,7 +8,7 @@ import {
   Kbd,
   Text,
 } from "@chakra-ui/react";
-import { ChangeEvent } from "react";
+import type { ChangeEvent } from "react";
 import { BiSearch } from "react-icons/bi";
 import { PiCommand } from "react-icons/pi";
 

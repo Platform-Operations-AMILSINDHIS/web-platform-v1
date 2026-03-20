@@ -12,7 +12,7 @@ interface DBHandlerRequest extends NextApiRequest {
     KAP_member: boolean;
     YAC_member: boolean;
     membership_id: string;
-    age: number;
+    date_of_birth: string;
     gender: string;
     first_name: string;
     last_name: string;
@@ -31,11 +31,11 @@ const DBHandler = async (req: DBHandlerRequest, res: NextApiResponse) => {
     last_name,
     KAP_member,
     YAC_member,
-    age,
+    date_of_birth,
   } = req.body;
 
   try {
-    const hashed_password = await hasher(password);
+    const hashed_password = await hasher(password)
     const { data, error } = await supabase
       .from("general_accounts")
       .insert([
@@ -47,7 +47,7 @@ const DBHandler = async (req: DBHandlerRequest, res: NextApiResponse) => {
           account_name,
           KAP_member,
           YAC_member,
-          age,
+          date_of_birth,
           gender,
           first_name,
           last_name,

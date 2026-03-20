@@ -8,9 +8,10 @@ export const SignUpValidationSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
   lastName: Yup.string().required("Last name is required"),
   gender: Yup.string().required("Gender is required"),
-  age: Yup.number()
-    .min(0, "Age must be a positive number")
-    .required("Age is required"),
+  dateOfBirth: Yup.date()
+    .max(new Date(), "Date of birth cannot be in the future")
+    .required("Date of birth is required")
+    .typeError("Please enter a valid date"),
 });
 
 export const LoginValidation = Yup.object().shape({

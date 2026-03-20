@@ -46,7 +46,7 @@ import type { InputType } from "./kap-membership-form";
 import { focusAtom } from "jotai-optics";
 
 import { api } from "~/utils/api";
-import { userAtomBody } from "~/types/atoms/users";
+import type { userAtomBody } from "~/types/atoms/users";
 
 const steps = [
   {
@@ -218,6 +218,33 @@ const MatrimonyPersonalInformationSection: React.FC<
   const [activeStep, setActiveStep] = useAtom(activeStepAtom);
   const [personalInfo, setPersonalInfo] = useAtom(personalInfoAtom);
 
+  // Merge user data (from login/account) with current atom state
+  // This pre-fills name/email/mobile if they exist in user
+  const mergedInitialValues = {
+    ...personalInfo, // keep whatever user already entered in this session
+    firstName: user?.first_name ?? personalInfo.firstName ?? "",
+    lastName: user?.last_name ?? personalInfo.lastName ?? "",
+    emailId: user?.email_id ?? personalInfo.emailId ?? "",
+  };
+
+  // Simple helper — disable fields that come from user account
+  const isFieldDisabled = (fieldName: string) => {
+    if (!user) return true; // no user, everything blocked until loaded
+
+    // Global disable conditions (your original logic)
+    const shouldDisableGlobally =
+      (!user.membership_id ||
+      user.membership_id === "") ||
+      (submissionVerification ??
+      approved);
+
+    if (shouldDisableGlobally) return true;
+
+    // Only lock these specific fields pulled from login
+    const lockedFields = ["firstName", "lastName", "emailId"];
+    return lockedFields.includes(fieldName);
+  };
+
   useEffect(
     () => console.log(JSON.stringify(personalInfo, null, 2)),
     [personalInfo]
@@ -232,7 +259,8 @@ const MatrimonyPersonalInformationSection: React.FC<
       </Text>
 
       <Formik
-        initialValues={personalInfo}
+        initialValues={mergedInitialValues}
+        enableReinitialize // allows re-filling if user changes
         validationSchema={matrimonyPersonalInfoSchema}
         onSubmit={(values, actions) => {
           setPersonalInfo(values);
@@ -248,41 +276,40 @@ const MatrimonyPersonalInformationSection: React.FC<
               templateColumns={["1fr", "repeat(3, 1fr)"]}
             >
               {[
-                { label: "First Name", required: true },
-                { label: "Middle Name" },
-                { label: "Last Name", required: true },
+                { label: "First Name", name: "firstName", required: true },
+                { label: "Middle Name", name: "middleName" },
+                { label: "Last Name", name: "lastName", required: true },
                 {
                   label: "Date & Time of Birth",
                   name: "dateAndTimeOfBirth",
                   inputType: "datetime",
                   required: true,
                 },
-                { label: "Place of Birth", required: true },
-                { label: "Mobile Number", required: true },
-                { label: "Email ID", required: true },
-                { label: "Occupation", required: true },
+                {
+                  label: "Place of Birth",
+                  name: "placeOfBirth",
+                  required: true,
+                },
+                {
+                  label: "Mobile Number",
+                  name: "mobileNumber",
+                  required: true,
+                },
+                { label: "Email ID", name: "emailId", required: true },
+                { label: "Occupation", name: "occupation", required: true },
                 {
                   label: "Income per Annum",
+                  name: "incomePerAnnum",
                   inputType: "text",
                 },
               ].map(({ label, name, inputType, required }, i) => (
                 <LabelledInput
                   key={i}
                   label={label}
-                  name={name ?? undefined}
+                  name={name} // use explicit name
                   type={inputType ? (inputType as InputType) : "text"}
-                  isDisabled={
-                    user
-                      ? !user.membership_id || user.membership_id === ""
-                        ? true
-                        : submissionVerification
-                        ? true
-                        : approved
-                        ? true
-                        : false
-                      : true
-                  }
                   required={required}
+                  isDisabled={isFieldDisabled(name)} // now controlled here
                 />
               ))}
             </Grid>
@@ -434,7 +461,7 @@ const MatrimonyPersonalInformationSection: React.FC<
               <Box></Box>
               <Button
                 type="submit"
-                isDisabled={!(formik.isValid && formik.dirty)}
+                isDisabled={!formik.isValid}
                 colorScheme="orange"
                 rightIcon={<ArrowForwardIcon />}
                 size="lg"
@@ -479,25 +506,25 @@ const MatrimonyAddressDetailsSection: React.FC = () => {
               {[
                 {
                   label: "Address Line 1",
-                  name: "residentialAddress.addressLine1",
+                  name: "residentialAddressDetails.addressLine1",
                   required: true,
                 },
                 {
                   label: "Address Line 2",
-                  name: "residentialAddress.addressLine2",
+                  name: "residentialAddressDetails.addressLine2",
                   required: true,
                 },
                 {
                   label: "Address Line 3",
-                  name: "residentialAddress.addressLine3",
+                  name: "residentialAddressDetails.addressLine3",
                 },
                 {
                   label: "Pin Code",
-                  name: "residentialAddress.pinCode",
+                  name: "residentialAddressDetails.pinCode",
                   required: true,
                 },
               ].map(({ label, name, required }, i) => (
-                <LabelledInput key={i} label={label} required={required} />
+                <LabelledInput key={i} label={label} name={name} required={required} />
               ))}
             </Grid>
             <Spacer h="2rem" />
@@ -513,7 +540,7 @@ const MatrimonyAddressDetailsSection: React.FC = () => {
 
               <Button
                 type="submit"
-                isDisabled={!(formik.isValid && formik.dirty)}
+                isDisabled={!formik.isValid}
                 colorScheme="orange"
                 rightIcon={<ArrowForwardIcon />}
                 size="lg"
@@ -751,7 +778,7 @@ const SpousePreferencesSection: React.FC = () => {
 
               <Button
                 type="submit"
-                isDisabled={!(formik.isValid && formik.dirty)}
+                isDisabled={!formik.isValid}
                 colorScheme="orange"
                 rightIcon={<ArrowForwardIcon />}
                 size="lg"
@@ -830,11 +857,11 @@ export const ProposerDetailsSection: React.FC = () => {
               templateColumns={["1fr", "repeat(3, 1fr)"]}
             >
               {[
-                { label: "First Name" },
-                { label: "Last Name" },
-                { label: "Mobile Number" },
-              ].map(({ label }, i) => (
-                <LabelledInput key={i} label={label} />
+                { label: "First Name", name: "firstName" },
+                { label: "Last Name", name: "lastName" },
+                { label: "Mobile Number", name: "mobileNumber" },
+              ].map(({ label, name }, i) => (
+                <LabelledInput key={i} label={label} name={name} />
               ))}
             </Grid>
 
@@ -876,7 +903,7 @@ export const ProposerDetailsSection: React.FC = () => {
 
               <Button
                 type="submit"
-                isDisabled={!(formik.isValid && formik.dirty)}
+                isDisabled={!formik.isValid}
                 isLoading={matrimonyFormMut.isLoading}
                 colorScheme="orange"
                 rightIcon={<ArrowForwardIcon />}

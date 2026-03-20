@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 import { createTRPCRouter, publicProcedure } from "../trpc";
-import { TRPCClientError } from "@trpc/client";
+import { TRPCError } from "@trpc/server";
 import supabase from "~/lib/supabase/client";
 
 const profileRouter = createTRPCRouter({
@@ -10,7 +10,10 @@ const profileRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       const { user_id } = input;
 
-      if (!user_id) throw new TRPCClientError("User ID is required");
+      if (!user_id) throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "User ID is required",
+      });
       // Query for all user DATA
       const { data, error } = await supabase
         .from("general_accounts")
@@ -20,7 +23,10 @@ const profileRouter = createTRPCRouter({
           account_name,
           first_name,
           last_name,
+          gender,
+          date_of_birth,
           membership_id,
+          created_at,
           application_s3_meta (
             s3_key,
             file_type,
@@ -31,14 +37,59 @@ const profileRouter = createTRPCRouter({
             formType,
             submission,
             isMember,
-            status
+            status,
+            created_at
           )
         `
         )
         .eq("id", user_id)
         .single(); // expects only one row
-      if (error) throw new TRPCClientError(error.message);
+      if (error) {
+        console.error("Error fetching profile details:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: error.message,
+        });
+      }
       return data;
+    }),
+
+  // Update general_accounts fields — email is explicitly excluded for safety
+  updateProfile: publicProcedure
+    .input(
+      Yup.object({
+        user_id: Yup.string().required("User ID is required"),
+        first_name: Yup.string().required("First name is required"),
+        last_name: Yup.string().required("Last name is required"),
+        account_name: Yup.string().required("Account name is required"),
+        gender: Yup.string().required("Gender is required"),
+        date_of_birth: Yup.string()
+          .required("Date of birth is required"),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const { user_id, first_name, last_name, account_name, gender, date_of_birth } =
+        input;
+
+      const { error } = await supabase
+        .from("general_accounts")
+        .update({
+          first_name,
+          last_name,
+          account_name,
+          gender,
+          date_of_birth,
+        })
+        .eq("id", user_id);
+
+      if (error) {
+        console.error("Error updating profile:", error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: error.message,
+        });
+      }
+      return { success: true };
     }),
 });
 

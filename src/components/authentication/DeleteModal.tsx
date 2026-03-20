@@ -7,7 +7,8 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
+import type { ChangeEvent } from "react";
 import ModalLayout from "~/layouts/ModalLayout";
 import { useUserAtom } from "~/lib/atom";
 

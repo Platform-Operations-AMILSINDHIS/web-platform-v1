@@ -215,8 +215,8 @@ const DonationsForm: React.FC = () => {
         paymentTransactionId: "",
       });
       // Reset file uploads
-      panCardAcceptedFiles.splice(0, panCardAcceptedFiles.length);
-      addressProofAcceptedFiles.splice(0, addressProofAcceptedFiles.length);
+      panCardAcceptedFiles.slice(0, panCardAcceptedFiles.length);
+      addressProofAcceptedFiles.slice(0, addressProofAcceptedFiles.length);
 
       // Reset filenames and presigned URLs
       setPanFilename(null);

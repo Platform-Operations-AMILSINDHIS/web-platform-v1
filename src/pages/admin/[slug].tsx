@@ -1,9 +1,11 @@
 /* eslint-disable */
 // @ts-nocheck
-import { Flex, Spinner, Text } from "@chakra-ui/react";
+import { ArrowBackIcon } from "@chakra-ui/icons";
+import { Box, Button, Divider, Flex, Spinner, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import MatrimonyProfileContainer from "~/components/admin/MatrimonyProfileContainer";
 import MemberProfileDetailDisplay from "~/components/admin/MemberProfileDetailDisplay";
+import AdminMatrimonyPhotoUpload from "~/components/admin/AdminMatrimonyPhotoUpload";
 import LinkButton from "~/components/buttons/LinkButton";
 import useServerActions from "~/hooks/useServerActions";
 import ProfileViewLayout from "~/layouts/ProfileViewLayout";
@@ -63,13 +65,15 @@ const SlugPage = () => {
       }
     };
     const handleSubmissionSlug = async () => {
+      if (!selected_profile?.user_id) return;
+      
       console.log({
         selected_profile_id: selected_profile?.user_id,
         check: "true",
       });
       const response = await handleFetchUserSubmission(
-        selected_profile?.user_id ?? "",
-        selected_profile?.formType ?? ""
+        selected_profile.user_id,
+        selected_profile.formType ?? ""
       );
 
       if (response) {
@@ -128,11 +132,24 @@ const SlugPage = () => {
   };
 
   return (
-    <>
+    <Box maxW="1200px" mx="auto" px={6} py={6}>
+      {/* Back to Dashboard */}
+      <Button
+        leftIcon={<ArrowBackIcon />}
+        variant="ghost"
+        size="sm"
+        color="gray.500"
+        _hover={{ color: "gray.800", bg: "gray.100" }}
+        mb={5}
+        onClick={() => (window.location.href = "/admin")}
+      >
+        Back to Dashboard
+      </Button>
+
       {/* Display Profile Details Card */}
       {isLoadingProfile ? (
-        <Flex justify="center">
-          <Spinner size="lg" />
+        <Flex justify="center" py={10}>
+          <Spinner size="lg" color="orange.400" />
         </Flex>
       ) : profileDetails ? (
         <MemberProfileDetailDisplay
@@ -140,6 +157,9 @@ const SlugPage = () => {
           profileImageUrl={profilePicture}
         />
       ) : null}
+
+      <Divider my={6} borderColor="gray.200" />
+
       {["KAP", "YAC"].includes(selected_profile?.formType) ? (
         <>
           {submissionValues ? (
@@ -208,12 +228,17 @@ const SlugPage = () => {
           )}
         </>
       ) : (
-        <MatrimonyProfileContainer
-          user_id={selected_profile?.user_id}
-          submission={submissionValues}
-        />
+        <>
+          <MatrimonyProfileContainer
+            user_id={selected_profile?.user_id}
+            submission={submissionValues}
+          />
+          {selected_profile?.status === Status.APPROVED && selected_profile?.user_id && (
+            <AdminMatrimonyPhotoUpload user_id={selected_profile.user_id} />
+          )}
+        </>
       )}
-    </>
+    </Box>
   );
 };
 

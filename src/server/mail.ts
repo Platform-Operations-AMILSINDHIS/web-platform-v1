@@ -26,44 +26,82 @@ import { MatrimonyFormValues } from "~/types/forms/matrimony";
 import { generateMatrimonyProfilePDF } from "./pdfs/matrimony-profile";
 // import generateMatrimonyProfilePDF from "./pdfs/profile-pdf";
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: env.EMAIL_USER,
-    pass: env.EMAIL_PASS,
-  },
-});
-
-// const transporter = nodemailer.createTransport({
-//   host: "smtp.gmail.com",
-//   port: 587,
-//   secure: false, // For STARTTLS
-//   auth: {
-//     user: env.EMAIL_USER,
-//     pass: env.EMAIL_PASS,
-//   },
-// });
+import { SendEmailCommand, SendRawEmailCommand } from "@aws-sdk/client-ses";
+import { sesClient } from "~/lib/aws/ses";
 
 export const sendMail = async ({
   to,
   subject,
   html,
   attachments,
-}: SendMailType) => {
+  cc,
+  source = "no-reply",
+}: SendMailType & { source?: string }) => {
+  const ccAddresses = cc
+    ? Array.isArray(cc)
+      ? cc
+      : [cc]
+    : [];
+
   try {
-    const info = await transporter.sendMail({
-      from: '"Amil Sindhis" <amilsindhis@gmail.com>',
-      to,
-      subject,
-      html,
-      attachments: attachments ?? [],
+    if (attachments && attachments.length > 0) {
+      // Use nodemailer to build the raw MIME message (supports CC natively)
+      const mailOptions = {
+        from: `${source}@amilsindhis.org`,
+        to,
+        cc: ccAddresses.length > 0 ? ccAddresses : undefined,
+        subject,
+        html,
+        attachments,
+      };
+
+      // Create a dummy transporter to compile the email
+      const dummyTransporter = nodemailer.createTransport({
+        streamTransport: true,
+        newline: "unix",
+        buffer: true,
+      });
+
+      const info = (await dummyTransporter.sendMail(mailOptions)) as {
+        message: Buffer;
+      };
+      const rawMessage = info.message;
+
+      const command = new SendRawEmailCommand({
+        RawMessage: {
+          Data: rawMessage,
+        },
+      });
+
+      const result = await sesClient.send(command);
+      console.log("SES Raw Message sent: %s", result.MessageId);
+      return;
+    }
+
+    const command = new SendEmailCommand({
+      Source: `${source}@amilsindhis.org`,
+      Destination: {
+        ToAddresses: [to],
+        CcAddresses: ccAddresses.length > 0 ? ccAddresses : undefined,
+      },
+      Message: {
+        Subject: {
+          Data: subject,
+          Charset: "UTF-8",
+        },
+        Body: {
+          Html: {
+            Data: html,
+            Charset: "UTF-8",
+          },
+        },
+      },
     });
 
-    console.log("Message sent: %s", info?.messageId);
+    const result = await sesClient.send(command);
+    console.log("SES Message sent: %s", result.MessageId);
   } catch (e) {
-    console.error("Error sending mail: ", e);
+    console.error("Error sending SES mail: ", e);
   }
 };
 
@@ -81,7 +119,7 @@ export async function sendRawJsonDataOnly(to: string, data: any) {
     </div>
   `;
 
-  await sendMail({ to, subject, html });
+  await sendMail({ to, subject, html, source: "no-reply" });
 }
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
@@ -90,19 +128,8 @@ export async function sendRawJsonDataWithPDF(
   data: any,
   formType: "kap-membership" | "yac-membership"
 ) {
-  // const subject = "Form Response";
-
-  // const html = `
-  //   <div style="font-size: 16px;">
-  //     <p>Here is the form response:</p>
-
-  //     <pre>
-  //       ${JSON.stringify(data, null, 2)}
-  //     </pre>
-  //   </div>
-  // `;
-
   const formName = formType === "kap-membership" ? "KAP" : "YAC";
+  const source = formType === "kap-membership" ? "kap" : "yac";
   const subject = `New ${formName} Form Submission`;
   /* eslint-disable  @typescript-eslint/no-unsafe-assignment */
   const { personalInfo, paymentId } = data;
@@ -136,6 +163,7 @@ export async function sendRawJsonDataWithPDF(
     subject,
     html,
     attachments: [{ filename: "response-doc.pdf", content: pdf }],
+    source,
   });
 }
 
@@ -160,12 +188,14 @@ export const sendMatrimonyProfileMail = async (
     html,
     subject,
     to,
+    cc: "amilsindhis@gmail.com",
     attachments: [
       {
         filename: `${requested_name}(${requested_matrimony_id}).pdf`,
         content: pdf,
       },
     ],
+    source: "matrimony",
   });
 };
 
@@ -175,6 +205,7 @@ export const sendFormConfirmationMail = async ({
   isPrevMember,
 }: ConfirmationMailType) => {
   const subject = `Thank you for submitting the ${formName} form!`;
+  const source = formName.toLowerCase().includes("kap") ? "kap" : "yac";
 
   let html = ``;
 
@@ -192,7 +223,7 @@ export const sendFormConfirmationMail = async ({
   `;
   }
 
-  await sendMail({ to, subject, html });
+  await sendMail({ to, subject, html, source });
 };
 
 export const sendDescisionMail = async ({
@@ -203,6 +234,7 @@ export const sendDescisionMail = async ({
   isPrevMember,
 }: DecisionMailType) => {
   const subject = `${formType} Application Descision`;
+  const source = formType.toLowerCase().includes("kap") ? "kap" : "yac";
   let html = ``;
 
   if (descision) {
@@ -242,7 +274,7 @@ export const sendDescisionMail = async ({
 
   console.log({ descision, formType, to, membershipID, html });
 
-  await sendMail({ html, subject, to });
+  await sendMail({ html, subject, to, source });
 };
 
 export const sendMatrimonyDescisionMail = async ({
@@ -271,7 +303,7 @@ export const sendMatrimonyDescisionMail = async ({
 
   console.log({ descision, to, html });
 
-  await sendMail({ html, subject, to });
+  await sendMail({ html, subject, to, source: "matrimony" });
 };
 
 export const sendDeclineRequestMail = async ({
@@ -282,7 +314,7 @@ export const sendDeclineRequestMail = async ({
   const subject = `Profile Request Declined`;
   const html = `We regret to inform you that your profile request for ${requested_name}, ${requested_MatID} has been declined. For any queries please email info@amilsindhis.org`;
 
-  await sendMail({ html, subject, to });
+  await sendMail({ html, subject, to, source: "matrimony" });
 };
 
 // export const sendAcceptRequestMail = async ({
@@ -290,7 +322,7 @@ export const sendDeclineRequestMail = async ({
 //   requested_name,
 //   submission,
 //   to,
-// }: AcceptProfileRequestMail) => {
+//   }: AcceptProfileRequestMail) => {
 //   const matrimonyProfilePDF = generateMatrimonyProfilePDF(submission);
 //   const attachments = [
 //     {
@@ -300,7 +332,7 @@ export const sendDeclineRequestMail = async ({
 //   ];
 //   const subject = `Profile Request for ${requested_name}, ${requested_MatID}`;
 //   const html = `Your Request for matrimony profile data of ${requested_name} has been approved. PFA the attached document`;
-//   await sendMail({ to, html, subject, attachments });
+//   await sendMail({ to, html, subject, attachments, source: "matrimony" });
 // };
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
@@ -321,7 +353,7 @@ export const sendMatrimonyFormNotificationMail = async (
     </div>
   `;
 
-  await sendMail({ to, subject, html });
+  await sendMail({ to, subject, html, source: "matrimony" });
 };
 
 export const sendDonationFormConfirmationMail = async ({
@@ -342,7 +374,7 @@ export const sendDonationFormConfirmationMail = async ({
     </div>
   `;
 
-  await sendMail({ to: email, subject, html });
+  await sendMail({ to: email, subject, html, source: "no-reply" });
 };
 
 export const sendWithdrawNotificationMail = async (
@@ -351,7 +383,7 @@ export const sendWithdrawNotificationMail = async (
 ) => {
   const subject = `Application Withdrawn`;
   const html = `Matrimony Application Withdrawn: ${user_name}, ${matrimony_id}`;
-  await sendMail({ to: "amilsindhis@gmail.com", subject, html });
+  await sendMail({ to: "amilsindhis@gmail.com", subject, html, source: "matrimony" });
 };
 
 export const sendDonationNotificationMail = async (
@@ -390,7 +422,7 @@ export const sendDonationNotificationMail = async (
     </div>
   `;
 
-  await sendMail({ to, subject, html });
+  await sendMail({ to, subject, html, source: "no-reply" });
 };
 
 export const sendRsvpMailForEvent = async ({
@@ -414,7 +446,7 @@ export const sendRsvpMailForEvent = async ({
   </div>
   `;
 
-    await sendMail({ to, subject, html });
+    await sendMail({ to, subject, html, source: "no-reply" });
   } catch (e) {
     console.error(e);
   }
@@ -434,5 +466,5 @@ export const sendAdminEntryMail = async ({
     </div>
   `;
 
-  await sendMail({ to, subject, html });
+  await sendMail({ to, subject, html, source: "auth" });
 };

@@ -4,7 +4,7 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 
 import * as Yup from "yup";
 import { sendDescisionMail, sendMatrimonyDescisionMail } from "~/server/mail";
-import { boolean } from "zod";
+import { TRPCError } from "@trpc/server";
 
 const formBufferData = createTRPCRouter({
   fetchAllBuffer: publicProcedure.query(async () => {
@@ -13,14 +13,24 @@ const formBufferData = createTRPCRouter({
         .from("form_buffer")
         .select("*");
 
-      if (fetchError) throw fetchError;
+      if (fetchError) {
+        console.error("Error fetching all form buffer data:", fetchError);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to fetch form buffer data",
+        });
+      }
 
       return {
         form_buffer: fetchedFormBufferData,
       };
     } catch (err) {
-      console.error("Error fetching form buffer data:", err);
-      throw new Error("Failed to fetch form buffer data");
+      if (err instanceof TRPCError) throw err;
+      console.error("Unexpected error in fetchAllBuffer:", err);
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "An unexpected error occurred",
+      });
     }
   }),
   fetchMembershipBuffer: publicProcedure.query(async () => {
@@ -33,14 +43,24 @@ const formBufferData = createTRPCRouter({
         .select("*")
         .in("formType", ["KAP", "YAC"]);
 
-      if (formMembershipBufferDataError) throw formMembershipBufferDataError;
+      if (formMembershipBufferDataError) {
+        console.error("Error fetching membership buffer data:", formMembershipBufferDataError);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to fetch membership form buffer data",
+        });
+      }
 
       return {
         membership_formbuffer: formMembershipBufferData,
       }; // Return the fetched data
     } catch (err) {
-      console.error("Error fetching membership form buffer data:", err);
-      throw new Error("Failed to fetch membership form buffer data");
+      if (err instanceof TRPCError) throw err;
+      console.error("Unexpected error in fetchMembershipBuffer:", err);
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "An unexpected error occurred",
+      });
     }
   }),
 
@@ -54,38 +74,83 @@ const formBufferData = createTRPCRouter({
         .select("*")
         .in("formType", ["MATRIMONY"]);
 
-      if (formMatrimonyBufferDataError) throw formMatrimonyBufferDataError;
+      if (formMatrimonyBufferDataError) {
+        console.error("Error fetching matrimony buffer data:", formMatrimonyBufferDataError);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to fetch matrimony form buffer data",
+        });
+      }
 
       return {
         matrimony_formbuffer: formMatrimonyBufferData,
       }; // Return the fetched data
     } catch (err) {
-      // Handle errors here
-      console.error("Error fetching membership form buffer data:", err);
-      throw new Error("Failed to fetch matrimony form buffer data");
+      if (err instanceof TRPCError) throw err;
+      console.error("Unexpected error in fetchMatrimonyBuffer:", err);
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "An unexpected error occurred",
+      });
     }
   }),
 
   fetchApprovedMatrimonyApplicants: publicProcedure.query(async () => {
-    try {
-      const {
-        data: approvedMatrimonyApplicants,
-        error: approvedMatrimonyApplicantsFetchError,
-      } = await supabase
-        .from("form_buffer")
-        .select("*")
-        .eq("status", "APPROVED")
-        .eq("formType", "MATRIMONY");
+    // First, get the approved matrimony applicants
+    const {
+      data: approvedMatrimonyApplicants,
+      error: approvedMatrimonyApplicantsFetchError,
+    } = await supabase
+      .from("form_buffer")
+      .select("*")
+      .eq("formType", "MATRIMONY")
+      .eq("status", "APPROVED");
 
-      if (approvedMatrimonyApplicantsFetchError)
-        throw approvedMatrimonyApplicantsFetchError;
-
-      return approvedMatrimonyApplicants;
-    } catch (err) {
-      console.log(
-        `Error while fetching approved matrimony applicants : ${err}`
+    if (approvedMatrimonyApplicantsFetchError) {
+      console.error(
+        `Error while fetching approved matrimony applicants:`,
+        approvedMatrimonyApplicantsFetchError
       );
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Failed to fetch approved matrimony applicants",
+        cause: approvedMatrimonyApplicantsFetchError,
+      });
     }
+
+    if (
+      !approvedMatrimonyApplicants ||
+      approvedMatrimonyApplicants.length === 0
+    ) {
+      return [];
+    }
+
+    // Get all user_ids
+    const userIds = approvedMatrimonyApplicants.map((app) => app.user_id);
+
+    // Fetch associated S3 metadata
+    const { data: s3MetaData, error: s3MetaError } = await supabase
+      .from("application_s3_meta")
+      .select("*")
+      .in("user_id", userIds);
+
+    if (s3MetaError) {
+      console.error("Error fetching S3 metadata:", s3MetaError);
+      // Still return the applicants without S3 data
+      return approvedMatrimonyApplicants.map((app) => ({
+        ...app,
+        application_s3_meta: [],
+      }));
+    }
+
+    // Combine the data
+    const combinedData = approvedMatrimonyApplicants.map((applicant) => ({
+      ...applicant,
+      application_s3_meta:
+        s3MetaData?.filter((meta) => meta.user_id === applicant.user_id) ?? [],
+    }));
+
+    return combinedData;
   }),
 
   fetchUserSubmission: publicProcedure
@@ -93,6 +158,11 @@ const formBufferData = createTRPCRouter({
     .mutation(async ({ input }) => {
       try {
         const { user_id, formType } = input;
+        
+        if (!user_id || user_id === "") {
+          return { submission: null };
+        }
+
         const { data: userFormSubmission, error: fetchSubmissionError } =
           await supabase
             .from("form_buffer")
@@ -100,13 +170,24 @@ const formBufferData = createTRPCRouter({
             .eq("user_id", user_id)
             .eq("formType", formType);
 
-        if (fetchSubmissionError) throw fetchSubmissionError;
+        if (fetchSubmissionError) {
+          console.error("Error fetching user submission:", fetchSubmissionError);
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to fetch user submission",
+          });
+        }
 
         return {
           submission: userFormSubmission[0]?.submission,
         };
       } catch (err) {
-        console.log(err);
+        if (err instanceof TRPCError) throw err;
+        console.error("Unexpected error in fetchUserSubmission:", err);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "An unexpected error occurred",
+        });
       }
     }),
 
@@ -122,13 +203,24 @@ const formBufferData = createTRPCRouter({
             .eq("user_id", user_id)
             .eq("formType", "MATRIMONY");
 
-        if (fetchSubmissionError) throw fetchSubmissionError;
+        if (fetchSubmissionError) {
+          console.error("Error fetching user matrimony submission:", fetchSubmissionError);
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to fetch user matrimony submission",
+          });
+        }
 
         return {
           DB_submission_response: userFormSubmission,
         };
       } catch (err) {
-        console.log(err);
+        if (err instanceof TRPCError) throw err;
+        console.error("Unexpected error in fetchUserMatrimonySubmission:", err);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "An unexpected error occurred",
+        });
       }
     }),
 
@@ -150,7 +242,13 @@ const formBufferData = createTRPCRouter({
           .eq("user_id", user_id)
           .eq("formType", formType);
 
-        if (formBufferError) throw formBufferError;
+        if (formBufferError) {
+          console.error("Error rejecting user application:", formBufferError);
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to reject application",
+          });
+        }
 
         await sendDescisionMail({
           formType: formType ?? "",
@@ -163,7 +261,12 @@ const formBufferData = createTRPCRouter({
           status: "Application Rejected",
         };
       } catch (err) {
-        console.log(err);
+        if (err instanceof TRPCError) throw err;
+        console.error("Unexpected error in rejectUserApplication:", err);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "An unexpected error occurred",
+        });
       }
     }),
 
@@ -187,7 +290,13 @@ const formBufferData = createTRPCRouter({
           .update({ [memberProperty]: true, membership_id: membership_id })
           .eq("id", user_id);
 
-        if (error) throw error;
+        if (error) {
+          console.error("Error updating user membership status:", error);
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to update user membership status",
+          });
+        }
 
         const { data: _, error: formBufferError } = await supabase
           .from("form_buffer")
@@ -195,7 +304,13 @@ const formBufferData = createTRPCRouter({
           .eq("user_id", user_id)
           .eq("formType", formType);
 
-        if (formBufferError) throw error;
+        if (formBufferError) {
+          console.error("Error approving user application in buffer:", formBufferError);
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to update application status",
+          });
+        }
 
         await sendDescisionMail({
           membershipID: membership_id as string,
@@ -211,27 +326,43 @@ const formBufferData = createTRPCRouter({
           to,
         };
       } catch (err) {
-        console.log(err);
+        if (err instanceof TRPCError) throw err;
+        console.error("Unexpected error in acceptUserApplication:", err);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "An unexpected error occurred",
+        });
       }
     }),
 
-  fetchApplicantAge: publicProcedure
+  fetchApplicantDOB: publicProcedure
     .input(Yup.object({ user_id: Yup.string() }))
     .mutation(async ({ input }) => {
       try {
         const { user_id } = input;
-        const { data: applicantAge, error: ErrorFetchingAge } = await supabase
+        const { data: applicantDOB, error: ErrorFetchingDOB } = await supabase
           .from("general_accounts")
-          .select("age")
+          .select("date_of_birth")
           .eq("id", user_id);
 
-        if (ErrorFetchingAge) throw ErrorFetchingAge;
+        if (ErrorFetchingDOB) {
+          console.error("Error fetching applicant DOB:", ErrorFetchingDOB);
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to fetch applicant DOB",
+          });
+        }
 
         return {
-          DB_response: applicantAge,
+          DB_response: applicantDOB,
         };
       } catch (err) {
-        console.log(`Error while fetching user_age: ${err}`);
+        if (err instanceof TRPCError) throw err;
+        console.error("Unexpected error in fetchApplicantDOB:", err);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "An unexpected error occurred",
+        });
       }
     }),
 
@@ -250,15 +381,28 @@ const formBufferData = createTRPCRouter({
         const { data: _, error: formBufferError } = await supabase
           .from("form_buffer")
           .update({ status: "APPROVED" })
-          .eq("user_id", user_id);
+          .eq("user_id", user_id)
+          .eq("formType", "MATRIMONY");
 
-        if (formBufferError) throw formBufferError;
+        if (formBufferError) {
+          console.error("Error approving matrimony application in buffer:", formBufferError);
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to update application status",
+          });
+        }
 
         const { error: matrimonyDataUploadError } = await supabase
           .from("matrimony_profiles")
           .insert([{ user_id: user_id, matrimony_id: matrimony_id as string }]);
 
-        if (matrimonyDataUploadError) throw Error;
+        if (matrimonyDataUploadError) {
+          console.error("Error inserting matrimony profile:", matrimonyDataUploadError);
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to create matrimony profile",
+          });
+        }
 
         await sendMatrimonyDescisionMail({
           descision: true,
@@ -270,7 +414,12 @@ const formBufferData = createTRPCRouter({
           status: true,
         };
       } catch (err) {
-        console.log(`Error while updating matrimony profile table: ${err}`);
+        if (err instanceof TRPCError) throw err;
+        console.error("Unexpected error in acceptUserMatrimonyApplication:", err);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "An unexpected error occurred",
+        });
       }
     }),
 
@@ -292,7 +441,13 @@ const formBufferData = createTRPCRouter({
           .eq("user_id", user_id)
           .eq("formType", "MATRIMONY");
 
-        if (formBufferError) throw formBufferError;
+        if (formBufferError) {
+          console.error("Error deleting matrimony application from buffer:", formBufferError);
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to delete application from buffer",
+          });
+        }
 
         await sendDescisionMail({
           descision: false,
@@ -304,7 +459,12 @@ const formBufferData = createTRPCRouter({
           message: "Applicant rejected",
         };
       } catch (err) {
-        console.log(`Error while deleting matrimony buffer data : ${err}`);
+        if (err instanceof TRPCError) throw err;
+        console.error("Unexpected error in rejectUserMatrimonyApplication:", err);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "An unexpected error occurred",
+        });
       }
     }),
 
@@ -319,10 +479,17 @@ const formBufferData = createTRPCRouter({
           .select("*")
           .eq("user_id", user_id)
           .eq("formType", "MATRIMONY")
-          .eq("Status", "PENDING");
+          .eq("status", "PENDING");
 
-        if (fetchError) throw fetchError;
+        if (fetchError) {
+          console.error("Error verifying matrimony applicant:", fetchError);
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to verify applicant",
+          });
+        }
 
+        console.log({ fetchedData });
         if (fetchedData.length > 0) {
           return {
             user_verification: true,
@@ -334,7 +501,43 @@ const formBufferData = createTRPCRouter({
             user_matData: null,
           };
         }
-      } catch (err) {}
+      } catch (err) {
+        if (err instanceof TRPCError) throw err;
+        console.error("Unexpected error in verifyMatrimonyApplicant:", err);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "An unexpected error occurred",
+        });
+      }
+    }),
+
+  deleteFormBufferEntry: publicProcedure
+    .input(Yup.object({ id: Yup.number().required() }))
+    .mutation(async ({ input }) => {
+      try {
+        const { id } = input;
+        const { error } = await supabase
+          .from("form_buffer")
+          .delete()
+          .eq("id", id);
+
+        if (error) {
+          console.error("Error deleting form buffer entry:", error);
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to delete entry",
+          });
+        }
+
+        return { success: true };
+      } catch (err) {
+        if (err instanceof TRPCError) throw err;
+        console.error("Unexpected error in deleteFormBufferEntry:", err);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "An unexpected error occurred",
+        });
+      }
     }),
 
   deleteMatrimonyFormBufferData: publicProcedure
@@ -345,12 +548,22 @@ const formBufferData = createTRPCRouter({
         const { data: DeleteResponseData, error: DeleteBufferError } =
           await supabase.from("form_buffer").delete().eq("user_id", user_id);
 
-        if (DeleteBufferError)
-          throw new Error(`Buffer Deletion Error: ${DeleteBufferError}`);
+        if (DeleteBufferError) {
+          console.error("Error deleting matrimony form buffer data:", DeleteBufferError);
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to delete buffer data",
+          });
+        }
 
         return DeleteResponseData;
       } catch (err) {
-        console.log(err);
+        if (err instanceof TRPCError) throw err;
+        console.error("Unexpected error in deleteMatrimonyFormBufferData:", err);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "An unexpected error occurred",
+        });
       }
     }),
 });

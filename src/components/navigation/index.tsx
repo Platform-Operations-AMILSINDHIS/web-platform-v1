@@ -31,7 +31,6 @@ interface NavigationProps {
 const Navigation: React.FC<NavigationProps> = ({
   navigationItems,
   userLocation,
-  matrimonyAccess,
 }) => {
   const {
     isOpen: isAuthOpen,
