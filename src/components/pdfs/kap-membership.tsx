@@ -363,7 +363,9 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
             </View>
             <View style={{ ...styles.rightTextWithBorder, width: "15%" }}>
               <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
-                {kapForm.personalInfo.dateOfBirth.toLocaleDateString("en-IN")}
+                {new Date(kapForm.personalInfo.dateOfBirth).toLocaleDateString(
+                  "en-IN"
+                )}
               </Text>
             </View>
             <View
@@ -380,7 +382,7 @@ export const KAPMembershipPDF: React.FC<KAPMembershipFormPDFProps> = ({
               <Text style={{ ...styles.fieldValue, fontSize: 10 }}>
                 {Math.floor(
                   (new Date().getTime() -
-                    kapForm.personalInfo.dateOfBirth.getTime()) /
+                    new Date(kapForm.personalInfo.dateOfBirth).getTime()) /
                     (1000 * 60 * 60 * 24 * 365)
                 )}
               </Text>

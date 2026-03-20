@@ -147,7 +147,7 @@ const RecoveryPage = () => {
 
   return (
     <Flex justify="center" align="center" w="full" h="100vh">
-      {"recoveryaccess_token" && "refresh_token" in urlData ? (
+      {"recoveryaccess_token" in urlData && "refresh_token" in urlData ? (
         <Flex borderRadius={15} p={5} gap={3}>
           {"recoveryerror" in urlData ? (
             <Flex
