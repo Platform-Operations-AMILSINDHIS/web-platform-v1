@@ -63,7 +63,6 @@ const AuthModal: React.FC<AuthModalProps> = ({
               signUpFormValues={signUpFormValues}
               authStateHandleFunction={authStateHandleFunction}
               setSignUpFormValues={setSignUpFormValues}
-              setCloseModal={setCloseModal}
             />
           )}
         </ModalBody>

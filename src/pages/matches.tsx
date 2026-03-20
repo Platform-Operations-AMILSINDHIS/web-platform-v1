@@ -91,7 +91,7 @@ const ProfilePage = () => {
 
       setProfilesRequested(uniqueRequestedIds);
 
-      console.log({ profilesRequested });
+      console.log({ profilesRequested: uniqueRequestedIds });
     }
   }, [handleFetchProfileRequests, isLoggedIn]);
 

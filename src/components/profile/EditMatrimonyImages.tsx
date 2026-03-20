@@ -61,7 +61,7 @@ const EditMatrimonyImages: React.FC<EditMatrimonyImagesProps> = ({
         );
         return {
           ...slot,
-          s3_key: existingImage?.s3_key || null,
+          s3_key: existingImage?.s3_key ?? null,
         };
       })
     );
@@ -217,7 +217,7 @@ const MatrimonyImageSlot: React.FC<MatrimonyImageSlotProps> = ({
 
   // Fetch signed URL for existing image
   const { profileImageSignedURL, isFetchingProfileImage } = useAWS({
-    s3_key: slot.s3_key || undefined,
+    s3_key: slot.s3_key ?? undefined,
   });
 
   useEffect(() => {

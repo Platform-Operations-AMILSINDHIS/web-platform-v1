@@ -56,6 +56,11 @@ const helpSections: HelpSection[] = [
       </VStack>
     ),
   },
+  {
+    title: "Reviewing Applications",
+    icon: "✅",
+    content: (
+      <VStack align="start" spacing={2} fontSize="sm" color="gray.600">
         <Text>
           Click the <Text as="span" fontWeight="semibold" color="orange.600">View</Text> button on any row to open the applicant&apos;s full profile and form submission.
         </Text>

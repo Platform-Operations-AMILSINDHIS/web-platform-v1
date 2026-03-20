@@ -233,10 +233,10 @@ const MatrimonyPersonalInformationSection: React.FC<
 
     // Global disable conditions (your original logic)
     const shouldDisableGlobally =
-      !user.membership_id ||
-      user.membership_id === "" ||
-      submissionVerification ??
-      approved;
+      (!user.membership_id ||
+      user.membership_id === "") ||
+      (submissionVerification ??
+      approved);
 
     if (shouldDisableGlobally) return true;
 

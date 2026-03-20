@@ -26,6 +26,7 @@ const ValidatePasswordHandler = async (
 
     if (error) throw error;
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     const passwordCheck = await bcrypt.compare(
       password,
       (users as { password: string }).password

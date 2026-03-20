@@ -35,7 +35,7 @@ const DBHandler = async (req: DBHandlerRequest, res: NextApiResponse) => {
   } = req.body;
 
   try {
-    const hashed_password = (await hasher(password)) as string;
+    const hashed_password = await hasher(password)
     const { data, error } = await supabase
       .from("general_accounts")
       .insert([

@@ -557,14 +557,12 @@ const MyProfilePage = () => {
                       )}
 
                       {/* Matrimony Images - Only show if approved */}
-                      {matrimonyStatus === "APPROVED" && slug && (
-                      <EditMatrimonyImages
-                        userId={slug}
-                        existingImages={
-                          profileData.application_s3_meta
-                        }
-                        onSuccess={refetch}
-                      />
+                      {matrimonyStatus === "APPROVED" && slug && profileData && (
+                        <EditMatrimonyImages
+                          userId={slug}
+                          existingImages={profileData.application_s3_meta}
+                          onSuccess={refetch}
+                        />
                       )}
 
                       {/* Matrimony Personal Information */}
