@@ -46,7 +46,7 @@ import type { InputType } from "./kap-membership-form";
 import { focusAtom } from "jotai-optics";
 
 import { api } from "~/utils/api";
-import { userAtomBody } from "~/types/atoms/users";
+import type { userAtomBody } from "~/types/atoms/users";
 
 const steps = [
   {
@@ -235,7 +235,7 @@ const MatrimonyPersonalInformationSection: React.FC<
     const shouldDisableGlobally =
       !user.membership_id ||
       user.membership_id === "" ||
-      submissionVerification ||
+      submissionVerification ??
       approved;
 
     if (shouldDisableGlobally) return true;
@@ -506,25 +506,25 @@ const MatrimonyAddressDetailsSection: React.FC = () => {
               {[
                 {
                   label: "Address Line 1",
-                  name: "residentialAddress.addressLine1",
+                  name: "residentialAddressDetails.addressLine1",
                   required: true,
                 },
                 {
                   label: "Address Line 2",
-                  name: "residentialAddress.addressLine2",
+                  name: "residentialAddressDetails.addressLine2",
                   required: true,
                 },
                 {
                   label: "Address Line 3",
-                  name: "residentialAddress.addressLine3",
+                  name: "residentialAddressDetails.addressLine3",
                 },
                 {
                   label: "Pin Code",
-                  name: "residentialAddress.pinCode",
+                  name: "residentialAddressDetails.pinCode",
                   required: true,
                 },
               ].map(({ label, name, required }, i) => (
-                <LabelledInput key={i} label={label} required={required} />
+                <LabelledInput key={i} label={label} name={name} required={required} />
               ))}
             </Grid>
             <Spacer h="2rem" />
@@ -857,11 +857,11 @@ export const ProposerDetailsSection: React.FC = () => {
               templateColumns={["1fr", "repeat(3, 1fr)"]}
             >
               {[
-                { label: "First Name" },
-                { label: "Last Name" },
-                { label: "Mobile Number" },
-              ].map(({ label }, i) => (
-                <LabelledInput key={i} label={label} />
+                { label: "First Name", name: "firstName" },
+                { label: "Last Name", name: "lastName" },
+                { label: "Mobile Number", name: "mobileNumber" },
+              ].map(({ label, name }, i) => (
+                <LabelledInput key={i} label={label} name={name} />
               ))}
             </Grid>
 

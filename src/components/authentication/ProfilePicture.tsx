@@ -4,14 +4,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { CloseIcon } from "@chakra-ui/icons";
-import { Values } from "~/hooks/useForm";
+import type { Values } from "~/hooks/useForm";
 import { calculateAge } from "~/utils/helper";
 import {
   Flex,
   Box,
   useToast,
   Text,
-  Image,
   Button,
   IconButton,
   Avatar,
@@ -21,8 +20,7 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { SetStateAction } from "jotai";
-import { Dispatch, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import useAWS from "~/hooks/useAWS";
 import useServerActions from "~/hooks/useServerActions";

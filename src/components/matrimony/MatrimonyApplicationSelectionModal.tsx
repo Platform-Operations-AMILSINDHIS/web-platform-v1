@@ -123,9 +123,9 @@ const MatrimonyApplicationSelectionModal: React.FC<
   return (
     <ModalLayout
       modalHeader="Select Profile"
-      handleModal={() =>
-        handleCloseSelectionModal(setProfileMatID, setFetchStatus)
-      }
+      handleModal={() => {
+        void handleCloseSelectionModal(setProfileMatID, setFetchStatus);
+      }}
       modalState={modalState}
     >
       <Flex gap={3} flexDir="column">
@@ -218,9 +218,9 @@ const MatrimonyApplicationSelectionModal: React.FC<
               color: "white",
               bg: "#FF4D00",
             }}
-            onClick={() =>
-              handleCloseSelectionModal(setProfileMatID, setFetchStatus)
-            }
+            onClick={() => {
+              void handleCloseSelectionModal(setProfileMatID, setFetchStatus);
+            }}
           >
             Cancel
           </Button>

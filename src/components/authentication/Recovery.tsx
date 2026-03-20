@@ -1,9 +1,7 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
-import {
-  RecoveryPasswordInitialValues,
-  RecoveryPasswordValues,
-} from "~/hooks/useForm";
+import { RecoveryPasswordInitialValues } from "~/hooks/useForm";
+import type { RecoveryPasswordValues } from "~/hooks/useForm";
 import { RecoveryValidation } from "~/validations/AuthValidations";
 import { LabelledInput } from "../forms";
 

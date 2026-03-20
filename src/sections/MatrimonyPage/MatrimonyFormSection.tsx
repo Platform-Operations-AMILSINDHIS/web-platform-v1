@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Box, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
 
 import UserBlockModal from "~/components/authentication/UserBlockModal";
@@ -20,6 +20,7 @@ const MatrimonyFormSection = () => {
   const [submissionVerified, setSubmissionVerified] = useState<boolean>(false);
   const [noPending, setNoPending] = useState<boolean>(false);
   const [approved, setApproved] = useState<boolean>(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isMember, setIsMember] = useState<boolean>(false); // boolean here incase needed in the future
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -30,7 +31,7 @@ const MatrimonyFormSection = () => {
   //   setIsMember(memberStatus);
   // };
 
-  const SendSubmissionVerificationQueryToServer = async (user_id: string) => {
+  const SendSubmissionVerificationQueryToServer = useCallback(async (user_id: string) => {
     const response_data = await handleUserMatrimonySubmissionVerification(
       user_id
     );
@@ -52,7 +53,7 @@ const MatrimonyFormSection = () => {
       }
     }
     setLoading(false);
-  };
+  }, [handleUserMatrimonySubmissionVerification, handleUserMatrimonyApprovalVerification, noPending]);
 
   // uncomment all y function to verify through is Member boolean
 
@@ -80,7 +81,7 @@ const MatrimonyFormSection = () => {
       setLoading(false);
       console.log("Loading");
     }
-  }, [user, noPending, approved]);
+  }, [user, noPending, approved, SendSubmissionVerificationQueryToServer, isMember, submissionVerified]);
 
   if (loading) {
     return <Text>Loading...</Text>;

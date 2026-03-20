@@ -26,13 +26,13 @@ const AccountDisplay: React.FC<AccountDisplayProps> = ({ user }) => {
           const profileImage = s3_meta?.find(
             (meta) => meta.file_type === "profile_image"
           );
-          setProfileImageKey(profileImage?.s3_key);
+          setProfileImageKey(profileImage?.s3_key as string | undefined);
         })
         .catch((err) => {
           console.error("Error fetching profile image key:", err);
         });
     }
-  }, [user?.id]);
+  }, [user?.id, getProfileImageKey]);
 
   // Fetch signed URL for profile image
   const { profileImageSignedURL } = useAWS({

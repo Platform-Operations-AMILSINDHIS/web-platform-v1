@@ -27,6 +27,7 @@ const PastEventCard: React.FC<PastEventCardProps> = ({ pastEvent }) => {
         width={380}
         height={210}
         src={pastEvent?.pastEventDisplayPicture?.url ?? ""}
+        alt={pastEvent?.pastEventName ?? "Past Event"}
         backgroundPosition="center"
         backgroundSize="cover"
         objectFit="cover"

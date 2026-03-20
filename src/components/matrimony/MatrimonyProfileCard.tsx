@@ -40,8 +40,8 @@ const MatrimonyProfileCard: React.FC<MatrimonyProfileCardProps> = ({
   
   const coverImageS3Key =
     matrimonyImages.find((img) => img.s3_key.endsWith("/matrimony/1.jpg"))
-      ?.s3_key ||
-    matrimonyImages[0]?.s3_key ||
+      ?.s3_key ??
+    matrimonyImages[0]?.s3_key ??
     profileMedia.find((media) => media.file_type === "profile_image")?.s3_key;
 
   // Fetch signed URL for cover image

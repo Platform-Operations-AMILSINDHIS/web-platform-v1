@@ -9,7 +9,7 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import BufferSearch from "~/components/admin/BufferSearch";
 import DropDown from "~/components/admin/DropDown";
 import AdminHelpDrawer from "~/components/admin/AdminHelpDrawer";
@@ -70,14 +70,14 @@ const AdminPage = () => {
   const [isSelected, setIsSelected] = useState<string>("Memberships");
   const [applicantType, setapplicantType] = useState<string>("All applicants");
 
-  const handleFetch = async () => {
+  const handleFetch = React.useCallback(async () => {
     const allMemBufferData = await handleMemberBufferFetch();
     const allMatBufferData = await handleMatrimonyBufferFetch();
     const allProfileRequestsData = await handleFetchAllProfileRequestsAdmin();
     setMatrimonyBufferData(allMatBufferData);
     setMembershipBufferData(allMemBufferData);
     setProfileRequestsData(allProfileRequestsData);
-  };
+  }, [handleMemberBufferFetch, handleMatrimonyBufferFetch, handleFetchAllProfileRequestsAdmin]);
 
   const handleRealTimeMemAndMatDataFetch = async () => {
     const allMemBufferData = await handleMemberBufferFetch();
@@ -102,7 +102,7 @@ const AdminPage = () => {
       await handleFetch();
     }
     f().catch(console.error);
-  }, []);
+  }, [handleFetch]);
 
   useEffect(() => {
     setIsLoadingMemBuf(!(membershipBufferData && membershipBufferData.length > 0));
@@ -212,7 +212,7 @@ const AdminPage = () => {
           {isLoadingMemBuf ? (
             <Flex gap={3} align="center" py={10} justify="center">
               <Spinner color="#FF4D00" boxSize={5} />
-              <Text color="gray.500" fontSize="sm">Loading membership applications…</Text>
+              <Text color="gray.500" fontSize="sm">Loading membership applications&hellip;</Text>
             </Flex>
           ) : (
             <MembershipBufferTable
@@ -229,7 +229,7 @@ const AdminPage = () => {
           {isLoadingMatBuf ? (
             <Flex gap={3} align="center" py={10} justify="center">
               <Spinner color="#FF4D00" boxSize={5} />
-              <Text color="gray.500" fontSize="sm">Loading matrimony applications…</Text>
+              <Text color="gray.500" fontSize="sm">Loading matrimony applications&hellip;</Text>
             </Flex>
           ) : (
             <MatrimonyBufferTable

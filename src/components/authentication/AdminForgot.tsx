@@ -1,12 +1,11 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
+import type { Dispatch, SetStateAction } from "react";
 import { Button, Flex, Icon, Text } from "@chakra-ui/react";
 import { AiOutlineMail } from "react-icons/ai";
 import { Form, Formik } from "formik";
 import { LabelledInput } from "../forms";
-import {
-  RecoveryPasswordValues,
-  RecoveryPasswordInitialValues,
-} from "~/hooks/useForm";
+import { RecoveryPasswordInitialValues } from "~/hooks/useForm";
+import type { RecoveryPasswordValues } from "~/hooks/useForm";
 import { RecoveryValidation } from "~/validations/AuthValidations";
 import { useToast } from "@chakra-ui/react";
 

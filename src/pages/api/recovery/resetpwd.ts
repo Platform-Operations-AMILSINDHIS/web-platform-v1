@@ -15,7 +15,7 @@ const ResetHandler = async (
 ) => {
   const { email, newPassword } = req.body;
   try {
-    const hashed_password = await hasher(newPassword);
+    const hashed_password = (await hasher(newPassword)) as string;
     const { data, error } = await supabase
       .from("general_accounts")
       .update({ password: hashed_password })

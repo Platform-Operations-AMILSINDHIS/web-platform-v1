@@ -1,6 +1,6 @@
 import { Spinner } from "@chakra-ui/react";
 import MatrimonyProfileViewLayout from "~/layouts/MatrimonyProfileViewLayout";
-import { MatrimonyFormValues } from "~/types/forms/matrimony";
+import type { MatrimonyFormValues } from "~/types/forms/matrimony";
 import MatrimonyProfileView from "./MatrimonyProfileView";
 
 interface MatrimonyProfileContainerProps {

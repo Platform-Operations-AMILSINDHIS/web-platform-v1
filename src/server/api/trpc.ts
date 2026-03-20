@@ -142,7 +142,7 @@ export const requireKAPMember = async (userId: string): Promise<void> => {
     .eq("id", userId)
     .single();
 
-  if (error || !data?.KAP_member) {
+  if (error ?? !data?.KAP_member) {
     throw new TRPCError({
       code: "FORBIDDEN",
       message: "This action requires an active KAP membership.",
@@ -161,7 +161,7 @@ export const requireYACMember = async (userId: string): Promise<void> => {
     .eq("id", userId)
     .single();
 
-  if (error || !data?.YAC_member) {
+  if (error ?? !data?.YAC_member) {
     throw new TRPCError({
       code: "FORBIDDEN",
       message: "This action requires an active YAC membership.",
@@ -180,7 +180,7 @@ export const requireMatrimonyMember = async (userId: string): Promise<void> => {
     .eq("user_id", userId)
     .maybeSingle();
 
-  if (error || !data) {
+  if (error ?? !data) {
     throw new TRPCError({
       code: "FORBIDDEN",
       message: "This action requires an approved matrimony profile.",
@@ -205,7 +205,7 @@ export const verifyAgeForMembership = async (
     .eq("id", userId)
     .single();
 
-  if (error || !data) {
+  if (error ?? !data) {
     throw new TRPCError({
       code: "NOT_FOUND",
       message: "User account not found.",

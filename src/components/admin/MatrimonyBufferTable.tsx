@@ -20,7 +20,8 @@ import { useRef, useState, useMemo } from "react";
 import { DeleteIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import TableLayout from "~/layouts/TableLayout";
 import { useProfileAtom } from "~/lib/atom";
-import { MatrimonyBufferDataType, Status } from "~/types/tables/dataBuffer";
+import type { MatrimonyBufferDataType } from "~/types/tables/dataBuffer";
+import { Status } from "~/types/tables/dataBuffer";
 import { formMatrimonyBufferDataTableHeaders } from "~/utils/tableHeaders";
 import { api } from "~/utils/api";
 

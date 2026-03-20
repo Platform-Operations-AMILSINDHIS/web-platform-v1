@@ -34,7 +34,7 @@ const AuthModal: React.FC<AuthModalProps> = ({
 
   useEffect(() => {
     if (closeModal) handleModal();
-  }, [closeModal]);
+  }, [closeModal, handleModal]);
 
   return (
     <Modal onClose={handleModal} isOpen={modalState}>

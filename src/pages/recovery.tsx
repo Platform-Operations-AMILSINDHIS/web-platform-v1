@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { RecoveryPasswordValues } from "~/hooks/useForm";
+import type { RecoveryPasswordValues } from "~/hooks/useForm";
 import { useUserAtom } from "~/lib/atom";
 
 import Recovery from "~/components/authentication/Recovery";
@@ -64,7 +64,7 @@ const RecoveryPage = () => {
         .then(() => console.log("moved back to home"))
         .catch((err) => console.log(err));
     }
-  }, [router.isReady, router.asPath]);
+  }, [router.isReady, router.asPath, router]);
 
   const handlePasswordReset = async (values: RecoveryPasswordValues) => {
     try {

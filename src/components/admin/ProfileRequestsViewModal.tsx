@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
 import ModalLayout from "~/layouts/ModalLayout";
-import { ProfileRequestsDataType } from "~/types/requests";
+import type { ProfileRequestsDataType } from "~/types/requests";
 import { HiArrowNarrowRight } from "react-icons/hi";
 import useServerActions from "~/hooks/useServerActions";
 import { useState } from "react";
@@ -305,7 +305,7 @@ interface ProfileAvatarProps {
 
 const ProfileAvatar: React.FC<ProfileAvatarProps> = ({ s3_key, name, size = "md" }) => {
   const { profileImageSignedURL } = useAWS({
-    s3_key: s3_key || undefined,
+    s3_key: s3_key ?? undefined,
   });
 
   return (

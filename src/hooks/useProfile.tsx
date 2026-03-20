@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { api } from "~/utils/api";
 
 // Hook for profile actions
@@ -48,7 +48,7 @@ const useProfile = ({ user_id }: useProfileHookProps) => {
     useState<boolean>(false);
 
   // Extract fetch logic into a separate function so it can be reused
-  const handleFetchUserProfile = async (): Promise<void> => {
+  const handleFetchUserProfile = useCallback(async (): Promise<void> => {
     if (!user_id) return;
     try {
       setProfileFetchError("");
@@ -69,12 +69,12 @@ const useProfile = ({ user_id }: useProfileHookProps) => {
     } finally {
       setIsLoadingProfileData(false);
     }
-  };
+  }, [user_id, fetchUserProfileDataMut]);
 
   // Initial fetch on mount
   useEffect(() => {
     void handleFetchUserProfile();
-  }, [user_id]);
+  }, [handleFetchUserProfile]);
 
   // Refetch function that can be called manually
   const refetch = () => {

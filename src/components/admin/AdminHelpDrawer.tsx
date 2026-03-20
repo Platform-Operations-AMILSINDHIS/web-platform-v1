@@ -38,7 +38,7 @@ const helpSections: HelpSection[] = [
         </Text>
         <Text>
           <Text as="span" fontWeight="semibold" color="gray.800">Search:</Text>{" "}
-          Type a member's name in the search bar to filter the list in real time.
+          Type a member&apos;s name in the search bar to filter the list in real time.
         </Text>
         <Text>
           <Text as="span" fontWeight="semibold" color="gray.800">Status Filter:</Text>{" "}
@@ -51,22 +51,17 @@ const helpSections: HelpSection[] = [
         </Text>
         <Text>
           <Text as="span" fontWeight="semibold" color="gray.800">Row Count:</Text>{" "}
-          The "Showing X of Y entries" indicator above each table tells you how many rows match the current filters.
+          The &quot;Showing X of Y entries&quot; indicator above each table tells you how many rows match the current filters.
         </Text>
       </VStack>
     ),
   },
-  {
-    title: "Reviewing Applications",
-    icon: "✅",
-    content: (
-      <VStack align="start" spacing={2} fontSize="sm" color="gray.600">
         <Text>
-          Click the <Text as="span" fontWeight="semibold" color="orange.600">View</Text> button on any row to open the applicant's full profile and form submission.
+          Click the <Text as="span" fontWeight="semibold" color="orange.600">View</Text> button on any row to open the applicant&apos;s full profile and form submission.
         </Text>
         <Text>
           <Text as="span" fontWeight="semibold" color="gray.800">Approve:</Text>{" "}
-          Clicking <Text as="span" fontWeight="semibold">Approve</Text> will automatically generate a membership ID, update the applicant's account, and send them a confirmation email with their membership card PDF.
+          Clicking <Text as="span" fontWeight="semibold">Approve</Text> will automatically generate a membership ID, update the applicant&apos;s account, and send them a confirmation email with their membership card PDF.
         </Text>
         <Text>
           <Text as="span" fontWeight="semibold" color="gray.800">Reject:</Text>{" "}
@@ -92,15 +87,15 @@ const helpSections: HelpSection[] = [
         </Text>
         <Text>
           Each card shows the <Text as="span" fontWeight="semibold">requester</Text> (left) and the{" "}
-          <Text as="span" fontWeight="semibold">requested profile</Text> (right), along with their matrimony IDs, requester's email, and when the request was made.
+          <Text as="span" fontWeight="semibold">requested profile</Text> (right), along with their matrimony IDs, requester&apos;s email, and when the request was made.
         </Text>
         <Text>
           <Text as="span" fontWeight="semibold" color="gray.800">Accept:</Text>{" "}
-          Sends the requested person's full matrimony profile as a PDF to the requester's email. The request is then removed from the list.
+          Sends the requested person&apos;s full matrimony profile as a PDF to the requester&apos;s email. The request is then removed from the list.
         </Text>
         <Text>
           <Text as="span" fontWeight="semibold" color="gray.800">Decline:</Text>{" "}
-          Sends a polite decline email to the requester and removes the request. The office email (amilsindhis@gmail.com) is CC'd on accepted requests for record keeping.
+          Sends a polite decline email to the requester and removes the request. The office email (amilsindhis@gmail.com) is CC&apos;d on accepted requests for record keeping.
         </Text>
       </VStack>
     ),
@@ -122,7 +117,7 @@ const helpSections: HelpSection[] = [
           A confirmation dialog will appear before deleting. Once confirmed, the entry is permanently removed from the form buffer.
         </Text>
         <Text color="red.600" fontWeight="medium">
-          ⚠️ Deletion only removes the submission record. It does NOT delete the user's account or any approved membership.
+          ⚠️ Deletion only removes the submission record. It does NOT delete the user&apos;s account or any approved membership.
         </Text>
       </VStack>
     ),
@@ -134,7 +129,7 @@ const helpSections: HelpSection[] = [
       <VStack align="start" spacing={2} fontSize="sm" color="gray.600">
         <Text>
           After approving a matrimony application, an{" "}
-          <Text as="span" fontWeight="semibold" color="orange.600">Upload Photo</Text> section will appear at the bottom of that applicant's detail page.
+          <Text as="span" fontWeight="semibold" color="orange.600">Upload Photo</Text> section will appear at the bottom of that applicant&apos;s detail page.
         </Text>
         <Text>
           You can upload up to <Text as="span" fontWeight="semibold">3 photos</Text> per member. The photos are stored in S3 and linked to their matrimony profile.

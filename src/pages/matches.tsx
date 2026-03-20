@@ -1,15 +1,14 @@
 import { useDisclosure } from "@chakra-ui/react";
-import { FormikHelpers } from "formik";
-import { useEffect, useMemo, useState } from "react";
-import { MatrimonyLoginValues } from "~/hooks/useForm";
+import type { MatrimonyLoginValues } from "~/hooks/useForm";
+import React, { useCallback, useEffect, useState } from "react";
+import type { FormikHelpers } from "formik";
 import { useUserAtom } from "~/lib/atom";
 
 import useServerActions from "~/hooks/useServerActions";
 import ProfilesViewLayout from "~/layouts/ProfilesViewLayout";
 import MatrimonyAuthModal from "~/components/authentication/MatrimonyAuthModal";
-import {
+import type {
   MatrimonyProfilesFetchResponse,
-  ProfileRequestsFetchResponse,
 } from "~/types/api";
 import MatrimonyProfilesView from "~/components/matrimony/MatrimonyProfilesView";
 import MatrimonyApplicationWithdrawModal from "~/components/matrimony/MatrimonyApplicationWithdrawModal";
@@ -68,28 +67,14 @@ const ProfilePage = () => {
     setIsLoggedIn(true);
   };
 
-  const handleCloseSelectProfileModal = async (
-    setProfileMatID: (profileMatID: string | undefined) => void,
-    setFetchStatus: (status: boolean) => void
-  ) => {
-    setFetchStatus(false);
-    setProfileMatID("");
-    onCloseSelectionModal();
-
-    // Refresh both lists
-    if (user) {
-      await Promise.all([fetchProfiles(), fetchProfileRequests(user.email_id)]);
-    }
-  };
-
-  const fetchProfiles = async () => {
+  const fetchProfiles = useCallback(async () => {
     const data = await handleMatrimonyProfilesFetch();
     if (data.length > 0 && isLoggedIn) {
       setMatrimonyProfiles(data);
     }
-  };
+  }, [handleMatrimonyProfilesFetch, isLoggedIn]);
 
-  const fetchProfileRequests = async (email_id: string) => {
+  const fetchProfileRequests = useCallback(async (email_id: string) => {
     const data = await handleFetchProfileRequests(email_id);
     console.log({ profile_requests_data: data });
 
@@ -108,6 +93,20 @@ const ProfilePage = () => {
 
       console.log({ profilesRequested });
     }
+  }, [handleFetchProfileRequests, isLoggedIn]);
+
+  const handleCloseSelectProfileModal = async (
+    setProfileMatID: (profileMatID: string | undefined) => void,
+    setFetchStatus: (status: boolean) => void
+  ) => {
+    setFetchStatus(false);
+    setProfileMatID("");
+    onCloseSelectionModal();
+
+    // Refresh both lists
+    if (user) {
+      await Promise.all([fetchProfiles(), fetchProfileRequests(user.email_id)]);
+    }
   };
 
   useEffect(() => {
@@ -122,7 +121,7 @@ const ProfilePage = () => {
       .then(() => console.log("done"))
       .catch((err) => console.log(err));
     // Only refetch when user or isLoggedIn changes, not on matrimonyProfiles change
-  }, [isLoggedIn, user?.id]);
+  }, [isLoggedIn, user, fetchProfiles, fetchProfileRequests]);
 
   console.log({ matrimonyProfiles, profilesRequested });
 

@@ -138,7 +138,7 @@ const AdminMatrimonyPhotoUpload: React.FC<AdminMatrimonyPhotoUploadProps> = ({
             </Button>
             <Button
               colorScheme="orange"
-              onClick={handleUpload}
+              onClick={() => { void handleUpload(); }}
               isLoading={isUploading}
               isDisabled={!selectedFile}
             >

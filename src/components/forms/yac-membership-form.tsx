@@ -67,7 +67,7 @@ import { type InputType } from "./kap-membership-form";
 import paymentQRCode from "../../../public/images/payments/qr_sbi.jpg";
 
 import { api } from "~/utils/api";
-import { userAtomBody } from "~/types/atoms/users";
+import type { userAtomBody } from "~/types/atoms/users";
 import Image from "next/image";
 
 const steps = [
@@ -176,7 +176,7 @@ const activeStepAtom = atom<number>(1);
 
 const YoungAmilCircleMembershipForm: React.FC<
   YoungAmilCircleMembershipFormProps
-> = ({ user, isMemberYAC }) => {
+> = ({ user }) => {
   // const toast = useToast();
 
   // const { activeStep, setActiveStep } = useSteps({
@@ -262,7 +262,7 @@ const YoungAmilCircleMembershipForm: React.FC<
           ].map(
             (FormSection, i) =>
               activeStep === i + 1 && (
-                <FormSection user={user} key={i} isMemberYAC={isPrevMember} />
+                <FormSection user={user} key={i} />
               )
           )
         : [
@@ -691,7 +691,7 @@ export const ProposerDetailsSection: React.FC<YACFormSectionProps> = () => {
       <Formik
         initialValues={proposerInfo}
         validationSchema={proposerInfoSchema}
-        onSubmit={(values, actions) => {
+        onSubmit={(values) => {
           setProposerInfo(values);
           setActiveStep(activeStep + 1);
         }}

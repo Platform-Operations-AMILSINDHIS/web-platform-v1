@@ -9,7 +9,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { EmailIcon, CalendarIcon } from "@chakra-ui/icons";
-import { FetchProfileResponse } from "~/types/api";
+import type { FetchProfileResponse } from "~/types/api";
 import { calculateAge } from "~/utils/helper";
 
 interface MemberProfileDetailDisplayProps {

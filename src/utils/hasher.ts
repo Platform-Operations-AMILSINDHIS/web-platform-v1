@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 const hasher = async (password: string) => {
   const saltRounds = 10;
   try {
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const hashedPassword = (await bcrypt.hash(password, saltRounds)) as string;
     return hashedPassword;
   } catch (error) {
     throw error;

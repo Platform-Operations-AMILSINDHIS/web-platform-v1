@@ -62,7 +62,9 @@ export const sendMail = async ({
         buffer: true,
       });
 
-      const info: any = await dummyTransporter.sendMail(mailOptions);
+      const info = (await dummyTransporter.sendMail(mailOptions)) as {
+        message: Buffer;
+      };
       const rawMessage = info.message;
 
       const command = new SendRawEmailCommand({

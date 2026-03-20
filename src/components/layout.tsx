@@ -2,8 +2,6 @@ import Head from "next/head";
 
 import { satoshi } from "../utils/fonts";
 import { Box, Flex } from "@chakra-ui/react";
-import { navigation } from "../constants/LandingConstants.json";
-import { useRouter } from "next/router";
 import Footer from "./Footer";
 // import Navigation from "./navigation";
 
@@ -13,8 +11,6 @@ const Layout: React.FC<{
   maxW?: boolean;
   blogPostPage?: boolean;
 }> = ({ title, children, maxW = true }) => {
-  const router = useRouter();
-  const currentEndpoint = router.pathname;
   return (
     <>
       <Head>
@@ -35,7 +31,7 @@ const Layout: React.FC<{
       >
         <Box w={1000} my={6}>
           {/* <Navigation
-            userLocation={currentEndpoint}
+            userLocation={router.pathname}
             /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */
           /*navigationItems={navigation}/> */}
         </Box>

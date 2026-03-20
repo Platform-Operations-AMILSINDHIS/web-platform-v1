@@ -98,7 +98,7 @@ const useUserStatusSync = () => {
     return () => {
       void supabase.removeChannel(channel);
     };
-  }, [user?.id]);
+  }, [user?.id, setUserAtom, toast]);
 };
 
 export default useUserStatusSync;

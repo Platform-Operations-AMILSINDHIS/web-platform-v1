@@ -1,5 +1,5 @@
 import { Button, Flex, Grid, GridItem, Spinner, Text } from "@chakra-ui/react";
-import { MatrimonyFormValues } from "~/types/forms/matrimony";
+import type { MatrimonyFormValues } from "~/types/forms/matrimony";
 import { camelCaseToSpaces } from "~/utils/helper";
 import { btnThemeDark, btnThemeLight } from "../buttons/BtnThemes";
 import useServerActions from "~/hooks/useServerActions";

@@ -65,7 +65,7 @@ import {
 import paymentQRCode from "../../../public/images/payments/qr_sbi.jpg";
 
 import { api } from "~/utils/api";
-import { userAtomBody } from "~/types/atoms/users";
+import type { userAtomBody } from "~/types/atoms/users";
 import Image from "next/image";
 
 const steps = [
@@ -876,6 +876,7 @@ const MembershipDetailsSection: React.FC = () => {
   //   }
   // }, [paymentId]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const canSubmit =
     membershipInfo.membershipType !== null &&
     paymentID.trim().length > 0 &&

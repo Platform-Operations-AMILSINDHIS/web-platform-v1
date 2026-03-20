@@ -28,7 +28,7 @@ const ValidatePasswordHandler = async (
 
     const passwordCheck = await bcrypt.compare(
       password,
-      users.password as string
+      (users as { password: string }).password
     );
 
     if (!passwordCheck) {

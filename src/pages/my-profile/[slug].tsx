@@ -38,7 +38,7 @@ const MyProfilePage = () => {
   const [{ user: loggedInUser }] = useUserAtom();
   const { profileData, isLoadingProfileData, profileFetchError, refetch } =
     useProfile({
-      user_id: slug as string,
+      user_id: slug,
     });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -78,7 +78,7 @@ const MyProfilePage = () => {
       <Layout title="MyProfile">
         <Flex justify="center" align="center" minH="80vh">
           <Text color="red.500" fontSize="lg">
-            You don't have permission to view this profile
+            You don&apos;t have permission to view this profile
           </Text>
         </Flex>
       </Layout>
@@ -123,7 +123,7 @@ const MyProfilePage = () => {
       )
     : null;
 
-  const hasMatrimonyProfile = matrimonyProfile && matrimonyProfile.submission;
+  const hasMatrimonyProfile = matrimonyProfile?.submission;
 
   const personalInfo = yacProfile?.submission?.personalInfo || null;
   const addressInfo =
@@ -558,13 +558,13 @@ const MyProfilePage = () => {
 
                       {/* Matrimony Images - Only show if approved */}
                       {matrimonyStatus === "APPROVED" && slug && (
-                        <EditMatrimonyImages
-                          userId={slug as string}
-                          existingImages={
-                            profileData?.application_s3_meta || []
-                          }
-                          onSuccess={refetch}
-                        />
+                      <EditMatrimonyImages
+                        userId={slug}
+                        existingImages={
+                          profileData.application_s3_meta
+                        }
+                        onSuccess={refetch}
+                      />
                       )}
 
                       {/* Matrimony Personal Information */}
@@ -872,7 +872,7 @@ const MyProfilePage = () => {
         <EditProfilePicture
           isOpen={isOpen}
           onClose={onClose}
-          userId={slug as string}
+          userId={slug!}
           currentImageUrl={profileImageSignedURL}
           userName={`${firstName} ${lastName}`}
           onSuccess={handleProfilePictureSuccess}
@@ -883,7 +883,7 @@ const MyProfilePage = () => {
           <EditProfileModal
             isOpen={isEditProfileOpen}
             onClose={onEditProfileClose}
-            userId={slug as string}
+            userId={slug!}
             initialData={getEditModalInitialData()}
             onSuccess={refetch}
           />

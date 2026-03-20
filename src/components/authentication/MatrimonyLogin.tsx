@@ -1,9 +1,10 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
-import { Form, Formik, FormikHelpers } from "formik";
+import { Form, Formik } from "formik";
+import type { FormikHelpers } from "formik";
 import {
-  MatrimonyLoginValues,
   matrimonyLoginInitialValues,
 } from "~/hooks/useForm";
+import type { MatrimonyLoginValues } from "~/hooks/useForm";
 import { MatrimonyLoginValidation } from "~/validations/AuthValidations";
 import { LabelledInput } from "../forms";
 

@@ -1,6 +1,7 @@
 import { Box, Button, Flex, FormLabel, Input } from "@chakra-ui/react";
-import { SetStateAction } from "jotai";
-import React, { Dispatch } from "react";
+import type { SetStateAction } from "jotai";
+import React from "react";
+import type { Dispatch } from "react";
 
 interface RecoveryResendProps {
   email: string;
