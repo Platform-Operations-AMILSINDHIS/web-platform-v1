@@ -4,6 +4,7 @@ import { satoshi } from "../utils/fonts";
 import { Box, Flex } from "@chakra-ui/react";
 import Footer from "./Footer";
 import { useRouter } from "next/router";
+import { navigation } from "../constants/LandingConstants.json";
 import Navigation from "./navigation";
 
 const Layout: React.FC<{
@@ -35,6 +36,7 @@ const Layout: React.FC<{
         <Box w={1000} my={6}>
           <Navigation
             userLocation={currentEndpoint}
+            /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */
             navigationItems={navigation}
           />
         </Box>
