@@ -5,6 +5,8 @@ import { SessionProvider } from "next-auth/react";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { Provider as JotaiProvider } from "jotai";
 
+import { Analytics } from "@vercel/analytics/next";
+
 import { api } from "~/utils/api";
 import useUserStatusSync from "~/hooks/useUserStatusSync";
 
@@ -35,14 +37,17 @@ const MyApp: AppType<{ session: Session | null }> = ({
   pageProps: { session, ...pageProps },
 }) => {
   return (
-    <SessionProvider session={session}>
-      <ChakraProvider theme={theme}>
-        <JotaiProvider>
-          <AppEffects />
-          <Component {...pageProps} />
-        </JotaiProvider>
-      </ChakraProvider>
-    </SessionProvider>
+    <>
+      <Analytics />
+      <SessionProvider session={session}>
+        <ChakraProvider theme={theme}>
+          <JotaiProvider>
+            <AppEffects />
+            <Component {...pageProps} />
+          </JotaiProvider>
+        </ChakraProvider>
+      </SessionProvider>
+    </>
   );
 };
 
