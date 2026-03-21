@@ -4,7 +4,7 @@ import { satoshi } from "../utils/fonts";
 import { Box, Flex } from "@chakra-ui/react";
 import Footer from "./Footer";
 import { useRouter } from "next/router";
-// import Navigation from "./navigation";
+import Navigation from "./navigation";
 
 const Layout: React.FC<{
   title?: string;
@@ -33,10 +33,10 @@ const Layout: React.FC<{
         } mx-auto font-sans`}
       >
         <Box w={1000} my={6}>
-          {/* <Navigation 
+          <Navigation
             userLocation={currentEndpoint}
             navigationItems={navigation}
-          /> */}
+          />
         </Box>
         <main className={`mx-auto w-full ${maxW && "px-4 md:px-4"}`}>
           {children}
