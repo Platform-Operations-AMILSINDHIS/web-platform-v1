@@ -107,7 +107,9 @@ const MatrimonyProfilesView: React.FC<MatrimonyProfilesViewProps> = ({
         idResp.matrimony_id,
         user.email_id ?? ""
       );
-      onRequestSent(profileView.personalInfo.firstName);
+      onRequestSent(
+        `${profileView.personalInfo.firstName} ${profileView.personalInfo.lastName}`
+      );
       toast({
         title: "Profile Requested!",
         description: "The team will respond in 3-4 days.",
@@ -147,7 +149,9 @@ const MatrimonyProfilesView: React.FC<MatrimonyProfilesViewProps> = ({
   }, [matrimonyProfiles, user, matchPreferences, searchTerm, minAge, maxAge]);
 
   const isCurrentProfileRequested = profileView
-    ? profileRequests.includes(profileView.personalInfo.firstName)
+    ? profileRequests.includes(
+        `${profileView.personalInfo.firstName} ${profileView.personalInfo.lastName}`
+      )
     : false;
 
   if (!isLoggedIn) return null;
@@ -278,7 +282,7 @@ const MatrimonyProfilesView: React.FC<MatrimonyProfilesViewProps> = ({
               lg: "repeat(3, 1fr)",
             }}
           >
-            {visibleProfiles.map((profile, index) => (
+            {visibleProfiles.map((profile) => (
               <MatrimonyProfileCard
                 key={profile.id}
                 profileRequests={profileRequests}

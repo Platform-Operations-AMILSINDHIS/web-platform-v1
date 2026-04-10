@@ -56,7 +56,9 @@ const MatrimonyProfileCard: React.FC<MatrimonyProfileCardProps> = ({
     }
   }, [profileImageSignedURL]);
 
-  const isRequested = profileRequests.includes(submission.personalInfo.firstName);
+  const isRequested = profileRequests.includes(
+    `${submission.personalInfo.firstName} ${submission.personalInfo.lastName}`
+  );
   const age = formatPDFAge(submission.personalInfo.dateAndTimeOfBirth as unknown);
 
   return (
