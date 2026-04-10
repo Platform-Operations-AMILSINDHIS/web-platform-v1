@@ -1,5 +1,8 @@
 import type { SpousePreferences, PersonalInfo } from "~/types/forms/matrimony";
 
+const HEIGHT_TOLERANCE_INCHES = 4;
+const WEIGHT_TOLERANCE_KG = 15;
+
 export type MatchLabel = "Great Match" | "Good Match" | null;
 
 export interface MatchResult {
@@ -10,7 +13,7 @@ export interface MatchResult {
 function toTotalInches(feet: number | string | undefined, inches: number | string | undefined): number | null {
   const f = Number(feet);
   const i = Number(inches);
-  if (isNaN(f) || isNaN(i) || f === 0) return null;
+  if (isNaN(f) || isNaN(i) || f === 0 || f < 0 || i < 0) return null;
   return f * 12 + i;
 }
 
@@ -25,14 +28,14 @@ export function computeMatchScore(
   // 1. Height — within ±4 inches of preference
   const prefHeight = toTotalInches(prefs.heightFeet, prefs.heightInches);
   const profileHeight = toTotalInches(profile.heightFeet, profile.heightInches);
-  if (prefHeight !== null && profileHeight !== null && Math.abs(prefHeight - profileHeight) <= 4) {
+  if (prefHeight !== null && profileHeight !== null && Math.abs(prefHeight - profileHeight) <= HEIGHT_TOLERANCE_INCHES) {
     score++;
   }
 
   // 2. Weight — within ±15 kg of preference
   const prefWeight = Number(prefs.weight);
   const profileWeight = Number(profile.weight);
-  if (!isNaN(prefWeight) && !isNaN(profileWeight) && prefWeight > 0 && profileWeight > 0 && Math.abs(prefWeight - profileWeight) <= 15) {
+  if (!isNaN(prefWeight) && !isNaN(profileWeight) && prefWeight > 0 && profileWeight > 0 && Math.abs(prefWeight - profileWeight) <= WEIGHT_TOLERANCE_KG) {
     score++;
   }
 
