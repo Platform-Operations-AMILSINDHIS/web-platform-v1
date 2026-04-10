@@ -3,22 +3,57 @@ import YoungAmilCircleMembershipForm from "~/components/forms/yac-membership-for
 import UserBlockModal from "~/components/authentication/UserBlockModal";
 
 import type { NextPage } from "next";
-import { Box, Flex, Icon, Spacer, Text } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { Box, Flex, Icon, Spacer, Spinner, Text } from "@chakra-ui/react";
 import { useUserAtom } from "~/lib/atom";
 import { RiErrorWarningFill } from "react-icons/ri";
 import { calculateAge } from "~/utils/helper";
+import { api } from "~/utils/api";
 
-const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
+interface AccountStatus {
+  membership_id: string | null;
+  KAP_member: boolean;
+  YAC_member: boolean;
+  date_of_birth: string | null;
+}
+
+const YoungAmilCircleMembershipPage: NextPage = () => {
   const [{ user }] = useUserAtom();
-  const userAge = user ? calculateAge(user.date_of_birth) : null;
+  const getAccountStatus = api.profile.getAccountStatus.useMutation();
 
-  // Out of range when age is known and outside 16–30; if DOB is null, allow through
-  const isAgeOutOfRange =
-    userAge !== null && (userAge < 16 || userAge > 30);
+  const [accountStatus, setAccountStatus] = useState<AccountStatus | null>(null);
+  const [statusLoading, setStatusLoading] = useState(false);
+
+  useEffect(() => {
+    if (!user?.id) {
+      setAccountStatus(null);
+      return;
+    }
+    setStatusLoading(true);
+    getAccountStatus
+      .mutateAsync({ user_id: user.id })
+      .then(setAccountStatus)
+      .catch(console.error)
+      .finally(() => setStatusLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]);
+
+  const userAge = accountStatus ? calculateAge(accountStatus.date_of_birth) : null;
+  const isAgeOutOfRange = userAge !== null && (userAge < 16 || userAge > 30);
+
+  if (statusLoading) {
+    return (
+      <Layout title="YAC Membership Form">
+        <Flex justify="center" align="center" py={20}>
+          <Spinner color="#FF4D00" size="lg" />
+        </Flex>
+      </Layout>
+    );
+  }
 
   return (
     <Layout title="YAC Membership Form">
-      {user?.KAP_member === true ? (
+      {accountStatus?.KAP_member === true ? (
         <Flex
           gap={2}
           align="flex-start"
@@ -43,7 +78,7 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
             <></>
           )}
         </Flex>
-      ) : user?.YAC_member === true ? (
+      ) : accountStatus?.YAC_member === true ? (
         <Flex
           gap={2}
           align="flex-start"
@@ -67,7 +102,7 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
       <Box position="relative">
         <Box
           display={
-            !user || (isAgeOutOfRange && user.YAC_member != true) ? "" : "none"
+            !user || (isAgeOutOfRange && accountStatus?.YAC_member !== true) ? "" : "none"
           }
           left="50%"
           top="50%"
@@ -77,7 +112,7 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
           position="absolute"
         >
           {user ? (
-            isAgeOutOfRange && user.YAC_member != true ? (
+            isAgeOutOfRange && accountStatus?.YAC_member !== true ? (
               <>
                 <Flex
                   boxShadow="rgba(0, 0, 0, 0.24) 0px 3px 8px;"
@@ -92,7 +127,7 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
                   w={500}
                 >
                   <Flex gap={2} px={10} align="center" flexDir="column">
-                    {user.YAC_member ? (
+                    {accountStatus?.YAC_member ? (
                       <Text>Membership Completed</Text>
                     ) : (
                       <Text>Age Requirement not met</Text>
@@ -107,9 +142,9 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
                         You need to be atleast 16 years of age to be eligible
                         for YAC member application
                       </Text>
-                    ) : user.YAC_member ? (
+                    ) : accountStatus?.YAC_member ? (
                       <Text textAlign="center">
-                        {`You are already a registered YAC member, Your YAC ID is ${user.membership_id} `}
+                        {`You are already a registered YAC member, Your YAC ID is ${accountStatus.membership_id ?? ""} `}
                       </Text>
                     ) : (
                       <Text></Text>
@@ -142,4 +177,4 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
   );
 };
 
-export default KhudabadiAmilPanchayatMembershipPage;
+export default YoungAmilCircleMembershipPage;

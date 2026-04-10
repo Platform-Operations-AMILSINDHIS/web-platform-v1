@@ -12,6 +12,7 @@ import {
   InputRightElement,
   useToast,
 } from "@chakra-ui/react";
+import { WarningIcon } from "@chakra-ui/icons";
 import {
   Field,
   ErrorMessage,
@@ -20,12 +21,38 @@ import {
   FormikHelpers,
 } from "formik";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { motion } from "framer-motion";
+
+const AnimatedError: React.FC<{ name: string }> = ({ name }) => (
+  <ErrorMessage name={name}>
+    {(errorMsg) =>
+      errorMsg ? (
+        <motion.div
+          initial={{ opacity: 0, y: -4 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          <Flex align="center" gap={1} py={1} fontWeight={600} fontSize="sm" color="red.500">
+            <WarningIcon boxSize={3} flexShrink={0} />
+            <span>{errorMsg}</span>
+          </Flex>
+        </motion.div>
+      ) : null
+    }
+  </ErrorMessage>
+);
 
 export const camelCase = (str: string) =>
   str
     .toLowerCase()
     .split(" ")
     .reduce((s, c) => s + (c.charAt(0).toUpperCase() + c.slice(1)));
+
+const formatDateForInput = (value: string | number | Date | null | undefined) => {
+  if (!value) return "";
+  const date = new Date(value);
+  return !isNaN(date.getTime()) ? date.toISOString().split("T")[0] : "";
+};
 
 export const LabelledInput: React.FC<{
   label: string;
@@ -63,7 +90,7 @@ export const LabelledInput: React.FC<{
 
   return (
     <FormControl isDisabled={isDisabled} isRequired={required} fontWeight={500}>
-      <FormLabel color="gray.700" fontWeight={600}>
+      <FormLabel color="gray.800" fontWeight={600}>
         {label}
       </FormLabel>
       {type === "text" ? (
@@ -75,14 +102,13 @@ export const LabelledInput: React.FC<{
             validate={validate ?? undefined}
             placeholder={placeholder}
             borderColor="gray.400"
+            h="44px"
             _hover={{
               borderColor: "#FF4D00",
             }}
             focusBorderColor="#FF4D00"
           />
-          <Box py={1} fontWeight={600} fontSize="sm" color="red">
-            <ErrorMessage name={name ?? camelCase(label)} />
-          </Box>
+          <AnimatedError name={name ?? camelCase(label)} />
         </>
       ) : type === "password" ? (
         <>
@@ -95,12 +121,13 @@ export const LabelledInput: React.FC<{
               validate={validate ?? undefined}
               placeholder={placeholder}
               borderColor="gray.400"
+              h="44px"
               _hover={{
                 borderColor: "#FF4D00",
               }}
               focusBorderColor="#FF4D00"
             />
-            <InputRightElement>
+            <InputRightElement h="44px">
               <Icon
                 boxSize={5}
                 color="gray.600"
@@ -109,11 +136,7 @@ export const LabelledInput: React.FC<{
               />
             </InputRightElement>
           </InputGroup>
-          <Flex justify="space-between" align="center" gap={2}>
-            <Box py={1} fontWeight={600} fontSize="sm" color="red">
-              <ErrorMessage name={name ?? camelCase(label)} />
-            </Box>
-          </Flex>
+          <AnimatedError name={name ?? camelCase(label)} />
         </>
       ) : type === "chakra-text" ? (
         <>
@@ -180,6 +203,7 @@ export const LabelledInput: React.FC<{
                   <Input
                     // {...field}
                     type="date"
+                    h="44px"
                     onChange={(e) => {
                       const inputValue = e.target.value;
 
@@ -206,11 +230,7 @@ export const LabelledInput: React.FC<{
                         e.target.value = "";
                       }
                     }}
-                    value={
-                      field.value
-                        ? field.value.toISOString().split("T")[0]
-                        : undefined
-                    }
+                    value={formatDateForInput(field.value)}
                     id={camelCase(label)}
                     placeholder={placeholder}
                     borderColor="gray.400"
@@ -219,9 +239,7 @@ export const LabelledInput: React.FC<{
                     }}
                     focusBorderColor="#FF4D00"
                   />
-                  <Box py={1} fontWeight={600} fontSize="sm" color="red">
-                    <ErrorMessage name={name ?? camelCase(label)} />
-                  </Box>
+                  <AnimatedError name={name ?? camelCase(label)} />
                 </>
               );
             }}
@@ -262,6 +280,7 @@ export const LabelledInput: React.FC<{
             name={name ?? camelCase(label)}
             placeholder={placeholder}
             validate={validate ?? undefined}
+            h="44px"
             _hover={{
               borderColor: "#FF4D00",
             }}
@@ -269,9 +288,7 @@ export const LabelledInput: React.FC<{
             borderColor="gray.400"
             color="gray.700"
           />
-          <Box py={1} fontWeight={600} fontSize="sm" color="red">
-            <ErrorMessage name={name ?? camelCase(label)} />
-          </Box>
+          <AnimatedError name={name ?? camelCase(label)} />
         </>
       ) : type === "select" ? (
         <>
@@ -287,6 +304,7 @@ export const LabelledInput: React.FC<{
             border="1px solid"
             borderColor="gray.400"
             color="gray.700"
+            h="44px"
             _hover={{
               borderColor: "#FF4D00",
             }}
@@ -297,9 +315,7 @@ export const LabelledInput: React.FC<{
               </option>
             ))}
           </Field>
-          <Box py={1} fontWeight={600} fontSize="sm" color="red">
-            <ErrorMessage name={name ?? camelCase(label)} />
-          </Box>
+          <AnimatedError name={name ?? camelCase(label)} />
         </>
       ) : (
         // </Flex>

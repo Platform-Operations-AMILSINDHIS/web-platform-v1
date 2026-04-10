@@ -1,4 +1,5 @@
 import { Box, Flex, Grid, Heading, Icon, Text } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import { HiMiniArrowSmallRight } from "react-icons/hi2";
 import Link from "next/link";
 import Image from "next/image";
@@ -15,6 +16,12 @@ interface sectionProps {
 
 const OfferingsSection = ({ picturesArray }: sectionProps) => {
   return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+    >
     <Grid position="relative" templateColumns={["1fr", "repeat(4, 1fr)"]} gap="3rem">
       <Box display={["none", "block"]} transform="rotate(3deg)" left={"25%"} top={-12} position="absolute">
         <Image src={ArrowImage} alt="arrow" width={240} height={240} />
@@ -70,6 +77,7 @@ const OfferingsSection = ({ picturesArray }: sectionProps) => {
         </Link>
       ))}
     </Grid>
+    </motion.div>
   );
 };
 

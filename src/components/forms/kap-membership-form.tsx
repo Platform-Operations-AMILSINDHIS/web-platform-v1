@@ -23,6 +23,7 @@ import {
   Tag,
   Checkbox,
   Input,
+  Spinner,
 } from "@chakra-ui/react";
 import {
   Table,
@@ -321,6 +322,14 @@ export const PersonalInformationSection: React.FC<KAPFormSectionProps> = ({
     return lockedFields.includes(field);
   };
 
+  if (!user) {
+    return (
+      <Flex justify="center" align="center" py={10}>
+        <Spinner color="orange.500" size="xl" />
+      </Flex>
+    );
+  }
+
   return (
     <>
       <Heading>Khudabadi Amil Panchayat Application Form</Heading>
@@ -332,6 +341,7 @@ export const PersonalInformationSection: React.FC<KAPFormSectionProps> = ({
       <Formik
         initialValues={mergedInitialValues}
         enableReinitialize
+        validateOnMount
         validationSchema={personalInfoSchema}
         onSubmit={(values, actions) => {
           setPersonalInfo(values);
@@ -429,9 +439,9 @@ export const AddressDetailsSection: React.FC = () => {
       <Heading>Residential Address</Heading>
       <Formik
         initialValues={addressInfo}
+        validateOnMount
         validationSchema={addressInfoSchema}
         onSubmit={(values, actions) => {
-          // console.log({ values });
           setAddressInfo(values);
           actions.setSubmitting(false);
           setActiveStep(activeStep + 1);
@@ -648,6 +658,7 @@ export const ProposerDetailsSection: React.FC<KAPFormSectionProps> = ({
 
       <Formik
         initialValues={proposerInfo}
+        validateOnMount
         validationSchema={proposerInfoSchema}
         onSubmit={(values, actions) => {
           // console.log({ values });

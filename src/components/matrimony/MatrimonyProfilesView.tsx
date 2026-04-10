@@ -189,13 +189,13 @@ const MatrimonyProfilesView: React.FC<MatrimonyProfilesViewProps> = ({
               w="80px"
               value={minAge ?? ""}
               onChange={(_, val) => setMinAge(isNaN(val) ? undefined : val)}
+              focusBorderColor="#FF4D00"
             >
               <NumberInputField
                 placeholder="Min"
                 h="44px"
                 borderColor="gray.300"
                 _hover={{ borderColor: "#FF4D00" }}
-                focusBorderColor="#FF4D00"
               />
             </NumberInput>
             <Text fontSize="sm" color="gray.400">
@@ -207,18 +207,18 @@ const MatrimonyProfilesView: React.FC<MatrimonyProfilesViewProps> = ({
               w="80px"
               value={maxAge ?? ""}
               onChange={(_, val) => setMaxAge(isNaN(val) ? undefined : val)}
+              focusBorderColor="#FF4D00"
             >
               <NumberInputField
                 placeholder="Max"
                 h="44px"
                 borderColor="gray.300"
                 _hover={{ borderColor: "#FF4D00" }}
-                focusBorderColor="#FF4D00"
               />
             </NumberInput>
           </Flex>
 
-          {(searchTerm || minAge || maxAge) && (
+          {(searchTerm !== "" || minAge != null || maxAge != null) && (
             <Button
               size="sm"
               variant="ghost"
@@ -249,7 +249,7 @@ const MatrimonyProfilesView: React.FC<MatrimonyProfilesViewProps> = ({
               lg: "repeat(3, 1fr)",
             }}
           >
-            {[...Array(6)].map((_, i) => (
+            {Array.from({ length: 6 }).map((_, i) => (
               <Skeleton
                 key={i}
                 height="340px"
