@@ -131,6 +131,9 @@ const ProfilePage = () => {
     setProfilesRequested((prev) =>
       prev.includes(fullName) ? prev : [...prev, fullName]
     );
+    if (user?.email_id) {
+      void fetchProfileRequests(user.email_id);
+    }
   };
 
   return (
