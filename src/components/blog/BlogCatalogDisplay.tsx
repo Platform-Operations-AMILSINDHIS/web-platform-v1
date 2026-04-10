@@ -54,7 +54,7 @@ const BlogCatalogDisplay: React.FC<BlogCatalogProps> = ({ blogPosts }) => {
               {truncate(blog?.excerpt ?? "", { length: 200 })}
             </Text>
             <Flex mt={2} gap={2}>
-              {blogPosts[0]?.blogTags?.map((tag, i) => (
+              {blog?.blogTags?.slice(0, 4)?.map((tag, i) => (
                 <Box
                   fontWeight={500}
                   key={i}
@@ -67,7 +67,7 @@ const BlogCatalogDisplay: React.FC<BlogCatalogProps> = ({ blogPosts }) => {
                 fontWeight={500}
                 className={`rounded-full border border-[#1F2937] px-3 py-1 text-xs`}
               >
-                {blog?.blogType}
+                {blog?.blogType?.[0]}
               </Box>
             </Flex>
           </Flex>
