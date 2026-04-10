@@ -61,6 +61,7 @@ const MatrimonyProfileCard: React.FC<MatrimonyProfileCardProps> = ({
 
   return (
     <motion.div
+      animate={{ boxShadow: "0px 4px 0px 0px rgba(0, 0, 0, 0.19)" }}
       whileHover={{ y: -4, boxShadow: "0px 8px 20px rgba(0,0,0,0.15)" }}
       transition={{ duration: 0.2 }}
       style={{ borderRadius: 10 }}
@@ -70,7 +71,6 @@ const MatrimonyProfileCard: React.FC<MatrimonyProfileCardProps> = ({
         gap={2}
         borderRadius={10}
         border="1px solid rgba(31, 41, 55, 0.45)"
-        boxShadow="0px 4px 0px 0px rgba(0, 0, 0, 0.19)"
         flexDir="column"
         bg="white"
       >
