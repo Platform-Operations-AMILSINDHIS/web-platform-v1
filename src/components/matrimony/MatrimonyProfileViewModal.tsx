@@ -247,7 +247,7 @@ const MatrimonyImageGallery: React.FC<MatrimonyImageGalleryProps> = ({
           <Image
             src={mainImageUrl}
             alt="Matrimony profile"
-            objectFit="cover"
+            objectFit="contain"
             w="100%"
             h="100%"
           />
