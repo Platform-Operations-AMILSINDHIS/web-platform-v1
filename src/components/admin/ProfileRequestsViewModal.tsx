@@ -18,6 +18,7 @@ import type { ProfileRequestsDataType } from "~/types/requests";
 import { HiArrowNarrowRight } from "react-icons/hi";
 import useServerActions from "~/hooks/useServerActions";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import useAWS from "~/hooks/useAWS";
 
 interface ProfileRequestsViewModalProps {
@@ -146,11 +147,11 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
           gap={3}
           color="gray.400"
         >
-          <Text fontSize="3xl">💌</Text>
-          <Text fontWeight="semibold" fontSize="md" color="gray.500">
+          <Icon as={CheckIcon} boxSize={10} color="green.300" />
+          <Text fontWeight="semibold" fontSize="md" color="gray.600">
             No pending profile requests
           </Text>
-          <Text fontSize="sm">
+          <Text fontSize="sm" color="gray.400">
             All requests have been reviewed.
           </Text>
         </Flex>
@@ -158,9 +159,14 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
 
       {/* Request cards */}
       <Flex gap={3} flexDir="column">
-        {pendingRequests.map((request) => (
-          <Box
+        {pendingRequests.map((request, index) => (
+          <motion.div
             key={request.id}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: index * 0.08 }}
+          >
+          <Box
             borderWidth="1px"
             borderColor="gray.200"
             borderRadius="xl"
@@ -242,7 +248,7 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
               {/* Action buttons */}
               <Flex flexDir="column" gap={2} flexShrink={0}>
                 <Button
-                  size="sm"
+                  size="md"
                   colorScheme="green"
                   leftIcon={acceptingRequestId === request.id ? <Spinner size="xs" /> : <CheckIcon />}
                   isLoading={acceptingRequestId === request.id}
@@ -260,7 +266,7 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
                   Accept
                 </Button>
                 <Button
-                  size="sm"
+                  size="md"
                   colorScheme="red"
                   variant="outline"
                   leftIcon={decliningRequestId === request.id ? <Spinner size="xs" /> : <CloseIcon boxSize={2.5} />}
@@ -280,6 +286,7 @@ const ProfileRequestsViewModal: React.FC<ProfileRequestsViewModalProps> = ({
               </Flex>
             </Flex>
           </Box>
+          </motion.div>
         ))}
       </Flex>
 

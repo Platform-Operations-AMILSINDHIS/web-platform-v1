@@ -98,8 +98,9 @@ async function syncDOBToAccount(
   dob: string | Date | null | undefined
 ): Promise<void> {
   if (!userId || !dob) return;
-  const dobString =
-    dob instanceof Date ? dob.toISOString().slice(0, 10) : String(dob).slice(0, 10);
+  const d = new Date(dob);
+  if (isNaN(d.getTime())) return;
+  const dobString = d.toISOString().slice(0, 10);
   // Only update if date_of_birth is not already set on the account
   const { error } = await supabase
     .from("general_accounts")

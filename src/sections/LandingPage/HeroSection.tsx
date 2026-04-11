@@ -1,10 +1,14 @@
 import { Flex, Spacer } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import LinkButton from "~/components/buttons/LinkButton";
 import { satoshi } from "~/utils/fonts";
 
 const HeroSection = () => {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
       className={`${satoshi.variable} mx-auto mt-5 flex max-w-screen-lg flex-col gap-y-10 text-center text-[#1F2937]`}
     >
       {/* Hero */}
@@ -39,7 +43,7 @@ const HeroSection = () => {
       </Flex>
 
       <Spacer h="8rem" />
-    </div>
+    </motion.div>
   );
 };
 

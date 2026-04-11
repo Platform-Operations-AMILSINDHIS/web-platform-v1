@@ -23,6 +23,7 @@ import {
   Tag,
   Checkbox,
   Input,
+  Spinner,
 } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import { atom, useAtom } from "jotai";
@@ -319,6 +320,14 @@ export const PersonalInformationSection: React.FC<YACFormSectionProps> = ({
     return lockedFields.includes(field);
   };
 
+  if (!user) {
+    return (
+      <Flex justify="center" align="center" py={10}>
+        <Spinner color="orange.500" size="xl" />
+      </Flex>
+    );
+  }
+
   return (
     <>
       <Heading>Young Amil Circle Application Form</Heading>
@@ -330,6 +339,7 @@ export const PersonalInformationSection: React.FC<YACFormSectionProps> = ({
       <Formik
         initialValues={mergedInitialValues}
         enableReinitialize
+        validateOnMount
         validationSchema={personalInfoSchema}
         onSubmit={(values, actions) => {
           setPersonalInfo(values);
@@ -428,9 +438,9 @@ export const AddressDetailsSection: React.FC = () => {
       <Heading>Residential Address</Heading>
       <Formik
         initialValues={addressInfo}
+        validateOnMount
         validationSchema={addressInfoSchema}
         onSubmit={(values, actions) => {
-          // console.log({ values });
           setAddressInfo(values);
           actions.setSubmitting(false);
           setActiveStep(activeStep + 1);
@@ -690,6 +700,7 @@ export const ProposerDetailsSection: React.FC<YACFormSectionProps> = () => {
 
       <Formik
         initialValues={proposerInfo}
+        validateOnMount
         validationSchema={proposerInfoSchema}
         onSubmit={(values) => {
           setProposerInfo(values);

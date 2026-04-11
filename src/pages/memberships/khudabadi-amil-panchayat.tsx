@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
+import { useEffect, useState } from "react";
 
-import { Box, Flex, Icon, Spacer, Text } from "@chakra-ui/react";
+import { Box, Flex, Icon, Spacer, Spinner, Text } from "@chakra-ui/react";
 
 import Layout from "~/components/layout";
 import KhudabadiAmilPanchayatMembershipForm from "~/components/forms/kap-membership-form";
@@ -8,18 +9,53 @@ import UserBlockModal from "~/components/authentication/UserBlockModal";
 import { useUserAtom } from "~/lib/atom";
 import { RiErrorWarningFill } from "react-icons/ri";
 import { calculateAge } from "~/utils/helper";
+import { api } from "~/utils/api";
+
+interface AccountStatus {
+  membership_id: string | null;
+  KAP_member: boolean;
+  YAC_member: boolean;
+  date_of_birth: string | null;
+}
 
 const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
   const [{ user }] = useUserAtom();
-  const userAge = user ? calculateAge(user.date_of_birth) : null;
+  const getAccountStatus = api.profile.getAccountStatus.useMutation();
 
-  // Under age when age is known and below 21; if DOB is null, allow through
+  const [accountStatus, setAccountStatus] = useState<AccountStatus | null>(null);
+  const [statusLoading, setStatusLoading] = useState(false);
+
+  useEffect(() => {
+    if (!user?.id) {
+      setAccountStatus(null);
+      return;
+    }
+    setStatusLoading(true);
+    getAccountStatus
+      .mutateAsync({ user_id: user.id })
+      .then(setAccountStatus)
+      .catch(console.error)
+      .finally(() => setStatusLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]);
+
+  const userAge = accountStatus ? calculateAge(accountStatus.date_of_birth) : null;
   const isUnderAge = userAge !== null && userAge < 21;
-  const isEligible = user && !isUnderAge && user.KAP_member !== true;
+  const isEligible = user && accountStatus && !isUnderAge && accountStatus.KAP_member !== true;
+
+  if (statusLoading) {
+    return (
+      <Layout title="KAP Membership Form">
+        <Flex justify="center" align="center" py={20}>
+          <Spinner color="#FF4D00" size="lg" />
+        </Flex>
+      </Layout>
+    );
+  }
 
   return (
     <Layout title="KAP Membership Form">
-      {user?.YAC_member === true ? (
+      {accountStatus?.YAC_member === true ? (
         <Flex
           gap={2}
           align="flex-start"
@@ -70,12 +106,12 @@ const KhudabadiAmilPanchayatMembershipPage: NextPage = () => {
                 w={500}
               >
                 <Flex gap={2} px={10} align="center" flexDir="column">
-                  {user.KAP_member ? (
+                  {accountStatus?.KAP_member ? (
                     <Text>Membership Completed</Text>
                   ) : (
                     <Text>Age Requirement not met</Text>
                   )}
-                  {user.KAP_member ? (
+                  {accountStatus?.KAP_member ? (
                     <Text textAlign="center">
                       You are already a registered KAP member
                     </Text>

@@ -86,7 +86,8 @@ const useAWS = (props?: Partial<useAWSProps>) => {
     };
 
     void handleFetchProfileImageURL();
-  }, [s3_key, fetchImageSignedURL]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [s3_key]);
 
   return {
     // Handlers

@@ -7,6 +7,7 @@ import {
   Spacer,
   Text,
 } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import Link from "next/link";
 
 import { EventCollectionQueryQuery } from "~/lib/__generated/sdk";
@@ -18,6 +19,12 @@ const CuriousSection = ({ events }: { events: EventCollectionQueryQuery }) => {
     <>
       <Spacer h="8rem" />
       {/* Curious about our events section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+      >
       <Box>
         <Grid templateColumns={["1fr", "repeat(2, 1fr)"]} gap="3rem">
           <Flex flexDir="column" align="baseline" gap="0.5rem">
@@ -53,6 +60,7 @@ const CuriousSection = ({ events }: { events: EventCollectionQueryQuery }) => {
 
         <EventSlider events={events} />
       </Box>
+      </motion.div>
     </>
   );
 };

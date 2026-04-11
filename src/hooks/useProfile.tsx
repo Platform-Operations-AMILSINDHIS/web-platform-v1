@@ -69,7 +69,8 @@ const useProfile = ({ user_id }: useProfileHookProps) => {
     } finally {
       setIsLoadingProfileData(false);
     }
-  }, [user_id, fetchUserProfileDataMut]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user_id]);
 
   // Initial fetch on mount
   useEffect(() => {

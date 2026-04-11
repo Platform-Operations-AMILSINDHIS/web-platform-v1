@@ -1,18 +1,31 @@
-import { useDisclosure } from "@chakra-ui/react";
+// src/pages/matches.tsx
+import {
+  Badge,
+  Box,
+  Button,
+  Flex,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import type { MatrimonyLoginValues } from "~/hooks/useForm";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import type { FormikHelpers } from "formik";
 import { useUserAtom } from "~/lib/atom";
-
 import useServerActions from "~/hooks/useServerActions";
-import ProfilesViewLayout from "~/layouts/ProfilesViewLayout";
 import MatrimonyAuthModal from "~/components/authentication/MatrimonyAuthModal";
+import MatrimonyApplicationWithdrawModal from "~/components/matrimony/MatrimonyApplicationWithdrawModal";
+import MatrimonyProfilesView from "~/components/matrimony/MatrimonyProfilesView";
+import MatrimonyRequestsTab from "~/components/matrimony/MatrimonyRequestsTab";
 import type {
   MatrimonyProfilesFetchResponse,
+  ProfileRequestsFetchResponse,
 } from "~/types/api";
-import MatrimonyProfilesView from "~/components/matrimony/MatrimonyProfilesView";
-import MatrimonyApplicationWithdrawModal from "~/components/matrimony/MatrimonyApplicationWithdrawModal";
-import MatrimonyApplicationSelectionModal from "~/components/matrimony/MatrimonyApplicationSelectionModal";
+import type { SpousePreferences } from "~/types/forms/matrimony";
 
 const ProfilePage = () => {
   const [{ user }] = useUserAtom();
@@ -24,28 +37,38 @@ const ProfilePage = () => {
   } = useDisclosure();
 
   const {
-    isOpen: isOpenSelection,
-    onClose: onCloseSelectionModal,
-    onOpen: onOpenSelectionModal,
-  } = useDisclosure();
-
-  const {
     handleMatrimonyLogin,
     handleMatrimonyProfilesFetch,
     handleMatrimonyIdFetch,
     handleFetchProfileRequests,
+    handleFetchUserSubmission,
+    handleMatrimonyRequestProfile,
   } = useServerActions();
+
+  const handlersRef = useRef({
+    handleMatrimonyProfilesFetch,
+    handleFetchProfileRequests,
+    handleFetchUserSubmission,
+  });
+  handlersRef.current = {
+    handleMatrimonyProfilesFetch,
+    handleFetchProfileRequests,
+    handleFetchUserSubmission,
+  };
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
-  const [matrimoyID, setMatrimonyID] = useState<string>("");
+  const [matrimonyID, setMatrimonyID] = useState<string>("");
   const [matrimonyProfiles, setMatrimonyProfiles] = useState<
     MatrimonyProfilesFetchResponse[]
   >([]);
   const [profilesRequested, setProfilesRequested] = useState<string[]>([]);
-
-  console.log({ user });
+  const [profileRequestsData, setProfileRequestsData] = useState<
+    ProfileRequestsFetchResponse[]
+  >([]);
+  const [userSpousePreferences, setUserSpousePreferences] =
+    useState<SpousePreferences | null>(null);
+  const [activeTab, setActiveTab] = useState<number>(0);
 
   const handleFormSubmit = async (
     values: MatrimonyLoginValues,
@@ -56,7 +79,6 @@ const ProfilePage = () => {
       values.matrimony_id,
       user?.id ?? ""
     );
-
     if (!loggedIn) {
       setErrors({ matrimony_id: message });
       setIsSubmitting(false);
@@ -68,99 +90,150 @@ const ProfilePage = () => {
   };
 
   const fetchProfiles = useCallback(async () => {
-    const data = await handleMatrimonyProfilesFetch();
-    if (data.length > 0 && isLoggedIn) {
-      setMatrimonyProfiles(data);
-    }
-  }, [handleMatrimonyProfilesFetch, isLoggedIn]);
+    const data = await handlersRef.current.handleMatrimonyProfilesFetch();
+    if (data.length > 0) setMatrimonyProfiles(data);
+  }, []);
 
   const fetchProfileRequests = useCallback(async (email_id: string) => {
-    const data = await handleFetchProfileRequests(email_id);
-    console.log({ profile_requests_data: data });
-
-    if (data.length > 0 && isLoggedIn) {
-      // Create a new Set to efficiently store unique requested IDs
-      const uniqueRequestedIds: string[] = [];
-
-      // Use `forEach` to avoid unnecessary intermediate array creation
-      data.forEach((profile) => {
-        if (!uniqueRequestedIds.includes(profile.requested_name)) {
-          uniqueRequestedIds.push(profile.requested_name);
-        }
-      });
-
-      setProfilesRequested(uniqueRequestedIds);
-
-      console.log({ profilesRequested: uniqueRequestedIds });
+    const data =
+      await handlersRef.current.handleFetchProfileRequests(email_id);
+    if (data && data.length > 0) {
+      setProfileRequestsData(data);
+      const names = [...new Set(data.map((r) => r.requested_name))];
+      setProfilesRequested(names);
     }
-  }, [handleFetchProfileRequests, isLoggedIn]);
+  }, []);
 
-  const handleCloseSelectProfileModal = async (
-    setProfileMatID: (profileMatID: string | undefined) => void,
-    setFetchStatus: (status: boolean) => void
-  ) => {
-    setFetchStatus(false);
-    setProfileMatID("");
-    onCloseSelectionModal();
+  const fetchOwnPreferences = useCallback(async (user_id: string) => {
+    try {
+      const own =
+        await handlersRef.current.handleFetchUserSubmission(
+          user_id,
+          "MATRIMONY"
+        );
+      if (own?.submission?.spousePreferences) {
+        setUserSpousePreferences(own.submission.spousePreferences);
+      }
+    } catch {
+      // Non-critical — page still works without preferences
+    }
+  }, []);
 
-    // Refresh both lists
-    if (user) {
-      await Promise.all([fetchProfiles(), fetchProfileRequests(user.email_id)]);
+  useEffect(() => {
+    if (user && isLoggedIn) {
+      void fetchProfiles();
+      void fetchProfileRequests(user.email_id);
+      void fetchOwnPreferences(user.id);
+    }
+  }, [isLoggedIn, user, fetchProfiles, fetchProfileRequests, fetchOwnPreferences]);
+
+  const handleRequestSent = (fullName: string) => {
+    setProfilesRequested((prev) =>
+      prev.includes(fullName) ? prev : [...prev, fullName]
+    );
+    if (user?.email_id) {
+      void fetchProfileRequests(user.email_id);
     }
   };
 
-  useEffect(() => {
-    const fetchPageData = async () => {
-      if (user && isLoggedIn) {
-        await fetchProfiles();
-        await fetchProfileRequests(user.email_id);
-      }
-    };
-
-    fetchPageData()
-      .then(() => console.log("done"))
-      .catch((err) => console.log(err));
-    // Only refetch when user or isLoggedIn changes, not on matrimonyProfiles change
-  }, [isLoggedIn, user, fetchProfiles, fetchProfileRequests]);
-
-  console.log({ matrimonyProfiles, profilesRequested });
-
   return (
-    <ProfilesViewLayout
-      openSelectionModal={onOpenSelectionModal}
-      openWithdrawModal={onOpenWithdrawModal}
-    >
+    <Flex h="100vh" w="full">
+      <Flex gap={4} p={5} flexDir="column" w="full">
+        {/* Top bar */}
+        <Flex
+          align="center"
+          justify="space-between"
+          flexWrap="wrap"
+          gap={3}
+        >
+          <Box>
+            <Text fontSize="2xl" fontWeight={700} color="#1F2937">
+              Matrimony Profiles
+            </Text>
+            <Text fontSize="sm" color="gray.500">
+              Browse and connect with compatible profiles
+            </Text>
+          </Box>
+          <Button
+            variant="outline"
+            borderColor="red.300"
+            color="red.500"
+            size="sm"
+            _hover={{ bg: "red.50" }}
+            onClick={onOpenWithdrawModal}
+          >
+            Withdraw Application
+          </Button>
+        </Flex>
+
+        {/* Tabs */}
+        <Tabs
+          index={activeTab}
+          onChange={setActiveTab}
+          colorScheme="orange"
+          variant="line"
+        >
+          <TabList borderBottomColor="gray.200">
+            <Tab
+              fontWeight={600}
+              _selected={{ color: "#FF4D00", borderColor: "#FF4D00" }}
+            >
+              Browse Profiles
+            </Tab>
+            <Tab
+              fontWeight={600}
+              _selected={{ color: "#FF4D00", borderColor: "#FF4D00" }}
+            >
+              My Requests
+              {profileRequestsData.length > 0 && (
+                <Badge
+                  ml={2}
+                  colorScheme="orange"
+                  borderRadius="full"
+                  fontSize="xs"
+                >
+                  {profileRequestsData.length}
+                </Badge>
+              )}
+            </Tab>
+          </TabList>
+
+          <TabPanels>
+            <TabPanel px={0} pt={5}>
+              <MatrimonyProfilesView
+                isLoggedIn={isLoggedIn}
+                matrimonyProfiles={matrimonyProfiles}
+                profileRequests={profilesRequested}
+                user={user}
+                matchPreferences={userSpousePreferences}
+                matrimonyID={matrimonyID}
+                handleMatrimonyIdFetch={handleMatrimonyIdFetch}
+                handleMatrimonyRequestProfile={handleMatrimonyRequestProfile}
+                onRequestSent={handleRequestSent}
+              />
+            </TabPanel>
+
+            <TabPanel px={0} pt={5}>
+              <MatrimonyRequestsTab requests={profileRequestsData} />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </Flex>
+
+      {/* Modals */}
       <MatrimonyApplicationWithdrawModal
         user_id={user?.id ?? ""}
         modalState={isOpenWithdrawModal}
         handleModal={onCloseWithdrawModal}
         name={user?.first_name ?? ""}
       />
-      <MatrimonyApplicationSelectionModal
-        profilesRequested={profilesRequested}
-        handleCloseSelectionModal={handleCloseSelectProfileModal}
-        handleMatrimonyIDFetch={handleMatrimonyIdFetch}
-        user={user}
-        matrimonyProfiles={matrimonyProfiles}
-        matrimonyID={matrimoyID}
-        handleModal={onCloseSelectionModal}
-        modalState={isOpenSelection}
-      />
       <MatrimonyAuthModal
         handleFormSubmit={handleFormSubmit}
         isSubmitting={isSubmitting}
         modalState={!isLoggedIn}
-        handleModal={() => {
-          console.log("Hi");
-        }}
+        handleModal={() => undefined}
       />
-      <MatrimonyProfilesView
-        isLoggedIn={isLoggedIn}
-        matrimonyProfiles={matrimonyProfiles}
-        profileRequests={profilesRequested}
-        user={user}
-      />
-    </ProfilesViewLayout>
+    </Flex>
   );
 };
 

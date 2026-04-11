@@ -32,7 +32,8 @@ const AccountDisplay: React.FC<AccountDisplayProps> = ({ user }) => {
           console.error("Error fetching profile image key:", err);
         });
     }
-  }, [user?.id, getProfileImageKey]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]);
 
   // Fetch signed URL for profile image
   const { profileImageSignedURL } = useAWS({
@@ -54,7 +55,8 @@ const AccountDisplay: React.FC<AccountDisplayProps> = ({ user }) => {
       <AccountOptionsPopover>
         <Text
           transition="all 0.3s"
-          _hover={{ cursor: "pointer", color: "#FF4D00" }}
+          aria-label="Open account menu"
+          _hover={{ cursor: "pointer", color: "#FF4D00", textDecoration: "underline" }}
         >
           {user?.account_name}
         </Text>

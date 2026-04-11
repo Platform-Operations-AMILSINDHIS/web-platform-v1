@@ -1,4 +1,5 @@
 import { Box, Button, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { FaArrowCircleRight } from "react-icons/fa";
@@ -36,6 +37,13 @@ const WhatSection = ({ imageUrl }: sectionProps) => {
             zIndex: -1,
           }}
         />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          style={{ display: "flex" }}
+        >
         <Flex
           direction={["column", "row"]}
           px={[10, 0]}
@@ -77,6 +85,7 @@ const WhatSection = ({ imageUrl }: sectionProps) => {
             {/* </Link> */}
           </Flex>
         </Flex>
+        </motion.div>
       </Flex>
 
       <Spacer h="8rem" />

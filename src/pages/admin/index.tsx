@@ -5,11 +5,12 @@ import {
   Button,
   Divider,
   Flex,
+  Skeleton,
   Spinner,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import BufferSearch from "~/components/admin/BufferSearch";
 import DropDown from "~/components/admin/DropDown";
 import AdminHelpDrawer from "~/components/admin/AdminHelpDrawer";
@@ -70,24 +71,38 @@ const AdminPage = () => {
   const [isSelected, setIsSelected] = useState<string>("Memberships");
   const [applicantType, setapplicantType] = useState<string>("All applicants");
 
-  const handleFetch = React.useCallback(async () => {
-    const allMemBufferData = await handleMemberBufferFetch();
-    const allMatBufferData = await handleMatrimonyBufferFetch();
-    const allProfileRequestsData = await handleFetchAllProfileRequestsAdmin();
+  const hasActiveFilters =
+    statusType !== "All" ||
+    membershipType !== "All members" ||
+    applicantType !== "All applicants";
+
+  const handleClearFilters = () => {
+    setStatusType("All");
+    setMembershipType("All members");
+    setapplicantType("All applicants");
+  };
+
+  const handlersRef = useRef({ handleMemberBufferFetch, handleMatrimonyBufferFetch, handleFetchAllProfileRequestsAdmin });
+  handlersRef.current = { handleMemberBufferFetch, handleMatrimonyBufferFetch, handleFetchAllProfileRequestsAdmin };
+
+  const handleFetch = useCallback(async () => {
+    const allMemBufferData = await handlersRef.current.handleMemberBufferFetch();
+    const allMatBufferData = await handlersRef.current.handleMatrimonyBufferFetch();
+    const allProfileRequestsData = await handlersRef.current.handleFetchAllProfileRequestsAdmin();
     setMatrimonyBufferData(allMatBufferData);
     setMembershipBufferData(allMemBufferData);
     setProfileRequestsData(allProfileRequestsData);
-  }, [handleMemberBufferFetch, handleMatrimonyBufferFetch, handleFetchAllProfileRequestsAdmin]);
+  }, []);
 
-  const handleRealTimeMemAndMatDataFetch = async () => {
-    const allMemBufferData = await handleMemberBufferFetch();
+  const handleRealTimeMemAndMatDataFetch = useCallback(async () => {
+    const allMemBufferData = await handlersRef.current.handleMemberBufferFetch();
     setMembershipBufferData(allMemBufferData);
-  };
+  }, []);
 
-  const handleRealTimeProfileDataFetch = async () => {
-    const allProfileRequestsData = await handleFetchAllProfileRequestsAdmin();
+  const handleRealTimeProfileDataFetch = useCallback(async () => {
+    const allProfileRequestsData = await handlersRef.current.handleFetchAllProfileRequestsAdmin();
     setProfileRequestsData(allProfileRequestsData);
-  };
+  }, []);
 
   useRealTime(handleRealTimeMemAndMatDataFetch, "form_buffer");
   useRealTime(handleRealTimeProfileDataFetch, "profile_requests");
@@ -98,10 +113,7 @@ const AdminPage = () => {
   };
 
   useEffect(() => {
-    async function f() {
-      await handleFetch();
-    }
-    f().catch(console.error);
+    void handleFetch();
   }, [handleFetch]);
 
   useEffect(() => {
@@ -178,6 +190,20 @@ const AdminPage = () => {
               setIsSelected={setStatusType}
               menuItems={["All", "Approved", "Pending"]}
             />
+            {hasActiveFilters && (
+              <Button
+                size="sm"
+                variant="ghost"
+                color="#FF4D00"
+                fontSize="xs"
+                fontWeight={600}
+                onClick={handleClearFilters}
+                alignSelf="flex-end"
+                mb={0.5}
+              >
+                Clear filters
+              </Button>
+            )}
           </Flex>
         </Flex>
 
@@ -210,10 +236,11 @@ const AdminPage = () => {
       {isSelected === "Memberships" ? (
         <Box>
           {isLoadingMemBuf ? (
-            <Flex gap={3} align="center" py={10} justify="center">
-              <Spinner color="#FF4D00" boxSize={5} />
-              <Text color="gray.500" fontSize="sm">Loading membership applications&hellip;</Text>
-            </Flex>
+            <Box>
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Skeleton key={i} height="40px" mb={2} borderRadius="md" startColor="gray.100" endColor="gray.200" />
+              ))}
+            </Box>
           ) : (
             <MembershipBufferTable
               membershipType={membershipType}
@@ -227,10 +254,11 @@ const AdminPage = () => {
       ) : (
         <Box>
           {isLoadingMatBuf ? (
-            <Flex gap={3} align="center" py={10} justify="center">
-              <Spinner color="#FF4D00" boxSize={5} />
-              <Text color="gray.500" fontSize="sm">Loading matrimony applications&hellip;</Text>
-            </Flex>
+            <Box>
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Skeleton key={i} height="40px" mb={2} borderRadius="md" startColor="gray.100" endColor="gray.200" />
+              ))}
+            </Box>
           ) : (
             <MatrimonyBufferTable
               searchTerm={searchTerm}

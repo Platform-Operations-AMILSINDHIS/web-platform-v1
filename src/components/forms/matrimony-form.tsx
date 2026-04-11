@@ -21,6 +21,7 @@ import {
   StepTitle,
   Stepper,
   useToast,
+  Spinner,
 } from "@chakra-ui/react";
 import { ArrowBackIcon, ArrowForwardIcon, DeleteIcon } from "@chakra-ui/icons";
 
@@ -46,7 +47,6 @@ import type { InputType } from "./kap-membership-form";
 import { focusAtom } from "jotai-optics";
 
 import { api } from "~/utils/api";
-import type { userAtomBody } from "~/types/atoms/users";
 
 const steps = [
   {
@@ -156,8 +156,17 @@ const MatrimonyForm: React.FC<MatrimonyFormProps> = ({
   user,
   submissionVerification,
   approved,
+  initialFamilyMembers,
 }) => {
   const [activeStep] = useAtom(activeStepAtom);
+  const [, setFamilyMembers] = useAtom(familyMembersAtom);
+
+  useEffect(() => {
+    if (initialFamilyMembers && initialFamilyMembers.length > 0) {
+      setFamilyMembers(initialFamilyMembers);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialFamilyMembers]);
 
   return (
     <>
@@ -232,11 +241,7 @@ const MatrimonyPersonalInformationSection: React.FC<
     if (!user) return true; // no user, everything blocked until loaded
 
     // Global disable conditions (your original logic)
-    const shouldDisableGlobally =
-      (!user.membership_id ||
-      user.membership_id === "") ||
-      (submissionVerification ??
-      approved);
+    const shouldDisableGlobally = submissionVerification ?? approved;
 
     if (shouldDisableGlobally) return true;
 
@@ -245,10 +250,13 @@ const MatrimonyPersonalInformationSection: React.FC<
     return lockedFields.includes(fieldName);
   };
 
-  useEffect(
-    () => console.log(JSON.stringify(personalInfo, null, 2)),
-    [personalInfo]
-  );
+  if (!user) {
+    return (
+      <Flex justify="center" align="center" py={10}>
+        <Spinner color="orange.500" size="xl" />
+      </Flex>
+    );
+  }
 
   return (
     <Box mt={10}>
@@ -260,7 +268,8 @@ const MatrimonyPersonalInformationSection: React.FC<
 
       <Formik
         initialValues={mergedInitialValues}
-        enableReinitialize // allows re-filling if user changes
+        enableReinitialize
+        validateOnMount
         validationSchema={matrimonyPersonalInfoSchema}
         onSubmit={(values, actions) => {
           setPersonalInfo(values);
@@ -322,6 +331,7 @@ const MatrimonyPersonalInformationSection: React.FC<
               {[
                 {
                   label: "Gender",
+                  name: "gender",
                   inputType: "select",
                   placeholder: "Select Gender",
                   selectOptions: ["Male", "Female"],
@@ -329,6 +339,7 @@ const MatrimonyPersonalInformationSection: React.FC<
                 },
                 {
                   label: "Marital Status",
+                  name: "maritalStatus",
                   inputType: "select",
                   placeholder: "Select Marital Status",
                   selectOptions: ["Single", "Divorcee", "Widower", "Widow"],
@@ -336,6 +347,7 @@ const MatrimonyPersonalInformationSection: React.FC<
                 },
                 {
                   label: "Manglik",
+                  name: "manglik",
                   inputType: "select",
                   placeholder: "Select Manglik",
                   selectOptions: ["No", "Yes"],
@@ -343,7 +355,14 @@ const MatrimonyPersonalInformationSection: React.FC<
                 },
               ].map(
                 (
-                  { label, inputType, placeholder, selectOptions, required },
+                  {
+                    label,
+                    name,
+                    inputType,
+                    placeholder,
+                    selectOptions,
+                    required,
+                  },
                   i
                 ) => (
                   <LabelledInput
@@ -353,17 +372,7 @@ const MatrimonyPersonalInformationSection: React.FC<
                     placeholder={placeholder}
                     selectOptions={selectOptions}
                     required={required}
-                    isDisabled={
-                      user
-                        ? !user.membership_id || user.membership_id === ""
-                          ? true
-                          : submissionVerification
-                          ? true
-                          : approved
-                          ? true
-                          : false
-                        : true
-                    }
+                    isDisabled={isFieldDisabled(name)}
                   />
                 )
               )}
@@ -397,17 +406,7 @@ const MatrimonyPersonalInformationSection: React.FC<
                   name={name}
                   type={"text"}
                   required={required}
-                  isDisabled={
-                    user
-                      ? !user.membership_id || user.membership_id === ""
-                        ? true
-                        : submissionVerification
-                        ? true
-                        : approved
-                        ? true
-                        : false
-                      : true
-                  }
+                  isDisabled={isFieldDisabled(name)}
                 />
               ))}
             </Grid>
@@ -443,17 +442,7 @@ const MatrimonyPersonalInformationSection: React.FC<
                   label={label}
                   name={name}
                   required={required}
-                  isDisabled={
-                    user
-                      ? !user.membership_id || user.membership_id === ""
-                        ? true
-                        : submissionVerification
-                        ? true
-                        : approved
-                        ? true
-                        : false
-                      : true
-                  }
+                  isDisabled={isFieldDisabled(name)}
                 />
               ))}
             </Grid>
@@ -488,9 +477,10 @@ const MatrimonyAddressDetailsSection: React.FC = () => {
       <Heading>Residential Address</Heading>
       <Formik
         initialValues={residentialAddressDetails}
+        validateOnMount
+        enableReinitialize
         validationSchema={residentialAddressDetailsSchema}
         onSubmit={(values, actions) => {
-          // console.log({ values });
           setResidentialAddressDetails(values);
           actions.setSubmitting(false);
           setActiveStep(activeStep + 1);
@@ -506,25 +496,23 @@ const MatrimonyAddressDetailsSection: React.FC = () => {
               {[
                 {
                   label: "Address Line 1",
-                  name: "residentialAddressDetails.addressLine1",
+                  name: "addressLine1",
                   required: true,
                 },
                 {
                   label: "Address Line 2",
-                  name: "residentialAddressDetails.addressLine2",
+                  name: "addressLine2",
                   required: true,
                 },
-                {
-                  label: "Address Line 3",
-                  name: "residentialAddressDetails.addressLine3",
-                },
-                {
-                  label: "Pin Code",
-                  name: "residentialAddressDetails.pinCode",
-                  required: true,
-                },
+                { label: "Address Line 3", name: "addressLine3" },
+                { label: "Pin Code", name: "pinCode", required: true },
               ].map(({ label, name, required }, i) => (
-                <LabelledInput key={i} label={label} name={name} required={required} />
+                <LabelledInput
+                  key={i}
+                  label={label}
+                  name={name}
+                  required={required}
+                />
               ))}
             </Grid>
             <Spacer h="2rem" />
@@ -669,9 +657,9 @@ const SpousePreferencesSection: React.FC = () => {
       <Heading>Spouse Preferences</Heading>
       <Formik
         initialValues={spousePreferences}
+        validateOnMount
         validationSchema={matrimonySpousePreferencesSchema}
         onSubmit={(values, actions) => {
-          // console.log({ values })
           setSpousePreferences(values);
           actions.setSubmitting(false);
           setActiveStep(activeStep + 1);
@@ -829,10 +817,9 @@ export const ProposerDetailsSection: React.FC = () => {
 
       <Formik
         initialValues={proposerInfo}
+        validateOnMount
         validationSchema={proposerInfoSchema}
         onSubmit={(values, actions) => {
-          // console.log({ values });
-
           setProposerInfo(values);
           actions.setSubmitting(false);
           // setActiveStep(activeStep + 1);

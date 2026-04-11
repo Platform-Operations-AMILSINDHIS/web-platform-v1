@@ -92,4 +92,6 @@ export interface MatrimonyFormSectionProps {
   approved?: boolean;
 }
 
-export interface MatrimonyFormProps extends MatrimonyFormSectionProps {}
+export interface MatrimonyFormProps extends MatrimonyFormSectionProps {
+  initialFamilyMembers?: FamilyMember[];
+}

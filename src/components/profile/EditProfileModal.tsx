@@ -117,9 +117,9 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
   };
 
   // Format date to YYYY-MM-DD for the date input
-  const formatDateForInput = (dateStr: string | null | undefined): string => {
-    if (!dateStr) return "";
-    const d = new Date(dateStr);
+  const formatDateForInput = (dateVal: string | Date | null | undefined): string => {
+    if (!dateVal) return "";
+    const d = new Date(dateVal);
     if (isNaN(d.getTime())) return "";
     return d.toISOString().slice(0, 10);
   };

@@ -111,9 +111,11 @@ const MyProfilePage = () => {
   const hasFormBuffer =
     profileData?.form_buffer && profileData.form_buffer.length > 0;
 
-  // Find YAC membership profile
-  const yacProfile = hasFormBuffer
-    ? profileData?.form_buffer?.find((form: any) => form.formType === "YAC")
+  // Find membership profile (YAC or KAP)
+  const membershipProfile = hasFormBuffer
+    ? profileData?.form_buffer?.find(
+        (form: any) => form.formType === "YAC" || form.formType === "KAP"
+      )
     : null;
 
   // Find Matrimony profile
@@ -125,12 +127,12 @@ const MyProfilePage = () => {
 
   const hasMatrimonyProfile = matrimonyProfile?.submission;
 
-  const personalInfo = yacProfile?.submission?.personalInfo || null;
+  const personalInfo = membershipProfile?.submission?.personalInfo || null;
   const addressInfo =
-    yacProfile?.submission?.addressInfo?.residentialAddress || null;
-  const membershipInfo = yacProfile?.submission?.membershipInfo || null;
-  const familyMembers = yacProfile?.submission?.familyMembers || null;
-  const status = yacProfile?.status || null;
+    membershipProfile?.submission?.addressInfo?.residentialAddress || null;
+  const membershipInfo = membershipProfile?.submission?.membershipInfo || null;
+  const familyMembers = membershipProfile?.submission?.familyMembers || null;
+  const status = membershipProfile?.status || null;
 
   // Extract matrimony profile data
   const matrimonyPersonalInfo =

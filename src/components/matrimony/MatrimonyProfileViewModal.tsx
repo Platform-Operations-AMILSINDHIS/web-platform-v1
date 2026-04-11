@@ -22,6 +22,9 @@ interface MatrimonyProfileViewModalProps {
   modalState: boolean;
   modalHeader: string;
   handleModal: () => void;
+  isRequested: boolean;
+  isRequesting: boolean;
+  onRequestProfile: () => void;
 }
 
 const MatrimonyProfileViewModal: React.FC<MatrimonyProfileViewModalProps> = ({
@@ -31,6 +34,9 @@ const MatrimonyProfileViewModal: React.FC<MatrimonyProfileViewModalProps> = ({
   handleModal,
   modalHeader,
   modalState,
+  isRequested,
+  isRequesting,
+  onRequestProfile,
 }) => {
   // Extract matrimony images
   const matrimonyImages = profileMedia.filter(
@@ -198,17 +204,43 @@ const MatrimonyProfileViewModal: React.FC<MatrimonyProfileViewModalProps> = ({
             </Flex>
           </Flex>
         </Flex>
-        <Box mb={3} mt={5}>
+        {/* Footer actions */}
+        <Flex flexDir="column" mt={4} gap={2}>
+          {isRequested ? (
+            <Button
+              w="100%"
+              variant="outline"
+              colorScheme="green"
+              isDisabled
+              size="lg"
+            >
+              ✓ Profile Requested
+            </Button>
+          ) : (
+            <Button
+              w="100%"
+              bg="#FF4D00"
+              color="white"
+              size="lg"
+              isLoading={isRequesting}
+              loadingText="Sending request..."
+              _hover={{ bg: "#E03A00" }}
+              onClick={onRequestProfile}
+            >
+              Request Profile
+            </Button>
+          )}
           <Button
-            onClick={handleModal}
-            style={btnThemeLight}
+            w="100%"
+            variant="ghost"
             bg="#1F2937"
             color="white"
-            px={5}
+            _hover={{ bg: "#374151" }}
+            onClick={handleModal}
           >
-            Exit Profile
+            Close
           </Button>
-        </Box>
+        </Flex>
       </Flex>
     </ModalLayout>
   );
@@ -247,7 +279,7 @@ const MatrimonyImageGallery: React.FC<MatrimonyImageGalleryProps> = ({
           <Image
             src={mainImageUrl}
             alt="Matrimony profile"
-            objectFit="cover"
+            objectFit="contain"
             w="100%"
             h="100%"
           />

@@ -292,7 +292,7 @@ const MatrimonyImageSlot: React.FC<MatrimonyImageSlotProps> = ({
             <Image
               src={preview}
               alt={`Matrimony photo ${slot.slotNumber}`}
-              objectFit="cover"
+              objectFit="contain"
               w="100%"
               h="100%"
             />

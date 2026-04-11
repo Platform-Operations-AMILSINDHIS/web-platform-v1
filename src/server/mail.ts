@@ -35,7 +35,7 @@ export const sendMail = async ({
   html,
   attachments,
   cc,
-  source = "no-reply",
+  source = "noreply",
 }: SendMailType & { source?: string }) => {
   const ccAddresses = cc
     ? Array.isArray(cc)
@@ -119,7 +119,7 @@ export async function sendRawJsonDataOnly(to: string, data: any) {
     </div>
   `;
 
-  await sendMail({ to, subject, html, source: "no-reply" });
+  await sendMail({ to, subject, html, source: "noreply" });
 }
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
@@ -129,7 +129,7 @@ export async function sendRawJsonDataWithPDF(
   formType: "kap-membership" | "yac-membership"
 ) {
   const formName = formType === "kap-membership" ? "KAP" : "YAC";
-  const source = formType === "kap-membership" ? "kap" : "yac";
+  const source = "noreply";
   const subject = `New ${formName} Form Submission`;
   /* eslint-disable  @typescript-eslint/no-unsafe-assignment */
   const { personalInfo, paymentId } = data;
@@ -195,7 +195,7 @@ export const sendMatrimonyProfileMail = async (
         content: pdf,
       },
     ],
-    source: "matrimony",
+    source: "noreply",
   });
 };
 
@@ -205,7 +205,7 @@ export const sendFormConfirmationMail = async ({
   isPrevMember,
 }: ConfirmationMailType) => {
   const subject = `Thank you for submitting the ${formName} form!`;
-  const source = formName.toLowerCase().includes("kap") ? "kap" : "yac";
+  const source = "noreply";
 
   let html = ``;
 
@@ -234,7 +234,7 @@ export const sendDescisionMail = async ({
   isPrevMember,
 }: DecisionMailType) => {
   const subject = `${formType} Application Descision`;
-  const source = formType.toLowerCase().includes("kap") ? "kap" : "yac";
+  const source = "noreply";
   let html = ``;
 
   if (descision) {
@@ -303,7 +303,7 @@ export const sendMatrimonyDescisionMail = async ({
 
   console.log({ descision, to, html });
 
-  await sendMail({ html, subject, to, source: "matrimony" });
+  await sendMail({ html, subject, to, source: "noreply" });
 };
 
 export const sendDeclineRequestMail = async ({
@@ -314,7 +314,7 @@ export const sendDeclineRequestMail = async ({
   const subject = `Profile Request Declined`;
   const html = `We regret to inform you that your profile request for ${requested_name}, ${requested_MatID} has been declined. For any queries please email info@amilsindhis.org`;
 
-  await sendMail({ html, subject, to, source: "matrimony" });
+  await sendMail({ html, subject, to, source: "noreply" });
 };
 
 // export const sendAcceptRequestMail = async ({
@@ -353,7 +353,7 @@ export const sendMatrimonyFormNotificationMail = async (
     </div>
   `;
 
-  await sendMail({ to, subject, html, source: "matrimony" });
+  await sendMail({ to, subject, html, source: "noreply" });
 };
 
 export const sendDonationFormConfirmationMail = async ({
@@ -374,7 +374,7 @@ export const sendDonationFormConfirmationMail = async ({
     </div>
   `;
 
-  await sendMail({ to: email, subject, html, source: "no-reply" });
+  await sendMail({ to: email, subject, html, source: "noreply" });
 };
 
 export const sendWithdrawNotificationMail = async (
@@ -383,7 +383,7 @@ export const sendWithdrawNotificationMail = async (
 ) => {
   const subject = `Application Withdrawn`;
   const html = `Matrimony Application Withdrawn: ${user_name}, ${matrimony_id}`;
-  await sendMail({ to: "amilsindhis@gmail.com", subject, html, source: "matrimony" });
+  await sendMail({ to: "amilsindhis@gmail.com", subject, html, source: "noreply" });
 };
 
 export const sendDonationNotificationMail = async (
@@ -422,7 +422,7 @@ export const sendDonationNotificationMail = async (
     </div>
   `;
 
-  await sendMail({ to, subject, html, source: "no-reply" });
+  await sendMail({ to, subject, html, source: "noreply" });
 };
 
 export const sendRsvpMailForEvent = async ({
@@ -446,7 +446,7 @@ export const sendRsvpMailForEvent = async ({
   </div>
   `;
 
-    await sendMail({ to, subject, html, source: "no-reply" });
+    await sendMail({ to, subject, html, source: "noreply" });
   } catch (e) {
     console.error(e);
   }

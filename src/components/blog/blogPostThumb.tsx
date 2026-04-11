@@ -48,7 +48,7 @@ const BlogPostThumb: React.FC<{
         })}
       </div>
       <div className="my-4 flex gap-2">
-        {tags?.map((tag, index) => (
+        {tags?.slice(0, 4)?.map((tag, index) => (
           <Box
             fontWeight={500}
             key={index}

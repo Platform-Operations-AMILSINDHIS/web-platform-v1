@@ -54,6 +54,28 @@ const profileRouter = createTRPCRouter({
       return data;
     }),
 
+  getAccountStatus: publicProcedure
+    .input(Yup.object({ user_id: Yup.string().required() }))
+    .mutation(async ({ input }) => {
+      const { data, error } = await supabase
+        .from("general_accounts")
+        .select("membership_id, KAP_member, YAC_member, date_of_birth")
+        .eq("id", input.user_id)
+        .single();
+      if (error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: error.message,
+        });
+      }
+      return data as {
+        membership_id: string | null;
+        KAP_member: boolean;
+        YAC_member: boolean;
+        date_of_birth: string | null;
+      };
+    }),
+
   // Update general_accounts fields — email is explicitly excluded for safety
   updateProfile: publicProcedure
     .input(
